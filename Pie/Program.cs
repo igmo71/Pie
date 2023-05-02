@@ -21,14 +21,24 @@ namespace Pie
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
+            
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+            
             builder.Services
                 .AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            
             builder.Services.AddRazorPages();
+            
             builder.Services.AddServerSideBlazor();
+            
             builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
+
+            builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+
             builder.Services.AddApplicationServices();
 
             var app = builder.Build();
@@ -37,6 +47,9 @@ namespace Pie
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
+
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
             else
             {
