@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Pie.Areas.Identity;
 using Pie.Data;
 using Pie.Data.Models.Application;
+using Pie.Data.Services;
 
 namespace Pie
 {

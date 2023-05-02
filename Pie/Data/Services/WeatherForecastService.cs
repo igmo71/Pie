@@ -1,4 +1,6 @@
-namespace Pie.Data
+using Pie.Data.Models;
+
+namespace Pie.Data.Services
 {
     public class WeatherForecastService
     {
