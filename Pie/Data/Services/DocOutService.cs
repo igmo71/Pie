@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Mapster;
+using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models;
 
 namespace Pie.Data.Services
@@ -16,8 +17,9 @@ namespace Pie.Data.Services
         public async Task<IEnumerable<DocOut>> GetDocsAsync()
         {
             var docs = await _context.DocsOut.AsNoTracking()
-                .Include(d => d.Products).ThenInclude(p => p.Product)
-                .Include(d => d.BaseDocs).ThenInclude(b => b.BaseDoc)
+                .Include(d => d.Status)
+                .Include(d => d.Queue)
+                .Include(d => d.Warehouse)
                 .ToListAsync();
             return docs;
         }
