@@ -8,7 +8,7 @@
         public int? QueueKey { get; set; }
         public QueueOut? Queue { get; set; }
 
-        public List<DocOutProduct>? Products { get; set; }
-        public List<DocOutBaseDoc>? BaseDocs { get; set; }
+        public List<DocOutProduct> Products { get; set; } = new();
+        public List<DocOutBaseDoc> BaseDocs { get; set; } = new();
     }
 }
