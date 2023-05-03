@@ -10,7 +10,6 @@ namespace Pie.Data.Services
 
         public BaseDocService(ApplicationDbContext context, ILogger<BaseDocService> logger)
         {
-
             _context = context;
             _logger = logger;
         }
@@ -68,7 +67,7 @@ namespace Pie.Data.Services
             await _context.SaveChangesAsync();
         }
 
-        private bool BaseDocExists(Guid id)
+        public bool BaseDocExists(Guid id)
         {
             return _context.BaseDocs.Any(e => e.Id == id);
         }

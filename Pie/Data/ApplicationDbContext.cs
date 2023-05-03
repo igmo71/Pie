@@ -26,7 +26,7 @@ namespace Pie.Data
         public DbSet<QueueIn> QueuesIn { get; set; }
         public DbSet<QueueOut> QueuesOut { get; set; }
 
-        public DbSet<Status> Statuses { get; set; }
+        //public DbSet<Status> Statuses { get; set; }
         public DbSet<StatusIn> StatusesIn { get; set; }
         public DbSet<StatusOut> StatusesOut { get; set; }
 

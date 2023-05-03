@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Pie.Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using Pie.Data.Models;
+using Pie.Data.Services;
 
 namespace Pie.Controllers
 {
@@ -14,61 +8,42 @@ namespace Pie.Controllers
     [ApiController]
     public class DocsInController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly DocInService _docService;
 
-        public DocsInController(ApplicationDbContext context)
+        public DocsInController(DocInService docService)
         {
-            _context = context;
+            _docService = docService;
         }
 
         // GET: api/DocsIn
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DocIn>>> GetDocsIn()
         {
-            return await _context.DocsIn.ToListAsync();
+            var doc = await _docService.GetDocsAsync();
+            return Ok(doc);
         }
 
         // GET: api/DocsIn/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DocIn>> GetDocIn(Guid id)
         {
-            var docIn = await _context.DocsIn.FindAsync(id);
+            var doc = await _docService.GetDocAsync(id);
 
-            if (docIn == null)
-            {
+            if (doc == null)
                 return NotFound();
-            }
 
-            return docIn;
+            return Ok(doc);
         }
 
         // PUT: api/DocsIn/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDocIn(Guid id, DocIn docIn)
+        public async Task<IActionResult> PutDocIn(Guid id, DocIn doc)
         {
-            if (id != docIn.Id)
-            {
+            if (id != doc.Id)
                 return BadRequest();
-            }
 
-            _context.Entry(docIn).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DocInExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _docService.UpdateDocAsync(id, doc);
 
             return NoContent();
         }
@@ -76,33 +51,20 @@ namespace Pie.Controllers
         // POST: api/DocsIn
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<DocIn>> PostDocIn(DocIn docIn)
+        public async Task<ActionResult<DocIn>> PostDocIn(DocIn doc)
         {
-            _context.DocsIn.Add(docIn);
-            await _context.SaveChangesAsync();
+            var result = _docService.CreateDocAsync(doc);
 
-            return CreatedAtAction("GetDocIn", new { id = docIn.Id }, docIn);
+            return CreatedAtAction("GetDocIn", new { id = result.Id }, result);
         }
 
         // DELETE: api/DocsIn/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDocIn(Guid id)
         {
-            var docIn = await _context.DocsIn.FindAsync(id);
-            if (docIn == null)
-            {
-                return NotFound();
-            }
-
-            _context.DocsIn.Remove(docIn);
-            await _context.SaveChangesAsync();
+            await _docService.DeleteDocAsync(id);
 
             return NoContent();
-        }
-
-        private bool DocInExists(Guid id)
-        {
-            return _context.DocsIn.Any(e => e.Id == id);
         }
     }
 }

@@ -69,7 +69,7 @@ namespace Pie.Data.Services
             await _context.SaveChangesAsync();
         }
 
-        private bool ProductExists(Guid id)
+        public bool ProductExists(Guid id)
         {
             return _context.Products.Any(e => e.Id == id);
         }
