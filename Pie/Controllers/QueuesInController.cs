@@ -19,7 +19,7 @@ namespace Pie.Controllers
 
         // GET: api/QueuesIn
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<QueueIn>>> GetQueuesIn()
+        public async Task<ActionResult<IEnumerable<QueueIn>>> GetQueues()
         {
             var queues = await _queueService.GetQueuesAsync();
             return Ok(queues);
@@ -27,7 +27,7 @@ namespace Pie.Controllers
 
         // GET: api/QueuesIn/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<QueueIn>> GetQueueIn(Guid id)
+        public async Task<ActionResult<QueueIn>> GetQueue(Guid id)
         {
             var queue = await _queueService.GetQueueAsync(id);
 
@@ -40,7 +40,7 @@ namespace Pie.Controllers
         // PUT: api/QueuesIn/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutQueueIn(Guid id, QueueIn queue)
+        public async Task<IActionResult> PutQueue(Guid id, QueueIn queue)
         {
             if (id != queue.Id)
                 return BadRequest();
@@ -53,16 +53,16 @@ namespace Pie.Controllers
         // POST: api/QueuesIn
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<QueueIn>> PostQueueIn(QueueIn queue)
+        public async Task<ActionResult<QueueIn>> PostQueue(QueueIn queue)
         {
             var result = await _queueService.CreateQueueAsync(queue);
 
-            return CreatedAtAction("GetQueueOut", new { id = result.Id }, result);
+            return CreatedAtAction("GetQueue", new { id = result.Id }, result);
         }
 
         // DELETE: api/QueuesIn/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteQueueIn(Guid id)
+        public async Task<IActionResult> DeleteQueue(Guid id)
         {
             await _queueService.DeleteQueueAsync(id);
 

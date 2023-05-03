@@ -2,7 +2,7 @@
 
 namespace Pie.Data.Models
 {
-    public class Status
+    public abstract class Status
     {
         public Guid Id { get; set; }
 

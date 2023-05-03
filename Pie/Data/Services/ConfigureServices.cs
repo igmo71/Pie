@@ -7,6 +7,7 @@
             services.AddSingleton<WeatherForecastService>();
             services.AddScoped<BaseDocService>();
             services.AddScoped<DocInService>();
+            services.AddScoped<DocOutService>();
             services.AddScoped<ProductService>();
             services.AddScoped<WarehouseService>();
             services.AddScoped<StatusInService>();

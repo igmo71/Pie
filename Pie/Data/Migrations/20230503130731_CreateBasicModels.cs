@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Pie.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateBaseModels : Migration
+    public partial class CreateBasicModels : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "BaseDoc",
+                name: "BaseDocs",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -20,7 +20,7 @@ namespace Pie.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BaseDoc", x => x.Id);
+                    table.PrimaryKey("PK_BaseDocs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -37,35 +37,63 @@ namespace Pie.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Queues",
+                name: "QueuesIn",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Key = table.Column<int>(type: "int", nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false)
+                    Active = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Queues", x => x.Id);
-                    table.UniqueConstraint("AK_Queues_Key", x => x.Key);
+                    table.PrimaryKey("PK_QueuesIn", x => x.Id);
+                    table.UniqueConstraint("AK_QueuesIn_Key", x => x.Key);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Statuses",
+                name: "QueuesOut",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Key = table.Column<int>(type: "int", nullable: false),
-                    Active = table.Column<bool>(type: "bit", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false)
+                    Active = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Statuses", x => x.Id);
-                    table.UniqueConstraint("AK_Statuses_Key", x => x.Key);
+                    table.PrimaryKey("PK_QueuesOut", x => x.Id);
+                    table.UniqueConstraint("AK_QueuesOut_Key", x => x.Key);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StatusesIn",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Key = table.Column<int>(type: "int", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StatusesIn", x => x.Id);
+                    table.UniqueConstraint("AK_StatusesIn_Key", x => x.Key);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StatusesOut",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Key = table.Column<int>(type: "int", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StatusesOut", x => x.Id);
+                    table.UniqueConstraint("AK_StatusesOut_Key", x => x.Key);
                 });
 
             migrationBuilder.CreateTable(
@@ -98,15 +126,15 @@ namespace Pie.Data.Migrations
                 {
                     table.PrimaryKey("PK_DocsIn", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DocsIn_Queues_QueueKey",
+                        name: "FK_DocsIn_QueuesIn_QueueKey",
                         column: x => x.QueueKey,
-                        principalTable: "Queues",
+                        principalTable: "QueuesIn",
                         principalColumn: "Key",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
-                        name: "FK_DocsIn_Statuses_StatusKey",
+                        name: "FK_DocsIn_StatusesIn_StatusKey",
                         column: x => x.StatusKey,
-                        principalTable: "Statuses",
+                        principalTable: "StatusesIn",
                         principalColumn: "Key",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
@@ -134,15 +162,15 @@ namespace Pie.Data.Migrations
                 {
                     table.PrimaryKey("PK_DocsOut", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DocsOut_Queues_QueueKey",
+                        name: "FK_DocsOut_QueuesOut_QueueKey",
                         column: x => x.QueueKey,
-                        principalTable: "Queues",
+                        principalTable: "QueuesOut",
                         principalColumn: "Key",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
-                        name: "FK_DocsOut_Statuses_StatusKey",
+                        name: "FK_DocsOut_StatusesOut_StatusKey",
                         column: x => x.StatusKey,
-                        principalTable: "Statuses",
+                        principalTable: "StatusesOut",
                         principalColumn: "Key",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
@@ -165,9 +193,9 @@ namespace Pie.Data.Migrations
                 {
                     table.PrimaryKey("PK_DocInBaseDocs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DocInBaseDocs_BaseDoc_BaseDocId",
+                        name: "FK_DocInBaseDocs_BaseDocs_BaseDocId",
                         column: x => x.BaseDocId,
-                        principalTable: "BaseDoc",
+                        principalTable: "BaseDocs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -216,9 +244,9 @@ namespace Pie.Data.Migrations
                 {
                     table.PrimaryKey("PK_DocOutBaseDocs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DocOutBaseDocs_BaseDoc_BaseDocId",
+                        name: "FK_DocOutBaseDocs_BaseDocs_BaseDocId",
                         column: x => x.BaseDocId,
-                        principalTable: "BaseDoc",
+                        principalTable: "BaseDocs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -345,7 +373,7 @@ namespace Pie.Data.Migrations
                 name: "DocsIn");
 
             migrationBuilder.DropTable(
-                name: "BaseDoc");
+                name: "BaseDocs");
 
             migrationBuilder.DropTable(
                 name: "DocsOut");
@@ -354,10 +382,16 @@ namespace Pie.Data.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Queues");
+                name: "QueuesIn");
 
             migrationBuilder.DropTable(
-                name: "Statuses");
+                name: "StatusesIn");
+
+            migrationBuilder.DropTable(
+                name: "QueuesOut");
+
+            migrationBuilder.DropTable(
+                name: "StatusesOut");
 
             migrationBuilder.DropTable(
                 name: "Warehouses");

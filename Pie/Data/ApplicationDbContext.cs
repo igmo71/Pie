@@ -22,7 +22,7 @@ namespace Pie.Data
         public DbSet<DocOutBaseDoc> DocOutBaseDocs { get; set; }
         public DbSet<DocOutProduct> DocOutProducts { get; set; }
 
-        public DbSet<Queue> Queues { get; set; }
+        //public DbSet<Queue> Queues { get; set; }
         public DbSet<QueueIn> QueuesIn { get; set; }
         public DbSet<QueueOut> QueuesOut { get; set; }
 
@@ -46,6 +46,10 @@ namespace Pie.Data
             builder.Entity<DocInBaseDoc>().HasOne(b => b.DocIn).WithMany(d => d.BaseDocs).HasForeignKey(b => b.DocInId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<DocInBaseDoc>().HasOne(b => b.BaseDoc).WithMany().HasForeignKey(b => b.BaseDocId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
 
+            builder.Entity<DocInProduct>().HasKey(p => p.Id);
+            builder.Entity<DocInProduct>().HasOne(p => p.DocIn).WithMany(d => d.Products).HasForeignKey(p => p.DocInId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<DocInProduct>().HasOne(p => p.Product).WithMany().HasForeignKey(p => p.ProductId).HasPrincipalKey(p => p.Id).OnDelete(DeleteBehavior.Cascade);
+
 
             builder.Entity<DocOut>().HasKey(d => d.Id);
             builder.Entity<DocOut>().HasOne(d => d.Status).WithMany().HasForeignKey(d => d.StatusKey).HasPrincipalKey(s => s.Key).OnDelete(DeleteBehavior.SetNull);
@@ -55,9 +59,16 @@ namespace Pie.Data
             builder.Entity<DocOutBaseDoc>().HasKey(b => b.Id);
             builder.Entity<DocOutBaseDoc>().HasOne(b => b.DocOut).WithMany(d => d.BaseDocs).HasForeignKey(b => b.DocOutId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<DocOutBaseDoc>().HasOne(b => b.BaseDoc).WithMany().HasForeignKey(b => b.BaseDocId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
-            
-            builder.Entity<Status>().HasKey(s => s.Id);
-            builder.Entity<Queue>().HasKey(q => q.Id);
+
+            builder.Entity<DocOutProduct>().HasKey(p => p.Id);
+            builder.Entity<DocOutProduct>().HasOne(p => p.DocOut).WithMany(d => d.Products).HasForeignKey(p => p.DocOutId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<DocOutProduct>().HasOne(p => p.Product).WithMany().HasForeignKey(p => p.ProductId).HasPrincipalKey(p => p.Id).OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<StatusIn>().HasKey(s => s.Id);
+            builder.Entity<StatusOut>().HasKey(s => s.Id);
+
+            builder.Entity<QueueIn>().HasKey(q => q.Id);
+            builder.Entity<QueueOut>().HasKey(q => q.Id);
 
             builder.Entity<Product>().HasKey(p => p.Id);
             builder.Entity<Warehouse>().HasKey(w => w.Id);

@@ -2,7 +2,7 @@
 
 namespace Pie.Data.Models
 {
-    public class Queue
+    public abstract class Queue
     {
         public Guid Id { get; set; }
 

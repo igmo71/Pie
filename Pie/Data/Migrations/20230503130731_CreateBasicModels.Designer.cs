@@ -12,8 +12,8 @@ using Pie.Data;
 namespace Pie.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230503083407_CreateBaseModels")]
-    partial class CreateBaseModels
+    [Migration("20230503130731_CreateBasicModels")]
+    partial class CreateBasicModels
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -247,7 +247,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BaseDoc");
+                    b.ToTable("BaseDocs");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.DocIn", b =>
@@ -438,7 +438,7 @@ namespace Pie.Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Pie.Data.Models.Queue", b =>
+            modelBuilder.Entity("Pie.Data.Models.QueueIn", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -446,11 +446,6 @@ namespace Pie.Data.Migrations
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
 
                     b.Property<int?>("Key")
                         .IsRequired()
@@ -462,14 +457,10 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Queues");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Queue");
-
-                    b.UseTphMappingStrategy();
+                    b.ToTable("QueuesIn");
                 });
 
-            modelBuilder.Entity("Pie.Data.Models.Status", b =>
+            modelBuilder.Entity("Pie.Data.Models.QueueOut", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -477,11 +468,6 @@ namespace Pie.Data.Migrations
 
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)");
 
                     b.Property<int?>("Key")
                         .IsRequired()
@@ -493,11 +479,51 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Statuses");
+                    b.ToTable("QueuesOut");
+                });
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Status");
+            modelBuilder.Entity("Pie.Data.Models.StatusIn", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.UseTphMappingStrategy();
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("Key")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StatusesIn");
+                });
+
+            modelBuilder.Entity("Pie.Data.Models.StatusOut", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("Key")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StatusesOut");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.Warehouse", b =>
@@ -516,34 +542,6 @@ namespace Pie.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Warehouses");
-                });
-
-            modelBuilder.Entity("Pie.Data.Models.QueueIn", b =>
-                {
-                    b.HasBaseType("Pie.Data.Models.Queue");
-
-                    b.HasDiscriminator().HasValue("QueueIn");
-                });
-
-            modelBuilder.Entity("Pie.Data.Models.QueueOut", b =>
-                {
-                    b.HasBaseType("Pie.Data.Models.Queue");
-
-                    b.HasDiscriminator().HasValue("QueueOut");
-                });
-
-            modelBuilder.Entity("Pie.Data.Models.StatusIn", b =>
-                {
-                    b.HasBaseType("Pie.Data.Models.Status");
-
-                    b.HasDiscriminator().HasValue("StatusIn");
-                });
-
-            modelBuilder.Entity("Pie.Data.Models.StatusOut", b =>
-                {
-                    b.HasBaseType("Pie.Data.Models.Status");
-
-                    b.HasDiscriminator().HasValue("StatusOut");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
