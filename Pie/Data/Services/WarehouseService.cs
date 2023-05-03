@@ -6,9 +6,9 @@ namespace Pie.Data.Services
     public class WarehouseService
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<ProductService> _logger;
+        private readonly ILogger<WarehouseService> _logger;
 
-        public WarehouseService(ApplicationDbContext context, ILogger<ProductService> logger)
+        public WarehouseService(ApplicationDbContext context, ILogger<WarehouseService> logger)
         {
             _context = context;
             _logger = logger;
@@ -52,7 +52,7 @@ namespace Pie.Data.Services
             {
                 if (!WarehouseExists(id))
                 {
-                    throw new ApplicationException($"WarehouseService UpdateProductAsync NotFount {id}", ex);
+                    throw new ApplicationException($"WarehouseService UpdateWarehouseAsync NotFount {id}", ex);
                 }
                 else
                 {
@@ -66,7 +66,7 @@ namespace Pie.Data.Services
             var warehouse = await _context.Warehouses.FindAsync(id);
             if (warehouse == null)
             {
-                throw new ApplicationException($"WarehouseService DeleteProductAsync NotFount {id}");
+                throw new ApplicationException($"WarehouseService UpdateWarehouseAsync NotFount {id}");
             }
 
             _context.Warehouses.Remove(warehouse);
