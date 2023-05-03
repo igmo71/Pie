@@ -2,7 +2,7 @@
 
 namespace Pie.Data.Models
 {
-    public abstract class Document
+    public abstract class Doc
     {
         public Guid Id { get; set; }
 
@@ -15,5 +15,11 @@ namespace Pie.Data.Models
         public DateTime DateTime { get; set; }
 
         public bool Active { get; set; }
+
+        public Guid? WarehouseId { get; set; }
+        public Warehouse? Warehouse { get; set; }
+
+        public List<Product>? Products { get; set; }
+        public List<BaseDoc>? BaseDocs { get; set; }
     }
 }

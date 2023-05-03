@@ -2,7 +2,7 @@
 
 namespace Pie.Data.Models
 {
-    public class BaseDocument
+    public class BaseDoc
     {
         public Guid Id { get; set; }
 
