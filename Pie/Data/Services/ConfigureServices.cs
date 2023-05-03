@@ -5,6 +5,8 @@
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddSingleton<WeatherForecastService>();
+            services.AddScoped<ProductService>();
+            services.AddScoped<WarehouseService>();
 
             return services;
         }
