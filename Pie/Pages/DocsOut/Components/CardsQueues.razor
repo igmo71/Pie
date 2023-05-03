@@ -1,0 +1,26 @@
+﻿@using Pie.Data.Models;
+
+<h4>CardsQueues</h4>
+
+@if (Queues is not null && Queues.Any())
+{
+    <div class="row">
+        @foreach (var queue in Queues)
+        {
+            <div class="col">
+                <div class="h5">@queue.Name</div>
+                @if (Docs is not null && Docs.Any() && queue.Key is not null && Docs.ContainsKey((int)queue.Key))
+                {
+                    <CardsQueue Docs="@Docs[(int)queue.Key]"></CardsQueue>
+                }
+            </div>
+        }
+    </div>
+}
+
+@code {
+    [Parameter] public List<QueueOut>? Queues { get; set; }
+
+    [Parameter] public Dictionary<int, List<DocOut>>? Docs { get; set; }
+}
+

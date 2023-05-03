@@ -15,7 +15,7 @@ namespace Pie.Data.Services
             _logger = logger;
         }
 
-        public async Task<IEnumerable<QueueIn>> GetQueuesAsync()
+        public async Task<List<QueueIn>> GetQueuesAsync()
         {
             var queues = await _context.QueuesIn.AsNoTracking().ToListAsync();
             return queues;

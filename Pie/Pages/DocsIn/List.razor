@@ -1,0 +1,14 @@
+﻿@page "/DocsIn/List"
+
+@using Pie.Pages.DocsIn.Components
+
+<h3>List</h3>
+
+@if (docs is not null && docs.Any())
+{
+    <CardsQueues Docs="@docs" Queues="@queues"></CardsQueues>
+}
+
+@code {
+
+}

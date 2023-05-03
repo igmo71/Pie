@@ -12,6 +12,9 @@ namespace Pie.Data.Models
         public Guid WarehouseId { get; set; }
         public int StatusKey { get; set; }
         public int QueueKey { get; set; }
+        public string? QueueNumber { get; set; }
+        public string? Comment { get; set; }
+        public DateTime ShipDateTime { get; set; }
         public List<ProductDto>? Products { get; set; }
         public List<BaseDocDto>? BaseDocs { get; set; }
     }

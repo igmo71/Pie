@@ -1,4 +1,6 @@
-﻿namespace Pie.Data.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Pie.Data.Models
 {
     public class DocOut : Doc
     {
@@ -7,6 +9,14 @@
 
         public int? QueueKey { get; set; }
         public QueueOut? Queue { get; set; }
+
+        [MaxLength(5)]
+        public string? QueueNumber { get; set; }
+
+        [MaxLength(250)]
+        public string? Comment { get; set; }
+
+        public DateTime ShipDateTime { get; set; }
 
         public List<DocOutProduct> Products { get; set; } = new();
         public List<DocOutBaseDoc> BaseDocs { get; set; } = new();

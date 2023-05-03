@@ -1,5 +1,4 @@
-﻿using Mapster;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models;
 
 namespace Pie.Data.Services
@@ -14,9 +13,10 @@ namespace Pie.Data.Services
             _context = context;
             _logger = logger;
         }
-        public async Task<IEnumerable<DocOut>> GetDocsAsync()
+        public async Task<List<DocOut>> GetDocsAsync()
         {
             var docs = await _context.DocsOut.AsNoTracking()
+                .Where(d => d.Active)
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
                 .Include(d => d.Warehouse)
@@ -26,9 +26,32 @@ namespace Pie.Data.Services
 
         public async Task<DocOut?> GetDocAsync(Guid id)
         {
-            var doc = await _context.DocsOut.FindAsync(id);
+            var doc = await _context.DocsOut.AsNoTracking()
+                .Where(d => d.Active)
+                .Include(d => d.Status)
+                .Include(d => d.Queue)
+                .Include(d => d.Warehouse)
+                .Include(d => d.Products).ThenInclude(p => p.Product)
+                .Include(d => d.BaseDocs).ThenInclude(b => b.BaseDoc)
+                .FirstOrDefaultAsync(d => d.Id == id);
             return doc;
         }
+
+        public async Task<Dictionary<int, List<DocOut>>> GetDictionaryByQueue()
+        {
+            var result = await  _context.DocsOut.AsNoTracking()
+                .Where(d => d.Active)
+                .Include(d => d.Status)
+                .Include(d => d.Queue)
+                .Include(d => d.Warehouse)
+                .OrderBy(d => d.StatusKey.GetValueOrDefault())
+                    .ThenBy(d => d.QueueKey.GetValueOrDefault())
+                    .ThenByDescending(d => d.ShipDateTime)
+                .GroupBy(e => e.QueueKey.GetValueOrDefault())
+                .ToDictionaryAsync(g => g.Key, g => g.ToList());
+            return result;
+        }
+
         public async Task<DocOut> CreateDocAsync(DocOut doc)
         {
             if (DocExists(doc.Id))

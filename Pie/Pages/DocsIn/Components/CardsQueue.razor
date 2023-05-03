@@ -1,0 +1,15 @@
+﻿@using Pie.Data.Models;
+
+<h4>CardsQueue</h4>
+
+@if (Docs is not null)
+{
+    @foreach (var doc in Docs)
+    {
+        <Card Doc="@doc"></Card>
+    }
+}
+
+@code {
+    [Parameter] public List<DocIn>? Docs { get; set; }
+}

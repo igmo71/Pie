@@ -17,6 +17,7 @@ namespace Pie.Data.Services
         public async Task<IEnumerable<DocIn>> GetDocsAsync()
         {
             var docs = await _context.DocsIn.AsNoTracking()
+                .Where(d => d.Active)
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
                 .Include(d => d.Warehouse)
@@ -26,8 +27,29 @@ namespace Pie.Data.Services
 
         public async Task<DocIn?> GetDocAsync(Guid id)
         {
-            var doc = await _context.DocsIn.FindAsync(id);
+            var doc = await _context.DocsIn.AsNoTracking()
+                .Where(d => d.Active)
+                .Include(d => d.Status)
+                .Include(d => d.Queue)
+                .Include(d => d.Warehouse)
+                .Include(d => d.Products).ThenInclude(p => p.Product)
+                .Include(d => d.BaseDocs).ThenInclude(b => b.BaseDoc)
+                .FirstOrDefaultAsync(d => d.Id == id);
             return doc;
+        }
+
+        public async Task<Dictionary<int, List<DocIn>>> GetDictionaryByQueue()
+        {
+            var result = await _context.DocsIn.AsNoTracking()
+                .Where(d => d.Active)
+                .Include(d => d.Status)
+                .Include(d => d.Queue)
+                .Include(d => d.Warehouse)
+                .OrderBy(d => d.StatusKey.GetValueOrDefault())
+                    .ThenBy(d => d.QueueKey.GetValueOrDefault())
+                .GroupBy(e => e.QueueKey.GetValueOrDefault())
+                .ToDictionaryAsync(g => g.Key, g => g.ToList());
+            return result;
         }
 
         public async Task<DocIn> CreateDocAsync(DocIn doc)

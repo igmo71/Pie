@@ -8,6 +8,7 @@ using Pie.Areas.Identity;
 using Pie.Data;
 using Pie.Data.Models.Application;
 using Pie.Data.Services;
+using System.Text.Json.Serialization;
 
 namespace Pie
 {
@@ -21,21 +22,25 @@ namespace Pie
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
-            
+
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-            
+
             builder.Services
                 .AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            
+
             builder.Services.AddRazorPages();
-            
+
             builder.Services.AddServerSideBlazor();
-            
+
             builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                });
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
