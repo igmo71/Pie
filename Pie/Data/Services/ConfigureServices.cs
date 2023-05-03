@@ -9,6 +9,7 @@
             services.AddScoped<WarehouseService>();
             services.AddScoped<StatusInService>();
             services.AddScoped<StatusOutService>();
+            services.AddScoped<QueueInService>();
             services.AddScoped<QueueOutService>();
 
             return services;

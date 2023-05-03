@@ -8,26 +8,26 @@ namespace Pie.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class QueuesOutController : ControllerBase
+    public class QueuesInController : ControllerBase
     {
-        private readonly QueueOutService _queueService;
+        private readonly QueueInService _queueService;
 
-        public QueuesOutController(QueueOutService queueService)
+        public QueuesInController(QueueInService queueService)
         {
             _queueService = queueService;
         }
 
-        // GET: api/QueuesOut
+        // GET: api/QueuesIn
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<QueueOut>>> GetQueuesOut()
+        public async Task<ActionResult<IEnumerable<QueueIn>>> GetQueuesIn()
         {
             var queues = await _queueService.GetQueuesAsync();
             return Ok(queues);
         }
 
-        // GET: api/QueuesOut/5
+        // GET: api/QueuesIn/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<QueueOut>> GetQueueOut(Guid id)
+        public async Task<ActionResult<QueueIn>> GetQueueIn(Guid id)
         {
             var queue = await _queueService.GetQueueAsync(id);
 
@@ -37,10 +37,10 @@ namespace Pie.Controllers
             return Ok(queue);
         }
 
-        // PUT: api/QueuesOut/5
+        // PUT: api/QueuesIn/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutQueueOut(Guid id, QueueOut queue)
+        public async Task<IActionResult> PutQueueIn(Guid id, QueueIn queue)
         {
             if (id != queue.Id)
                 return BadRequest();
@@ -50,19 +50,19 @@ namespace Pie.Controllers
             return NoContent();
         }
 
-        // POST: api/QueuesOut
+        // POST: api/QueuesIn
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<QueueOut>> PostQueueOut(QueueOut queue)
+        public async Task<ActionResult<QueueIn>> PostQueueIn(QueueIn queue)
         {
             var result = await _queueService.CreateQueueAsync(queue);
 
             return CreatedAtAction("GetQueueOut", new { id = result.Id }, result);
         }
 
-        // DELETE: api/QueuesOut/5
+        // DELETE: api/QueuesIn/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteQueueOut(Guid id)
+        public async Task<IActionResult> DeleteQueueIn(Guid id)
         {
             await _queueService.DeleteQueueAsync(id);
 
