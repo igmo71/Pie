@@ -12,6 +12,8 @@ namespace Pie.Data
         {
         }
 
+        public DbSet<BaseDoc> BaseDocs { get; set; }
+
         public DbSet<DocIn> DocsIn { get; set; }
         public DbSet<DocInBaseDoc> DocInBaseDocs { get; set; }
         public DbSet<DocInProduct> DocInProducts { get; set; }
@@ -60,6 +62,5 @@ namespace Pie.Data
             builder.Entity<Product>().HasKey(p => p.Id);
             builder.Entity<Warehouse>().HasKey(w => w.Id);
         }
-
     }
 }
