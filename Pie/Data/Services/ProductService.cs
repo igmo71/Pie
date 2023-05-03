@@ -16,7 +16,7 @@ namespace Pie.Data.Services
 
         public async Task<IEnumerable<Product>> GetProductsAsync()
         {
-            var products = await _context.Products.ToListAsync();
+            var products = await _context.Products.AsNoTracking().ToListAsync();
             return products;
         }
 

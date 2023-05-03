@@ -16,7 +16,7 @@ namespace Pie.Data.Services
 
         public async Task<IEnumerable<StatusIn>> GetStatusesAsync()
         {
-            var statuses = await _context.StatusesIn.ToListAsync();
+            var statuses = await _context.StatusesIn.AsNoTracking().ToListAsync();
             return statuses;
         }
 

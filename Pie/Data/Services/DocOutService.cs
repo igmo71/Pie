@@ -15,7 +15,7 @@ namespace Pie.Data.Services
         }
         public async Task<IEnumerable<DocOut>> GetDocsAsync()
         {
-            var docs = await _context.DocsOut.ToListAsync();
+            var docs = await _context.DocsOut.AsNoTracking().ToListAsync();
             return docs;
         }
 

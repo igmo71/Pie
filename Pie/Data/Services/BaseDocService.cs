@@ -15,7 +15,7 @@ namespace Pie.Data.Services
         }
         public async Task<IEnumerable<BaseDoc>> GetBaseDocsAsync()
         {
-            var baseDocs = await _context.BaseDocs.ToListAsync();
+            var baseDocs = await _context.BaseDocs.AsNoTracking().ToListAsync();
             return baseDocs;
         }
         public async Task<BaseDoc?> GetBaseDocAsync(Guid id)
