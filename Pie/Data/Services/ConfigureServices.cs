@@ -7,7 +7,9 @@
             services.AddSingleton<WeatherForecastService>();
             services.AddScoped<ProductService>();
             services.AddScoped<WarehouseService>();
-            services.AddScoped<StatusService>();
+            services.AddScoped<StatusInService>();
+            services.AddScoped<StatusOutService>();
+            services.AddScoped<QueueOutService>();
 
             return services;
         }

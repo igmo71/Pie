@@ -6,27 +6,27 @@ namespace Pie.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StatusesController : ControllerBase
+    public class StatusesInController : ControllerBase
     {
-        private readonly StatusService _statusService;
+        private readonly StatusInService _statusService;
 
-        public StatusesController(StatusService statusService)
+        public StatusesInController(StatusInService statusService)
         {
             _statusService = statusService;
         }
 
         // GET: api/Statuses
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Status>>> GetStatuses()
+        public async Task<ActionResult<IEnumerable<StatusIn>>> GetStatuses()
         {
-            var statuses = _statusService.GetStatusesAsync();
+            var statuses = await _statusService.GetStatusesAsync();
 
             return Ok(statuses);
         }
 
         // GET: api/Statuses/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Status>> GetStatus(Guid id)
+        public async Task<ActionResult<StatusIn>> GetStatus(Guid id)
         {
             var status = await _statusService.GetStatusAsync(id);
 
@@ -39,7 +39,7 @@ namespace Pie.Controllers
         // PUT: api/Statuses/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStatus(Guid id, Status status)
+        public async Task<IActionResult> PutStatus(Guid id, StatusIn status)
         {
             if (id != status.Id)
                 return BadRequest();
@@ -52,11 +52,11 @@ namespace Pie.Controllers
         // POST: api/Statuses
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Status>> PostStatus(Status status)
+        public async Task<ActionResult<StatusIn>> PostStatus(StatusIn status)
         {
             var result = await _statusService.CreateStatusAsync(status);
 
-            return CreatedAtAction("GetStatus", new { id = status.Id }, status);
+            return CreatedAtAction("GetStatus", new { id = result.Id }, result);
         }
 
         // DELETE: api/Statuses/5
