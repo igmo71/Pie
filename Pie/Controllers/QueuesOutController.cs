@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pie.Data;
 using Pie.Data.Models;
+using Pie.Data.Services;
 
 namespace Pie.Controllers
 {
@@ -14,61 +10,44 @@ namespace Pie.Controllers
     [ApiController]
     public class QueuesOutController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly QueueOutService _queueService;
 
-        public QueuesOutController(ApplicationDbContext context)
+        public QueuesOutController(QueueOutService queueService)
         {
-            _context = context;
+            _queueService = queueService;
         }
 
         // GET: api/QueuesOut
         [HttpGet]
         public async Task<ActionResult<IEnumerable<QueueOut>>> GetQueuesOut()
         {
-            return await _context.QueuesOut.ToListAsync();
+            var queues = await _queueService.GetQueuesAsync();
+            return Ok(queues);
         }
 
         // GET: api/QueuesOut/5
         [HttpGet("{id}")]
         public async Task<ActionResult<QueueOut>> GetQueueOut(Guid id)
         {
-            var queueOut = await _context.QueuesOut.FindAsync(id);
+            var queue = await _queueService.GetQueueAsync(id);
 
-            if (queueOut == null)
-            {
+            if (queue == null)
                 return NotFound();
-            }
 
-            return queueOut;
+            return Ok(queue);
         }
 
         // PUT: api/QueuesOut/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutQueueOut(Guid id, QueueOut queueOut)
+        public async Task<IActionResult> PutQueueOut(Guid id, QueueOut queue)
         {
-            if (id != queueOut.Id)
+            if (id != queue.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(queueOut).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!QueueOutExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _queueService.UpdateQueueAsync(id, queue);
 
             return NoContent();
         }
@@ -78,31 +57,18 @@ namespace Pie.Controllers
         [HttpPost]
         public async Task<ActionResult<QueueOut>> PostQueueOut(QueueOut queueOut)
         {
-            _context.QueuesOut.Add(queueOut);
-            await _context.SaveChangesAsync();
+            var result = await _queueService.CreateQueueAsync(queueOut);
 
-            return CreatedAtAction("GetQueueOut", new { id = queueOut.Id }, queueOut);
+            return CreatedAtAction("GetQueueOut", new { id = result.Id }, result);
         }
 
         // DELETE: api/QueuesOut/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteQueueOut(Guid id)
         {
-            var queueOut = await _context.QueuesOut.FindAsync(id);
-            if (queueOut == null)
-            {
-                return NotFound();
-            }
-
-            _context.QueuesOut.Remove(queueOut);
-            await _context.SaveChangesAsync();
+            await _queueService.DeleteQueueAsync(id);
 
             return NoContent();
-        }
-
-        private bool QueueOutExists(Guid id)
-        {
-            return _context.QueuesOut.Any(e => e.Id == id);
         }
     }
 }
