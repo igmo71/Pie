@@ -2,6 +2,13 @@
 {
     public class DocOut : Doc
     {
-        public List<BaseDoc>? BaseDocs { get; set; }
+        public int? StatusKey { get; set; }
+        public StatusOut? Status { get; set; }
+
+        public int? QueueKey { get; set; }
+        public QueueOut? Queue { get; set; }
+
+        public List<DocOutProduct>? Products { get; set; }
+        public List<DocOutBaseDoc>? BaseDocs { get; set; }
     }
 }

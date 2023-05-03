@@ -1,6 +1,6 @@
 ﻿namespace Pie.Data.Models
 {
-    public class DocQueueOut : DocQueue
+    public class StatusIn : Status
     {
     }
 }

@@ -19,7 +19,7 @@ namespace Pie.Data.Models
         public Guid? WarehouseId { get; set; }
         public Warehouse? Warehouse { get; set; }
 
-        public List<Product>? Products { get; set; }
-        public List<BaseDoc>? BaseDocs { get; set; }
+        //public List<Product>? Products { get; set; }
+        //public List<BaseDoc>? BaseDocs { get; set; }
     }
 }
