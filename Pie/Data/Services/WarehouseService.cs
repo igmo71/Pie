@@ -14,7 +14,7 @@ namespace Pie.Data.Services
             _logger = logger;
         }
 
-        public async Task<IEnumerable<Warehouse>> GetWarehouses()
+        public async Task<List<Warehouse>> GetWarehouses()
         {
             var warehouses = await _context.Warehouses.AsNoTracking().ToListAsync();
             return warehouses;

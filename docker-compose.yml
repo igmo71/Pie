@@ -4,6 +4,9 @@ services:
   pie:
     image: ${DOCKER_REGISTRY-}pie
     container_name: pie_container
+    ports:
+        - "4431:443"
+        - "801:80"
     build:
       context: .
       dockerfile: Pie/Dockerfile
