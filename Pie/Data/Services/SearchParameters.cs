@@ -78,10 +78,10 @@
             NotifyStateChanged();
         }
 
-        public void SetSearchByStatus(int statusId)
+        public void SetSearchByStatus(int? statusKey)
         {
             IsStatus = true;
-            StatusKey = statusId;
+            StatusKey = statusKey;
             NotifyStateChanged();
         }
 

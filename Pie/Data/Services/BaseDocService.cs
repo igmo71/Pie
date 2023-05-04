@@ -38,6 +38,16 @@ namespace Pie.Data.Services
             return baseDoc;
         }
 
+        public async Task CreateRangeAsync(List<BaseDoc>? baseDocs)
+        {
+            if (baseDocs == null || baseDocs.Count == 0) return;
+
+            foreach (BaseDoc baseDoc in baseDocs)
+            {
+                await CreateBaseDocAsync(baseDoc);
+            }
+        }
+
         public async Task UpdateBaseDocAsync(Guid id, BaseDoc baseDoc)
         {
             _context.Entry(baseDoc).State = EntityState.Modified;

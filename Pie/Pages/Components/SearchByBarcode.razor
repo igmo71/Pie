@@ -1,0 +1,54 @@
+﻿@using Pie.Data.Services;
+
+
+@inject SearchParameters SearchParameters
+
+<ScanBarcode OnScannedBarcode="ScannedBarcode"></ScanBarcode>
+
+@if (SearchParameters.IsBarcode)
+{
+    <div class="row">
+        <div class="col">
+            <div class="input-group">
+                <InputText type="text" class="form-control" @bind-Value="@SearchParameters.SearchBarcode" placeholder="строка поиска" disabled />
+                <button class="btn btn-outline-secondary" type="button" @onclick="ClearSearchAndSubmit" title="Очистить">
+                    <i class="bi bi-x"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public EventCallback OnScannedBarcode { get; set; }
+
+    private string? barcode;
+
+    protected override void OnInitialized()
+    {
+        SearchParameters.OnChange += SearchParametersChangedHandle;
+    }
+
+    private async Task ScannedBarcode(string barcode)
+    {
+
+        SearchParameters.SetSearchByBarcode(barcode);
+        await OnScannedBarcode.InvokeAsync();
+    }
+
+    private async Task ClearSearchAndSubmit()
+    {
+        SearchParameters.ClearSearchByBarcode();
+        await OnScannedBarcode.InvokeAsync();
+    }
+
+    private void SearchParametersChangedHandle()
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        SearchParameters.OnChange -= SearchParametersChangedHandle;
+    }
+}

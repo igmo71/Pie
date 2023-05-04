@@ -2,7 +2,10 @@
 
 @using Pie.Pages.DocsOut.Components
 
-<h3>List</h3>
+<div class="row">
+    <div class="col"><h4>Расходники</h4></div>
+    <div class="col">@pageMessage</div>
+</div>
 
 @if (docs is not null && docs.Any())
 {

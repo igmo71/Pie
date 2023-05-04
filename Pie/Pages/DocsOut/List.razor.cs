@@ -11,7 +11,8 @@ namespace Pie.Pages.DocsOut
         [Inject] public required QueueOutService QueueService { get; set; }
 
         private Dictionary<int, List<DocOut>> docs = new();
-        private List<QueueOut> queues = new();
+        private List<QueueOut> queues = new(); 
+        private string pageMessage = "Hello!";
 
         protected async override Task OnInitializedAsync()
         {

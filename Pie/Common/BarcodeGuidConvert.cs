@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using NetBarcode;
+using System.Numerics;
 
 namespace Pie.Common
 {

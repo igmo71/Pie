@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Mapster;
+using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models;
 
 namespace Pie.Data.Services
@@ -6,11 +7,13 @@ namespace Pie.Data.Services
     public class DocOutService
     {
         private readonly ApplicationDbContext _context;
+        private readonly BaseDocService _baseDocService;
         private readonly ILogger<DocOutService> _logger;
 
-        public DocOutService(ApplicationDbContext context, ILogger<DocOutService> logger)
+        public DocOutService(ApplicationDbContext context, BaseDocService baseDocService, ILogger<DocOutService> logger)
         {
             _context = context;
+            _baseDocService = baseDocService;
             _logger = logger;
         }
         public async Task<List<DocOut>> GetDocsAsync()
@@ -39,7 +42,7 @@ namespace Pie.Data.Services
 
         public async Task<Dictionary<int, List<DocOut>>> GetDictionaryByQueue()
         {
-            var result = await  _context.DocsOut.AsNoTracking()
+            var result = await _context.DocsOut.AsNoTracking()
                 .Where(d => d.Active)
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
@@ -52,8 +55,21 @@ namespace Pie.Data.Services
             return result;
         }
 
+        public async Task<DocOutDto> CreateDocAsync(DocOutDto docDto)
+        {
+            List<BaseDoc>? baseDocs = docDto.BaseDocs?.Adapt<List<BaseDoc>>();
+            await _baseDocService.CreateRangeAsync(baseDocs);
+
+            DocOut doc = docDto.Adapt<DocOut>();
+            _ = await CreateDocAsync(doc);
+
+            return docDto;
+        }
+
         public async Task<DocOut> CreateDocAsync(DocOut doc)
         {
+
+
             if (DocExists(doc.Id))
             {
                 await UpdateDocAsync(doc.Id, doc);
@@ -63,6 +79,7 @@ namespace Pie.Data.Services
                 _context.DocsOut.Add(doc);
                 await _context.SaveChangesAsync();
             }
+
             return doc;
         }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pie.Data;
 using Pie.Data.Models;
@@ -53,9 +54,10 @@ namespace Pie.Controllers
         // POST: api/DocsOut
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<DocOut>> PostDoc(DocOut doc)
+        public async Task<ActionResult<DocOut>> PostDoc(DocOutDto docDto)
         {
-            var result = await _docService.CreateDocAsync(doc);
+            
+            var result = await _docService.CreateDocAsync(docDto);
 
             return CreatedAtAction("GetDoc", new { id = result.Id }, result);
         }

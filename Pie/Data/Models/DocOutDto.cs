@@ -32,6 +32,10 @@ namespace Pie.Data.Models
 
         public override void Register(TypeAdapterConfig config)
         {
+            config.NewConfig<BaseDocDto, BaseDoc>()
+                .RequireDestinationMemberSource(true)
+                .Map(dst => dst.Id, src => src.BaseDocId);
+            
             config.NewConfig<DocOutBaseDoc, BaseDocDto>()
                 .RequireDestinationMemberSource(true)
                 .Map(dst => dst.Name, src => src.BaseDoc != null ? src.BaseDoc.Name : string.Empty);
