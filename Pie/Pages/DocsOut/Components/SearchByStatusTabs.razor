@@ -31,8 +31,14 @@
                         <span>
                             @status.Name
                         </span>
+                        <span>
+                            @status.Key
+                        </span>
                         <span class="badge bg-secondary">
-                            @((CountByStatus != null && CountByStatus.ContainsKey(status.Id)) ? CountByStatus[status.Id] : 0)
+                            @if (status.Key != null)
+                            {
+                                @((CountByStatus != null && CountByStatus.ContainsKey((int)status.Key)) ? CountByStatus[(int)status.Key] : 0)
+                            }
                         </span>
                     </h5>
                 </button>
@@ -43,7 +49,7 @@
 
 @code {
     [Parameter] public List<StatusOut>? Statuses { get; set; }
-    [Parameter] public Dictionary<Guid, int>? CountByStatus { get; set; }
+    [Parameter] public Dictionary<int, int>? CountByStatus { get; set; }
     [Parameter] public EventCallback OnClick { get; set; }
 
     protected override void OnInitialized()

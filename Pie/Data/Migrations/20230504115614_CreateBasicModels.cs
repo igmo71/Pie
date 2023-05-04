@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Pie.Data.Migrations
 {
     /// <inheritdoc />
@@ -116,6 +118,7 @@ namespace Pie.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StatusKey = table.Column<int>(type: "int", nullable: true),
                     QueueKey = table.Column<int>(type: "int", nullable: true),
+                    Comment = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Number = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -152,6 +155,9 @@ namespace Pie.Data.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StatusKey = table.Column<int>(type: "int", nullable: true),
                     QueueKey = table.Column<int>(type: "int", nullable: true),
+                    QueueNumber = table.Column<string>(type: "nvarchar(5)", maxLength: 5, nullable: true),
+                    Comment = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
+                    ShipDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     Number = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
                     DateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -281,6 +287,31 @@ namespace Pie.Data.Migrations
                         principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "QueuesOut",
+                columns: new[] { "Id", "Active", "Key", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("3558d2ba-ffb6-4f08-9891-f7f1e8853c83"), true, 20, "Собрать к дате" },
+                    { new Guid("7e83260a-316f-4a1f-be9a-bf353b118536"), true, 10, "Живая очередь" },
+                    { new Guid("8bdc656e-8a2c-4aef-9422-e0a419608190"), true, 40, "Очередность не указана" },
+                    { new Guid("d964fcad-d71d-480a-bdeb-0b2c045fcd90"), true, 30, "Собственная доставка" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "StatusesOut",
+                columns: new[] { "Id", "Active", "Key", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("17cee206-e06f-47d8-824d-14eeceaf394a"), false, 3, "ВПроцессеПроверки" },
+                    { new Guid("7c2bd6be-cf81-4b1a-9acf-d4ebf416f4d3"), true, 5, "КОтгрузке" },
+                    { new Guid("9eba20ce-9245-4109-92cb-a9875801fbb4"), true, 6, "Отгружен" },
+                    { new Guid("bd1ae241-d787-4a6d-b920-029bc6577364"), false, 2, "КПроверке" },
+                    { new Guid("c2c5935d-b332-4d84-b1fd-309ad8a65356"), true, 0, "Подготовлено" },
+                    { new Guid("e1a4c395-f7a3-40af-82ab-ad545e51eca7"), true, 1, "КОтбору" },
+                    { new Guid("e911589b-613c-42ad-ad56-7083c481c4b4"), false, 4, "Проверен" }
                 });
 
             migrationBuilder.CreateIndex(

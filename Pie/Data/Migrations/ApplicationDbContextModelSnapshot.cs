@@ -492,6 +492,36 @@ namespace Pie.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("QueuesOut");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("7e83260a-316f-4a1f-be9a-bf353b118536"),
+                            Active = true,
+                            Key = 10,
+                            Name = "Живая очередь"
+                        },
+                        new
+                        {
+                            Id = new Guid("3558d2ba-ffb6-4f08-9891-f7f1e8853c83"),
+                            Active = true,
+                            Key = 20,
+                            Name = "Собрать к дате"
+                        },
+                        new
+                        {
+                            Id = new Guid("d964fcad-d71d-480a-bdeb-0b2c045fcd90"),
+                            Active = true,
+                            Key = 30,
+                            Name = "Собственная доставка"
+                        },
+                        new
+                        {
+                            Id = new Guid("8bdc656e-8a2c-4aef-9422-e0a419608190"),
+                            Active = true,
+                            Key = 40,
+                            Name = "Очередность не указана"
+                        });
                 });
 
             modelBuilder.Entity("Pie.Data.Models.StatusIn", b =>
@@ -536,6 +566,57 @@ namespace Pie.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("StatusesOut");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("c2c5935d-b332-4d84-b1fd-309ad8a65356"),
+                            Active = true,
+                            Key = 0,
+                            Name = "Подготовлено"
+                        },
+                        new
+                        {
+                            Id = new Guid("e1a4c395-f7a3-40af-82ab-ad545e51eca7"),
+                            Active = true,
+                            Key = 1,
+                            Name = "КОтбору"
+                        },
+                        new
+                        {
+                            Id = new Guid("bd1ae241-d787-4a6d-b920-029bc6577364"),
+                            Active = false,
+                            Key = 2,
+                            Name = "КПроверке"
+                        },
+                        new
+                        {
+                            Id = new Guid("17cee206-e06f-47d8-824d-14eeceaf394a"),
+                            Active = false,
+                            Key = 3,
+                            Name = "ВПроцессеПроверки"
+                        },
+                        new
+                        {
+                            Id = new Guid("e911589b-613c-42ad-ad56-7083c481c4b4"),
+                            Active = false,
+                            Key = 4,
+                            Name = "Проверен"
+                        },
+                        new
+                        {
+                            Id = new Guid("7c2bd6be-cf81-4b1a-9acf-d4ebf416f4d3"),
+                            Active = true,
+                            Key = 5,
+                            Name = "КОтгрузке"
+                        },
+                        new
+                        {
+                            Id = new Guid("9eba20ce-9245-4109-92cb-a9875801fbb4"),
+                            Active = true,
+                            Key = 6,
+                            Name = "Отгружен"
+                        });
                 });
 
             modelBuilder.Entity("Pie.Data.Models.Warehouse", b =>

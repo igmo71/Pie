@@ -14,9 +14,11 @@ namespace Pie.Data.Services
             _logger = logger;
         }
 
-        public async Task<IEnumerable<StatusOut>> GetStatusesAsync()
+        public async Task<List<StatusOut>> GetStatusesAsync()
         {
-            var statuses = await _context.StatusesOut.AsNoTracking().ToListAsync();
+            var statuses = await _context.StatusesOut.AsNoTracking()
+                .OrderBy(s => s.Key)
+                .ToListAsync();
             return statuses;
         }
 
@@ -72,6 +74,17 @@ namespace Pie.Data.Services
         public bool StatusExists(Guid id)
         {
             return _context.StatusesOut.Any(e => e.Id == id);
+        }
+
+        public async Task<Dictionary<int, int>?> GetCountByStatusAsync(SearchParameters searchParameters)
+        {
+            var result = await _context.DocsOut.AsNoTracking()
+                .Search(searchParameters.ExceptStatus())
+                .GroupBy(e => e.StatusKey.GetValueOrDefault())
+                .Select(e => new { e.Key, Value = e.Count() })
+                .ToDictionaryAsync(e => e.Key, e => e.Value);
+
+            return result;
         }
     }
 }

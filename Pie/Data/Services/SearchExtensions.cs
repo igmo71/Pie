@@ -22,14 +22,9 @@ namespace Pie.Data.Services
                     query = query.Where(e => e.WarehouseId == parameters.WarehouseId);
             }
 
-            return query;
-        }
-
-        public static IQueryable<DocOut> SearchByStatus(this IQueryable<DocOut> query, SearchParameters parameters)
-        {
-            if (parameters.IsStatus && parameters.StatusKey != null )
+            if (parameters.IsStatus && parameters.StatusKey != null)
             {
-                query = query.Where(e => e.StatusKey == parameters.StatusKey);
+                query = query.Where(e => e.StatusKey != null && e.StatusKey == parameters.StatusKey);
             }
 
             return query;

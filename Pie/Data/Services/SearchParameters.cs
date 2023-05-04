@@ -90,6 +90,24 @@
             IsStatus = false;
             StatusKey = null;
             NotifyStateChanged();
+        }        
+    }
+
+    public static class StatusExtensions
+    {
+        public static SearchParameters ExceptStatus(this SearchParameters searchParameters)
+        {
+            SearchParameters parameters = new()
+            {
+                IsStatus = false,
+                StatusKey = searchParameters.StatusKey,
+                IsBarcode = searchParameters.IsBarcode,
+                IsForm = searchParameters.IsForm,
+                SearchBarcode = searchParameters.SearchBarcode,
+                SearchTerm = searchParameters.SearchTerm,
+                WarehouseId = searchParameters.WarehouseId,
+            };
+            return parameters;
         }
     }
 }

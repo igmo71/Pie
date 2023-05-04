@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
@@ -19,9 +20,35 @@ namespace Pie
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+            builder.Services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.AddSeq(builder.Configuration.GetSection("Seq"));
+            });
+
+            builder.Services.AddHttpLogging(logging =>
+            {
+                //logging.LoggingFields = HttpLoggingFields.All;
+                logging.LoggingFields = HttpLoggingFields.RequestBody | HttpLoggingFields.ResponseBody;
+                //logging.MediaTypeOptions.AddText("application/javascript");
+                logging.RequestBodyLogLimit = 4096;
+                logging.ResponseBodyLogLimit = 4096;
+            });
+
+            //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+            //    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            //builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(connectionString));
+
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            {
+                options.UseNpgsql(connectionString);
+                options.EnableSensitiveDataLogging();
+                options.EnableDetailedErrors();
+                options.LogTo(s => System.Diagnostics.Debug.WriteLine(s));
+            });
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -46,7 +73,7 @@ namespace Pie
 
             builder.Services.AddApplicationServices();
 
-            var app = builder.Build();
+            var app = builder.Build();         
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -66,6 +93,8 @@ namespace Pie
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
+
+            app.UseHttpLogging();
 
             app.UseRouting();
 

@@ -19,7 +19,6 @@ namespace Pie.Data.Services
         public async Task<List<DocOut>> GetDocsAsync()
         {
             var docs = await _context.DocsOut.AsNoTracking()
-                .Where(d => d.Active)
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
                 .Include(d => d.Warehouse)
@@ -30,7 +29,6 @@ namespace Pie.Data.Services
         public async Task<DocOut?> GetDocAsync(Guid id)
         {
             var doc = await _context.DocsOut.AsNoTracking()
-                .Where(d => d.Active)
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
                 .Include(d => d.Warehouse)
@@ -40,10 +38,10 @@ namespace Pie.Data.Services
             return doc;
         }
 
-        public async Task<Dictionary<int, List<DocOut>>> GetDictionaryByQueue()
+        public async Task<Dictionary<int, List<DocOut>>> GetDictionaryByQueue(SearchParameters searchParameters)
         {
             var result = await _context.DocsOut.AsNoTracking()
-                .Where(d => d.Active)
+                .Search(searchParameters)
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
                 .Include(d => d.Warehouse)

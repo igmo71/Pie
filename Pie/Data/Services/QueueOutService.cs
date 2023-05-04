@@ -16,7 +16,9 @@ namespace Pie.Data.Services
 
         public async Task<List<QueueOut>> GetQueuesAsync()
         {
-            var queues = await _context.QueuesOut.AsNoTracking().ToListAsync();
+            var queues = await _context.QueuesOut.AsNoTracking()
+                .OrderBy(q => q.Key)
+                .ToListAsync();
             return queues;
         }
 
