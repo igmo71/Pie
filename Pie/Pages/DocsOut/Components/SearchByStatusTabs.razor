@@ -25,14 +25,11 @@
         @foreach (var status in Statuses)
         {
             <li class="nav-item">
-                <button class="btn btn-link nav-link @(status.Key == SearchParameters.StatusKey ? "active" : string.Empty)"
+                <button class="btn btn-link nav-link  position-relative @(status.Key == SearchParameters.StatusKey ? "active" : string.Empty)"
                 @onclick="(() => OnClickHandle(status.Key))" id="@status.Key">
                     <h5>
                         <span>
                             @status.Name
-                        </span>
-                        <span>
-                            @status.Key
                         </span>
                         <span class="badge bg-secondary">
                             @if (status.Key != null)
@@ -40,7 +37,7 @@
                                 @((CountByStatus != null && CountByStatus.ContainsKey((int)status.Key)) ? CountByStatus[(int)status.Key] : 0)
                             }
                         </span>
-                    </h5>
+                    </h5>                    
                 </button>
             </li>
         }

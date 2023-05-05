@@ -73,7 +73,7 @@ namespace Pie.Data.Services
 
         public bool StatusExists(Guid id)
         {
-            return _context.StatusesIn.Any(e => e.Id == id);
+            return _context.StatusesIn.IgnoreQueryFilters().Any(e => e.Id == id);
         }
     }
 }

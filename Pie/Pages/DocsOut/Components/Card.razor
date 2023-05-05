@@ -1,20 +1,25 @@
 ﻿@using Pie.Data.Models;
 
-<h4>Card</h4>
-
 <div class="card mb-2">
-    <div class="card-header">
-        <div class="row card-title">
-            <div class="col-9">
-                <h6><a href="/DocsOut/Item/@Doc?.Id">@Doc?.Name</a></h6>
+    <div class="card-header p-2">
+        <div class="row">
+            <div class="col-10">
+                <div>
+                    <span>№ </span>
+                    <span><a href="/DocsOut/Item/@Doc?.Id">@Doc?.Number</a></span>
+                </div>
+                <div>
+                    <span>от </span>
+                    <span><a href="/DocsOut/Item/@Doc?.Id">@Doc?.DateTime</a></span>
+                </div>
             </div>
-            <div class="col-3">
-                <h6>@Doc?.QueueNumber</h6>
+            <div class="col-2">
+                <div>@Doc?.QueueNumber</div>
             </div>
         </div>
 
     </div>
-    <div class="card-body">
+    <div class="card-body p-2">
         <div>
             Склад: @Doc?.Warehouse?.Name
         </div>

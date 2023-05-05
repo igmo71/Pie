@@ -73,7 +73,7 @@ namespace Pie.Data.Services
 
         public bool StatusExists(Guid id)
         {
-            return _context.StatusesOut.Any(e => e.Id == id);
+            return _context.StatusesOut.IgnoreQueryFilters().Any(e => e.Id == id);
         }
 
         public async Task<Dictionary<int, int>?> GetCountByStatusAsync(SearchParameters searchParameters)

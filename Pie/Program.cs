@@ -44,9 +44,9 @@ namespace Pie
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options.UseNpgsql(connectionString);
-                //options.EnableSensitiveDataLogging();
                 options.EnableDetailedErrors();
-                //options.LogTo(s => System.Diagnostics.Debug.WriteLine(s));
+                options.EnableSensitiveDataLogging();
+                options.LogTo(s => System.Diagnostics.Debug.WriteLine(s));
             });
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();

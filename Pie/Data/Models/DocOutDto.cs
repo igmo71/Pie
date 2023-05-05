@@ -22,7 +22,7 @@ namespace Pie.Data.Models
     public class ProductDto
     {
         public Guid ProductId { get; set; }
-        public int Count { get; set; }
+        public float Count { get; set; }
     }
 
     public class BaseDocDto : MappedModel

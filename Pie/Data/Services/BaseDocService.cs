@@ -79,7 +79,7 @@ namespace Pie.Data.Services
 
         public bool BaseDocExists(Guid id)
         {
-            return _context.BaseDocs.Any(e => e.Id == id);
+            return _context.BaseDocs.IgnoreQueryFilters().Any(e => e.Id == id);
         }
     }
 }
