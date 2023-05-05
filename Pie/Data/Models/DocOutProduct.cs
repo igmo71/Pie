@@ -11,5 +11,8 @@
         public Product? Product { get; set; }
 
         public float Count { get; set; }
+
+        public Guid? ChangeReasonId { get; set; }
+        public ChangeReasonOut? ChangeReason { get; set; }
     }
 }
