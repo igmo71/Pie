@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Pie.Areas.Identity;
+using Pie.Connectors;
 using Pie.Data;
 using Pie.Data.Models.Application;
 using Pie.Data.Services;
@@ -72,6 +73,7 @@ namespace Pie
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddApplicationServices();
+            builder.Services.AddConnectors(builder.Configuration);
 
             var app = builder.Build();         
 
