@@ -66,17 +66,11 @@ namespace Pie.Data.Services
 
         public async Task<DocOut> CreateDocAsync(DocOut doc)
         {
-
-
             if (DocExists(doc.Id))
-            {
-                await UpdateDocAsync(doc.Id, doc);
-            }
-            else
-            {
-                _context.DocsOut.Add(doc);
-                await _context.SaveChangesAsync();
-            }
+                await DeleteDocAsync(doc.Id);
+
+            _context.DocsOut.Add(doc);
+            await _context.SaveChangesAsync();
 
             return doc;
         }
@@ -101,6 +95,7 @@ namespace Pie.Data.Services
                 }
             }
         }
+
         public async Task DeleteDocAsync(Guid id)
         {
             var doc = await _context.DocsOut.FindAsync(id)

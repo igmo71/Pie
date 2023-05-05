@@ -1,0 +1,74 @@
+﻿@using Pie.Data.Models;
+@using Pie.Pages.Components
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+                <div>@DocOutProduct?.Product?.Name</div>
+                <div>@DocOutProduct?.Count</div>
+                @if (DocOutProduct != null)
+                {
+                    <EditForm Model="@DocOutProduct">
+                        <div>@DocOutProduct?.Product?.Name</div>
+                        <label for="count">
+                            Количество
+                            <InputNumberComma id="count" @bind-Value="DocOutProduct.Count" />
+                        </label>
+                    </EditForm>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" @onclick="SaveChanges">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+    //[Parameter] public DocOutProduct? Product { get; set; }
+
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+
+    private DocOutProduct DocOutProduct { get; set; }
+
+    public void Open(DocOutProduct product)
+    {
+        ModalDisplay = "block;";
+        ModalClass = "Show";
+        ShowBackdrop = true;
+        StateHasChanged();
+
+        DocOutProduct = product;
+    }
+
+    public void Close()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+
+    private void SaveChanges()
+    {
+
+    }
+}

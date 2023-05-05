@@ -52,14 +52,11 @@ namespace Pie.Data.Services
         public async Task<DocIn> CreateDocAsync(DocIn doc)
         {
             if (DocExists(doc.Id))
-            {
                 await UpdateDocAsync(doc.Id, doc);
-            }
-            else
-            {
-                _context.DocsIn.Add(doc);
-                await _context.SaveChangesAsync();
-            }
+
+            _context.DocsIn.Add(doc);
+            await _context.SaveChangesAsync();
+
             return doc;
         }
 

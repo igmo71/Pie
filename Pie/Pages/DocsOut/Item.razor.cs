@@ -2,6 +2,7 @@
 using Pie.Data.Models;
 using Pie.Data.Services;
 using Pie.Data.Services.Application;
+using Pie.Pages.DocsOut.Components;
 
 namespace Pie.Pages.DocsOut
 {
@@ -16,6 +17,7 @@ namespace Pie.Pages.DocsOut
         private Guid userId;
         private string? barcode;
         private string pageMessage = string.Empty;
+        private EditDialog? EditDialog { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -34,6 +36,11 @@ namespace Pie.Pages.DocsOut
         {
             this.barcode = barcode;
             pageMessage = barcode ?? string.Empty;
+        }
+
+        private void EditDoc(DocOutProduct product)
+        {
+            EditDialog?.Open(product);
         }
 
         private void SendDoc()
