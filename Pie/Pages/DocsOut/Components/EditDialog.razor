@@ -1,5 +1,5 @@
 ﻿@using Pie.Data.Models;
-@using Pie.Pages.Components
+
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -19,8 +19,10 @@
                         <div>@DocOutProduct?.Product?.Name</div>
                         <label for="count">
                             Количество
-                            <InputNumberComma id="count" @bind-Value="DocOutProduct.Count" />
+                            @*<InputNumber id="count" @bind-Value="DocOutProduct.Count" CultureInfo="ru-RU" />*@                        
+                            <input type="text" @bind-value="@countString" @oninput="@(e => OnInput(e))" />
                         </label>
+                        <input type="number">
                     </EditForm>
                 }
             </div>
@@ -47,7 +49,7 @@
     public string ModalClass = "";
     public bool ShowBackdrop = false;
 
-    private DocOutProduct DocOutProduct { get; set; }
+    private DocOutProduct DocOutProduct = new();
 
     public void Open(DocOutProduct product)
     {
@@ -57,6 +59,7 @@
         StateHasChanged();
 
         DocOutProduct = product;
+        countNumber = product.Count;
     }
 
     public void Close()
@@ -69,6 +72,35 @@
 
     private void SaveChanges()
     {
+        if (countNumber != null)
+            DocOutProduct.Count = (float)countNumber;
+    }
 
+
+    private string? countString = "0";
+    private float? countNumber
+    {
+        get
+        {
+            if (float.TryParse(countString, out var value))
+            {
+                return value;
+            }
+            return null;
+        }
+        set
+        {
+            countString = value?.ToString(CultureInfo.InvariantCulture);
+        }
+    }
+
+
+    private void OnInput(ChangeEventArgs e)
+    {
+        var stringValue = e.Value?.ToString()?.Replace(',', '.');
+        if (float.TryParse(stringValue, out var doubleValue))
+        {
+            countString = doubleValue.ToString(CultureInfo.InvariantCulture);
+        }
     }
 }
