@@ -36,6 +36,10 @@ namespace Pie.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
 
+        //public DbSet<ChangeReason> ChangeReasons { get; set; }
+        //public DbSet<ChangeReasonIn> ChangeReasonsIn { get; set; }
+        //public DbSet<ChangeReasonOut> ChangeReasonsOut { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -52,7 +56,7 @@ namespace Pie.Data
             builder.Entity<DocInProduct>().HasKey(p => p.Id);
             builder.Entity<DocInProduct>().HasOne(p => p.DocIn).WithMany(d => d.Products).HasForeignKey(p => p.DocInId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<DocInProduct>().HasOne(p => p.Product).WithMany().HasForeignKey(p => p.ProductId).HasPrincipalKey(p => p.Id).OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<DocInProduct>().HasOne(p => p.ChangeReason).WithMany().HasForeignKey(p => p.ChangeReasonId).HasPrincipalKey(c => c.Id).OnDelete(DeleteBehavior.Cascade);
+            //builder.Entity<DocInProduct>().HasOne(p => p.ChangeReason).WithMany().HasForeignKey(p => p.ChangeReasonId).HasPrincipalKey(c => c.Id).OnDelete(DeleteBehavior.SetNull);
 
 
             builder.Entity<DocOut>().HasQueryFilter(d => d.Active && d.StatusKey != null && d.QueueKey != null).HasKey(d => d.Id);
@@ -67,7 +71,7 @@ namespace Pie.Data
             builder.Entity<DocOutProduct>().HasKey(p => p.Id);
             builder.Entity<DocOutProduct>().HasOne(p => p.DocOut).WithMany(d => d.Products).HasForeignKey(p => p.DocOutId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<DocOutProduct>().HasOne(p => p.Product).WithMany().HasForeignKey(p => p.ProductId).HasPrincipalKey(p => p.Id).OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<DocOutProduct>().HasOne(p => p.ChangeReason).WithMany().HasForeignKey(p => p.ChangeReasonId).HasPrincipalKey(c => c.Id).OnDelete(DeleteBehavior.Cascade);
+            //builder.Entity<DocOutProduct>().HasOne(p => p.ChangeReason).WithMany().HasForeignKey(p => p.ChangeReasonId).HasPrincipalKey(c => c.Id).OnDelete(DeleteBehavior.SetNull);
 
             builder.Entity<StatusIn>().HasQueryFilter(d => d.Active).HasKey(s => s.Id);
             builder.Entity<StatusOut>().HasQueryFilter(d => d.Active).HasKey(s => s.Id);
@@ -77,6 +81,8 @@ namespace Pie.Data
 
             builder.Entity<Product>().HasQueryFilter(d => d.Active).HasKey(p => p.Id);
             builder.Entity<Warehouse>().HasQueryFilter(d => d.Active).HasKey(w => w.Id);
+
+            //builder.Entity<ChangeReason>().HasQueryFilter(c => c.Active).HasKey(c => c.Id);
 
             InitialData.Seed(builder);
         }

@@ -12,7 +12,7 @@
 
         public float Count { get; set; }
 
-        public Guid? ChangeReasonId { get; set; }
-        public ChangeReasonOut? ChangeReason { get; set; }
+        //public Guid? ChangeReasonId { get; set; }
+        //public ChangeReasonOut? ChangeReason { get; set; }
     }
 }
