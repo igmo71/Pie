@@ -43,6 +43,11 @@ namespace Pie.Pages.DocsOut
             EditDialog?.Open(product);
         }
 
+        private void UpdateDoc(DocOutProduct docOutProduct)
+        {
+            EditDialog?.Close();
+        }
+
         private void SendDoc()
         {
             if (doc == null) return;
