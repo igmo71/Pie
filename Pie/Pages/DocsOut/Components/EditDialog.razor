@@ -10,8 +10,6 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div>@DocOutProduct?.Product?.Name</div>
-                <div>@DocOutProduct?.Count</div>
                 @if (DocOutProduct != null)
                 {
                     <EditForm Model="@DocOutProduct">
@@ -31,12 +29,10 @@
     </div>
 </div>
 
-
 @if (ShowBackdrop)
 {
     <div class="modal-backdrop fade show"></div>
 }
-
 
 @code {
     [Parameter] public EventCallback<DocOutProduct> OnSaveChanges { get; set; }
