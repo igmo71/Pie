@@ -25,7 +25,7 @@
         @foreach (var status in Statuses)
         {
             <li class="nav-item">
-                <button class="btn btn-link nav-link  position-relative @(status.Key == SearchParameters.StatusKey ? "active" : string.Empty)"
+                <button class="btn btn-link nav-link @(status.Key == SearchParameters.StatusKey ? "active" : string.Empty)"
                 @onclick="(() => OnClickHandle(status.Key))" id="@status.Key">
                     <h5>
                         <span>

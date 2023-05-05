@@ -70,6 +70,7 @@ namespace Pie
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddApplicationServices();
 
             var app = builder.Build();         

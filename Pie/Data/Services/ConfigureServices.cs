@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using Pie.Data.Models;
+using Pie.Data.Services.Application;
 using System.Reflection;
 
 namespace Pie.Data.Services
@@ -9,6 +10,7 @@ namespace Pie.Data.Services
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddSingleton<WeatherForecastService>();
+            services.AddScoped<CurrentUserService>();
             services.AddScoped<SearchParameters>();
             services.AddScoped<BaseDocService>();
             services.AddScoped<DocInService>();
