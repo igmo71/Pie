@@ -1,0 +1,45 @@
+﻿@page
+@model Pie.Areas.Config.Pages.StatusesIn.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>StatusIn</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="StatusIn.Id" />
+            <div class="form-group">
+                <label asp-for="StatusIn.Name" class="control-label"></label>
+                <input asp-for="StatusIn.Name" class="form-control" />
+                <span asp-validation-for="StatusIn.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StatusIn.Key" class="control-label"></label>
+                <input asp-for="StatusIn.Key" class="form-control" />
+                <span asp-validation-for="StatusIn.Key" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="StatusIn.Active" /> @Html.DisplayNameFor(model => model.StatusIn.Active)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -17,10 +17,9 @@ namespace Pie.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "8.0.0-preview.3.23174.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
-
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -52,9 +51,8 @@ namespace Pie.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("text");
@@ -77,9 +75,8 @@ namespace Pie.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("text");
@@ -242,7 +239,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BaseDocs");
+                    b.ToTable("BaseDocs", (string)null);
                 });
 
             modelBuilder.Entity("Pie.Data.Models.ChangeReason", b =>
@@ -264,7 +261,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ChangeReasons");
+                    b.ToTable("ChangeReasons", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("ChangeReason");
 
@@ -312,7 +309,7 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("WarehouseId");
 
-                    b.ToTable("DocsIn");
+                    b.ToTable("DocsIn", (string)null);
                 });
 
             modelBuilder.Entity("Pie.Data.Models.DocInBaseDoc", b =>
@@ -333,7 +330,7 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("DocInId");
 
-                    b.ToTable("DocInBaseDocs");
+                    b.ToTable("DocInBaseDocs", (string)null);
                 });
 
             modelBuilder.Entity("Pie.Data.Models.DocInProduct", b =>
@@ -362,7 +359,7 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("DocInProducts");
+                    b.ToTable("DocInProducts", (string)null);
                 });
 
             modelBuilder.Entity("Pie.Data.Models.DocOut", b =>
@@ -413,7 +410,7 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("WarehouseId");
 
-                    b.ToTable("DocsOut");
+                    b.ToTable("DocsOut", (string)null);
                 });
 
             modelBuilder.Entity("Pie.Data.Models.DocOutBaseDoc", b =>
@@ -434,7 +431,7 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("DocOutId");
 
-                    b.ToTable("DocOutBaseDocs");
+                    b.ToTable("DocOutBaseDocs", (string)null);
                 });
 
             modelBuilder.Entity("Pie.Data.Models.DocOutProduct", b =>
@@ -463,7 +460,7 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("DocOutProducts");
+                    b.ToTable("DocOutProducts", (string)null);
                 });
 
             modelBuilder.Entity("Pie.Data.Models.Product", b =>
@@ -481,7 +478,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Pie.Data.Models.QueueIn", b =>
@@ -503,7 +500,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("QueuesIn");
+                    b.ToTable("QueuesIn", (string)null);
                 });
 
             modelBuilder.Entity("Pie.Data.Models.QueueOut", b =>
@@ -525,7 +522,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("QueuesOut");
+                    b.ToTable("QueuesOut", (string)null);
 
                     b.HasData(
                         new
@@ -577,7 +574,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StatusesIn");
+                    b.ToTable("StatusesIn", (string)null);
                 });
 
             modelBuilder.Entity("Pie.Data.Models.StatusOut", b =>
@@ -599,7 +596,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StatusesOut");
+                    b.ToTable("StatusesOut", (string)null);
 
                     b.HasData(
                         new
@@ -668,7 +665,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Warehouses");
+                    b.ToTable("Warehouses", (string)null);
                 });
 
             modelBuilder.Entity("Pie.Data.Models.ChangeReasonIn", b =>
