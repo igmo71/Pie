@@ -36,14 +36,10 @@ namespace Pie
                 logging.ResponseBodyLogLimit = 4096;
             });
 
-            //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
-            //    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            //builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(connectionString));
-
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
+                //options.UseSqlServer(connectionString);
                 options.UseNpgsql(connectionString);
                 options.EnableDetailedErrors();
                 options.EnableSensitiveDataLogging();
@@ -75,7 +71,7 @@ namespace Pie
             builder.Services.AddApplicationServices();
             builder.Services.AddConnectors(builder.Configuration);
 
-            var app = builder.Build();         
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
