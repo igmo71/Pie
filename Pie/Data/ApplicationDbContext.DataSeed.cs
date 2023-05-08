@@ -3,9 +3,9 @@ using Pie.Data.Models;
 
 namespace Pie.Data
 {
-    public static class InitialData
+    public partial class ApplicationDbContext
     {
-        public static void Seed(ModelBuilder builder)
+        public static void Initialize(ModelBuilder builder)
         {
             builder.Entity<QueueOut>().HasData(
                 new QueueOut { Id = Guid.Parse("7E83260A-316F-4A1F-BE9A-BF353B118536"), Key = 10, Active = true, Name = "Живая очередь" },

@@ -84,7 +84,7 @@ namespace Pie.Data
 
             builder.Entity<ChangeReason>().HasQueryFilter(c => c.Active).HasKey(c => c.Id);
 
-            InitialData.Seed(builder);
+            Initialize(builder);
         }
     }
 }

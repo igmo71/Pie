@@ -42,7 +42,12 @@
     public string ModalClass = "";
     public bool ShowBackdrop = false;
 
+    private List<ChangeReasonOut>? changeReasons;
     private DocOutProduct DocOutProduct = new();
+
+    protected override void OnInitialized()
+    {
+    }
 
     public void Open(DocOutProduct product)
     {
