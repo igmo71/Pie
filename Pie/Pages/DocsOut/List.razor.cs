@@ -14,7 +14,7 @@ namespace Pie.Pages.DocsOut
         [Inject] public required NavigationManager NavigationManager { get; set; }
 
         private Dictionary<int, List<DocOut>> docs = new();
-        private List<QueueOut> queues = new(); 
+        private List<QueueOut> queues = new();
         private List<StatusOut> statuses = new();
         private Dictionary<int, int>? countByStatus = new();
         private List<Warehouse> warehouses = new();

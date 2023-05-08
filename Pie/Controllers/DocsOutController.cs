@@ -53,7 +53,7 @@ namespace Pie.Controllers
         [HttpPost]
         public async Task<ActionResult<DocOut>> PostDoc(DocOutDto docDto)
         {
-            
+
             var result = await _docService.CreateDocAsync(docDto);
 
             return CreatedAtAction("GetDoc", new { id = result.Id }, result);

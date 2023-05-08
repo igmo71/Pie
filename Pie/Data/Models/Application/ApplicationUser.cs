@@ -9,6 +9,6 @@ namespace Pie.Data.Models.Application
         public string? FirstName { get; set; }
 
         [MaxLength(100)]
-        public string? LastName { get; set;}
+        public string? LastName { get; set; }
     }
 }

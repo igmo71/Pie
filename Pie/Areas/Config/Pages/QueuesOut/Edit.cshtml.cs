@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Pie.Data;
 using Pie.Data.Models;
 
 namespace Pie.Areas.Config.Pages.QueuesOut
@@ -30,7 +24,7 @@ namespace Pie.Areas.Config.Pages.QueuesOut
                 return NotFound();
             }
 
-            var queueout =  await _context.QueuesOut.FirstOrDefaultAsync(m => m.Id == id);
+            var queueout = await _context.QueuesOut.FirstOrDefaultAsync(m => m.Id == id);
             if (queueout == null)
             {
                 return NotFound();

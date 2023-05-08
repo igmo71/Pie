@@ -63,7 +63,7 @@ namespace Pie.Data.Services
 
         public async Task DeleteProductAsync(Guid id)
         {
-            var product = await _context.Products.FindAsync(id) 
+            var product = await _context.Products.FindAsync(id)
                 ?? throw new ApplicationException($"ProductsService DeleteProductAsync NotFount {id}");
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();

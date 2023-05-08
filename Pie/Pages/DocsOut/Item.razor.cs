@@ -9,7 +9,7 @@ namespace Pie.Pages.DocsOut
     public partial class Item
     {
         [Inject] public required DocOutService DocService { get; set; }
-        [Inject] public required CurrentUserService  CurrentUserService { get; set; }
+        [Inject] public required CurrentUserService CurrentUserService { get; set; }
 
         [Parameter] public string? Id { get; set; }
 

@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Pie.Data;
 using Pie.Data.Models;
 using Pie.Data.Services;
 
@@ -33,7 +31,7 @@ namespace Pie.Controllers
             var warehouse = await _warehousesService.GetWarehouseAsync(id);
 
             if (warehouse == null)
-                return NotFound();  
+                return NotFound();
 
             return warehouse;
         }

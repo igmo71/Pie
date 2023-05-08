@@ -65,7 +65,7 @@ namespace Pie.Data.Services
 
         public async Task DeleteStatusAsync(Guid id)
         {
-            var status = await _context.StatusesIn.FindAsync(id) 
+            var status = await _context.StatusesIn.FindAsync(id)
                 ?? throw new ApplicationException($"StatusInService DeleteStatusAsync NotFount {id}");
             _context.StatusesIn.Remove(status);
             await _context.SaveChangesAsync();

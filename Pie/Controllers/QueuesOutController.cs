@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Pie.Data;
 using Pie.Data.Models;
 using Pie.Data.Services;
 

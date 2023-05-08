@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Pie.Data;
 using Pie.Data.Models;
 
 namespace Pie.Areas.Config.Pages.ChangeReasonsOut
@@ -30,7 +24,7 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsOut
                 return NotFound();
             }
 
-            var changereasonout =  await _context.ChangeReasonsOut.IgnoreQueryFilters().FirstOrDefaultAsync(m => m.Id == id);
+            var changereasonout = await _context.ChangeReasonsOut.IgnoreQueryFilters().FirstOrDefaultAsync(m => m.Id == id);
             if (changereasonout == null)
             {
                 return NotFound();

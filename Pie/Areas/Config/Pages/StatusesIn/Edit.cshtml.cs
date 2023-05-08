@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Pie.Data;
 using Pie.Data.Models;
 
 namespace Pie.Areas.Config.Pages.StatusesIn
@@ -30,7 +24,7 @@ namespace Pie.Areas.Config.Pages.StatusesIn
                 return NotFound();
             }
 
-            var statusin =  await _context.StatusesIn.FirstOrDefaultAsync(m => m.Id == id);
+            var statusin = await _context.StatusesIn.FirstOrDefaultAsync(m => m.Id == id);
             if (statusin == null)
             {
                 return NotFound();

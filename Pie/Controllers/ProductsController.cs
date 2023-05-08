@@ -45,7 +45,7 @@ namespace Pie.Controllers
                 return BadRequest();
 
             await _productsService.UpdateProductAsync(id, product);
-            
+
             return NoContent();
         }
 

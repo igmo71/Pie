@@ -63,7 +63,7 @@ namespace Pie.Data.Services
 
         public async Task DeleteWarehouseAsync(Guid id)
         {
-            var warehouse = await _context.Warehouses.FindAsync(id) 
+            var warehouse = await _context.Warehouses.FindAsync(id)
                 ?? throw new ApplicationException($"WarehouseService UpdateWarehouseAsync NotFount {id}");
             _context.Warehouses.Remove(warehouse);
             await _context.SaveChangesAsync();

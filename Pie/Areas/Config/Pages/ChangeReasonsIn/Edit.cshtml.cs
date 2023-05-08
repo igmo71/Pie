@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Pie.Data;
 using Pie.Data.Models;
 
 namespace Pie.Areas.Config.Pages.ChangeReasonsIn
@@ -30,7 +24,7 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsIn
                 return NotFound();
             }
 
-            var changereasonin =  await _context.ChangeReasonsIn.IgnoreQueryFilters().FirstOrDefaultAsync(m => m.Id == id);
+            var changereasonin = await _context.ChangeReasonsIn.IgnoreQueryFilters().FirstOrDefaultAsync(m => m.Id == id);
             if (changereasonin == null)
             {
                 return NotFound();

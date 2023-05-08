@@ -90,7 +90,7 @@
             IsStatus = false;
             StatusKey = null;
             NotifyStateChanged();
-        }        
+        }
     }
 
     public static class StatusExtensions
