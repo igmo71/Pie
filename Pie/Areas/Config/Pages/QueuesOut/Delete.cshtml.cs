@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Pie.Data;
 using Pie.Data.Models;
 
-namespace Pie.Areas.Config.Pages.StatusesIn
+namespace Pie.Areas.Config.Pages.QueuesOut
 {
     public class DeleteModel : PageModel
     {
@@ -20,7 +20,7 @@ namespace Pie.Areas.Config.Pages.StatusesIn
         }
 
         [BindProperty]
-        public StatusIn StatusIn { get; set; } = default!;
+        public QueueOut QueueOut { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -29,15 +29,15 @@ namespace Pie.Areas.Config.Pages.StatusesIn
                 return NotFound();
             }
 
-            var statusin = await _context.StatusesIn.IgnoreQueryFilters().FirstOrDefaultAsync(m => m.Id == id);
+            var queueout = await _context.QueuesOut.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (statusin == null)
+            if (queueout == null)
             {
                 return NotFound();
             }
             else
             {
-                StatusIn = statusin;
+                QueueOut = queueout;
             }
             return Page();
         }
@@ -49,11 +49,11 @@ namespace Pie.Areas.Config.Pages.StatusesIn
                 return NotFound();
             }
 
-            var statusin = await _context.StatusesIn.IgnoreQueryFilters().FirstOrDefaultAsync(m => m.Id == id);
-            if (statusin != null)
+            var queueout = await _context.QueuesOut.FindAsync(id);
+            if (queueout != null)
             {
-                StatusIn = statusin;
-                _context.StatusesIn.Remove(StatusIn);
+                QueueOut = queueout;
+                _context.QueuesOut.Remove(QueueOut);
                 await _context.SaveChangesAsync();
             }
 

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Pie.Data;
 using Pie.Data.Models;
 
-namespace Pie.Areas.Config.Pages.StatusesIn
+namespace Pie.Areas.Config.Pages.ChangeReasonsOut
 {
     public class DeleteModel : PageModel
     {
@@ -20,7 +20,7 @@ namespace Pie.Areas.Config.Pages.StatusesIn
         }
 
         [BindProperty]
-        public StatusIn StatusIn { get; set; } = default!;
+        public ChangeReasonOut ChangeReasonOut { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -29,15 +29,15 @@ namespace Pie.Areas.Config.Pages.StatusesIn
                 return NotFound();
             }
 
-            var statusin = await _context.StatusesIn.IgnoreQueryFilters().FirstOrDefaultAsync(m => m.Id == id);
+            var changereasonout = await _context.ChangeReasonsOut.IgnoreQueryFilters().FirstOrDefaultAsync(m => m.Id == id);
 
-            if (statusin == null)
+            if (changereasonout == null)
             {
                 return NotFound();
             }
             else
             {
-                StatusIn = statusin;
+                ChangeReasonOut = changereasonout;
             }
             return Page();
         }
@@ -49,11 +49,11 @@ namespace Pie.Areas.Config.Pages.StatusesIn
                 return NotFound();
             }
 
-            var statusin = await _context.StatusesIn.IgnoreQueryFilters().FirstOrDefaultAsync(m => m.Id == id);
-            if (statusin != null)
+            var changereasonout = await _context.ChangeReasonsOut.IgnoreQueryFilters().FirstOrDefaultAsync(m => m.Id == id);
+            if (changereasonout != null)
             {
-                StatusIn = statusin;
-                _context.StatusesIn.Remove(StatusIn);
+                ChangeReasonOut = changereasonout;
+                _context.ChangeReasonsOut.Remove(ChangeReasonOut);
                 await _context.SaveChangesAsync();
             }
 

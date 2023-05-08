@@ -1,0 +1,44 @@
+﻿@page
+@model Pie.Areas.Config.Pages.QueuesIn.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>QueueIn</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="QueueIn.Name" class="control-label"></label>
+                <input asp-for="QueueIn.Name" class="form-control" />
+                <span asp-validation-for="QueueIn.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QueueIn.Key" class="control-label"></label>
+                <input asp-for="QueueIn.Key" class="form-control" />
+                <span asp-validation-for="QueueIn.Key" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="QueueIn.Active" /> @Html.DisplayNameFor(model => model.QueueIn.Active)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

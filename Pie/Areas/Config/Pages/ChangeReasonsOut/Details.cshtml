@@ -1,0 +1,31 @@
+﻿@page
+@model Pie.Areas.Config.Pages.ChangeReasonsOut.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>ChangeReasonOut</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ChangeReasonOut.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ChangeReasonOut.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ChangeReasonOut.Active)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ChangeReasonOut.Active)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.ChangeReasonOut.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
