@@ -21,6 +21,8 @@ namespace Pie.Data.Services
             services.AddScoped<StatusOutService>();
             services.AddScoped<QueueInService>();
             services.AddScoped<QueueOutService>();
+            services.AddScoped<ChangeReasonOutService>();
+
 
             services.AddMapster();
 

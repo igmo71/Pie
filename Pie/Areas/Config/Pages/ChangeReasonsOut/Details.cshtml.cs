@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models;
+using Pie.Data.Services;
 
 namespace Pie.Areas.Config.Pages.ChangeReasonsOut
 {
     public class DetailsModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly ChangeReasonOutService _changeReasonService;
 
-        public DetailsModel(Pie.Data.ApplicationDbContext context)
+        public DetailsModel(ChangeReasonOutService changeReasonService)
         {
-            _context = context;
+            _changeReasonService = changeReasonService;
         }
 
         public ChangeReasonOut ChangeReasonOut { get; set; } = default!;
@@ -19,19 +19,15 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsOut
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var changereasonout = await _context.ChangeReasonsOut.IgnoreQueryFilters().FirstOrDefaultAsync(m => m.Id == id);
-            if (changereasonout == null)
-            {
+            var changeReason = await _changeReasonService.GetAsync(id);
+
+            if (changeReason == null)
                 return NotFound();
-            }
             else
-            {
-                ChangeReasonOut = changereasonout;
-            }
+                ChangeReasonOut = changeReason;
+
             return Page();
         }
     }

@@ -16,15 +16,15 @@ namespace Pie.Data.Services
 
         public async Task<List<QueueOut>> GetQueuesAsync()
         {
-            var queues = await _context.QueuesOut.AsNoTracking()
-                .OrderBy(q => q.Key)
-                .ToListAsync();
+            var queues = await _context.QueuesOut.AsNoTracking().OrderBy(q => q.Key).ToListAsync();
+
             return queues;
         }
 
         public async Task<QueueOut?> GetQueueAsync(Guid id)
         {
             var queue = await _context.QueuesOut.FindAsync(id);
+
             return queue;
         }
 
@@ -32,17 +32,18 @@ namespace Pie.Data.Services
         {
             if (QueueExists(queue.Id))
             {
-                await UpdateQueueAsync(queue.Id, queue);
+                await UpdateQueueAsync(queue);
             }
             else
             {
                 _context.QueuesOut.Add(queue);
                 await _context.SaveChangesAsync();
             }
+
             return queue;
         }
 
-        public async Task UpdateQueueAsync(Guid id, QueueOut queue)
+        public async Task UpdateQueueAsync(QueueOut queue)
         {
             _context.Entry(queue).State = EntityState.Modified;
 
@@ -52,9 +53,9 @@ namespace Pie.Data.Services
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!QueueExists(id))
+                if (!QueueExists(queue.Id))
                 {
-                    throw new ApplicationException($"QueueOutService UpdateQueueAsync NotFount {id}", ex);
+                    throw new ApplicationException($"QueueOutService UpdateQueueAsync NotFount {queue.Id}", ex);
                 }
                 else
                 {

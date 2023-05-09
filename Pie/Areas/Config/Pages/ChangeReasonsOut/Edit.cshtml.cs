@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models;
+using Pie.Data.Services;
 
 namespace Pie.Areas.Config.Pages.ChangeReasonsOut
 {
     public class EditModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly ChangeReasonOutService _changeReasonService;
 
-        public EditModel(Pie.Data.ApplicationDbContext context)
+        public EditModel(ChangeReasonOutService changeReasonService)
         {
-            _context = context;
+            _changeReasonService = changeReasonService;
         }
 
         [BindProperty]
@@ -24,12 +24,13 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsOut
                 return NotFound();
             }
 
-            var changereasonout = await _context.ChangeReasonsOut.IgnoreQueryFilters().FirstOrDefaultAsync(m => m.Id == id);
-            if (changereasonout == null)
-            {
+            var changeReason = await _changeReasonService.GetAsync(id);
+
+            if (changeReason == null)
                 return NotFound();
-            }
-            ChangeReasonOut = changereasonout;
+
+            ChangeReasonOut = changeReason;
+
             return Page();
         }
 
@@ -42,30 +43,9 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsOut
                 return Page();
             }
 
-            _context.Attach(ChangeReasonOut).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ChangeReasonOutExists(ChangeReasonOut.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _changeReasonService.UpdateAsync(ChangeReasonOut);
 
             return RedirectToPage("./Index");
-        }
-
-        private bool ChangeReasonOutExists(Guid id)
-        {
-            return _context.ChangeReasonsOut.Any(e => e.Id == id);
         }
     }
 }

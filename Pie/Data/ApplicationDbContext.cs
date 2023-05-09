@@ -39,6 +39,7 @@ namespace Pie.Data
         public DbSet<ChangeReason> ChangeReasons { get; set; }
         public DbSet<ChangeReasonIn> ChangeReasonsIn { get; set; }
         public DbSet<ChangeReasonOut> ChangeReasonsOut { get; set; }
+        public DbSet<ChangeReasonOut> ChangeReasonOuts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -73,18 +74,18 @@ namespace Pie.Data
             builder.Entity<DocOutProduct>().HasOne(p => p.Product).WithMany().HasForeignKey(p => p.ProductId).HasPrincipalKey(p => p.Id).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<DocOutProduct>().HasOne(p => p.ChangeReason).WithMany().HasForeignKey(p => p.ChangeReasonId).HasPrincipalKey(c => c.Id).OnDelete(DeleteBehavior.SetNull);
 
-            builder.Entity<StatusIn>().HasQueryFilter(d => d.Active).HasKey(s => s.Id);
-            builder.Entity<StatusOut>().HasQueryFilter(d => d.Active).HasKey(s => s.Id);
+            builder.Entity<StatusIn>()/*.HasQueryFilter(d => d.Active)*/.HasKey(s => s.Id);
+            builder.Entity<StatusOut>()/*.HasQueryFilter(d => d.Active)*/.HasKey(s => s.Id);
 
-            builder.Entity<QueueIn>().HasQueryFilter(d => d.Active).HasKey(q => q.Id);
-            builder.Entity<QueueOut>().HasQueryFilter(d => d.Active).HasKey(q => q.Id);
+            builder.Entity<QueueIn>()/*.HasQueryFilter(d => d.Active)*/.HasKey(q => q.Id);
+            builder.Entity<QueueOut>()/*.HasQueryFilter(d => d.Active)*/.HasKey(q => q.Id);
 
-            builder.Entity<Product>().HasQueryFilter(d => d.Active).HasKey(p => p.Id);
-            builder.Entity<Warehouse>().HasQueryFilter(d => d.Active).HasKey(w => w.Id);
+            builder.Entity<Product>()/*.HasQueryFilter(d => d.Active)*/.HasKey(p => p.Id);
+            builder.Entity<Warehouse>()/*.HasQueryFilter(d => d.Active)*/.HasKey(w => w.Id);
 
-            builder.Entity<ChangeReason>().HasQueryFilter(c => c.Active).HasKey(c => c.Id);
+            builder.Entity<ChangeReason>()/*.HasQueryFilter(c => c.Active)*/.HasKey(c => c.Id);
 
-            Initialize(builder);
+            DataSeed.Initialize(builder);
         }
     }
 }

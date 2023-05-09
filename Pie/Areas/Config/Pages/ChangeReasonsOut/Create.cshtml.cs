@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Pie.Data.Models;
+using Pie.Data.Services;
 
 namespace Pie.Areas.Config.Pages.ChangeReasonsOut
 {
     public class CreateModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly ChangeReasonOutService _changeReasonService;
 
-        public CreateModel(Pie.Data.ApplicationDbContext context)
+        public CreateModel(ChangeReasonOutService changeReasonService)
         {
-            _context = context;
+            _changeReasonService = changeReasonService;
         }
 
         public IActionResult OnGet()
@@ -25,12 +26,9 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsOut
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
-            _context.ChangeReasonsOut.Add(ChangeReasonOut);
-            await _context.SaveChangesAsync();
+            await _changeReasonService.CreateAsync(ChangeReasonOut);
 
             return RedirectToPage("./Index");
         }

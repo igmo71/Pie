@@ -3,7 +3,7 @@ using Pie.Data.Models;
 
 namespace Pie.Data
 {
-    public partial class ApplicationDbContext
+    public static class DataSeed
     {
         public static void Initialize(ModelBuilder builder)
         {
