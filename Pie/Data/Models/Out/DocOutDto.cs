@@ -56,7 +56,7 @@ namespace Pie.Data.Models.Out
                 {
                     DocOutBaseDoc baseDoc = new()
                     {
-                        DocOutId = dto.Id,
+                        DocId = dto.Id,
                         BaseDocId = item.BaseDocId
                     };
                     doc.BaseDocs.Add(baseDoc);
@@ -67,35 +67,18 @@ namespace Pie.Data.Models.Out
         }
     }
 
-    public class ProductDto : MappedModel
+    public class ProductDto 
     {
         public Guid ProductId { get; set; }
         public float Count { get; set; }
-
-        public override void Register(TypeAdapterConfig config)
-        {
-            config.NewConfig<ProductDto, DocOutProduct>()
-                .IgnoreNullValues(true)
-                .RequireDestinationMemberSource(true)
-                .Map(dst => dst.CountPlan, src => src.Count)
-                .Map(dst => dst.CountFact, src => src.Count);
-        }
+        //TODO:
+        //public float CountPlan { get; set; }
+        //public float CountFact { get; set; }
     }
 
-    public class BaseDocDto : MappedModel
+    public class BaseDocDto
     {
         public Guid BaseDocId { get; set; }
         public string? Name { get; set; }
-
-        public override void Register(TypeAdapterConfig config)
-        {
-            config.NewConfig<BaseDocDto, BaseDoc>()
-                .RequireDestinationMemberSource(true)
-                .Map(dst => dst.Id, src => src.BaseDocId);
-
-            config.NewConfig<DocOutBaseDoc, BaseDocDto>()
-                .RequireDestinationMemberSource(true)
-                .Map(dst => dst.Name, src => src.BaseDoc != null ? src.BaseDoc.Name : string.Empty);
-        }
     }
 }

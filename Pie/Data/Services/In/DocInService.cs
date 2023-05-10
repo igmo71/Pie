@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models.In;
 
-namespace Pie.Data.Services
+namespace Pie.Data.Services.In
 {
     public class DocInService
     {

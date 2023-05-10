@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models.Out;
 
-namespace Pie.Data.Services
+namespace Pie.Data.Services.Out
 {
     public class ChangeReasonOutService
     {

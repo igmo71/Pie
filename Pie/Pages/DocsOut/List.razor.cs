@@ -2,6 +2,7 @@
 using Pie.Data.Models;
 using Pie.Data.Models.Out;
 using Pie.Data.Services;
+using Pie.Data.Services.Out;
 
 namespace Pie.Pages.DocsOut
 {
@@ -11,7 +12,7 @@ namespace Pie.Pages.DocsOut
         [Inject] public required QueueOutService QueueService { get; set; }
         [Inject] public required StatusOutService StatusService { get; set; }
         [Inject] public required WarehouseService WarehouseService { get; set; }
-        [Inject] public required SearchParameters SearchParameters { get; set; }
+        [Inject] public required SearchOutParameters SearchParameters { get; set; }
         [Inject] public required NavigationManager NavigationManager { get; set; }
 
         private Dictionary<int, List<DocOut>> docs = new();

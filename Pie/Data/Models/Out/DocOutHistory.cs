@@ -5,7 +5,7 @@
         public Guid DocId { get; set; }
         public DocOut? Doc { get; set; }
 
-        public Guid StatusOutId { get; set; }
-        public StatusOut? StatusOut { get; set; }
+        public Guid StatusId { get; set; }
+        public StatusOut? Status { get; set; }
     }
 }

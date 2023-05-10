@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Pie.Data.Models.Out;
-using Pie.Data.Services;
+using Pie.Data.Services.Out;
 
 namespace Pie.Areas.Config.Pages.ChangeReasonsOut
 {

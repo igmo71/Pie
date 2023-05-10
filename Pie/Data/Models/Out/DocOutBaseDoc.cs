@@ -1,13 +1,8 @@
 ﻿namespace Pie.Data.Models.Out
 {
-    public class DocOutBaseDoc
+    public class DocOutBaseDoc : DocBaseDoc
     {
-        public Guid Id { get; set; }
-
-        public Guid DocOutId { get; set; }
-        public DocOut? DocOut { get; set; }
-
-        public Guid BaseDocId { get; set; }
-        public BaseDoc? BaseDoc { get; set; }
+        public Guid DocId { get; set; }
+        public DocOut? Doc { get; set; }
     }
 }

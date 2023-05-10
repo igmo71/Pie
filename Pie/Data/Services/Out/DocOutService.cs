@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models;
 using Pie.Data.Models.Out;
 
-namespace Pie.Data.Services
+namespace Pie.Data.Services.Out
 {
     public class DocOutService
     {
@@ -39,7 +39,7 @@ namespace Pie.Data.Services
             return doc;
         }
 
-        public async Task<Dictionary<int, List<DocOut>>> GetDictionaryByQueue(SearchParameters searchParameters)
+        public async Task<Dictionary<int, List<DocOut>>> GetDictionaryByQueue(SearchOutParameters searchParameters)
         {
             var result = await _context.DocsOut.AsNoTracking()
                 .Search(searchParameters)

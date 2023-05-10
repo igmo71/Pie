@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models.Out;
 
-namespace Pie.Data.Services
+namespace Pie.Data.Services.Out
 {
     public class StatusOutService
     {
@@ -76,7 +76,7 @@ namespace Pie.Data.Services
             return _context.StatusesOut.IgnoreQueryFilters().Any(e => e.Id == id);
         }
 
-        public async Task<Dictionary<int, int>?> GetCountByStatusAsync(SearchParameters searchParameters)
+        public async Task<Dictionary<int, int>?> GetCountByStatusAsync(SearchOutParameters searchParameters)
         {
             var result = await _context.DocsOut.AsNoTracking()
                 .Search(searchParameters.ExceptStatus())

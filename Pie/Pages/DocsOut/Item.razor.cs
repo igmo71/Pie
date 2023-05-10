@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Pie.Data.Models.Out;
 using Pie.Data.Services;
 using Pie.Data.Services.Application;
+using Pie.Data.Services.Out;
 using Pie.Pages.DocsOut.Components;
 
 namespace Pie.Pages.DocsOut

@@ -2,6 +2,8 @@
 using Pie.Connectors.Connector1c;
 using Pie.Data.Models;
 using Pie.Data.Services.Application;
+using Pie.Data.Services.In;
+using Pie.Data.Services.Out;
 using System.Reflection;
 
 namespace Pie.Data.Services
@@ -12,7 +14,7 @@ namespace Pie.Data.Services
         {
             services.AddSingleton<WeatherForecastService>();
             services.AddScoped<CurrentUserService>();
-            services.AddScoped<SearchParameters>();
+            services.AddScoped<SearchOutParameters>();
             services.AddScoped<BaseDocService>();
             services.AddScoped<DocInService>();
             services.AddScoped<DocOutService>();
