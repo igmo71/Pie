@@ -1,18 +1,18 @@
-﻿namespace Pie.Data.Models.In
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Pie.Data.Models.In
 {
-    public class DocInProduct
+    public class DocInProduct : DocProduct
     {
-        public Guid Id { get; set; }
+        public Guid DocId { get; set; }
+        public DocIn? Doc { get; set; }
 
-        public Guid DocInId { get; set; }
-        public DocIn? DocIn { get; set; }
-
-        public Guid ProductId { get; set; }
-        public Product? Product { get; set; }
-
-        public float Count { get; set; }
-
+        [NotMapped]
+        [Required(ErrorMessage = "Причину изменения нужно указать")]
         public Guid? ChangeReasonId { get; set; }
+        
+        [NotMapped]
         public ChangeReasonIn? ChangeReason { get; set; }
     }
 }

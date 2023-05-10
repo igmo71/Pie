@@ -1,13 +1,8 @@
 ﻿namespace Pie.Data.Models.In
 {
-    public class DocInBaseDoc
+    public class DocInBaseDoc : DocBaseDoc
     {
-        public Guid Id { get; set; }
-
-        public Guid DocInId { get; set; }
-        public DocIn? DocIn { get; set; }
-
-        public Guid BaseDocId { get; set; }
-        public BaseDoc? BaseDoc { get; set; }
+        public Guid DocId { get; set; }
+        public DocIn? Doc { get; set; }
     }
 }

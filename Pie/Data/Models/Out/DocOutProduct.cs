@@ -8,8 +8,8 @@ namespace Pie.Data.Models.Out
         public Guid DocId { get; set; }
         public DocOut? Doc { get; set; }    
 
-        [Required(ErrorMessage = "Причину изменения нужно указать")]
         [NotMapped]
+        [Required(ErrorMessage = "Причину изменения нужно указать")]
         public Guid? ChangeReasonId { get; set; }
 
         [NotMapped]

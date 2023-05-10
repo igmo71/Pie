@@ -1,11 +1,13 @@
-﻿namespace Pie.Data.Models.Out
+﻿using Pie.Data.Models.Out;
+
+namespace Pie.Data.Models.In
 {
-    public class DocOutProductHistory : DocProductHistory
+    public class DocInProductHistory : DocProductHistory
     {
-        public DocOutProductHistory()
+        public DocInProductHistory()
         { }
 
-        public DocOutProductHistory(DocOutProduct product) : this()
+        public DocInProductHistory(DocInProduct product) : this()
         {
             DocId = product.DocId;
             ProductId = product.ProductId;
@@ -15,9 +17,9 @@
         }
 
         public Guid DocId { get; set; }
-        public DocOut? Doc { get; set; }
+        public DocIn? Doc { get; set; }
 
         public Guid? ChangeReasonId { get; set; }
-        public ChangeReasonOut? ChangeReason { get; set; }
+        public ChangeReasonIn? ChangeReason { get; set; }
     }
 }
