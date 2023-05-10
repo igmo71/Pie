@@ -1,5 +1,6 @@
 ﻿using Pie.Common;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Pie.Data.Models
 {
@@ -21,6 +22,7 @@ namespace Pie.Data.Models
         public Guid? WarehouseId { get; set; }
         public Warehouse? Warehouse { get; set; }
 
+        [NotMapped]
         public string? BarcodeBase64 => BarcodeGuidConvert.GetBarcodeBase64(Id);
     }
 }

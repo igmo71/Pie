@@ -9,5 +9,7 @@ namespace Pie.Data.Models
         [Required]
         [MaxLength(100)]
         public string? Name { get; set; }
+
+        public bool Active { get; set; }
     }
 }
