@@ -1,31 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Pie.Data.Models.Out;
-using Pie.Data.Services.Out;
+using Pie.Data.Models.In;
+using Pie.Data.Services.In;
 
-namespace Pie.Controllers
+namespace Pie.Controllers.In
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DocsOutController : ControllerBase
+    public class DocsInController : ControllerBase
     {
-        private readonly DocOutService _docService;
+        private readonly DocInService _docService;
 
-        public DocsOutController(DocOutService docService)
+        public DocsInController(DocInService docService)
         {
             _docService = docService;
         }
 
-        // GET: api/DocsOut
+        // GET: api/DocsIn
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DocOut>>> GetDocs()
+        public async Task<ActionResult<IEnumerable<DocIn>>> GetDocs()
         {
             var doc = await _docService.GetDocsAsync();
             return Ok(doc);
         }
 
-        // GET: api/DocsOut/5
+        // GET: api/DocsIn/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<DocOut>> GetDoc(Guid id)
+        public async Task<ActionResult<DocIn>> GetDoc(Guid id)
         {
             var doc = await _docService.GetDocAsync(id);
 
@@ -35,10 +35,10 @@ namespace Pie.Controllers
             return Ok(doc);
         }
 
-        // PUT: api/DocsOut/5
+        // PUT: api/DocsIn/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDoc(Guid id, DocOut doc)
+        public async Task<IActionResult> PutDoc(Guid id, DocIn doc)
         {
             if (id != doc.Id)
                 return BadRequest();
@@ -48,20 +48,19 @@ namespace Pie.Controllers
             return NoContent();
         }
 
-        // POST: api/DocsOut
+        // POST: api/DocsIn
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<DocOut>> PostDoc(DocOutDto docDto)
+        public async Task<ActionResult<DocIn>> PostDoc(DocIn doc)
         {
-
-            var result = await _docService.CreateDocAsync(docDto);
+            var result = await _docService.CreateDocAsync(doc);
 
             return CreatedAtAction("GetDoc", new { id = result.Id }, result);
         }
 
-        // DELETE: api/DocsOut/5
+        // DELETE: api/DocsIn/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDoc(Guid id)
+        public async Task<IActionResult> DeleteDocIn(Guid id)
         {
             await _docService.DeleteDocAsync(id);
 

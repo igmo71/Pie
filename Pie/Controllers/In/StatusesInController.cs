@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Pie.Data.Models.Out;
-using Pie.Data.Services.Out;
+using Pie.Data.Models.In;
+using Pie.Data.Services.In;
 
-namespace Pie.Controllers
+namespace Pie.Controllers.In
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StatusesOutController : ControllerBase
+    public class StatusesInController : ControllerBase
     {
-        private readonly StatusOutService _statusService;
+        private readonly StatusInService _statusService;
 
-        public StatusesOutController(StatusOutService statusService)
+        public StatusesInController(StatusInService statusService)
         {
             _statusService = statusService;
         }
 
         // GET: api/Statuses
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<StatusOut>>> GetStatuses()
+        public async Task<ActionResult<IEnumerable<StatusIn>>> GetStatuses()
         {
             var statuses = await _statusService.GetStatusesAsync();
 
@@ -26,7 +26,7 @@ namespace Pie.Controllers
 
         // GET: api/Statuses/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<StatusOut>> GetStatus(Guid id)
+        public async Task<ActionResult<StatusIn>> GetStatus(Guid id)
         {
             var status = await _statusService.GetStatusAsync(id);
 
@@ -39,7 +39,7 @@ namespace Pie.Controllers
         // PUT: api/Statuses/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStatus(Guid id, StatusOut status)
+        public async Task<IActionResult> PutStatus(Guid id, StatusIn status)
         {
             if (id != status.Id)
                 return BadRequest();
@@ -52,7 +52,7 @@ namespace Pie.Controllers
         // POST: api/Statuses
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<StatusOut>> PostStatus(StatusOut status)
+        public async Task<ActionResult<StatusIn>> PostStatus(StatusIn status)
         {
             var result = await _statusService.CreateStatusAsync(status);
 

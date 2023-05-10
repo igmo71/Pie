@@ -1,10 +1,7 @@
-﻿using Mapster;
-using Pie.Connectors.Connector1c;
-using Pie.Data.Models;
+﻿using Pie.Connectors.Connector1c;
 using Pie.Data.Services.Application;
 using Pie.Data.Services.In;
 using Pie.Data.Services.Out;
-using System.Reflection;
 
 namespace Pie.Data.Services
 {
@@ -26,18 +23,6 @@ namespace Pie.Data.Services
             services.AddScoped<QueueOutService>();
             services.AddScoped<ChangeReasonOutService>();
             services.AddScoped<Client1c>();
-
-
-            services.AddMapster();
-
-            return services;
-        }
-
-        public static IServiceCollection AddMapster(this IServiceCollection services)
-        {
-            var typeAdapterConfig = TypeAdapterConfig.GlobalSettings;
-            Assembly applicationAssembly = typeof(MappedModel).Assembly;
-            typeAdapterConfig.Scan(applicationAssembly);
 
             return services;
         }

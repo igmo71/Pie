@@ -2,7 +2,7 @@
 using Pie.Data.Models.In;
 using Pie.Data.Services.In;
 
-namespace Pie.Controllers
+namespace Pie.Controllers.In
 {
     [Route("api/[controller]")]
     [ApiController]

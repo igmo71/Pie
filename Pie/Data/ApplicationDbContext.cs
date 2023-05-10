@@ -72,7 +72,7 @@ namespace Pie.Data
             builder.Entity<DocOut>().HasOne(d => d.Warehouse).WithMany().HasForeignKey(d => d.WarehouseId).HasPrincipalKey(w => w.Id).OnDelete(DeleteBehavior.SetNull);
 
             builder.Entity<DocOutBaseDoc>().HasKey(b => b.Id);
-            builder.Entity<DocOutBaseDoc>().HasOne(b => b.DocOut).WithMany(d => d.BaseDocs).HasForeignKey(b => b.DocOutId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<DocOutBaseDoc>().HasOne(b => b.Doc).WithMany(d => d.BaseDocs).HasForeignKey(b => b.DocId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<DocOutBaseDoc>().HasOne(b => b.BaseDoc).WithMany().HasForeignKey(b => b.BaseDocId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<DocOutProduct>().HasKey(p => p.Id);
@@ -81,7 +81,7 @@ namespace Pie.Data
 
             builder.Entity<DocOutHistory>().HasKey(h => h.Id);
             builder.Entity<DocOutHistory>().HasOne(h => h.Doc).WithMany().HasForeignKey(h => h.DocId).HasPrincipalKey(d => d.Id);
-            builder.Entity<DocOutHistory>().HasOne(h => h.StatusOut).WithMany().HasForeignKey(h => h.StatusOutId).HasPrincipalKey(s => s.Id);
+            builder.Entity<DocOutHistory>().HasOne(h => h.Status).WithMany().HasForeignKey(h => h.StatusId).HasPrincipalKey(s => s.Id);
             builder.Entity<DocOutHistory>().HasOne(h => h.User).WithMany().HasForeignKey(h => h.UserId).HasPrincipalKey(u => u.Id);
 
 

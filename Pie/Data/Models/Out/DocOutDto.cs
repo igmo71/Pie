@@ -1,6 +1,4 @@
-﻿using Mapster;
-
-namespace Pie.Data.Models.Out
+﻿namespace Pie.Data.Models.Out
 {
     public class DocOutDto
     {
