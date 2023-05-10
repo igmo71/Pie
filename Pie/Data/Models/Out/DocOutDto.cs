@@ -65,7 +65,7 @@
         }
     }
 
-    public class ProductDto 
+    public class ProductDto
     {
         public Guid ProductId { get; set; }
         public float Count { get; set; }
@@ -78,5 +78,28 @@
     {
         public Guid BaseDocId { get; set; }
         public string? Name { get; set; }
+
+        public static BaseDoc MapToBaseDoc(BaseDocDto dto)
+        {
+            BaseDoc baseDoc = new()
+            {
+                Id = dto.BaseDocId,
+                Name = dto.Name,
+                Active = true
+            };
+            
+            return baseDoc;
+        }
+
+        public static List<BaseDoc> MapToBaseDocList(List<BaseDocDto> dtos)
+        {
+            List<BaseDoc> list = new();
+            foreach (var dto in dtos)
+            {
+                list.Add(MapToBaseDoc(dto));
+            }
+
+            return list;
+        }
     }
 }

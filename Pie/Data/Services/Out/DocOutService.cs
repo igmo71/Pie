@@ -55,10 +55,12 @@ namespace Pie.Data.Services.Out
 
         public async Task<DocOutDto> CreateDocAsync(DocOutDto docDto)
         {
-            List<BaseDoc>? baseDocs = docDto.BaseDocs?.Adapt<List<BaseDoc>>();
-            await _baseDocService.CreateRangeAsync(baseDocs);
+            if (docDto.BaseDocs != null)
+            {
+                List<BaseDoc>? baseDocs = BaseDocDto.MapToBaseDocList(docDto.BaseDocs);
+                await _baseDocService.CreateRangeAsync(baseDocs);
+            }
 
-            //DocOut doc = docDto.Adapt<DocOut>();
             DocOut doc = DocOutDto.MapToDocOut(docDto);
             _ = await CreateDocAsync(doc);
 
