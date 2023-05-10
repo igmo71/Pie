@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Pie.Data.Models
+namespace Pie.Data.Models.In
 {
     public class DocIn : Doc
     {

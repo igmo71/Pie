@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Pie.Data.Models;
+using Pie.Data.Models.Out;
 
 namespace Pie.Areas.Config.Pages.QueuesOut
 {

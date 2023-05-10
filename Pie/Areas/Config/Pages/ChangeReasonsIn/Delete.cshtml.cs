@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Pie.Data.Models;
+using Pie.Data.Models.In;
 
 namespace Pie.Areas.Config.Pages.ChangeReasonsIn
 {

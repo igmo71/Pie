@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Pie.Connectors.Connector1c;
 using Pie.Data.Models;
 using Pie.Data.Services.Application;
 using System.Reflection;
@@ -22,6 +23,7 @@ namespace Pie.Data.Services
             services.AddScoped<QueueInService>();
             services.AddScoped<QueueOutService>();
             services.AddScoped<ChangeReasonOutService>();
+            services.AddScoped<Client1c>();
 
 
             services.AddMapster();

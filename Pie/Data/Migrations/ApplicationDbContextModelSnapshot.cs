@@ -17,9 +17,10 @@ namespace Pie.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "8.0.0-preview.3.23174.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -51,8 +52,9 @@ namespace Pie.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("text");
@@ -75,8 +77,9 @@ namespace Pie.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
                         .HasColumnType("text");
@@ -239,7 +242,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BaseDocs", (string)null);
+                    b.ToTable("BaseDocs");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.ChangeReason", b =>
@@ -261,7 +264,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ChangeReasons", (string)null);
+                    b.ToTable("ChangeReasons");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("ChangeReason");
 
@@ -309,7 +312,7 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("WarehouseId");
 
-                    b.ToTable("DocsIn", (string)null);
+                    b.ToTable("DocsIn");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.DocInBaseDoc", b =>
@@ -330,7 +333,7 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("DocInId");
 
-                    b.ToTable("DocInBaseDocs", (string)null);
+                    b.ToTable("DocInBaseDocs");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.DocInProduct", b =>
@@ -359,7 +362,7 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("DocInProducts", (string)null);
+                    b.ToTable("DocInProducts");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.DocOut", b =>
@@ -410,7 +413,7 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("WarehouseId");
 
-                    b.ToTable("DocsOut", (string)null);
+                    b.ToTable("DocsOut");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.DocOutBaseDoc", b =>
@@ -431,7 +434,36 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("DocOutId");
 
-                    b.ToTable("DocOutBaseDocs", (string)null);
+                    b.ToTable("DocOutBaseDocs");
+                });
+
+            modelBuilder.Entity("Pie.Data.Models.DocOutHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("DocId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("StatusOutId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocId");
+
+                    b.HasIndex("StatusOutId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("DocsOutHistory");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.DocOutProduct", b =>
@@ -440,13 +472,13 @@ namespace Pie.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("ChangeReasonId")
-                        .HasColumnType("uuid");
-
-                    b.Property<float>("Count")
+                    b.Property<float>("CountFact")
                         .HasColumnType("real");
 
-                    b.Property<Guid>("DocOutId")
+                    b.Property<float>("CountPlan")
+                        .HasColumnType("real");
+
+                    b.Property<Guid>("DocId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("ProductId")
@@ -454,13 +486,52 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ChangeReasonId");
-
-                    b.HasIndex("DocOutId");
+                    b.HasIndex("DocId");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("DocOutProducts", (string)null);
+                    b.ToTable("DocOutProducts");
+                });
+
+            modelBuilder.Entity("Pie.Data.Models.DocOutProductHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ChangeReasonId")
+                        .IsRequired()
+                        .HasColumnType("uuid");
+
+                    b.Property<float>("CountFact")
+                        .HasColumnType("real");
+
+                    b.Property<float>("CountPlan")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("DocId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChangeReasonId");
+
+                    b.HasIndex("DocId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("DocOutProductsHistory");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.Product", b =>
@@ -478,7 +549,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.QueueIn", b =>
@@ -490,17 +561,30 @@ namespace Pie.Data.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("boolean");
 
+                    b.Property<TimeOnly>("ConcreteTime")
+                        .HasColumnType("time without time zone");
+
+                    b.Property<int>("Days")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Hours")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("Key")
                         .IsRequired()
                         .HasColumnType("integer");
 
+                    b.Property<int>("Minutes")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("QueuesIn", (string)null);
+                    b.ToTable("QueuesIn");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.QueueOut", b =>
@@ -512,45 +596,74 @@ namespace Pie.Data.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("boolean");
 
+                    b.Property<TimeOnly>("ConcreteTime")
+                        .HasColumnType("time without time zone");
+
+                    b.Property<int>("Days")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Hours")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("Key")
                         .IsRequired()
                         .HasColumnType("integer");
 
+                    b.Property<int>("Minutes")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("QueuesOut", (string)null);
+                    b.ToTable("QueuesOut");
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("7e83260a-316f-4a1f-be9a-bf353b118536"),
                             Active = true,
+                            ConcreteTime = new TimeOnly(0, 0, 0),
+                            Days = 0,
+                            Hours = 0,
                             Key = 10,
+                            Minutes = 0,
                             Name = "Живая очередь"
                         },
                         new
                         {
                             Id = new Guid("3558d2ba-ffb6-4f08-9891-f7f1e8853c83"),
                             Active = true,
+                            ConcreteTime = new TimeOnly(0, 0, 0),
+                            Days = 0,
+                            Hours = 0,
                             Key = 20,
+                            Minutes = 0,
                             Name = "Собрать к дате"
                         },
                         new
                         {
                             Id = new Guid("d964fcad-d71d-480a-bdeb-0b2c045fcd90"),
                             Active = true,
+                            ConcreteTime = new TimeOnly(0, 0, 0),
+                            Days = 0,
+                            Hours = 0,
                             Key = 30,
+                            Minutes = 0,
                             Name = "Собственная доставка"
                         },
                         new
                         {
                             Id = new Guid("8bdc656e-8a2c-4aef-9422-e0a419608190"),
                             Active = true,
+                            ConcreteTime = new TimeOnly(0, 0, 0),
+                            Days = 0,
+                            Hours = 0,
                             Key = 40,
+                            Minutes = 0,
                             Name = "Очередность не указана"
                         });
                 });
@@ -574,7 +687,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StatusesIn", (string)null);
+                    b.ToTable("StatusesIn");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.StatusOut", b =>
@@ -596,7 +709,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StatusesOut", (string)null);
+                    b.ToTable("StatusesOut");
 
                     b.HasData(
                         new
@@ -665,7 +778,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Warehouses", (string)null);
+                    b.ToTable("Warehouses");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.ChangeReasonIn", b =>
@@ -849,16 +962,36 @@ namespace Pie.Data.Migrations
                     b.Navigation("DocOut");
                 });
 
+            modelBuilder.Entity("Pie.Data.Models.DocOutHistory", b =>
+                {
+                    b.HasOne("Pie.Data.Models.DocOut", "Doc")
+                        .WithMany()
+                        .HasForeignKey("DocId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Pie.Data.Models.StatusOut", "StatusOut")
+                        .WithMany()
+                        .HasForeignKey("StatusOutId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Pie.Data.Models.Application.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Doc");
+
+                    b.Navigation("StatusOut");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Pie.Data.Models.DocOutProduct", b =>
                 {
-                    b.HasOne("Pie.Data.Models.ChangeReasonOut", "ChangeReason")
-                        .WithMany()
-                        .HasForeignKey("ChangeReasonId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("Pie.Data.Models.DocOut", "DocOut")
+                    b.HasOne("Pie.Data.Models.DocOut", "Doc")
                         .WithMany("Products")
-                        .HasForeignKey("DocOutId")
+                        .HasForeignKey("DocId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -868,11 +1001,42 @@ namespace Pie.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ChangeReason");
-
-                    b.Navigation("DocOut");
+                    b.Navigation("Doc");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Pie.Data.Models.DocOutProductHistory", b =>
+                {
+                    b.HasOne("Pie.Data.Models.ChangeReasonOut", "ChangeReason")
+                        .WithMany()
+                        .HasForeignKey("ChangeReasonId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
+
+                    b.HasOne("Pie.Data.Models.DocOut", "Doc")
+                        .WithMany()
+                        .HasForeignKey("DocId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Pie.Data.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Pie.Data.Models.Application.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("ChangeReason");
+
+                    b.Navigation("Doc");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.DocIn", b =>

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Pie.Data.Models
+namespace Pie.Data.Models.Out
 {
     public class DocOut : Doc
     {
@@ -16,9 +16,9 @@ namespace Pie.Data.Models
         [MaxLength(250)]
         public string? Comment { get; set; }
 
-        public DateTime ShipDateTime { get; set; }
-
         public List<DocOutProduct> Products { get; set; } = new();
         public List<DocOutBaseDoc> BaseDocs { get; set; } = new();
+
+        public DateTime ShipDateTime { get; set; }
     }
 }

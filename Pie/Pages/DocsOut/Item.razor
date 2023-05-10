@@ -1,8 +1,8 @@
 ﻿@page "/DocsOut/Item/{id}"
 
-@using Pie.Data.Models;
-@using Pie.Pages.Components
-@using Pie.Pages.DocsOut.Components
+@    using Pie.Data.Models;
+@    using Pie.Pages.Components
+@    using Pie.Pages.DocsOut.Components
 
 <ScanBarcode OnScannedBarcode="ScannedBarcode"></ScanBarcode>
 
@@ -16,7 +16,7 @@
 
 <div>@pageMessage</div>
 
-<div><button class="btn btn-primary" @onclick="@SendDoc"><i class="bi bi-send"></i>Отправить</button></div>
+<div><button class="btn btn-primary" @onclick="@SendDocAsync"><i class="bi bi-send"></i>Отправить</button></div>
 
 
 <div>Номер:@doc?.Number</div>
@@ -39,12 +39,13 @@
 <div>
     <QuickGrid Items="@(doc?.Products?.AsQueryable<DocOutProduct>())" Class="table table-bordered table-hover">
         <PropertyColumn Property="@(p => p.Product != null ? p.Product.Name : string.Empty)" Title="Товар" Sortable="true"></PropertyColumn>
-        <PropertyColumn Property="@(p => p.Count)" Title="Кол-во" Sortable="true"></PropertyColumn>
+        <PropertyColumn Property="@(p => p.CountPlan)" Title="Кол-во" Sortable="true"></PropertyColumn>
+        <PropertyColumn Property="@(p => p.CountFact)" Title="Кол-во" Sortable="true"></PropertyColumn>
         <TemplateColumn Title="Изменить">
             <button class="btn btn-outline-primary" @onclick="@(() => EditDoc(context))"><i class="bi bi-pencil-square"></i></button>
         </TemplateColumn>
     </QuickGrid>
 </div>
 
-<EditDialog @ref="EditDialog" OnSaveChanges="@UpdateDoc"></EditDialog>
+<EditDialog @ref="EditDialog" ChangeReasons="@changeReasons" OnSaveChanges="@UpdateDoc"></EditDialog>
 

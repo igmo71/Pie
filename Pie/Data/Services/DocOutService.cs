@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models;
+using Pie.Data.Models.Out;
 
 namespace Pie.Data.Services
 {
@@ -58,7 +59,8 @@ namespace Pie.Data.Services
             List<BaseDoc>? baseDocs = docDto.BaseDocs?.Adapt<List<BaseDoc>>();
             await _baseDocService.CreateRangeAsync(baseDocs);
 
-            DocOut doc = docDto.Adapt<DocOut>();
+            //DocOut doc = docDto.Adapt<DocOut>();
+            DocOut doc = DocOutDto.MapToDocOut(docDto);
             _ = await CreateDocAsync(doc);
 
             return docDto;
@@ -70,7 +72,15 @@ namespace Pie.Data.Services
                 await DeleteDocAsync(doc.Id);
 
             _context.DocsOut.Add(doc);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "DocOutService CreateDocAsync");
+                //throw;
+            }
 
             return doc;
         }
@@ -107,6 +117,14 @@ namespace Pie.Data.Services
         public bool DocExists(Guid id)
         {
             return _context.DocsOut.IgnoreQueryFilters().Any(e => e.Id == id);
+        }
+
+        public async Task<ServiceResult> SendAsync(DocOut doc)
+        {
+            ServiceResult result = new();
+            result.IsSuccess = true;
+
+            return result;
         }
     }
 }

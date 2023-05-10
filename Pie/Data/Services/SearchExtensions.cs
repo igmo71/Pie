@@ -1,5 +1,5 @@
 ﻿using Pie.Common;
-using Pie.Data.Models;
+using Pie.Data.Models.Out;
 
 namespace Pie.Data.Services
 {

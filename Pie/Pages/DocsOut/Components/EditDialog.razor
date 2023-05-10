@@ -1,30 +1,56 @@
-﻿@using Pie.Data.Models;
+﻿@    using Pie.Data.Models;
+@    using Pie.Data.Services;
+    using Pie.Data.Models.Out;
 
 <div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Изменить товар</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                @if (DocOutProduct != null)
-                {
-                    <EditForm Model="@DocOutProduct">
-                        <div>@DocOutProduct?.Product?.Name</div>
-                        <label for="count">
-                            Количество
-                            <InputNumber id="count" @bind-Value="@DocOutProduct.Count" />
-                        </label>
-                    </EditForm>
-                }
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" @onclick="SaveChanges">Ok</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Закрыть</button>
-            </div>
+            @if (Product != null)
+            {
+                <EditForm Model="@Product" OnValidSubmit="SaveChanges">
+                    <DataAnnotationsValidator />
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Изменить товар</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div><ValidationSummary /></div>
+                        <div class="mb-1">@Product?.Product?.Name</div>
+                        <div class="row g-2 mb-1">
+                            <div class="col-auto">
+                                <label class="col-form-label" for="count">Количество факт</label>
+                            </div>
+                            <div class="col-auto">
+                                <InputNumber class="form-control" id="count" @bind-Value="@Product.CountFact" />
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            @if (ChangeReasons != null)
+                            {
+                                <div class="col-auto">
+                                    <label class="col-form-label" for="changeReason">Причина изменения</label>
+                                </div>
+                                <div class="col-auto">
+                                    <InputSelect class="form-select" id="changeReason" @bind-Value="Product.ChangeReasonId">
+                                        <option value=""></option>
+                                        @foreach (var item in ChangeReasons)
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    </InputSelect>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Ok</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Закрыть</button>
+                    </div>
+                </EditForm>
+            }
         </div>
     </div>
 </div>
@@ -35,6 +61,7 @@
 }
 
 @code {
+    [Parameter] public List<ChangeReasonOut>? ChangeReasons { get; set; }
     [Parameter] public EventCallback<DocOutProduct> OnSaveChanges { get; set; }
 
     public Guid Guid = Guid.NewGuid();
@@ -42,21 +69,16 @@
     public string ModalClass = "";
     public bool ShowBackdrop = false;
 
-    private List<ChangeReasonOut>? changeReasons;
-    private DocOutProduct DocOutProduct = new();
-
-    protected override void OnInitialized()
-    {
-    }
+    public DocOutProduct Product = new();
 
     public void Open(DocOutProduct product)
     {
+        Product = product;
+
         ModalDisplay = "block;";
         ModalClass = "show";
         ShowBackdrop = true;
         StateHasChanged();
-
-        DocOutProduct = product;
     }
 
     public void Close()
@@ -69,6 +91,6 @@
 
     private async Task SaveChanges()
     {
-        await OnSaveChanges.InvokeAsync(DocOutProduct);
+        await OnSaveChanges.InvokeAsync(Product);
     }
 }

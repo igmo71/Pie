@@ -2,7 +2,7 @@
 
 namespace Pie.Data.Models
 {
-    public abstract class DocHistory
+    public abstract class DocProductHistory
     {
         public Guid Id { get; set; }
 
@@ -10,5 +10,12 @@ namespace Pie.Data.Models
 
         public string? UserId { get; set; }
         public ApplicationUser? User { get; set; }
+
+        public Guid ProductId { get; set; }
+        public Product? Product { get; set; }
+
+        public float CountPlan { get; set; }
+
+        public float CountFact { get; set; }
     }
 }

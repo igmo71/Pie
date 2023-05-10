@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Pie.Data.Models;
+using Pie.Data.Models.Out;
 using Pie.Data.Services;
 
 namespace Pie.Controllers

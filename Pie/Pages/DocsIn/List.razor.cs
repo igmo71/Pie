@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Pie.Data.Models;
+using Pie.Data.Models.In;
 using Pie.Data.Services;
 
 namespace Pie.Pages.DocsIn

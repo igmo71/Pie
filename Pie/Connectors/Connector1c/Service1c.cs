@@ -2,5 +2,9 @@
 {
     public class Service1c
     {
+        public async Task Send()
+        {
+
+        }
     }
 }

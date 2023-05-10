@@ -6,9 +6,13 @@ namespace Pie.Data.Models
     {
         public Guid Id { get; set; }
 
+        [Required]
         [MaxLength(100)]
         public string? Name { get; set; }
-        public int? Key { get; set; }
+
         public bool Active { get; set; }
+
+        [Required]
+        public int? Key { get; set; }
     }
 }

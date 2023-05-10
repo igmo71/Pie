@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Pie.Data.Models;
+using Pie.Data.Models.Out;
 
 namespace Pie.Areas.Config.Pages.StatusesOut
 {

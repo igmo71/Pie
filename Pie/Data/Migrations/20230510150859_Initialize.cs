@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -98,9 +99,13 @@ namespace Pie.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Key = table.Column<int>(type: "integer", nullable: false),
-                    Active = table.Column<bool>(type: "boolean", nullable: false)
+                    Active = table.Column<bool>(type: "boolean", nullable: false),
+                    Days = table.Column<int>(type: "integer", nullable: false),
+                    Hours = table.Column<int>(type: "integer", nullable: false),
+                    Minutes = table.Column<int>(type: "integer", nullable: false),
+                    ConcreteTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -113,9 +118,13 @@ namespace Pie.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Key = table.Column<int>(type: "integer", nullable: false),
-                    Active = table.Column<bool>(type: "boolean", nullable: false)
+                    Active = table.Column<bool>(type: "boolean", nullable: false),
+                    Days = table.Column<int>(type: "integer", nullable: false),
+                    Hours = table.Column<int>(type: "integer", nullable: false),
+                    Minutes = table.Column<int>(type: "integer", nullable: false),
+                    ConcreteTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -436,23 +445,17 @@ namespace Pie.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DocOutId = table.Column<Guid>(type: "uuid", nullable: false),
+                    DocId = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Count = table.Column<float>(type: "real", nullable: false),
-                    ChangeReasonId = table.Column<Guid>(type: "uuid", nullable: true)
+                    CountPlan = table.Column<float>(type: "real", nullable: false),
+                    CountFact = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DocOutProducts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DocOutProducts_ChangeReasons_ChangeReasonId",
-                        column: x => x.ChangeReasonId,
-                        principalTable: "ChangeReasons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                    table.ForeignKey(
-                        name: "FK_DocOutProducts_DocsOut_DocOutId",
-                        column: x => x.DocOutId,
+                        name: "FK_DocOutProducts_DocsOut_DocId",
+                        column: x => x.DocId,
                         principalTable: "DocsOut",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -464,15 +467,88 @@ namespace Pie.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "DocOutProductsHistory",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    DocId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CountPlan = table.Column<float>(type: "real", nullable: false),
+                    CountFact = table.Column<float>(type: "real", nullable: false),
+                    ChangeReasonId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    DateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DocOutProductsHistory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DocOutProductsHistory_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_DocOutProductsHistory_ChangeReasons_ChangeReasonId",
+                        column: x => x.ChangeReasonId,
+                        principalTable: "ChangeReasons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_DocOutProductsHistory_DocsOut_DocId",
+                        column: x => x.DocId,
+                        principalTable: "DocsOut",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DocOutProductsHistory_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DocsOutHistory",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    DocId = table.Column<Guid>(type: "uuid", nullable: false),
+                    StatusOutId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    DateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DocsOutHistory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DocsOutHistory_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_DocsOutHistory_DocsOut_DocId",
+                        column: x => x.DocId,
+                        principalTable: "DocsOut",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DocsOutHistory_StatusesOut_StatusOutId",
+                        column: x => x.StatusOutId,
+                        principalTable: "StatusesOut",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "QueuesOut",
-                columns: new[] { "Id", "Active", "Key", "Name" },
+                columns: new[] { "Id", "Active", "ConcreteTime", "Days", "Hours", "Key", "Minutes", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("3558d2ba-ffb6-4f08-9891-f7f1e8853c83"), true, 20, "Собрать к дате" },
-                    { new Guid("7e83260a-316f-4a1f-be9a-bf353b118536"), true, 10, "Живая очередь" },
-                    { new Guid("8bdc656e-8a2c-4aef-9422-e0a419608190"), true, 40, "Очередность не указана" },
-                    { new Guid("d964fcad-d71d-480a-bdeb-0b2c045fcd90"), true, 30, "Собственная доставка" }
+                    { new Guid("3558d2ba-ffb6-4f08-9891-f7f1e8853c83"), true, new TimeOnly(0, 0, 0), 0, 0, 20, 0, "Собрать к дате" },
+                    { new Guid("7e83260a-316f-4a1f-be9a-bf353b118536"), true, new TimeOnly(0, 0, 0), 0, 0, 10, 0, "Живая очередь" },
+                    { new Guid("8bdc656e-8a2c-4aef-9422-e0a419608190"), true, new TimeOnly(0, 0, 0), 0, 0, 40, 0, "Очередность не указана" },
+                    { new Guid("d964fcad-d71d-480a-bdeb-0b2c045fcd90"), true, new TimeOnly(0, 0, 0), 0, 0, 30, 0, "Собственная доставка" }
                 });
 
             migrationBuilder.InsertData(
@@ -562,19 +638,34 @@ namespace Pie.Data.Migrations
                 column: "DocOutId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DocOutProducts_ChangeReasonId",
+                name: "IX_DocOutProducts_DocId",
                 table: "DocOutProducts",
-                column: "ChangeReasonId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DocOutProducts_DocOutId",
-                table: "DocOutProducts",
-                column: "DocOutId");
+                column: "DocId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DocOutProducts_ProductId",
                 table: "DocOutProducts",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocOutProductsHistory_ChangeReasonId",
+                table: "DocOutProductsHistory",
+                column: "ChangeReasonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocOutProductsHistory_DocId",
+                table: "DocOutProductsHistory",
+                column: "DocId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocOutProductsHistory_ProductId",
+                table: "DocOutProductsHistory",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocOutProductsHistory_UserId",
+                table: "DocOutProductsHistory",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DocsIn_QueueKey",
@@ -605,6 +696,21 @@ namespace Pie.Data.Migrations
                 name: "IX_DocsOut_WarehouseId",
                 table: "DocsOut",
                 column: "WarehouseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocsOutHistory_DocId",
+                table: "DocsOutHistory",
+                column: "DocId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocsOutHistory_StatusOutId",
+                table: "DocsOutHistory",
+                column: "StatusOutId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocsOutHistory_UserId",
+                table: "DocsOutHistory",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -638,10 +744,13 @@ namespace Pie.Data.Migrations
                 name: "DocOutProducts");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "DocOutProductsHistory");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "DocsOutHistory");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "DocsIn");
@@ -653,10 +762,13 @@ namespace Pie.Data.Migrations
                 name: "ChangeReasons");
 
             migrationBuilder.DropTable(
-                name: "DocsOut");
+                name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "DocsOut");
 
             migrationBuilder.DropTable(
                 name: "QueuesIn");
