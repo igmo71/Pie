@@ -71,7 +71,7 @@ namespace Pie.Data.Services
 
         public bool WarehouseExists(Guid id)
         {
-            return _context.Warehouses.IgnoreQueryFilters().Any(e => e.Id == id);
+            return _context.Warehouses.Any(e => e.Id == id);
         }
     }
 }

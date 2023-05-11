@@ -24,7 +24,7 @@ namespace Pie.Areas.Config.Pages.StatusesOut
                 return NotFound();
             }
 
-            var statusout = await _context.StatusesOut.IgnoreQueryFilters().FirstOrDefaultAsync(m => m.Id == id);
+            var statusout = await _context.StatusesOut.FirstOrDefaultAsync(m => m.Id == id);
             if (statusout == null)
             {
                 return NotFound();

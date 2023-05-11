@@ -23,7 +23,7 @@ namespace Pie.Areas.Config.Pages.StatusesIn
                 return NotFound();
             }
 
-            var statusin = await _context.StatusesIn.IgnoreQueryFilters().FirstOrDefaultAsync(m => m.Id == id);
+            var statusin = await _context.StatusesIn.FirstOrDefaultAsync(m => m.Id == id);
             if (statusin == null)
             {
                 return NotFound();

@@ -117,7 +117,7 @@ namespace Pie.Data.Services.Out
 
         public bool DocExists(Guid id)
         {
-            return _context.DocsOut.IgnoreQueryFilters().Any(e => e.Id == id);
+            return _context.DocsOut.Any(e => e.Id == id);
         }
 
         public async Task<ServiceResult> SendAsync(DocOut doc)

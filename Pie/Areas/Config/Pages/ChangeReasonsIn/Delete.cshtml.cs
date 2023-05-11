@@ -24,15 +24,15 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsIn
                 return NotFound();
             }
 
-            var changereasonin = await _context.ChangeReasonsIn.IgnoreQueryFilters().FirstOrDefaultAsync(m => m.Id == id);
+            var changeReasonin = await _context.ChangeReasonsIn.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (changereasonin == null)
+            if (changeReasonin == null)
             {
                 return NotFound();
             }
             else
             {
-                ChangeReasonIn = changereasonin;
+                ChangeReasonIn = changeReasonin;
             }
             return Page();
         }
@@ -44,10 +44,10 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsIn
                 return NotFound();
             }
 
-            var changereasonin = await _context.ChangeReasonsIn.IgnoreQueryFilters().FirstOrDefaultAsync(e => e.Id == id);
-            if (changereasonin != null)
+            var changeReason = await _context.ChangeReasonsIn.FirstOrDefaultAsync(e => e.Id == id);
+            if (changeReason != null)
             {
-                ChangeReasonIn = changereasonin;
+                ChangeReasonIn = changeReason;
                 _context.ChangeReasonsIn.Remove(ChangeReasonIn);
                 await _context.SaveChangesAsync();
             }

@@ -17,7 +17,7 @@ namespace Pie.Areas.Config.Pages.StatusesOut
 
         public async Task OnGetAsync()
         {
-            StatusOut = await _context.StatusesOut.IgnoreQueryFilters().ToListAsync();
+            StatusOut = await _context.StatusesOut.ToListAsync();
         }
     }
 }

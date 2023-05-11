@@ -91,7 +91,7 @@ namespace Pie.Data.Services.In
 
         public bool DocExists(Guid id)
         {
-            return _context.DocsIn.IgnoreQueryFilters().Any(e => e.Id == id);
+            return _context.DocsIn.Any(e => e.Id == id);
         }
     }
 }

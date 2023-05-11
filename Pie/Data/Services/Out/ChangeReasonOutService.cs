@@ -15,14 +15,14 @@ namespace Pie.Data.Services.Out
 
         public async Task<List<ChangeReasonOut>> GetAsync()
         {
-            var changeReasons = await _context.ChangeReasonsOut.AsNoTracking()/*.IgnoreQueryFilters()*/.ToListAsync();
+            var changeReasons = await _context.ChangeReasonsOut.AsNoTracking().ToListAsync();
 
             return changeReasons;
         }
 
         public async Task<ChangeReasonOut?> GetAsync(Guid? id)
         {
-            var changeReason = await _context.ChangeReasonsOut/*.IgnoreQueryFilters()*/.FirstOrDefaultAsync(m => m.Id == id);
+            var changeReason = await _context.ChangeReasonsOut.FirstOrDefaultAsync(m => m.Id == id);
 
             return changeReason;
         }
@@ -65,7 +65,7 @@ namespace Pie.Data.Services.Out
 
         public async Task DeleteAsync(Guid? id)
         {
-            var changeReason = await _context.ChangeReasonsOut.IgnoreQueryFilters().FirstOrDefaultAsync(m => m.Id == id)
+            var changeReason = await _context.ChangeReasonsOut.FirstOrDefaultAsync(m => m.Id == id)
                 ?? throw new ApplicationException($"ChangeReasonOutService DeleteAsync NotFount {id}");
             _context.ChangeReasonsOut.Remove(changeReason);
             await _context.SaveChangesAsync();

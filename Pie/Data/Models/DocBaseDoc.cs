@@ -1,6 +1,4 @@
-﻿using Pie.Data.Models.Out;
-
-namespace Pie.Data.Models
+﻿namespace Pie.Data.Models
 {
     public abstract class DocBaseDoc
     {

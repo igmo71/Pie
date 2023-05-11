@@ -17,7 +17,7 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsIn
 
         public async Task OnGetAsync()
         {
-            ChangeReasonIn = await _context.ChangeReasonsIn.IgnoreQueryFilters().ToListAsync();
+            ChangeReasonIn = await _context.ChangeReasonsIn.ToListAsync();
         }
     }
 }

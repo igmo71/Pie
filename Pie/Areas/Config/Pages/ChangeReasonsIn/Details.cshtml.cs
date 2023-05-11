@@ -23,14 +23,14 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsIn
                 return NotFound();
             }
 
-            var changereasonin = await _context.ChangeReasonsIn.IgnoreQueryFilters().FirstOrDefaultAsync(m => m.Id == id);
-            if (changereasonin == null)
+            var changeReason = await _context.ChangeReasonsIn.FirstOrDefaultAsync(m => m.Id == id);
+            if (changeReason == null)
             {
                 return NotFound();
             }
             else
             {
-                ChangeReasonIn = changereasonin;
+                ChangeReasonIn = changeReason;
             }
             return Page();
         }

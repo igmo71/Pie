@@ -71,7 +71,7 @@ namespace Pie.Data.Services
 
         public bool ProductExists(Guid id)
         {
-            var result = _context.Products.IgnoreQueryFilters().Any(e => e.Id == id);
+            var result = _context.Products.Any(e => e.Id == id);
             return result;
         }
     }
