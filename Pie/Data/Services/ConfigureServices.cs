@@ -22,7 +22,6 @@ namespace Pie.Data.Services
             services.AddScoped<QueueInService>();
             services.AddScoped<QueueOutService>();
             services.AddScoped<ChangeReasonOutService>();
-            services.AddScoped<Client1c>();
 
             return services;
         }

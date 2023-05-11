@@ -40,8 +40,8 @@
 <div>
     <QuickGrid Items="@(doc?.Products?.AsQueryable<DocOutProduct>())" Class="table table-bordered table-hover">
         <PropertyColumn Property="@(p => p.Product != null ? p.Product.Name : string.Empty)" Title="Товар" Sortable="true"></PropertyColumn>
-        <PropertyColumn Property="@(p => p.CountPlan)" Title="Кол-во" Sortable="true"></PropertyColumn>
-        <PropertyColumn Property="@(p => p.CountFact)" Title="Кол-во" Sortable="true"></PropertyColumn>
+        <PropertyColumn Property="@(p => p.CountPlan)" Title="Кол-во план" Sortable="true"></PropertyColumn>
+        <PropertyColumn Property="@(p => p.CountFact)" Title="Кол-во факт" Sortable="true"></PropertyColumn>
         <TemplateColumn Title="Изменить">
             <button class="btn btn-outline-primary" @onclick="@(() => EditDoc(context))"><i class="bi bi-pencil-square"></i></button>
         </TemplateColumn>

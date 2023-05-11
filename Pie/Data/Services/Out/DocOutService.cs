@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Pie.Connectors.Connector1c;
 using Pie.Data.Models;
 using Pie.Data.Models.Out;
 
@@ -8,12 +9,14 @@ namespace Pie.Data.Services.Out
     {
         private readonly ApplicationDbContext _context;
         private readonly BaseDocService _baseDocService;
+        private readonly Service1c _service1C;
         private readonly ILogger<DocOutService> _logger;
 
-        public DocOutService(ApplicationDbContext context, BaseDocService baseDocService, ILogger<DocOutService> logger)
+        public DocOutService(ApplicationDbContext context, BaseDocService baseDocService, Service1c service1C, ILogger<DocOutService> logger)
         {
             _context = context;
             _baseDocService = baseDocService;
+            _service1C = service1C;
             _logger = logger;
         }
         public async Task<List<DocOut>> GetDocsAsync()
@@ -77,10 +80,9 @@ namespace Pie.Data.Services.Out
             {
                 await _context.SaveChangesAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _logger.LogError(ex, "DocOutService CreateDocAsync");
-                //throw;
+                throw;
             }
 
             return doc;
@@ -123,6 +125,9 @@ namespace Pie.Data.Services.Out
         public async Task<ServiceResult> SendAsync(DocOut doc)
         {
             ServiceResult result = new();
+
+            await _service1C.SendOutAsync(doc);
+
             result.IsSuccess = true;
 
             return result;
