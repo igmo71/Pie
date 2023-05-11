@@ -38,10 +38,26 @@
     }
 </div>
 <div>
-    <QuickGrid Items="@(doc?.Products?.AsQueryable<DocOutProduct>())" Class="table table-bordered table-hover">
-        <PropertyColumn Property="@(p => p.Product != null ? p.Product.Name : string.Empty)" Title="Товар" Sortable="true"></PropertyColumn>
+    @*<QuickGrid Items="@(doc?.Products?.AsQueryable<DocOutProduct>())" Class="table table-bordered table-hover">*@
+    <QuickGrid Items="@FilteredProducts" Class="table table-bordered table-hover">
+        <PropertyColumn Property="@(p => p.Product != null ? p.Product.Name : string.Empty)" Title="Товар"  Sortable="true">
+            <ColumnOptions>
+                <div class="search-box">
+                    <input type="search" autofocus @bind="nameFilter" @bind:event="oninput" placeholder="Название..." />
+                </div>
+            </ColumnOptions>
+        </PropertyColumn>        
         <PropertyColumn Property="@(p => p.CountPlan)" Title="Кол-во план" Sortable="true"></PropertyColumn>
-        <PropertyColumn Property="@(p => p.CountFact)" Title="Кол-во факт" Sortable="true"></PropertyColumn>
+        @*<PropertyColumn Property="@(p => p.CountFact)" Title="Кол-во факт" Sortable="true"></PropertyColumn>*@
+        <TemplateColumn Title="Кол факт" Class="p-0 m-0"> 
+            <div class="@(context.CountFact == context.CountPlan ? string.Empty : "alert  alert-warning") m-0 p-2">
+                @{
+                    string? detail = changeReasons?.FirstOrDefault(c => c.Id == context.ChangeReasonId)?.Name;
+                    detail = string.IsNullOrEmpty(detail) ? string.Empty : $@"    ( {detail} ) ";
+                }
+                @context.CountFact @detail
+            </div>
+        </TemplateColumn>
         <TemplateColumn Title="Изменить">
             <button class="btn btn-outline-primary" @onclick="@(() => EditDoc(context))"><i class="bi bi-pencil-square"></i></button>
         </TemplateColumn>
@@ -50,3 +66,19 @@
 
 <EditDialog @ref="EditDialog" ChangeReasons="@changeReasons" OnSaveChanges="@UpdateDoc"></EditDialog>
 
+@code{
+    string? nameFilter;
+    IQueryable<DocOutProduct>? FilteredProducts
+    {
+        get
+        {
+            var result = doc?.Products?.AsQueryable();
+
+            if (!string.IsNullOrEmpty(nameFilter))
+            {
+                result = result?.Where(p => p.Product.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
+            }
+            return result;
+        }
+    }
+}
