@@ -22,6 +22,9 @@ namespace Pie.Data.Models
         public Guid? WarehouseId { get; set; }
         public Warehouse? Warehouse { get; set; }
 
+        [MaxLength(250)]
+        public string? Comment { get; set; }
+
         [NotMapped]
         public string? BarcodeBase64 => BarcodeGuidConvert.GetBarcodeBase64(Id);
     }

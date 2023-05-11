@@ -27,8 +27,12 @@ namespace Pie
             builder.Services.AddHttpLogging(logging =>
             {
                 //logging.LoggingFields = HttpLoggingFields.All;
-                logging.LoggingFields = HttpLoggingFields.RequestBody | HttpLoggingFields.ResponseBody;
-                //logging.MediaTypeOptions.AddText("application/javascript");
+                logging.LoggingFields = 
+                    HttpLoggingFields.RequestPath | 
+                    HttpLoggingFields.RequestQuery | 
+                    HttpLoggingFields.RequestBody | 
+                    HttpLoggingFields.ResponseBody;
+                logging.MediaTypeOptions.AddText("application/json");
                 logging.RequestBodyLogLimit = 4096;
                 logging.ResponseBodyLogLimit = 4096;
             });

@@ -1,6 +1,4 @@
-﻿using Pie.Data.Models.Out;
-
-namespace Pie.Data.Models.In
+﻿namespace Pie.Data.Models.In
 {
     public class DocInProductHistory : DocProductHistory
     {

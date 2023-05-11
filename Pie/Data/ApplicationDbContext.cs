@@ -57,11 +57,11 @@ namespace Pie.Data
             builder.Entity<DocIn>().HasOne(d => d.Warehouse).WithMany().HasForeignKey(d => d.WarehouseId).HasPrincipalKey(w => w.Id).OnDelete(DeleteBehavior.SetNull);
 
             builder.Entity<DocInBaseDoc>().HasKey(b => b.Id);
-            builder.Entity<DocInBaseDoc>().HasOne(b => b.DocIn).WithMany(d => d.BaseDocs).HasForeignKey(b => b.DocInId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<DocInBaseDoc>().HasOne(b => b.Doc).WithMany(d => d.BaseDocs).HasForeignKey(b => b.DocId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<DocInBaseDoc>().HasOne(b => b.BaseDoc).WithMany().HasForeignKey(b => b.BaseDocId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<DocInProduct>().HasKey(p => p.Id);
-            builder.Entity<DocInProduct>().HasOne(p => p.DocIn).WithMany(d => d.Products).HasForeignKey(p => p.DocInId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<DocInProduct>().HasOne(p => p.Doc).WithMany(d => d.Products).HasForeignKey(p => p.DocId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<DocInProduct>().HasOne(p => p.Product).WithMany().HasForeignKey(p => p.ProductId).HasPrincipalKey(p => p.Id).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<DocInProduct>().HasOne(p => p.ChangeReason).WithMany().HasForeignKey(p => p.ChangeReasonId).HasPrincipalKey(c => c.Id).OnDelete(DeleteBehavior.SetNull);
 
@@ -81,7 +81,7 @@ namespace Pie.Data
 
             builder.Entity<DocOutHistory>().HasKey(h => h.Id);
             builder.Entity<DocOutHistory>().HasOne(h => h.Doc).WithMany().HasForeignKey(h => h.DocId).HasPrincipalKey(d => d.Id);
-            builder.Entity<DocOutHistory>().HasOne(h => h.Status).WithMany().HasForeignKey(h => h.StatusId).HasPrincipalKey(s => s.Id);
+            builder.Entity<DocOutHistory>().HasOne(h => h.Status).WithMany().HasForeignKey(h => h.StatusKey).HasPrincipalKey(s => s.Id);
             builder.Entity<DocOutHistory>().HasOne(h => h.User).WithMany().HasForeignKey(h => h.UserId).HasPrincipalKey(u => u.Id);
 
 

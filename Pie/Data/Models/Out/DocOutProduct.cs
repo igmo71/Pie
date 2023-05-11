@@ -11,8 +11,5 @@ namespace Pie.Data.Models.Out
         [NotMapped]
         [Required(ErrorMessage = "Причину изменения нужно указать")]
         public Guid? ChangeReasonId { get; set; }
-
-        [NotMapped]
-        public ChangeReasonOut? ChangeReason { get; set; }
     }
 }
