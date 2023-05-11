@@ -8,13 +8,18 @@ namespace Pie.Data.Services.Out
     public class DocOutService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
         private readonly BaseDocService _baseDocService;
         private readonly Service1c _service1C;
         private readonly ILogger<DocOutService> _logger;
 
-        public DocOutService(ApplicationDbContext context, BaseDocService baseDocService, Service1c service1C, ILogger<DocOutService> logger)
+        public event EventHandler<Guid>? DocCreated;
+
+        public DocOutService(ApplicationDbContext context, IDbContextFactory<ApplicationDbContext> contextFactory, BaseDocService baseDocService, Service1c service1C, ILogger<DocOutService> logger)
         {
             _context = context;
+            //_context = contextFactory.CreateDbContext();
+            _contextFactory = contextFactory;
             _baseDocService = baseDocService;
             _service1C = service1C;
             _logger = logger;
@@ -43,7 +48,9 @@ namespace Pie.Data.Services.Out
 
         public async Task<Dictionary<int, List<DocOut>>> GetDictionaryByQueue(SearchOutParameters searchParameters)
         {
-            var result = await _context.DocsOut.AsNoTracking()
+            using var context = _contextFactory.CreateDbContext();
+
+            var result = await context.DocsOut.AsNoTracking()
                 .Search(searchParameters)
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
@@ -80,7 +87,7 @@ namespace Pie.Data.Services.Out
             {
                 await _context.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -120,6 +127,11 @@ namespace Pie.Data.Services.Out
         public bool DocExists(Guid id)
         {
             return _context.DocsOut.Any(e => e.Id == id);
+        }
+
+        protected virtual void OnDocCreated(Guid id)
+        {
+            DocCreated?.Invoke(this, id);
         }
 
         public async Task<ServiceResult> SendAsync(DocOut doc)

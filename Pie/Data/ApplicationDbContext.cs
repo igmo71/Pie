@@ -41,6 +41,7 @@ namespace Pie.Data
         public DbSet<DocOutProductHistory> DocOutProductsHistory { get; set; }
         public DbSet<QueueOut> QueuesOut { get; set; }
         public DbSet<StatusOut> StatusesOut { get; set; }
+        public DbSet<QueueNumber> QueueNumber { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -56,7 +57,7 @@ namespace Pie.Data
             builder.Entity<DocIn>().HasOne(d => d.Status).WithMany().HasForeignKey(d => d.StatusKey).HasPrincipalKey(s => s.Key).OnDelete(DeleteBehavior.SetNull);
             builder.Entity<DocIn>().HasOne(d => d.Queue).WithMany().HasForeignKey(d => d.QueueKey).HasPrincipalKey(q => q.Key).OnDelete(DeleteBehavior.SetNull);
             builder.Entity<DocIn>().HasOne(d => d.Warehouse).WithMany().HasForeignKey(d => d.WarehouseId).HasPrincipalKey(w => w.Id).OnDelete(DeleteBehavior.SetNull);
-            builder.Entity<DocIn>().HasQueryFilter(d => d.Active && d.StatusKey != null && d.QueueKey != null);
+            //builder.Entity<DocIn>().HasQueryFilter(d => d.Active && d.StatusKey != null && d.QueueKey != null);
 
             builder.Entity<DocInBaseDoc>().HasKey(b => b.Id);
             builder.Entity<DocInBaseDoc>().HasOne(b => b.Doc).WithMany(d => d.BaseDocs).HasForeignKey(b => b.DocId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
@@ -85,7 +86,7 @@ namespace Pie.Data
             builder.Entity<DocOut>().HasOne(d => d.Status).WithMany().HasForeignKey(d => d.StatusKey).HasPrincipalKey(s => s.Key).OnDelete(DeleteBehavior.SetNull);
             builder.Entity<DocOut>().HasOne(d => d.Queue).WithMany().HasForeignKey(d => d.QueueKey).HasPrincipalKey(q => q.Key).OnDelete(DeleteBehavior.SetNull);
             builder.Entity<DocOut>().HasOne(d => d.Warehouse).WithMany().HasForeignKey(d => d.WarehouseId).HasPrincipalKey(w => w.Id).OnDelete(DeleteBehavior.SetNull);
-            builder.Entity<DocOut>().HasQueryFilter(d => d.Active && d.StatusKey != null && d.QueueKey != null);
+            //builder.Entity<DocOut>().HasQueryFilter(d => d.Active && d.StatusKey != null && d.QueueKey != null);
 
             builder.Entity<DocOutBaseDoc>().HasKey(b => b.Id);
             builder.Entity<DocOutBaseDoc>().HasOne(b => b.Doc).WithMany(d => d.BaseDocs).HasForeignKey(b => b.DocId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
@@ -108,6 +109,8 @@ namespace Pie.Data
             
             builder.Entity<QueueOut>().HasKey(q => q.Id);
             builder.Entity<StatusOut>().HasKey(s => s.Id);
+
+            builder.Entity<QueueNumber>().HasKey(e => e.Value);
 
             DataSeed.Initialize(builder);
         }

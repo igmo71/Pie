@@ -23,6 +23,8 @@ namespace Pie.Data.Services
             services.AddScoped<QueueOutService>();
             services.AddScoped<ChangeReasonOutService>();
 
+            services.AddSingleton<EventDispatcher>();
+
             return services;
         }
     }

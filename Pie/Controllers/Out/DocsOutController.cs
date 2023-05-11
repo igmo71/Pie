@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Pie.Data.Models;
 using Pie.Data.Models.Out;
+using Pie.Data.Services;
 using Pie.Data.Services.Out;
 
 namespace Pie.Controllers.Out
@@ -10,9 +12,12 @@ namespace Pie.Controllers.Out
     {
         private readonly DocOutService _docService;
 
-        public DocsOutController(DocOutService docService)
+        private readonly EventDispatcher _eventDispatcher;
+
+        public DocsOutController(DocOutService docService, EventDispatcher eventDispatcher)
         {
             _docService = docService;
+            _eventDispatcher = eventDispatcher;
         }
 
         // GET: api/DocsOut
@@ -55,6 +60,8 @@ namespace Pie.Controllers.Out
         {
 
             var result = await _docService.CreateDocAsync(docDto);
+
+            _eventDispatcher.OnDocOutCreated(docDto.Id);
 
             return CreatedAtAction("GetDoc", new { id = result.Id }, result);
         }

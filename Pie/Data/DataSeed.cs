@@ -23,6 +23,9 @@ namespace Pie.Data
                 new StatusOut { Id = Guid.Parse("7C2BD6BE-CF81-4B1A-9ACF-D4EBF416F4D3"), Key = 5, Active = true, Name = "КОтгрузке" },
                 new StatusOut { Id = Guid.Parse("9EBA20CE-9245-4109-92CB-A9875801FBB4"), Key = 6, Active = true, Name = "Отгружен" }
                 );
+            builder.Entity<QueueNumber>().HasData(
+                new QueueNumber { CharValue = 0, NumValue = 0, Value = "A000"}
+                );
         }
     }
 }

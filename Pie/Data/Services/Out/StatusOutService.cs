@@ -6,11 +6,13 @@ namespace Pie.Data.Services.Out
     public class StatusOutService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
         private readonly ILogger<StatusOutService> _logger;
 
-        public StatusOutService(ApplicationDbContext context, ILogger<StatusOutService> logger)
+        public StatusOutService(ApplicationDbContext context, IDbContextFactory<ApplicationDbContext> contextFactory, ILogger<StatusOutService> logger)
         {
             _context = context;
+            _contextFactory = contextFactory;
             _logger = logger;
         }
 
@@ -78,11 +80,13 @@ namespace Pie.Data.Services.Out
 
         public async Task<Dictionary<int, int>?> GetCountByStatusAsync(SearchOutParameters searchParameters)
         {
-            var result = await _context.DocsOut.AsNoTracking()
-                .Search(searchParameters.ExceptStatus())
-                .GroupBy(e => e.StatusKey.GetValueOrDefault())
-                .Select(e => new { e.Key, Value = e.Count() })
-                .ToDictionaryAsync(e => e.Key, e => e.Value);
+            using var context = _contextFactory.CreateDbContext();
+
+            var result = await context.DocsOut.AsNoTracking()
+            .Search(searchParameters.ExceptStatus())
+            .GroupBy(e => e.StatusKey.GetValueOrDefault())
+            .Select(e => new { e.Key, Value = e.Count() })
+            .ToDictionaryAsync(e => e.Key, e => e.Value);
 
             return result;
         }

@@ -14,6 +14,7 @@ namespace Pie.Pages.DocsOut
         [Inject] public required WarehouseService WarehouseService { get; set; }
         [Inject] public required SearchOutParameters SearchParameters { get; set; }
         [Inject] public required NavigationManager NavigationManager { get; set; }
+        [Inject] public required EventDispatcher EventDispatcher { get; set; }
 
         private Dictionary<int, List<DocOut>> docs = new();
         private List<QueueOut> queues = new();
@@ -90,12 +91,21 @@ namespace Pie.Pages.DocsOut
 
         protected override void OnParametersSet()
         {
+            //DocService.DocCreated += async (object? sender, Guid args) => await DocCreatedHandle(sender, args);
+            EventDispatcher.DocOutCreated += async (object? sender, Guid args) => await DocCreatedHandle(sender, args);
             SearchParameters.OnChange += StateHasChanged;
         }
 
         public void Dispose()
         {
+            //DocService.DocCreated -= async (object? sender, Guid args) => await DocCreatedHandle(sender, args);
+            EventDispatcher.DocOutCreated -= async (object? sender, Guid args) => await DocCreatedHandle(sender, args);
             SearchParameters.OnChange -= StateHasChanged;
+        }
+
+        private async Task DocCreatedHandle(object? sender, Guid e)
+        {
+            await SearchHandle();
         }
     }
 }
