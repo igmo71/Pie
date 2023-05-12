@@ -31,7 +31,7 @@ namespace Pie.Pages.DocsOut
 
         private async Task GetChangeReasonsAsync()
         {
-            changeReasons = await ChangeReasonService.GetAsync();
+            changeReasons = await ChangeReasonService.GetListAsync();
         }
 
         private async Task GetDocAsync()

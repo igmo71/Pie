@@ -44,7 +44,7 @@ namespace Pie.Controllers
             if (id != warehouse.Id)
                 return BadRequest();
 
-            await _warehousesService.UpdateAsync(id, warehouse);
+            await _warehousesService.UpdateAsync(warehouse);
 
             return NoContent();
         }

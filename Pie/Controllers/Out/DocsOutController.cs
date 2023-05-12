@@ -24,7 +24,7 @@ namespace Pie.Controllers.Out
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DocOut>>> GetDocs()
         {
-            var doc = await _docService.GetAsync();
+            var doc = await _docService.GetListAsync();
             return Ok(doc);
         }
 

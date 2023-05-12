@@ -6,13 +6,11 @@ namespace Pie.Data.Services.Out
     public class StatusOutService
     {
         private readonly ApplicationDbContext _context;
-        private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
         private readonly ILogger<StatusOutService> _logger;
 
-        public StatusOutService(ApplicationDbContext context, IDbContextFactory<ApplicationDbContext> contextFactory, ILogger<StatusOutService> logger)
+        public StatusOutService(ApplicationDbContext context, ILogger<StatusOutService> logger)
         {
             _context = context;
-            _contextFactory = contextFactory;
             _logger = logger;
         }
 
