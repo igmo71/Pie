@@ -19,7 +19,7 @@ namespace Pie.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            var products = await _productsService.GetProductsAsync();
+            var products = await _productsService.GetAsync();
 
             return Ok(products);
         }
@@ -28,7 +28,7 @@ namespace Pie.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(Guid id)
         {
-            var product = await _productsService.GetProductAsync(id);
+            var product = await _productsService.GetAsync(id);
 
             if (product == null)
                 return NotFound();
@@ -44,7 +44,7 @@ namespace Pie.Controllers
             if (id != product.Id)
                 return BadRequest();
 
-            await _productsService.UpdateProductAsync(id, product);
+            await _productsService.UpdateAsync(id, product);
 
             return NoContent();
         }
@@ -54,7 +54,7 @@ namespace Pie.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
-            var result = await _productsService.CreateProductAsync(product);
+            var result = await _productsService.CreateAsync(product);
 
             return CreatedAtAction("GetProduct", new { id = result.Id }, result);
         }
@@ -63,7 +63,7 @@ namespace Pie.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(Guid id)
         {
-            await _productsService.DeleteProductAsync(id);
+            await _productsService.DeleteAsync(id);
 
             return NoContent();
         }

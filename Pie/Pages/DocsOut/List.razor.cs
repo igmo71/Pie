@@ -50,7 +50,7 @@ namespace Pie.Pages.DocsOut
 
         private async Task GetWarehousesAsync()
         {
-            warehouses = await WarehouseService.GetWarehouses();
+            warehouses = await WarehouseService.GetAsync();
         }
 
         private async Task GetDocsAsync()

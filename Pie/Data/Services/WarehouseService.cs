@@ -14,23 +14,25 @@ namespace Pie.Data.Services
             _logger = logger;
         }
 
-        public async Task<List<Warehouse>> GetWarehouses()
+        public async Task<List<Warehouse>> GetAsync()
         {
             var warehouses = await _context.Warehouses.AsNoTracking().ToListAsync();
+
             return warehouses;
         }
 
-        public async Task<Warehouse?> GetWarehouseAsync(Guid id)
+        public async Task<Warehouse?> GetAsync(Guid id)
         {
             var warehouse = await _context.Warehouses.FindAsync(id);
+
             return warehouse;
         }
 
-        public async Task<Warehouse> CreateWarehouseAsync(Warehouse warehouse)
+        public async Task<Warehouse> CreateAsync(Warehouse warehouse)
         {
-            if (WarehouseExists(warehouse.Id))
+            if (Exists(warehouse.Id))
             {
-                await UpdateWarehouseAsync(warehouse.Id, warehouse);
+                await UpdateAsync(warehouse);
             }
             else
             {
@@ -40,7 +42,7 @@ namespace Pie.Data.Services
             return warehouse;
         }
 
-        public async Task UpdateWarehouseAsync(Guid id, Warehouse warehouse)
+        public async Task UpdateAsync(Warehouse warehouse)
         {
             _context.Entry(warehouse).State = EntityState.Modified;
 
@@ -50,9 +52,9 @@ namespace Pie.Data.Services
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!WarehouseExists(id))
+                if (!Exists(warehouse.Id))
                 {
-                    throw new ApplicationException($"WarehouseService UpdateWarehouseAsync NotFount {id}", ex);
+                    throw new ApplicationException($"WarehouseService UpdateWarehouseAsync NotFount {warehouse.Id}", ex);
                 }
                 else
                 {
@@ -61,15 +63,17 @@ namespace Pie.Data.Services
             }
         }
 
-        public async Task DeleteWarehouseAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             var warehouse = await _context.Warehouses.FindAsync(id)
                 ?? throw new ApplicationException($"WarehouseService UpdateWarehouseAsync NotFount {id}");
+            
             _context.Warehouses.Remove(warehouse);
+            
             await _context.SaveChangesAsync();
         }
 
-        public bool WarehouseExists(Guid id)
+        public bool Exists(Guid id)
         {
             return _context.Warehouses.Any(e => e.Id == id);
         }

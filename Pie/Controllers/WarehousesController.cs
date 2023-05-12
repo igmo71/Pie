@@ -19,7 +19,7 @@ namespace Pie.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Warehouse>>> GetWarehouses()
         {
-            var result = await _warehousesService.GetWarehouses();
+            var result = await _warehousesService.GetAsync();
 
             return Ok(result);
         }
@@ -28,7 +28,7 @@ namespace Pie.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Warehouse>> GetWarehouse(Guid id)
         {
-            var warehouse = await _warehousesService.GetWarehouseAsync(id);
+            var warehouse = await _warehousesService.GetAsync(id);
 
             if (warehouse == null)
                 return NotFound();
@@ -44,7 +44,7 @@ namespace Pie.Controllers
             if (id != warehouse.Id)
                 return BadRequest();
 
-            await _warehousesService.UpdateWarehouseAsync(id, warehouse);
+            await _warehousesService.UpdateAsync(id, warehouse);
 
             return NoContent();
         }
@@ -54,7 +54,7 @@ namespace Pie.Controllers
         [HttpPost]
         public async Task<ActionResult<Warehouse>> PostWarehouse(Warehouse warehouse)
         {
-            var result = await _warehousesService.CreateWarehouseAsync(warehouse);
+            var result = await _warehousesService.CreateAsync(warehouse);
 
             return CreatedAtAction("GetWarehouse", new { id = result.Id }, result);
         }
@@ -63,7 +63,7 @@ namespace Pie.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteWarehouse(Guid id)
         {
-            await _warehousesService.DeleteWarehouseAsync(id);
+            await _warehousesService.DeleteAsync(id);
 
             return NoContent();
         }

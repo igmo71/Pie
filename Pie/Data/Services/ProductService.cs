@@ -14,23 +14,25 @@ namespace Pie.Data.Services
             _logger = logger;
         }
 
-        public async Task<IEnumerable<Product>> GetProductsAsync()
+        public async Task<IEnumerable<Product>> GetAsync()
         {
             var products = await _context.Products.AsNoTracking().ToListAsync();
+
             return products;
         }
 
-        public async Task<Product?> GetProductAsync(Guid id)
+        public async Task<Product?> GetAsync(Guid id)
         {
             var product = await _context.Products.FindAsync(id);
+
             return product;
         }
 
-        public async Task<Product> CreateProductAsync(Product product)
+        public async Task<Product> CreateAsync(Product product)
         {
-            if (ProductExists(product.Id))
+            if (Exists(product.Id))
             {
-                await UpdateProductAsync(product.Id, product);
+                await UpdateAsync(product);
             }
             else
             {
@@ -40,7 +42,7 @@ namespace Pie.Data.Services
             return product;
         }
 
-        public async Task UpdateProductAsync(Guid id, Product product)
+        public async Task UpdateAsync(Product product)
         {
             _context.Entry(product).State = EntityState.Modified;
 
@@ -50,9 +52,9 @@ namespace Pie.Data.Services
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!ProductExists(id))
+                if (!Exists(product.Id))
                 {
-                    throw new ApplicationException($"ProductsService UpdateProductAsync NotFount {id}", ex);
+                    throw new ApplicationException($"ProductsService UpdateProductAsync NotFount {product.Id}", ex);
                 }
                 else
                 {
@@ -61,17 +63,20 @@ namespace Pie.Data.Services
             }
         }
 
-        public async Task DeleteProductAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             var product = await _context.Products.FindAsync(id)
                 ?? throw new ApplicationException($"ProductsService DeleteProductAsync NotFount {id}");
+
             _context.Products.Remove(product);
+
             await _context.SaveChangesAsync();
         }
 
-        public bool ProductExists(Guid id)
+        public bool Exists(Guid id)
         {
             var result = _context.Products.Any(e => e.Id == id);
+
             return result;
         }
     }

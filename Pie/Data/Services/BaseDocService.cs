@@ -13,14 +13,18 @@ namespace Pie.Data.Services
             _context = context;
             _logger = logger;
         }
+
         public async Task<IEnumerable<BaseDoc>> GetAsync()
         {
             var baseDocs = await _context.BaseDocs.AsNoTracking().ToListAsync();
+
             return baseDocs;
         }
-        public async Task<BaseDoc?> GetBaseDocAsync(Guid id)
+
+        public async Task<BaseDoc?> GetAsync(Guid id)
         {
             var baseDoc = await _context.BaseDocs.FindAsync(id);
+
             return baseDoc;
         }
 
@@ -73,7 +77,9 @@ namespace Pie.Data.Services
         {
             var baseDoc = await _context.BaseDocs.FindAsync(id)
                 ?? throw new ApplicationException($"BaseDocService DeleteBaseDocAsync NotFount {id}");
+
             _context.BaseDocs.Remove(baseDoc);
+
             await _context.SaveChangesAsync();
         }
 
