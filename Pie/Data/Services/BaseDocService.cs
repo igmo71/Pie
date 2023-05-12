@@ -13,7 +13,7 @@ namespace Pie.Data.Services
             _context = context;
             _logger = logger;
         }
-        public async Task<IEnumerable<BaseDoc>> GetBaseDocsAsync()
+        public async Task<IEnumerable<BaseDoc>> GetAsync()
         {
             var baseDocs = await _context.BaseDocs.AsNoTracking().ToListAsync();
             return baseDocs;
@@ -24,11 +24,11 @@ namespace Pie.Data.Services
             return baseDoc;
         }
 
-        public async Task<BaseDoc> CreateBaseDocAsync(BaseDoc baseDoc)
+        public async Task<BaseDoc> CreateAsync(BaseDoc baseDoc)
         {
-            if (BaseDocExists(baseDoc.Id))
+            if (Exists(baseDoc.Id))
             {
-                await UpdateBaseDocAsync(baseDoc.Id, baseDoc);
+                await UpdateAsync(baseDoc);
             }
             else
             {
@@ -44,11 +44,11 @@ namespace Pie.Data.Services
 
             foreach (BaseDoc baseDoc in baseDocs)
             {
-                await CreateBaseDocAsync(baseDoc);
+                await CreateAsync(baseDoc);
             }
         }
 
-        public async Task UpdateBaseDocAsync(Guid id, BaseDoc baseDoc)
+        public async Task UpdateAsync(BaseDoc baseDoc)
         {
             _context.Entry(baseDoc).State = EntityState.Modified;
 
@@ -58,9 +58,9 @@ namespace Pie.Data.Services
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!BaseDocExists(id))
+                if (!Exists(baseDoc.Id))
                 {
-                    throw new ApplicationException($"BaseDocService UpdateBaseDocAsync NotFount {id}", ex);
+                    throw new ApplicationException($"BaseDocService UpdateBaseDocAsync NotFount {baseDoc.Id}", ex);
                 }
                 else
                 {
@@ -69,7 +69,7 @@ namespace Pie.Data.Services
             }
         }
 
-        public async Task DeleteBaseDocAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             var baseDoc = await _context.BaseDocs.FindAsync(id)
                 ?? throw new ApplicationException($"BaseDocService DeleteBaseDocAsync NotFount {id}");
@@ -77,7 +77,7 @@ namespace Pie.Data.Services
             await _context.SaveChangesAsync();
         }
 
-        public bool BaseDocExists(Guid id)
+        public bool Exists(Guid id)
         {
             return _context.BaseDocs.Any(e => e.Id == id);
         }
