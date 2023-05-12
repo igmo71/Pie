@@ -18,7 +18,7 @@ namespace Pie.Data.Models
 
         // Отгрузить До:
         [DefaultValue(0)]
-        public int Days { get; set; } 
+        public int Days { get; set; }
 
         [DefaultValue(0)]
         public int Hours { get; set; }

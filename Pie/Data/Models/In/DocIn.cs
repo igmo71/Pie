@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Pie.Data.Models.In
+﻿namespace Pie.Data.Models.In
 {
     public class DocIn : Doc
     {
@@ -11,6 +9,6 @@ namespace Pie.Data.Models.In
         public StatusIn? Status { get; set; }
 
         public int? QueueKey { get; set; }
-        public QueueIn? Queue { get; set; } 
+        public QueueIn? Queue { get; set; }
     }
 }

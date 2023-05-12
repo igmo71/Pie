@@ -5,7 +5,7 @@
         public DocOutHistory()
         { }
 
-        public DocOutHistory(DocOut doc) : this()   
+        public DocOutHistory(DocOut doc) : this()
         {
             DocId = doc.Id;
             StatusKey = doc.StatusKey;

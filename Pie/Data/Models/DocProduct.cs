@@ -9,7 +9,7 @@ namespace Pie.Data.Models
         public Guid ProductId { get; set; }
         public Product? Product { get; set; }
 
-        public float CountPlan { get; set; }    
+        public float CountPlan { get; set; }
 
 
         [Range(0, float.MaxValue, ErrorMessage = "Количество не должно быть отрицательным")]

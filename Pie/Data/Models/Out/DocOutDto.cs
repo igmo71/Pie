@@ -87,7 +87,7 @@
                 Name = dto.Name,
                 Active = true
             };
-            
+
             return baseDoc;
         }
 

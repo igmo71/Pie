@@ -6,7 +6,7 @@ namespace Pie.Data.Models.Out
     public class DocOutProduct : DocProduct
     {
         public Guid DocId { get; set; }
-        public DocOut? Doc { get; set; }    
+        public DocOut? Doc { get; set; }
 
         [NotMapped]
         [Required(ErrorMessage = "Причину изменения нужно указать")]

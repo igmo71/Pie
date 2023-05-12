@@ -25,7 +25,7 @@ namespace Pie.Data
                 );
 
             builder.Entity<QueueNumber>().HasData(
-                new QueueNumber { CharValue = 0, NumValue = 0, Value = "A000"}
+                new QueueNumber { CharValue = 0, NumValue = 0, Value = "A000" }
                 );
         }
     }

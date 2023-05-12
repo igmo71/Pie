@@ -106,7 +106,7 @@ namespace Pie.Data
             builder.Entity<DocOutProductHistory>().HasOne(h => h.Product).WithMany().HasForeignKey(p => p.ProductId).HasPrincipalKey(p => p.Id).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<DocOutProductHistory>().HasOne(h => h.ChangeReason).WithMany().HasForeignKey(p => p.ChangeReasonId).HasPrincipalKey(c => c.Id).OnDelete(DeleteBehavior.SetNull);
             builder.Entity<DocOutProductHistory>().HasOne(h => h.User).WithMany().HasForeignKey(p => p.UserId).HasPrincipalKey(u => u.Id).OnDelete(DeleteBehavior.SetNull);
-            
+
             builder.Entity<QueueOut>().HasKey(q => q.Id);
             builder.Entity<StatusOut>().HasKey(s => s.Id);
 
