@@ -1,24 +1,28 @@
-﻿<AuthorizeView>
-    <Authorized>
-        <div class="row">
-            <div class="col-8">
-                <a href="Identity/Account/Manage">@context.User.Identity?.Name!</a>
-            </div>
-            <div class="col-4">
-                <form method="post" action="Identity/Account/Logout">
-                    <button type="submit" class="nav-link btn btn-link">Выход</button>
+﻿<ul class="navbar-nav">
+    <AuthorizeView>
+        <Authorized>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="Identity/Account/Manage" title="Manage">Привет @context.User.Identity?.Name!</a>
+            </li>
+            <li class="nav-item">
+                <form class="form-inline" action="Identity/Account/Logout" method="post">
+                    <button type="submit" class="nav-link btn btn-link text-dark">Выход</button>
                 </form>
-            </div>
-        </div>
-    </Authorized>
-    <NotAuthorized>
-        <div class="row">
-            <div class="col-8">
-                <a href="Identity/Account/Register">Регистрация</a>
-            </div>
-            <div class="col-4">
-                <a href="Identity/Account/Login">Вход</a>
-            </div>
-        </div>
-    </NotAuthorized>
-</AuthorizeView>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="Config/Index" title="Config">Настройки</a>
+            </li>            
+        </Authorized>
+        <NotAuthorized>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="Identity/Account/Register">Регистрация</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="Identity/Account/Login">Вход</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="https://pickiteasy.ru/" title="Config">О программе</a>
+            </li>
+        </NotAuthorized>
+    </AuthorizeView>
+</ul>
