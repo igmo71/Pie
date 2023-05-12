@@ -45,7 +45,7 @@ namespace Pie.Pages.DocsOut
 
         private async Task GetQueuesAsync()
         {
-            queues = await QueueService.GetQueuesAsync();
+            queues = await QueueService.GetListAsync();
         }
 
         private async Task GetWarehousesAsync()

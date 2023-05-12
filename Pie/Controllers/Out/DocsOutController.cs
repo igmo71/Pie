@@ -24,7 +24,7 @@ namespace Pie.Controllers.Out
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DocOut>>> GetDocs()
         {
-            var doc = await _docService.GetDocsAsync();
+            var doc = await _docService.GetAsync();
             return Ok(doc);
         }
 
@@ -32,7 +32,7 @@ namespace Pie.Controllers.Out
         [HttpGet("{id}")]
         public async Task<ActionResult<DocOut>> GetDoc(Guid id)
         {
-            var doc = await _docService.GetDocAsync(id);
+            var doc = await _docService.GetAsync(id);
 
             if (doc == null)
                 return NotFound();
@@ -48,7 +48,7 @@ namespace Pie.Controllers.Out
             if (id != doc.Id)
                 return BadRequest();
 
-            await _docService.UpdateDocAsync(id, doc);
+            await _docService.UpdateAsync(doc);
 
             return NoContent();
         }
@@ -59,7 +59,7 @@ namespace Pie.Controllers.Out
         public async Task<ActionResult<DocOut>> PostDoc(DocOutDto docDto)
         {
 
-            var result = await _docService.CreateDocAsync(docDto);
+            var result = await _docService.CreateAsync(docDto);
 
             _eventDispatcher.OnDocOutCreated(docDto.Id);
 
@@ -70,7 +70,7 @@ namespace Pie.Controllers.Out
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDoc(Guid id)
         {
-            await _docService.DeleteDocAsync(id);
+            await _docService.DeleteAsync(id);
 
             return NoContent();
         }

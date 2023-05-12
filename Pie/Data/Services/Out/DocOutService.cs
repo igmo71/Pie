@@ -24,7 +24,7 @@ namespace Pie.Data.Services.Out
             _service1C = service1C;
             _logger = logger;
         }
-        public async Task<List<DocOut>> GetDocsAsync()
+        public async Task<List<DocOut>> GetAsync()
         {
             var docs = await _context.DocsOut.AsNoTracking()
                 .Include(d => d.Status)
@@ -34,7 +34,7 @@ namespace Pie.Data.Services.Out
             return docs;
         }
 
-        public async Task<DocOut?> GetDocAsync(Guid id)
+        public async Task<DocOut?> GetAsync(Guid id)
         {
             var doc = await _context.DocsOut.AsNoTracking()
                 .Include(d => d.Status)
@@ -63,7 +63,7 @@ namespace Pie.Data.Services.Out
             return result;
         }
 
-        public async Task<DocOutDto> CreateDocAsync(DocOutDto docDto)
+        public async Task<DocOutDto> CreateAsync(DocOutDto docDto)
         {
             if (docDto.BaseDocs != null)
             {
@@ -72,15 +72,15 @@ namespace Pie.Data.Services.Out
             }
 
             DocOut doc = DocOutDto.MapToDocOut(docDto);
-            _ = await CreateDocAsync(doc);
+            _ = await CreateAsync(doc);
 
             return docDto;
         }
 
-        public async Task<DocOut> CreateDocAsync(DocOut doc)
+        public async Task<DocOut> CreateAsync(DocOut doc)
         {
-            if (DocExists(doc.Id))
-                await DeleteDocAsync(doc.Id);
+            if (Exists(doc.Id))
+                await DeleteAsync(doc.Id);
 
             _context.DocsOut.Add(doc);
             try
@@ -95,7 +95,7 @@ namespace Pie.Data.Services.Out
             return doc;
         }
 
-        public async Task UpdateDocAsync(Guid id, DocOut doc)
+        public async Task UpdateAsync(DocOut doc)
         {
             _context.Entry(doc).State = EntityState.Modified;
 
@@ -105,9 +105,9 @@ namespace Pie.Data.Services.Out
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!DocExists(id))
+                if (!Exists(doc.Id))
                 {
-                    throw new ApplicationException($"DocOutService UpdateDocAsync NotFount {id}", ex);
+                    throw new ApplicationException($"DocOutService UpdateDocAsync NotFount {doc.Id}", ex);
                 }
                 else
                 {
@@ -116,7 +116,7 @@ namespace Pie.Data.Services.Out
             }
         }
 
-        public async Task DeleteDocAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             var doc = await _context.DocsOut.FindAsync(id)
                 ?? throw new ApplicationException($"DocOutService DeleteDocAsync NotFount {id}");
@@ -124,12 +124,12 @@ namespace Pie.Data.Services.Out
             await _context.SaveChangesAsync();
         }
 
-        public bool DocExists(Guid id)
+        public bool Exists(Guid id)
         {
             return _context.DocsOut.Any(e => e.Id == id);
         }
 
-        protected virtual void OnDocCreated(Guid id)
+        protected virtual void OnCreated(Guid id)
         {
             DocCreated?.Invoke(this, id);
         }

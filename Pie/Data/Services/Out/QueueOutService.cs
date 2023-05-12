@@ -14,25 +14,25 @@ namespace Pie.Data.Services.Out
             _logger = logger;
         }
 
-        public async Task<List<QueueOut>> GetQueuesAsync()
+        public async Task<List<QueueOut>> GetListAsync()
         {
             var queues = await _context.QueuesOut.AsNoTracking().OrderBy(q => q.Key).ToListAsync();
 
             return queues;
         }
 
-        public async Task<QueueOut?> GetQueueAsync(Guid id)
+        public async Task<QueueOut?> GetAsync(Guid id)
         {
             var queue = await _context.QueuesOut.FindAsync(id);
 
             return queue;
         }
 
-        public async Task<QueueOut> CreateQueueAsync(QueueOut queue)
+        public async Task<QueueOut> CreateAsync(QueueOut queue)
         {
-            if (QueueExists(queue.Id))
+            if (Exists(queue.Id))
             {
-                await UpdateQueueAsync(queue);
+                await UpdateAsync(queue);
             }
             else
             {
@@ -43,7 +43,7 @@ namespace Pie.Data.Services.Out
             return queue;
         }
 
-        public async Task UpdateQueueAsync(QueueOut queue)
+        public async Task UpdateAsync(QueueOut queue)
         {
             _context.Entry(queue).State = EntityState.Modified;
 
@@ -53,7 +53,7 @@ namespace Pie.Data.Services.Out
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!QueueExists(queue.Id))
+                if (!Exists(queue.Id))
                 {
                     throw new ApplicationException($"QueueOutService UpdateQueueAsync NotFount {queue.Id}", ex);
                 }
@@ -64,7 +64,7 @@ namespace Pie.Data.Services.Out
             }
         }
 
-        public async Task DeleteQueueAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             var queue = await _context.QueuesOut.FindAsync(id)
                 ?? throw new ApplicationException($"QueueOutService DeleteQueueAsync NotFount {id}");
@@ -72,7 +72,7 @@ namespace Pie.Data.Services.Out
             await _context.SaveChangesAsync();
         }
 
-        public bool QueueExists(Guid id)
+        public bool Exists(Guid id)
         {
             return _context.QueuesOut.Any(e => e.Id == id);
         }

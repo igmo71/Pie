@@ -38,7 +38,7 @@ namespace Pie.Pages.DocsOut
         {
             if (string.IsNullOrEmpty(Id)) return;
 
-            doc = await DocService.GetDocAsync(Guid.Parse(Id));
+            doc = await DocService.GetAsync(Guid.Parse(Id));
         }
 
         private void ScannedBarcode(string barcode)
