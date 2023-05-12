@@ -1,25 +1,60 @@
 ﻿@page
 @using Pie.Areas.Config.Pages;
 @model IndexModel
-<div>
-    <a href="StatusesIn">StatusesIn</a>
-</div>
-<div>
-    <a href="StatusesOut">StatusesOut</a>
-</div>
-<div>
-    <a href="QueuesIn">QueuesIn</a>
-</div>
-<div>
-    <a href="QueuesOut">QueuesOut</a>
-</div>
-<div>
-    <a href="ChangeReasonsIn">ChangeReasonsIn</a>
-</div>
-<div>
-    <a href="ChangeReasonsOut">ChangeReasonsOut</a>
-</div>
-
-
 @{
+    ViewData["Title"] = "Настройки";
 }
+
+<h1>Настройки</h1>
+
+<div class="card" style="width: 18rem;">
+    <div class="card-header">
+        <h5>Статусы</h5>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div>
+                <a href="StatusesIn">Статусы приходников</a>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div>
+                <a href="StatusesOut">Статусы расходников</a>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="card" style="width: 18rem;">
+    <div class="card-header">
+        <h5>Очереди</h5>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div>
+                <a href="QueuesIn">Очереди приходников</a>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div>
+                <a href="QueuesOut">Очереди расходников</a>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="card" style="width: 18rem;">
+    <div class="card-header">
+        <h5>Причины изменения</h5>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div>
+                <a href="ChangeReasonsIn">Для приходников</a>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div>
+                <a href="ChangeReasonsOut">Для расходников</a>
+            </div>
+        </li>
+    </ul>
+</div>

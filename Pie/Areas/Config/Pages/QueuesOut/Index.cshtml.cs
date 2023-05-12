@@ -1,23 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Pie.Data.Models.Out;
+using Pie.Data.Services.Out;
 
 namespace Pie.Areas.Config.Pages.QueuesOut
 {
     public class IndexModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly QueueOutService _queueService;
 
-        public IndexModel(Pie.Data.ApplicationDbContext context)
+        public IndexModel(QueueOutService queueService)
         {
-            _context = context;
+            _queueService = queueService;
         }
 
-        public IList<QueueOut> QueueOut { get; set; } = default!;
+        public IList<QueueOut> QueueList { get; set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGet()
         {
-            QueueOut = await _context.QueuesOut.ToListAsync();
+            QueueList = await _queueService.GetListAsync();
+            
+            return Page();
         }
     }
 }

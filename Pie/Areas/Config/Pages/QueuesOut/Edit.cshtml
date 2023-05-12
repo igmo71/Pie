@@ -2,44 +2,66 @@
 @model Pie.Areas.Config.Pages.QueuesOut.EditModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Изменить";
 }
 
-<h1>Edit</h1>
+<h1>Изменить</h1>
 
-<h4>QueueOut</h4>
+<h4>Очередь</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="QueueOut.Id" />
+            <input type="hidden" asp-for="Queue.Id" />
             <div class="form-group">
-                <label asp-for="QueueOut.Name" class="control-label"></label>
-                <input asp-for="QueueOut.Name" class="form-control" />
-                <span asp-validation-for="QueueOut.Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="QueueOut.Key" class="control-label"></label>
-                <input asp-for="QueueOut.Key" class="form-control" />
-                <span asp-validation-for="QueueOut.Key" class="text-danger"></span>
+                <label asp-for="Queue.Name" class="control-label"></label>
+                <input asp-for="Queue.Name" class="form-control" />
+                <span asp-validation-for="Queue.Name" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="QueueOut.Active" /> @Html.DisplayNameFor(model => model.QueueOut.Active)
+                    <input class="form-check-input" asp-for="Queue.Active" /> @Html.DisplayNameFor(model => model.Queue.Active)
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <label asp-for="Queue.Key" class="control-label"></label>
+                <input asp-for="Queue.Key" class="form-control" />
+                <span asp-validation-for="Queue.Key" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Queue.Days" class="control-label"></label>
+                <input asp-for="Queue.Days" class="form-control" />
+                <span asp-validation-for="Queue.Days" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Queue.Hours" class="control-label"></label>
+                <input asp-for="Queue.Hours" class="form-control" />
+                <span asp-validation-for="Queue.Hours" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Queue.Minutes" class="control-label"></label>
+                <input asp-for="Queue.Minutes" class="form-control" />
+                <span asp-validation-for="Queue.Minutes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Queue.ConcreteTime" class="control-label"></label>
+                <input asp-for="Queue.ConcreteTime" class="form-control" />
+                <span asp-validation-for="Queue.ConcreteTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Index">Назад к списку</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

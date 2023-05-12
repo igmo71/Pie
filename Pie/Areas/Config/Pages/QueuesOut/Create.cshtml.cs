@@ -1,36 +1,33 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Pie.Data.Models.Out;
+using Pie.Data.Services.Out;
 
 namespace Pie.Areas.Config.Pages.QueuesOut
 {
     public class CreateModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly QueueOutService _queueService;
 
-        public CreateModel(Pie.Data.ApplicationDbContext context)
+        public CreateModel(QueueOutService queueService)
         {
-            _context = context;
+            _queueService = queueService;
         }
+
+        [BindProperty]
+        public QueueOut Queue { get; set; } = default!;
 
         public IActionResult OnGet()
         {
             return Page();
         }
 
-        [BindProperty]
-        public QueueOut QueueOut { get; set; } = default!;
-
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
-            _context.QueuesOut.Add(QueueOut);
-            await _context.SaveChangesAsync();
+            _ = await _queueService.CreateAsync(Queue);
 
             return RedirectToPage("./Index");
         }

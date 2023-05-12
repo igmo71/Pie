@@ -1,56 +1,46 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models.Out;
+using Pie.Data.Services.Out;
 
 namespace Pie.Areas.Config.Pages.QueuesOut
 {
     public class DeleteModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly QueueOutService _queueService;
 
-        public DeleteModel(Pie.Data.ApplicationDbContext context)
+        public DeleteModel(QueueOutService queueService)
         {
-            _context = context;
+            _queueService = queueService;
         }
 
         [BindProperty]
-        public QueueOut QueueOut { get; set; } = default!;
+        public QueueOut Queue { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var queueout = await _context.QueuesOut.FirstOrDefaultAsync(m => m.Id == id);
+            var queue = await _queueService.GetAsync((Guid)id);
 
-            if (queueout == null)
-            {
+            if (queue == null)
                 return NotFound();
-            }
             else
-            {
-                QueueOut = queueout;
-            }
+                Queue = queue;
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var queueout = await _context.QueuesOut.FindAsync(id);
-            if (queueout != null)
-            {
-                QueueOut = queueout;
-                _context.QueuesOut.Remove(QueueOut);
-                await _context.SaveChangesAsync();
-            }
+            if (!_queueService.Exists((Guid)id))
+                return NotFound();
+            else
+                await _queueService.DeleteAsync((Guid)id);
 
             return RedirectToPage("./Index");
         }

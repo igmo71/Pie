@@ -1,48 +1,72 @@
 ﻿@page
 @model Pie.Areas.Config.Pages.QueuesOut.IndexModel
-
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Очереди</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create">Создать</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.QueueOut[0].Name)
+                @Html.DisplayNameFor(model => model.QueueList[0].Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.QueueOut[0].Key)
+                @Html.DisplayNameFor(model => model.QueueList[0].Active)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.QueueOut[0].Active)
+                @Html.DisplayNameFor(model => model.QueueList[0].Key)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QueueList[0].Days)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QueueList[0].Hours)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QueueList[0].Minutes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QueueList[0].ConcreteTime)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.QueueOut) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Key)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Active)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.QueueList)
+        {
+            <tr>                
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Active)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Key)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Days)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Hours)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Minutes)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ConcreteTime)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

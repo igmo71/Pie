@@ -2,13 +2,13 @@
 @model Pie.Areas.Config.Pages.QueuesOut.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Детали";
 }
 
-<h1>Details</h1>
+<h1>Детали</h1>
 
 <div>
-    <h4>QueueOut</h4>
+    <h4>Очередь</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -18,20 +18,44 @@
             @Html.DisplayFor(model => model.QueueOut.Name)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.QueueOut.Active)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.QueueOut.Active)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.QueueOut.Key)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.QueueOut.Key)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.QueueOut.Active)
+            @Html.DisplayNameFor(model => model.QueueOut.Days)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.QueueOut.Active)
+            @Html.DisplayFor(model => model.QueueOut.Days)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.QueueOut.Hours)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.QueueOut.Hours)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.QueueOut.Minutes)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.QueueOut.Minutes)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.QueueOut.ConcreteTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.QueueOut.ConcreteTime)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.QueueOut.Id">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Edit" asp-route-id="@Model.QueueOut.Id">Изменить</a> |
+    <a asp-page="./Index">Назад к списку</a>
 </div>
