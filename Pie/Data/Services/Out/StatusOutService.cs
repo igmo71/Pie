@@ -16,7 +16,7 @@ namespace Pie.Data.Services.Out
             _logger = logger;
         }
 
-        public async Task<List<StatusOut>> GetStatusesAsync()
+        public async Task<List<StatusOut>> GetListAsync()
         {
             var statuses = await _context.StatusesOut.AsNoTracking()
                 .OrderBy(s => s.Key)
@@ -24,17 +24,17 @@ namespace Pie.Data.Services.Out
             return statuses;
         }
 
-        public async Task<StatusOut?> GetStatusAsync(Guid id)
+        public async Task<StatusOut?> GetAsync(Guid id)
         {
             var status = await _context.StatusesOut.FindAsync(id);
             return status;
         }
 
-        public async Task<StatusOut> CreateStatusAsync(StatusOut status)
+        public async Task<StatusOut> CreateAsync(StatusOut status)
         {
-            if (StatusExists(status.Id))
+            if (Exists(status.Id))
             {
-                await UpdateStatusAsync(status.Id, status);
+                await UpdateAsync(status);
             }
             else
             {
@@ -44,7 +44,7 @@ namespace Pie.Data.Services.Out
             return status;
         }
 
-        public async Task UpdateStatusAsync(Guid id, StatusOut status)
+        public async Task UpdateAsync(StatusOut status)
         {
             _context.Entry(status).State = EntityState.Modified;
 
@@ -54,9 +54,9 @@ namespace Pie.Data.Services.Out
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!StatusExists(id))
+                if (!Exists(status.Id))
                 {
-                    throw new ApplicationException($"StatusOutService UpdateStatusAsync NotFount {id}", ex);
+                    throw new ApplicationException($"StatusOutService UpdateStatusAsync NotFount {status.Id}", ex);
                 }
                 else
                 {
@@ -65,7 +65,7 @@ namespace Pie.Data.Services.Out
             }
         }
 
-        public async Task DeleteStatusAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             var status = await _context.StatusesOut.FindAsync(id)
                 ?? throw new ApplicationException($"StatusOutService DeleteStatusAsync NotFount {id}");
@@ -73,22 +73,9 @@ namespace Pie.Data.Services.Out
             await _context.SaveChangesAsync();
         }
 
-        public bool StatusExists(Guid id)
+        public bool Exists(Guid id)
         {
             return _context.StatusesOut.Any(e => e.Id == id);
-        }
-
-        public async Task<Dictionary<int, int>?> GetCountByStatusAsync(SearchOutParameters searchParameters)
-        {
-            using var context = _contextFactory.CreateDbContext();
-
-            var result = await context.DocsOut.AsNoTracking()
-            .Search(searchParameters.ExceptStatus())
-            .GroupBy(e => e.StatusKey.GetValueOrDefault())
-            .Select(e => new { e.Key, Value = e.Count() })
-            .ToDictionaryAsync(e => e.Key, e => e.Value);
-
-            return result;
         }
     }
 }

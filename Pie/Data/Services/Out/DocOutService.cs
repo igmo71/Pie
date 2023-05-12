@@ -24,7 +24,7 @@ namespace Pie.Data.Services.Out
             _service1C = service1C;
             _logger = logger;
         }
-        public async Task<List<DocOut>> GetAsync()
+        public async Task<List<DocOut>> GetListAsync()
         {
             var docs = await _context.DocsOut.AsNoTracking()
                 .Include(d => d.Status)
@@ -60,6 +60,19 @@ namespace Pie.Data.Services.Out
                     .ThenByDescending(d => d.ShipDateTime)
                 .GroupBy(e => e.QueueKey.GetValueOrDefault())
                 .ToDictionaryAsync(g => g.Key, g => g.ToList());
+            return result;
+        }
+
+        public async Task<Dictionary<int, int>?> GetCountByStatusAsync(SearchOutParameters searchParameters)
+        {
+            using var context = _contextFactory.CreateDbContext();
+
+            var result = await context.DocsOut.AsNoTracking()
+            .Search(searchParameters.ExceptStatus())
+            .GroupBy(e => e.StatusKey.GetValueOrDefault())
+            .Select(e => new { e.Key, Value = e.Count() })
+            .ToDictionaryAsync(e => e.Key, e => e.Value);
+
             return result;
         }
 

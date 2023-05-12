@@ -19,7 +19,7 @@ namespace Pie.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Warehouse>>> GetWarehouses()
         {
-            var result = await _warehousesService.GetAsync();
+            var result = await _warehousesService.GetListAsync();
 
             return Ok(result);
         }

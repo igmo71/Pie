@@ -14,7 +14,7 @@ namespace Pie.Data.Services
             _logger = logger;
         }
 
-        public async Task<IEnumerable<BaseDoc>> GetAsync()
+        public async Task<IEnumerable<BaseDoc>> GetListAsync()
         {
             var baseDocs = await _context.BaseDocs.AsNoTracking().ToListAsync();
 

@@ -19,7 +19,7 @@ namespace Pie.Controllers.Out
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StatusOut>>> GetStatuses()
         {
-            var statuses = await _statusService.GetStatusesAsync();
+            var statuses = await _statusService.GetListAsync();
 
             return Ok(statuses);
         }
@@ -28,7 +28,7 @@ namespace Pie.Controllers.Out
         [HttpGet("{id}")]
         public async Task<ActionResult<StatusOut>> GetStatus(Guid id)
         {
-            var status = await _statusService.GetStatusAsync(id);
+            var status = await _statusService.GetAsync(id);
 
             if (status == null)
                 return NotFound();
@@ -44,7 +44,7 @@ namespace Pie.Controllers.Out
             if (id != status.Id)
                 return BadRequest();
 
-            await _statusService.UpdateStatusAsync(id, status);
+            await _statusService.UpdateAsync(status);
 
             return NoContent();
         }
@@ -54,7 +54,7 @@ namespace Pie.Controllers.Out
         [HttpPost]
         public async Task<ActionResult<StatusOut>> PostStatus(StatusOut status)
         {
-            var result = await _statusService.CreateStatusAsync(status);
+            var result = await _statusService.CreateAsync(status);
 
             return CreatedAtAction("GetStatus", new { id = result.Id }, result);
         }
@@ -63,7 +63,7 @@ namespace Pie.Controllers.Out
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStatus(Guid id)
         {
-            await _statusService.DeleteStatusAsync(id);
+            await _statusService.DeleteAsync(id);
 
             return NoContent();
         }

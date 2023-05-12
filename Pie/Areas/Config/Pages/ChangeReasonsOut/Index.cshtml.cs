@@ -17,7 +17,7 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsOut
 
         public async Task OnGetAsync()
         {
-            ChangeReasonOut = await _changeReasonService.GetAsync();
+            ChangeReasonOut = await _changeReasonService.GetListAsync();
         }
     }
 }

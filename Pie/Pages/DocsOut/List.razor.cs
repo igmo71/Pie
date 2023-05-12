@@ -35,12 +35,12 @@ namespace Pie.Pages.DocsOut
 
         private async Task GetStatusesAsync()
         {
-            statuses = await StatusService.GetStatusesAsync();
+            statuses = await StatusService.GetListAsync();
         }
 
         private async Task GetCountByStatusAsync()
         {
-            countByStatus = await StatusService.GetCountByStatusAsync(SearchParameters);
+            countByStatus = await DocService.GetCountByStatusAsync(SearchParameters);
         }
 
         private async Task GetQueuesAsync()
@@ -50,7 +50,7 @@ namespace Pie.Pages.DocsOut
 
         private async Task GetWarehousesAsync()
         {
-            warehouses = await WarehouseService.GetAsync();
+            warehouses = await WarehouseService.GetListAsync();
         }
 
         private async Task GetDocsAsync()

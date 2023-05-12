@@ -12,7 +12,7 @@ namespace Pie.Data.Services.Out
             _context = context;
         }
 
-        public async Task<List<ChangeReasonOut>> GetAsync()
+        public async Task<List<ChangeReasonOut>> GetListAsync()
         {
             var changeReasons = await _context.ChangeReasonsOut.AsNoTracking().ToListAsync();
 
