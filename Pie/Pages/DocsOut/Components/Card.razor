@@ -1,17 +1,9 @@
 ﻿@using Pie.Data.Models.Out;
 
-<div class="card mb-2">
-    <div class="card-header p-2">
+<div class="card border-success shadow rounded mb-2">
+    <div class="card-header bg-success bg-opacity-75 text-white p-2">
         <div class="row">
             <div class="col-9">
-                <div>
-                    <span>№ </span>
-                    <span><a href="/DocsOut/Item/@Doc?.Id">@Doc?.Number</a></span>
-                </div>
-                <div>
-                    <span>от </span>
-                    <span><a href="/DocsOut/Item/@Doc?.Id">@Doc?.DateTime</a></span>
-                </div>
             </div>
             <div class="col-3">
                 <div>@Doc?.QueueNumber</div>
@@ -20,6 +12,14 @@
 
     </div>
     <div class="card-body p-2">
+        <div>
+            <span>№ </span>
+            <span><a href="/DocsOut/Item/@Doc?.Id">@Doc?.Number</a></span>
+        </div>
+        <div>
+            <span>от </span>
+            <span><a href="/DocsOut/Item/@Doc?.Id">@Doc?.DateTime</a></span>
+        </div>
         <div>
             Склад: @Doc?.Warehouse?.Name
         </div>

@@ -10,17 +10,20 @@ namespace Pie.Data.Services.Out
         private readonly ApplicationDbContext _context;
         private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
         private readonly BaseDocService _baseDocService;
+        private readonly QueueOutService _queueService;
         private readonly Service1c _service1C;
         private readonly ILogger<DocOutService> _logger;
 
         public event EventHandler<Guid>? DocCreated;
 
-        public DocOutService(ApplicationDbContext context, IDbContextFactory<ApplicationDbContext> contextFactory, BaseDocService baseDocService, Service1c service1C, ILogger<DocOutService> logger)
+        public DocOutService(ApplicationDbContext context, IDbContextFactory<ApplicationDbContext> contextFactory,
+            BaseDocService baseDocService, QueueOutService queueService, Service1c service1C, ILogger<DocOutService> logger)
         {
             _context = context;
             //_context = contextFactory.CreateDbContext();
             _contextFactory = contextFactory;
             _baseDocService = baseDocService;
+            _queueService = queueService;
             _service1C = service1C;
             _logger = logger;
         }
@@ -95,6 +98,8 @@ namespace Pie.Data.Services.Out
             if (Exists(doc.Id))
                 await DeleteAsync(doc.Id);
 
+            await SetShipDateTime(doc);
+
             _context.DocsOut.Add(doc);
             try
             {
@@ -156,6 +161,26 @@ namespace Pie.Data.Services.Out
             result.IsSuccess = true;
 
             return result;
+        }
+
+        private async Task SetShipDateTime(DocOut doc)
+        {
+            if (doc.ShipDateTime != DateTime.Parse("0001-01-01 00:00:00"))
+                return;
+
+            if (doc.QueueKey == null)
+                return;
+
+            var queue = await _queueService.GetAsync((int)doc.QueueKey);
+            if (queue == null)
+                return;
+
+            doc.ShipDateTime = doc.DateTime.AddDays(queue.Days).AddHours(queue.Hours).AddMinutes(queue.Minutes);
+
+            if (queue.ConcreteTime == TimeOnly.Parse("00:00:00"))
+                return;
+
+            doc.ShipDateTime = new DateTime(doc.ShipDateTime.Year, doc.ShipDateTime.Month, doc.ShipDateTime.Day, queue.ConcreteTime.Hour, queue.ConcreteTime.Minute, 0);
         }
     }
 }

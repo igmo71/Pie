@@ -28,6 +28,13 @@ namespace Pie.Data.Services.Out
             return queue;
         }
 
+        public async Task<QueueOut?> GetAsync(int key)
+        {
+            var queue = await _context.QueuesOut.FirstOrDefaultAsync(q => q.Key == key);
+
+            return queue;
+        }
+
         public async Task<QueueOut> CreateAsync(QueueOut queue)
         {
             if (Exists(queue.Id))
