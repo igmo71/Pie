@@ -44,7 +44,7 @@ namespace Pie.Controllers
             if (id != product.Id)
                 return BadRequest();
 
-            await _productsService.UpdateAsync(id, product);
+            await _productsService.UpdateAsync(product);
 
             return NoContent();
         }
