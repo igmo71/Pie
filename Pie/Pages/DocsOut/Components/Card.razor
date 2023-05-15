@@ -1,15 +1,14 @@
 ﻿@using Pie.Data.Models.Out;
 
-<div class="card border-success shadow rounded mb-2">
-    <div class="card-header bg-success bg-opacity-75 text-white p-2">
+<div class="card border-@cardColor shadow rounded mb-2">
+    <div class="card-header bg-@cardColor bg-opacity-75 text-white p-2">
         <div class="row">
-            <div class="col-9">
-            </div>
             <div class="col-3">
                 <div>@Doc?.QueueNumber</div>
             </div>
+            <div class="col-9">
+            </div>
         </div>
-
     </div>
     <div class="card-body p-2">
         <div>
@@ -43,4 +42,14 @@
 @code {
     [Parameter] public DocOut? Doc { get; set; }
 
+    private string? cardColor = "success";
+
+    protected override void OnParametersSet()
+    {
+        if (Doc == null)
+            return;
+
+        if (Doc.ShipDateTime != new DateTime() && Doc.ShipDateTime < DateTime.Now)
+            cardColor = "danger";
+    }
 }

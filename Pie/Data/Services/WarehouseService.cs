@@ -21,6 +21,13 @@ namespace Pie.Data.Services
             return warehouses;
         }
 
+        public async Task<List<Warehouse>> GetListActiveAsync()
+        {
+            var warehouses = await _context.Warehouses.AsNoTracking().Where(e => e.Active).ToListAsync();
+
+            return warehouses;
+        }
+
         public async Task<Warehouse?> GetAsync(Guid id)
         {
             var warehouse = await _context.Warehouses.FindAsync(id);

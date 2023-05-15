@@ -26,31 +26,31 @@ namespace Pie.Pages.DocsOut
         protected async override Task OnInitializedAsync()
         {
             await GetStatusesAsync();
-            await GetCountByStatusAsync();
             await GetQueuesAsync();
             await GetWarehousesAsync();
+            await GetCountByStatusAsync();
             await GetDocsAsync();
             await base.OnInitializedAsync();
         }
 
         private async Task GetStatusesAsync()
         {
-            statuses = await StatusService.GetListAsync();
+            statuses = await StatusService.GetListActiveAsync();
+        }
+
+        private async Task GetQueuesAsync()
+        {
+            queues = await QueueService.GetListActiveAsync();
+        }
+
+        private async Task GetWarehousesAsync()
+        {
+            warehouses = await WarehouseService.GetListActiveAsync();
         }
 
         private async Task GetCountByStatusAsync()
         {
             countByStatus = await DocService.GetCountByStatusAsync(SearchParameters);
-        }
-
-        private async Task GetQueuesAsync()
-        {
-            queues = await QueueService.GetListAsync();
-        }
-
-        private async Task GetWarehousesAsync()
-        {
-            warehouses = await WarehouseService.GetListAsync();
         }
 
         private async Task GetDocsAsync()

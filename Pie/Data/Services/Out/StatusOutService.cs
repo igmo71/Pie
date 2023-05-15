@@ -16,15 +16,22 @@ namespace Pie.Data.Services.Out
 
         public async Task<List<StatusOut>> GetListAsync()
         {
-            var statuses = await _context.StatusesOut.AsNoTracking()
-                .OrderBy(s => s.Key)
-                .ToListAsync();
+            var statuses = await _context.StatusesOut.AsNoTracking().OrderBy(s => s.Key).ToListAsync();
+
+            return statuses;
+        }
+
+        public async Task<List<StatusOut>> GetListActiveAsync()
+        {
+            var statuses = await _context.StatusesOut.AsNoTracking().Where(e => e.Active).OrderBy(s => s.Key).ToListAsync();
+
             return statuses;
         }
 
         public async Task<StatusOut?> GetAsync(Guid id)
         {
             var status = await _context.StatusesOut.FindAsync(id);
+
             return status;
         }
 
@@ -68,6 +75,7 @@ namespace Pie.Data.Services.Out
             var status = await _context.StatusesOut.FindAsync(id)
                 ?? throw new ApplicationException($"StatusOutService DeleteStatusAsync NotFount {id}");
             _context.StatusesOut.Remove(status);
+
             await _context.SaveChangesAsync();
         }
 

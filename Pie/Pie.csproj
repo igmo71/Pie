@@ -25,9 +25,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\History\Pages\DocsOutHistory\" />
-    <Folder Include="Areas\History\Pages\NewFolder\" />
-  </ItemGroup>
-
 </Project>
