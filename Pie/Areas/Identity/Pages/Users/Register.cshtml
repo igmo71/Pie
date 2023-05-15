@@ -13,29 +13,37 @@
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.FirstName" class="form-control" autocomplete="firstName" aria-required="true" placeholder="Имя" />
-                <label asp-for="Input.FirstName">Имя</label>
-                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                <input asp-for="CreateUserDto.FirstName" class="form-control" autocomplete="firstName" aria-required="true" placeholder="Имя" />
+                <label asp-for="CreateUserDto.FirstName">Имя</label>
+                <span asp-validation-for="CreateUserDto.FirstName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.LastName" class="form-control" autocomplete="lastName" aria-required="true" placeholder="Фамилия" />
-                <label asp-for="Input.LastName">Фамилия</label>
-                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                <input asp-for="CreateUserDto.LastName" class="form-control" autocomplete="lastName" aria-required="true" placeholder="Фамилия" />
+                <label asp-for="CreateUserDto.LastName">Фамилия</label>
+                <span asp-validation-for="CreateUserDto.LastName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email">Email</label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                <input asp-for="CreateUserDto.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="CreateUserDto.Email">Email</label>
+                <span asp-validation-for="CreateUserDto.Email" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.Password">Пароль</label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                <input asp-for="CreateUserDto.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <label asp-for="CreateUserDto.Password">Пароль</label>
+                <span asp-validation-for="CreateUserDto.Password" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.ConfirmPassword">Подтвердить пароль</label>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                <input asp-for="CreateUserDto.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <label asp-for="CreateUserDto.ConfirmPassword">Подтвердить пароль</label>
+                <span asp-validation-for="CreateUserDto.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label asp-for="CreateUserDto.WarehouseId" class="control-label"></label>
+                <select asp-for="CreateUserDto.WarehouseId" class="form-control"
+                        asp-items="@Model.WarehouseSL">
+                    <option value="">- Выберите склад -</option>
+                </select>
+                <span asp-validation-for="CreateUserDto.WarehouseId" class="text-danger" />
             </div>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Регистрация</button>
         </form>

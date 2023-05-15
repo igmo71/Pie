@@ -10,7 +10,7 @@
 <div>
     <h4>Пользователь</h4>
     <hr />
-    <dl class="row">
+    <dl class="row">        
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.AppUser.FirstName)
         </dt>
@@ -26,23 +26,29 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.AppUser.Email)
         </dt>
-        <dd class="col-sm-2">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.AppUser.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AppUser.Warehouse.Name)
+        </dt>
+        <dd class ="col-sm-10">
+            @Html.DisplayFor(model => model.AppUser.Warehouse.Name)
         </dd>
     </dl>
 </div>
 <div class="card" style="width: 118mm; height: 75mm">
     <div class="card-header ">
-        <h4><span>@Model?.AppUser?.FirstName </span> <span> @Model?.AppUser?.LastName </span></h4>
+        <h4><span>@Model?.AppUser.FirstName </span> <span> @Model?.AppUser.LastName </span></h4>
     </div>
     <div class="card-body d-flex justify-content-center align-items-center">
-        <img src=@($"data:image/jpeg;base64,{@Model?.AppUser?.Barcode}") width="350" height="100" alt="штрих код" />
+        <img src=@($"data:image/jpeg;base64,{@Model?.AppUser.Barcode}") width="350" height="100" alt="штрих код" />
     </div>
     <div class="card-footer">
-        <span>Склад: </span> <span> </span>
+        <span>Склад: </span> <span> @Model?.AppUser.Warehouse?.Name</span>
     </div>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.AppUser.Id">Изменить</a> |
+    <a asp-page="./Edit" asp-route-id="@Model?.AppUser.Id">Изменить</a> |
     <a asp-page="./Index">Назад к списку</a>
 </div>

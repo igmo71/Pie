@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Pie.Common;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Pie.Data.Models.Application
 {
@@ -14,6 +15,11 @@ namespace Pie.Data.Models.Application
         [Display(Name = "Фамилия")]
         public string? LastName { get; set; }
 
+        [Display(Name = "Склад")]
+        public Guid? WarehouseId { get; set; }
+        public Warehouse? Warehouse { get; set; }
+
+        [NotMapped]
         public string? Barcode => BarcodeGuidConvert.GetBarcodeBase64(Id);
     }
 }

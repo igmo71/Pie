@@ -28,7 +28,7 @@ namespace Pie.Data.Services
             return warehouses;
         }
 
-        public async Task<Warehouse?> GetAsync(Guid id)
+        public async Task<Warehouse?> GetAsync(Guid? id)
         {
             var warehouse = await _context.Warehouses.FindAsync(id);
 
