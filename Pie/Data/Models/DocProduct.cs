@@ -14,5 +14,7 @@ namespace Pie.Data.Models
 
         [Range(0, float.MaxValue, ErrorMessage = "Количество не должно быть отрицательным")]
         public float CountFact { get; set; }
+
+        public float Weight { get; set; }
     }
 }
