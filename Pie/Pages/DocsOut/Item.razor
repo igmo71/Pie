@@ -8,10 +8,10 @@
 <ScanBarcode OnScannedBarcode="ScannedBarcode"></ScanBarcode>
 
 <div class="row d-flex justify-content-between">
-    <div class="col-2 px-1"><h3>@doc?.QueueNumber</h3></div>
-    <div class="col-7 px-1"><h4>@doc?.Name</h4></div>
+    <div class="col-2 px-1"><h3>@docVm?.Item?.QueueNumber</h3></div>
+    <div class="col-7 px-1"><h4>@docVm?.Item?.Name</h4></div>
     <div class="col-3 p-0 d-flex justify-content-end d-none d-print-inline">
-        <img src=@($"data:image/jpeg;base64,{doc?.BarcodeBase64}") width="256" height="62" alt="штрих код" />
+        <img src=@($"data:image/jpeg;base64,{docVm?.Barcode}") width="256" height="62" alt="штрих код" />
     </div>
 </div>
 
@@ -32,52 +32,9 @@
     </div>
 </div>
 
-@*<div>Номер:@doc?.Number</div>
-<div>Дата: @doc?.DateTime</div>*@
-<div>Склад: @doc?.Warehouse?.Name</div>
-<div>Статус: @doc?.Status?.Name</div>
-<div>Очередь: @doc?.Queue?.Name</div>
-<div>Дата отгрузки: @doc?.ShipDateTime</div>
-<div>Комментарий: @doc?.Comment</div>
-<div>
-    Документы основания:
-    @if (doc != null && doc?.BaseDocs != null)
-    {
-        @foreach (var item in doc.BaseDocs)
-        {
-            <div>@item.BaseDoc?.Name</div>
-        }
-    }
-</div>
-<div>
-    @*<QuickGrid Items="@(doc?.Products?.AsQueryable<DocOutProduct>())" Class="table table-bordered table-hover">*@
-    <QuickGrid Items="@FilteredProducts" Class="table table-bordered table-hover">
-        <PropertyColumn Property="@(p => p.Product != null ? p.Product.Name : string.Empty)" Title="Товар" Sortable="true">
-            <ColumnOptions>
-                <div class="search-box">
-                    <input type="search" autofocus @bind="nameFilter" @bind:event="oninput" placeholder="Название..." />
-                </div>
-            </ColumnOptions>
-        </PropertyColumn>
-        <PropertyColumn Property="@(p => p.Weight)" Title="Вес" Sortable="true" />
-        <PropertyColumn Property="@(p => p.CountPlan)" Title="Кол-во план" Sortable="true"></PropertyColumn>
-        @*<PropertyColumn Property="@(p => p.CountFact)" Title="Кол-во факт" Sortable="true"></PropertyColumn>*@
-        <TemplateColumn Title="Кол факт" Class="p-0 m-0">
-            <div class="@(context.CountFact == context.CountPlan ? string.Empty : "alert  alert-warning") m-0 p-2">
-                @{
-                    string? detail = changeReasons?.FirstOrDefault(c => c.Id == context.ChangeReasonId)?.Name;
-                    detail = string.IsNullOrEmpty(detail) ? string.Empty : $@"    ( {detail} ) ";
-                }
-                @context.CountFact @detail
-            </div>
-        </TemplateColumn>
-        <TemplateColumn Title="Изменить">
-            <button class="btn btn-outline-primary" @onclick="@(() => EditDoc(context))"><i class="bi bi-pencil-square"></i></button>
-        </TemplateColumn>
-    </QuickGrid>
-</div>
+<ItemHeaderTable DocVm="@docVm"></ItemHeaderTable>
 
-<EditDialog @ref="EditDialog" ChangeReasons="@changeReasons" OnSaveChanges="@UpdateDoc"></EditDialog>
+<ItemBodyTable DocVm="@docVm" ChangeReasons="@changeReasons"></ItemBodyTable>
 
 @code {
     string? nameFilter;
@@ -85,7 +42,7 @@
     {
         get
         {
-            var result = doc?.Products?.AsQueryable();
+            var result = docVm?.Item ?.Products?.AsQueryable();
 
             if (!string.IsNullOrEmpty(nameFilter))
             {

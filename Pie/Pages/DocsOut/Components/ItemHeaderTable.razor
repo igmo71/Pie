@@ -1,0 +1,42 @@
+﻿@using Pie.Data.Models.Out;
+@if (DocVm != null)
+{
+    <table class="table table-sm table-borderless">
+        <tr>
+            <th>Склад:</th>
+            <td>@DocVm?.Item?.Warehouse?.Name</td>
+            <th>Документы основания:</th>
+            <td>
+                @if (DocVm != null && DocVm.Item != null && DocVm?.Item?.BaseDocs != null)
+                {
+                    @foreach (var item in DocVm.Item.BaseDocs)
+                    {
+                        <div>@item.BaseDoc?.Name</div>
+                    }
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>Статус:</th>
+            <td>@DocVm?.Item?.Status?.Name</td>
+            <th>В работе:</th>
+            <td>@DocVm?.UserName</td>
+        </tr>
+        <tr>
+            <th>Очередь:</th>
+            <td>@DocVm?.Item?.Queue?.Name</td>
+            <th>Комментарий:</th>
+            <td>@DocVm?.Item?.Comment</td>
+        </tr>
+        <tr>
+            <th>Дата отгрузки:</th>
+            <td>@DocVm?.Item?.ShipDateTime</td>
+            <th></th>
+            <td></td>
+        </tr>
+    </table>
+}
+
+@code {
+    [Parameter] public DocOutVm? DocVm { get; set; }
+}

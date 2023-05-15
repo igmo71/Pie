@@ -1,6 +1,4 @@
-﻿using Pie.Common;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Pie.Data.Models
 {
@@ -24,8 +22,5 @@ namespace Pie.Data.Models
 
         [MaxLength(250)]
         public string? Comment { get; set; }
-
-        [NotMapped]
-        public string? BarcodeBase64 => BarcodeGuidConvert.GetBarcodeBase64(Id);
     }
 }

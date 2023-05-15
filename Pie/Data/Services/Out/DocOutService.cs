@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Pie.Common;
 using Pie.Connectors.Connector1c;
 using Pie.Data.Models;
 using Pie.Data.Models.Out;
+using Pie.Data.Services.Application;
 
 namespace Pie.Data.Services.Out
 {
@@ -12,12 +14,15 @@ namespace Pie.Data.Services.Out
         private readonly BaseDocService _baseDocService;
         private readonly QueueOutService _queueService;
         private readonly Service1c _service1C;
+        private readonly ApplicationUserService _userService;
         private readonly ILogger<DocOutService> _logger;
 
         public event EventHandler<Guid>? DocCreated;
 
         public DocOutService(ApplicationDbContext context, IDbContextFactory<ApplicationDbContext> contextFactory,
-            BaseDocService baseDocService, QueueOutService queueService, Service1c service1C, ILogger<DocOutService> logger)
+            BaseDocService baseDocService, QueueOutService queueService, Service1c service1C,
+            ApplicationUserService userService,
+            ILogger<DocOutService> logger)
         {
             _context = context;
             //_context = contextFactory.CreateDbContext();
@@ -25,6 +30,7 @@ namespace Pie.Data.Services.Out
             _baseDocService = baseDocService;
             _queueService = queueService;
             _service1C = service1C;
+            _userService = userService;
             _logger = logger;
         }
         public async Task<List<DocOut>> GetListAsync()
@@ -47,6 +53,16 @@ namespace Pie.Data.Services.Out
                 .Include(d => d.BaseDocs).ThenInclude(b => b.BaseDoc)
                 .FirstOrDefaultAsync(d => d.Id == id);
             return doc;
+        }
+
+        public async Task<DocOutVm?> GetVmAsync(Guid id)
+        {
+            DocOutVm? result = new();
+            result.Item = await GetAsync(id);
+            result.UserName = await _userService.GetCurrentUserNameAsync();
+            result.Barcode = BarcodeGuidConvert.GetBarcodeBase64(id);
+
+            return result;
         }
 
         public async Task<Dictionary<int, List<DocOut>>> GetDictionaryByQueue(SearchOutParameters searchParameters)
