@@ -49,5 +49,11 @@ namespace Pie.Data.Services.Application
             string name = $"{user?.FirstName} {user?.LastName}";
             return name;
         }
+
+        public List<ApplicationUser> GetUserList()
+        {
+            var result = _userManager.Users.ToList();
+            return result;
+        }
     }
 }
