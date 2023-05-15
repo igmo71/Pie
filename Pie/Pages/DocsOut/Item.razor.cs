@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Pie.Data.Models.Out;
 using Pie.Data.Services;
 using Pie.Data.Services.Application;
@@ -12,6 +13,7 @@ namespace Pie.Pages.DocsOut
         [Inject] public required DocOutService DocService { get; set; }
         [Inject] public required CurrentUserService CurrentUserService { get; set; }
         [Inject] public required ChangeReasonOutService ChangeReasonService { get; set; }
+        [Inject] public IJSRuntime? JSRuntime { get; set; }
 
         [Parameter] public string? Id { get; set; }
 
@@ -61,6 +63,11 @@ namespace Pie.Pages.DocsOut
         {
             if (doc == null) return;
             ServiceResult result = await DocService.SendAsync(doc);
+        }
+        private async Task PrintAsync()
+        {
+            if (JSRuntime == null) return;
+            await JSRuntime.InvokeVoidAsync("print");
         }
     }
 }

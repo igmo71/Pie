@@ -172,7 +172,7 @@ namespace Pie.Data.Services.Out
                 return;
 
             var queue = await _queueService.GetAsync((int)doc.QueueKey);
-            if (queue == null)
+            if (queue == null || (queue.Days == 0 && queue.Hours == 0 && queue.Minutes == 0 && queue.ConcreteTime == new TimeOnly()))
                 return;
 
             doc.ShipDateTime = doc.DateTime.AddDays(queue.Days).AddHours(queue.Hours).AddMinutes(queue.Minutes);

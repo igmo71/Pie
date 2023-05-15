@@ -10,15 +10,27 @@
 <div class="row d-flex justify-content-between">
     <div class="col-2 px-1"><h3>@doc?.QueueNumber</h3></div>
     <div class="col-7 px-1"><h4>@doc?.Name</h4></div>
-    <div class="col-3 p-0 d-flex justify-content-end">
+    <div class="col-3 p-0 d-flex justify-content-end d-none d-print-inline">
         <img src=@($"data:image/jpeg;base64,{doc?.BarcodeBase64}") width="256" height="62" alt="штрих код" />
     </div>
 </div>
 
 <div>@pageMessage</div>
 
-<div><button class="btn btn-primary" @onclick="@SendDocAsync"><i class="bi bi-send"></i>Отправить</button></div>
-
+<div class="row d-print-none">
+    <div class="col-auto">
+        <a class="btn btn-outline-primary" href="DocsOut/List" title="Назад"><i class="bi bi-arrow-90deg-left"></i> Назад</a>
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-outline-primary" @onclick="@SendDocAsync" title="Переключить статус"><i class="bi bi-send"></i> Отправить</button>
+    </div>
+    <div class="col-auto">
+        <a class="btn btn-outline-primary" href="DocsOut/List" title="История"><i class="bi bi-info-lg"></i> История</a>
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-outline-primary" @onclick="@PrintAsync" title="Печать"><i class="bi bi-printer"></i> Печать</button>
+    </div>
+</div>
 
 @*<div>Номер:@doc?.Number</div>
 <div>Дата: @doc?.DateTime</div>*@
@@ -40,16 +52,17 @@
 <div>
     @*<QuickGrid Items="@(doc?.Products?.AsQueryable<DocOutProduct>())" Class="table table-bordered table-hover">*@
     <QuickGrid Items="@FilteredProducts" Class="table table-bordered table-hover">
-        <PropertyColumn Property="@(p => p.Product != null ? p.Product.Name : string.Empty)" Title="Товар"  Sortable="true">
+        <PropertyColumn Property="@(p => p.Product != null ? p.Product.Name : string.Empty)" Title="Товар" Sortable="true">
             <ColumnOptions>
                 <div class="search-box">
                     <input type="search" autofocus @bind="nameFilter" @bind:event="oninput" placeholder="Название..." />
                 </div>
             </ColumnOptions>
-        </PropertyColumn>        
+        </PropertyColumn>
+        <PropertyColumn Property="@(p => p.Weight)" Title="Вес" Sortable="true" />
         <PropertyColumn Property="@(p => p.CountPlan)" Title="Кол-во план" Sortable="true"></PropertyColumn>
         @*<PropertyColumn Property="@(p => p.CountFact)" Title="Кол-во факт" Sortable="true"></PropertyColumn>*@
-        <TemplateColumn Title="Кол факт" Class="p-0 m-0"> 
+        <TemplateColumn Title="Кол факт" Class="p-0 m-0">
             <div class="@(context.CountFact == context.CountPlan ? string.Empty : "alert  alert-warning") m-0 p-2">
                 @{
                     string? detail = changeReasons?.FirstOrDefault(c => c.Id == context.ChangeReasonId)?.Name;
@@ -66,7 +79,7 @@
 
 <EditDialog @ref="EditDialog" ChangeReasons="@changeReasons" OnSaveChanges="@UpdateDoc"></EditDialog>
 
-@code{
+@code {
     string? nameFilter;
     IQueryable<DocOutProduct>? FilteredProducts
     {
