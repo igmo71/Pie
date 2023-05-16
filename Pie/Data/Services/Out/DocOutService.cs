@@ -15,13 +15,14 @@ namespace Pie.Data.Services.Out
         private readonly QueueOutService _queueService;
         private readonly Service1c _service1C;
         private readonly ApplicationUserService _userService;
+        private readonly DocOutHistoryService _docHistoryService;
         private readonly ILogger<DocOutService> _logger;
 
         public event EventHandler<Guid>? DocCreated;
 
         public DocOutService(ApplicationDbContext context, IDbContextFactory<ApplicationDbContext> contextFactory,
             BaseDocService baseDocService, QueueOutService queueService, Service1c service1C,
-            ApplicationUserService userService,
+            ApplicationUserService userService, DocOutHistoryService docHistoryService,
             ILogger<DocOutService> logger)
         {
             _context = context;
@@ -31,6 +32,7 @@ namespace Pie.Data.Services.Out
             _queueService = queueService;
             _service1C = service1C;
             _userService = userService;
+            _docHistoryService = docHistoryService;
             _logger = logger;
         }
         public async Task<List<DocOut>> GetListAsync()
@@ -175,6 +177,11 @@ namespace Pie.Data.Services.Out
             await _service1C.SendOutAsync(doc);
 
             result.IsSuccess = true;
+
+            if(result.IsSuccess )
+            {
+                await _docHistoryService.CreateAsync(doc);
+            }
 
             return result;
         }
