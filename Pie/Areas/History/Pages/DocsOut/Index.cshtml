@@ -5,7 +5,7 @@
     ViewData["Title"] = "История расходников";
 }
 
-<h1>История расходников</h1>
+<h2>История расходников</h2>
 <form asp-page="./Index" method="get">
     <div class="form-actions no-color">
         <p>
@@ -68,3 +68,76 @@
         }
     </tbody>
 </table>
+
+
+@if (Model.DocOutProductHistory != null)
+{
+    <h3>История товаров этого расходника</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.DocOutProductHistory[0].Doc)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DocOutProductHistory[0].DateTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DocOutProductHistory[0].User)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DocOutProductHistory[0].LineNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DocOutProductHistory[0].Product)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DocOutProductHistory[0].CountPlan)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DocOutProductHistory[0].CountFact)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DocOutProductHistory[0].ChangeReason)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.DocOutProductHistory)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Doc.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LineNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CountPlan)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CountFact)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ChangeReason.Name)
+                    </td>
+                    <td>
+                        @*<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |*@
+                        @*<a asp-page="./Products/Details" asp-route-id="@item.Id">Подробно</a> |*@
+                        @*<a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>*@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

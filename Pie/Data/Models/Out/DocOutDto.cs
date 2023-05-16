@@ -41,8 +41,10 @@
                     {
                         DocId = dto.Id,
                         ProductId = item.ProductId,
-                        CountPlan = item.Count, // TODO: item.CountPlan
-                        CountFact = item.Count  // TODO: item.CountFact
+                        LineNumber = item.LineNumber,
+                        CountPlan = item.CountPlan,
+                        CountFact = item.CountFact,
+                        Weight = item.Weight
                     };
                     doc.Products.Add(product);
                 }
@@ -68,10 +70,10 @@
     public class ProductDto
     {
         public Guid ProductId { get; set; }
-        public float Count { get; set; }
-        //TODO:
-        //public float CountPlan { get; set; }
-        //public float CountFact { get; set; }
+        public int LineNumber { get; set; }
+        public float CountPlan { get; set; }
+        public float CountFact { get; set; }
+        public float Weight { get; set; }
     }
 
     public class BaseDocDto

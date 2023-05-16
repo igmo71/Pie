@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Pie.Data;
 using Pie.Data.Models.Out;
 
 namespace Pie.Areas.History.Pages.DocsOut.Products
@@ -27,7 +21,10 @@ namespace Pie.Areas.History.Pages.DocsOut.Products
                 .Include(d => d.ChangeReason)
                 .Include(d => d.Doc)
                 .Include(d => d.Product)
-                .Include(d => d.User).ToListAsync();    
+                .Include(d => d.User)
+                .OrderBy(d => d.Doc.Name).ThenBy(d => d.LineNumber).ThenBy(d => d.DateTime)
+                .Take(50)
+                .ToListAsync();    
         }
     }
 }

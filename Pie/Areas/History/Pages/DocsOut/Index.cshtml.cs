@@ -20,6 +20,7 @@ namespace Pie.Areas.History.Pages.DocsOut
         }
 
         public IList<DocOutHistory> DocOutHistory { get; set; } = default!;
+        public IList<DocOutProductHistory> DocOutProductHistory { get; set; } = default!;
         public string? CurrentFilter { get; set; }
         public Guid? DocId { get; set; }
 
@@ -29,6 +30,7 @@ namespace Pie.Areas.History.Pages.DocsOut
             DocId = docId;
             try
             {
+                // DocOutHistory
                 IQueryable<DocOutHistory> query = _context.DocsOutHistory.AsNoTracking()
                     .Include(d => d.Doc)
                     .Include(d => d.Status)
@@ -41,9 +43,31 @@ namespace Pie.Areas.History.Pages.DocsOut
                     query = query.Where(d => d.Doc != null && d.DocId == docId);
 
                 DocOutHistory = await query
-                    .OrderByDescending(d => d.DateTime)
+                    .OrderBy(d => d.Doc.Name).ThenBy(d => d.DateTime)
                     .Take(50)
                     .ToListAsync();
+
+                // DocOutProductHistory
+                if (!string.IsNullOrEmpty(searchString) || docId != null)
+                {
+                    IQueryable<DocOutProductHistory> queryProduct = _context.DocOutProductsHistory.AsNoTracking()
+                        .Include(d => d.ChangeReason)
+                        .Include(d => d.Doc)
+                        .Include(d => d.Product)
+                        .Include(d => d.User);
+
+                    if (!string.IsNullOrEmpty(searchString))
+                        queryProduct = queryProduct.Where(d => d.Doc != null && d.Doc.Name != null && d.Doc.Name.ToUpper().Contains(searchString.ToUpper()));
+
+                    if (docId != null)
+                        queryProduct = queryProduct.Where(d => d.Doc != null && d.DocId == docId);
+
+                    DocOutProductHistory = await queryProduct
+                        .OrderBy(d => d.Doc.Name).ThenBy(d => d.LineNumber).ThenBy(d => d.DateTime)
+                        .Take(50)
+                        .ToListAsync();
+                }
+
             }
             catch (Exception ex)
             {

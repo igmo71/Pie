@@ -11,6 +11,7 @@ namespace Pie.Data.Models.Out
         {
             DocId = product.DocId;
             ProductId = product.ProductId;
+            LineNumber = product.LineNumber;
             CountPlan = product.CountPlan;
             CountFact = product.CountFact;
             ChangeReasonId = product.ChangeReasonId;

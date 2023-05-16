@@ -20,10 +20,13 @@ namespace Pie.Data.Models
         [Display(Name = "Товар")]
         public Product? Product { get; set; }
 
+        [Display(Name = "Строка")]
+        public int LineNumber { get; set; }
 
-        [Display(Name = "Кол-во план")]
+
+        [Display(Name = "Кол план")]
         public float CountPlan { get; set; }
-        [Display(Name = "Кол-во факт")]
+        [Display(Name = "Кол факт")]
         public float CountFact { get; set; }
     }
 }

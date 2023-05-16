@@ -9,6 +9,8 @@ namespace Pie.Data.Models
         public Guid ProductId { get; set; }
         public Product? Product { get; set; }
 
+        public int LineNumber { get; set; }
+
         public float CountPlan { get; set; }
 
 

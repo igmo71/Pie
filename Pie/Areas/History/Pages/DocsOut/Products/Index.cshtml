@@ -23,6 +23,9 @@
                 @Html.DisplayNameFor(model => model.DocOutProductHistory[0].User)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.DocOutProductHistory[0].LineNumber)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.DocOutProductHistory[0].Product)
             </th>
             <th>
@@ -49,6 +52,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.User.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LineNumber)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Product.Name)

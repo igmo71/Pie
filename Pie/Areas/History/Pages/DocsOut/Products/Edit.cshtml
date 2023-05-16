@@ -35,6 +35,11 @@
                 <span asp-validation-for="DocOutProductHistory.UserId" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="DocOutProductHistory.LineNumber" class="control-label"></label>
+                <input asp-for="DocOutProductHistory.LineNumber" class="form-control" />
+                <span asp-validation-for="DocOutProductHistory.LineNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="DocOutProductHistory.ProductId" class="control-label"></label>
                 <select asp-for="DocOutProductHistory.ProductId" class="form-control" asp-items="ViewBag.ProductId"></select>
                 <span asp-validation-for="DocOutProductHistory.ProductId" class="text-danger"></span>
