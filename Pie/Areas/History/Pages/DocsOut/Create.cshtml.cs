@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Pie.Data;
 using Pie.Data.Models.Application;
 using Pie.Data.Models.Out;
 
@@ -22,9 +17,9 @@ namespace Pie.Areas.History.Pages.DocsOut
 
         public IActionResult OnGet()
         {
-        ViewData["DocId"] = new SelectList(_context.DocsOut, "Id", "Name");
-        ViewData["StatusKey"] = new SelectList(_context.StatusesOut, "Key", "Name");
-        ViewData["UserId"] = new SelectList(_context.Users, "Id", $"{nameof(ApplicationUser.FullName)}");
+            ViewData["DocId"] = new SelectList(_context.DocsOut, "Id", "Name");
+            ViewData["StatusKey"] = new SelectList(_context.StatusesOut, "Key", "Name");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", $"{nameof(ApplicationUser.FullName)}");
             return Page();
         }
 

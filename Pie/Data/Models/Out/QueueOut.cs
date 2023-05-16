@@ -8,7 +8,7 @@ namespace Pie.Data.Models.Out
         // Отгрузить До:
 
         [DefaultValue(0)]
-        [Display(Name ="Дни")]
+        [Display(Name = "Дни")]
         public int Days { get; set; }
 
         [DefaultValue(0)]

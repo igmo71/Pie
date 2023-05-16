@@ -16,6 +16,6 @@ namespace Pie.Data.Models.Out
         [MaxLength(5)]
         public string? QueueNumber { get; set; }
 
-        public DateTime ShipDateTime { get; set; }        
+        public DateTime ShipDateTime { get; set; }
     }
 }

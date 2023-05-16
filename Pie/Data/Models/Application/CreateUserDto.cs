@@ -26,7 +26,7 @@ namespace Pie.Data.Models.Application
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "Пароль и подтверждение не совпадают.")]
         public string ConfirmPassword { get; set; } = null!;
-        
+
         [Display(Name = "Склад")]
         public Guid? WarehouseId { get; set; }
     }

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-
-namespace Pie.Data.Services
+﻿namespace Pie.Data.Services
 {
     public class ServiceResult
     {

@@ -16,10 +16,10 @@ namespace Pie.Areas.History.Pages.DocsOut.Products
 
         public IActionResult OnGet()
         {
-        ViewData["ChangeReasonId"] = new SelectList(_context.ChangeReasonsOut, "Id", "Name");
-        ViewData["DocId"] = new SelectList(_context.DocsOut, "Id", "Name");
-        ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");
-        ViewData["UserId"] = new SelectList(_context.Users, "Id", "FullName");
+            ViewData["ChangeReasonId"] = new SelectList(_context.ChangeReasonsOut, "Id", "Name");
+            ViewData["DocId"] = new SelectList(_context.DocsOut, "Id", "Name");
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "FullName");
             return Page();
         }
 

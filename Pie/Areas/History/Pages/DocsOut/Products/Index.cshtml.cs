@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models.Out;
 using Pie.Data.Services.Out;
 
@@ -14,7 +13,7 @@ namespace Pie.Areas.History.Pages.DocsOut.Products
             _docProductHistoryService = docProductHistoryService;
         }
 
-        public IList<DocOutProductHistory> DocOutProductHistory { get;set; } = default!; 
+        public IList<DocOutProductHistory> DocOutProductHistory { get; set; } = default!;
         public string? CurrentFilter { get; set; }
         public Guid? DocId { get; set; }
 

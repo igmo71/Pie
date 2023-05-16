@@ -28,7 +28,7 @@ namespace Pie.Areas.History.Pages.DocsOut
             DocOutHistory = await _docHistoryService.GetListAsync(searchString, docId);
 
             if (!string.IsNullOrEmpty(searchString) || docId != null)
-                DocOutProductHistory = await _docProductHistoryService.GetListAsync(searchString, docId);            
+                DocOutProductHistory = await _docProductHistoryService.GetListAsync(searchString, docId);
         }
     }
 }

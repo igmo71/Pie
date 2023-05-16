@@ -45,6 +45,6 @@ namespace Pie.Areas.Identity.Pages.Users
             }
 
             return RedirectToPage("./Index");
-        }        
+        }
     }
 }

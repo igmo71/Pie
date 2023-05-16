@@ -17,7 +17,7 @@ namespace Pie.Data.Models.Application
         [Display(Name = "Email")]
         public string Email { get; set; } = null!;
 
-        
+
         [DataType(DataType.Password)]
         [Display(Name = "Старый пароль")]
         public string? CurrentPassword { get; set; }

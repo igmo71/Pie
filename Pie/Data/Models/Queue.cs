@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Pie.Data.Models
 {
@@ -9,7 +8,7 @@ namespace Pie.Data.Models
 
         [Required]
         [MaxLength(100)]
-        [Display(Name ="Наименование")]
+        [Display(Name = "Наименование")]
         public string? Name { get; set; }
 
         [Display(Name = "Активен")]
@@ -17,6 +16,6 @@ namespace Pie.Data.Models
 
         [Required]
         [Display(Name = "Ключ")]
-        public int? Key { get; set; }        
+        public int? Key { get; set; }
     }
 }

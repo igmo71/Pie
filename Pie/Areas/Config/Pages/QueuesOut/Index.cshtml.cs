@@ -19,7 +19,7 @@ namespace Pie.Areas.Config.Pages.QueuesOut
         public async Task<IActionResult> OnGet()
         {
             QueueList = await _queueService.GetListAsync();
-            
+
             return Page();
         }
     }

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Pie.Data;
 using Pie.Data.Models.Out;
 
 namespace Pie.Areas.History.Pages.DocsOut
@@ -30,15 +25,15 @@ namespace Pie.Areas.History.Pages.DocsOut
                 return NotFound();
             }
 
-            var docHistory =  await _context.DocsOutHistory.FirstOrDefaultAsync(m => m.Id == id);
+            var docHistory = await _context.DocsOutHistory.FirstOrDefaultAsync(m => m.Id == id);
             if (docHistory == null)
             {
                 return NotFound();
             }
             DocOutHistory = docHistory;
-           ViewData["DocId"] = new SelectList(_context.DocsOut, "Id", "Name");
-           ViewData["StatusKey"] = new SelectList(_context.StatusesOut, "Key", "Name");
-           ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["DocId"] = new SelectList(_context.DocsOut, "Id", "Name");
+            ViewData["StatusKey"] = new SelectList(_context.StatusesOut, "Key", "Name");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return Page();
         }
 

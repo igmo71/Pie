@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.WebUtilities;
 using Pie.Data.Models.Application;
 using System.Security.Claims;
-using System.Text;
 
 namespace Pie.Data.Services.Application
 {
@@ -16,7 +12,7 @@ namespace Pie.Data.Services.Application
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<ApplicationUserService> _logger;
 
-        public ApplicationUserService(IHttpContextAccessor contextAccessor, ILogger<ApplicationUserService> logger, 
+        public ApplicationUserService(IHttpContextAccessor contextAccessor, ILogger<ApplicationUserService> logger,
             UserManager<ApplicationUser> userManager, IUserStore<ApplicationUser> userStore)
         {
             _contextAccessor = contextAccessor;
@@ -85,7 +81,7 @@ namespace Pie.Data.Services.Application
 
             await _userStore.SetUserNameAsync(user, createUserDto.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, createUserDto.Email, CancellationToken.None);
-            
+
             IdentityResult identityResult = await _userManager.CreateAsync(user, createUserDto.Password);
 
             if (identityResult.Succeeded)
@@ -94,7 +90,7 @@ namespace Pie.Data.Services.Application
                 _logger.LogInformation("User created");
             }
             else
-            {                
+            {
                 result.Errors = identityResult.Errors.Select(e => e.Description).ToList();
                 _logger.LogInformation("User create error: {errors}", result.Errors);
             }

@@ -180,7 +180,7 @@ namespace Pie.Data.Services.Out
 
             result.IsSuccess = true;
 
-            if(result.IsSuccess )
+            if (result.IsSuccess)
             {
                 await _docHistoryService.CreateAsync(doc);
                 await _docProductHistoryService.CreateAsync(doc);
