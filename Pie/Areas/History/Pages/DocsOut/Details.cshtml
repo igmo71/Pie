@@ -15,7 +15,7 @@
             @Html.DisplayNameFor(model => model.DocOutHistory.Doc)
         </dt>
         <dd class="col-sm-10">
-            <a href="/DocsOut/Item/@Model.DocId">
+            <a href="/DocsOut/Item/@Model.DocId" title="К документу">
                 @Html.DisplayFor(model => model.DocOutHistory.Doc.Name)
             </a>
         </dd>
@@ -41,6 +41,6 @@
 </div>
 <div>
     @*<a asp-page="./Edit" asp-route-id="@Model.DocOutHistory.Id">Edit</a> |*@
-    <a asp-page="./Index" asp-route-docId="@Model.DocId">Назад к списку</a> |
-    <a href="/DocsOut/Item/@Model.DocId">К документу</a>
+    <a asp-page="./Index" asp-route-docId="@Model.DocId" title="Назад к списку историй">Назад к списку</a> |
+    <a href="/DocsOut/Item/@Model.DocId" title="К документу">К документу</a>
 </div>

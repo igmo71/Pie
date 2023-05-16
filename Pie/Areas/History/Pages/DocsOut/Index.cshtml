@@ -15,7 +15,7 @@
             <a asp-page="./Index">Сбросить поиск</a> |
             @if (@Model.DocId != null)
             {
-                <a href="/DocsOut/Item/@Model.DocId">Назад к документу</a>
+                <a href="/DocsOut/Item/@Model.DocId" title="Назад к документу">Назад к документу</a>
             }
         </p>
     </div>
@@ -46,7 +46,7 @@
         {
             <tr>
                 <td>
-                    <a href="/DocsOut/Item/@item.DocId">
+                    <a href="/DocsOut/Item/@item.DocId" title="Назад к документу">
                         @Html.DisplayFor(modelItem => item.Doc.Name)
                     </a>
                 </td>
