@@ -46,7 +46,9 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Doc.Name)
+                    <a href="/DocsOut/Item/@item.DocId">
+                        @Html.DisplayFor(modelItem => item.Doc.Name)
+                    </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DateTime)
