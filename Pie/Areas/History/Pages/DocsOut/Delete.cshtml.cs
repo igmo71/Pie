@@ -29,15 +29,15 @@ namespace Pie.Areas.History.Pages.DocsOut
                 return NotFound();
             }
 
-            var docouthistory = await _context.DocsOutHistory.FirstOrDefaultAsync(m => m.Id == id);
+            var docHistory = await _context.DocsOutHistory.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (docouthistory == null)
+            if (docHistory == null)
             {
                 return NotFound();
             }
             else
             {
-                DocOutHistory = docouthistory;
+                DocOutHistory = docHistory;
             }
             return Page();
         }

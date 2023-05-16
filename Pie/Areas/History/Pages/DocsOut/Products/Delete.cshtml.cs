@@ -29,15 +29,15 @@ namespace Pie.Areas.History.Pages.DocsOut.Products
                 return NotFound();
             }
 
-            var docoutproducthistory = await _context.DocOutProductsHistory.FirstOrDefaultAsync(m => m.Id == id);
+            var docProductHistory = await _context.DocOutProductsHistory.FirstOrDefaultAsync(m => m.Id == id);
 
-            if (docoutproducthistory == null)
+            if (docProductHistory == null)
             {
                 return NotFound();
             }
             else
             {
-                DocOutProductHistory = docoutproducthistory;
+                DocOutProductHistory = docProductHistory;
             }
             return Page();
         }

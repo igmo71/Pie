@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Pie.Data;
 using Pie.Data.Models.Out;
 
 namespace Pie.Areas.History.Pages.DocsOut
@@ -36,6 +31,7 @@ namespace Pie.Areas.History.Pages.DocsOut
                 .Include(d => d.Status)
                 .Include(d => d.User)
                 .FirstOrDefaultAsync(m => m.DocId == docId);
+
             if (docHistory == null)
             {
                 return NotFound();

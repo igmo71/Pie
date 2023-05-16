@@ -25,12 +25,12 @@ namespace Pie.Areas.History.Pages.DocsOut.Products
                 return NotFound();
             }
 
-            var docoutproducthistory =  await _context.DocOutProductsHistory.FirstOrDefaultAsync(m => m.Id == id);
-            if (docoutproducthistory == null)
+            var docProductHistory =  await _context.DocOutProductsHistory.FirstOrDefaultAsync(m => m.Id == id);
+            if (docProductHistory == null)
             {
                 return NotFound();
             }
-            DocOutProductHistory = docoutproducthistory;
+            DocOutProductHistory = docProductHistory;
            ViewData["ChangeReasonId"] = new SelectList(_context.ChangeReasonsOut, "Id", "Name");
            ViewData["DocId"] = new SelectList(_context.DocsOut, "Id", "Name");
            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");

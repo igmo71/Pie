@@ -30,12 +30,12 @@ namespace Pie.Areas.History.Pages.DocsOut
                 return NotFound();
             }
 
-            var docouthistory =  await _context.DocsOutHistory.FirstOrDefaultAsync(m => m.Id == id);
-            if (docouthistory == null)
+            var docHistory =  await _context.DocsOutHistory.FirstOrDefaultAsync(m => m.Id == id);
+            if (docHistory == null)
             {
                 return NotFound();
             }
-            DocOutHistory = docouthistory;
+            DocOutHistory = docHistory;
            ViewData["DocId"] = new SelectList(_context.DocsOut, "Id", "Name");
            ViewData["StatusKey"] = new SelectList(_context.StatusesOut, "Key", "Name");
            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
