@@ -20,19 +20,22 @@ namespace Pie.Areas.History.Pages.DocsOut
         }
 
         public DocOutHistory DocOutHistory { get; set; } = default!;
+        public Guid? DocId { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(Guid? id)
+        public async Task<IActionResult> OnGetAsync(Guid? docId)
         {
-            if (id == null)
+            if (docId == null)
             {
                 return NotFound();
             }
+
+            DocId = docId;
 
             var docHistory = await _context.DocsOutHistory.AsNoTracking()
                 .Include(d => d.Doc)
                 .Include(d => d.Status)
                 .Include(d => d.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.DocId == docId);
             if (docHistory == null)
             {
                 return NotFound();

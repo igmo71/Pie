@@ -20,11 +20,13 @@ namespace Pie.Areas.History.Pages.DocsOut
         }
 
         public IList<DocOutHistory> DocOutHistory { get; set; } = default!;
-        public string CurrentFilter { get; set; }
+        public string? CurrentFilter { get; set; }
+        public Guid? DocId { get; set; }
 
-        public async Task OnGetAsync(string searchString)
+        public async Task OnGetAsync(string? searchString, Guid? docId)
         {
             CurrentFilter = searchString;
+            DocId = docId;
             try
             {
                 IQueryable<DocOutHistory> query = _context.DocsOutHistory.AsNoTracking()
@@ -34,6 +36,9 @@ namespace Pie.Areas.History.Pages.DocsOut
 
                 if (!string.IsNullOrEmpty(searchString))
                     query = query.Where(d => d.Doc != null && d.Doc.Name != null && d.Doc.Name.ToUpper().Contains(searchString.ToUpper()));
+
+                if (docId != null)
+                    query = query.Where(d => d.Doc != null && d.DocId == docId);
 
                 DocOutHistory = await query
                     .OrderByDescending(d => d.DateTime)

@@ -12,7 +12,11 @@
             Поиск по наименованию:
             <input type="text" name="SearchString" value="@Model.CurrentFilter" />
             <input type="submit" value="Поиск" class="btn btn-primary" /> |
-            <a asp-page="./Index">Назад к полному списку</a>
+            <a asp-page="./Index">Сбросить поиск</a> |
+            @if (@Model.DocId != null)
+            {
+                <a href="/DocsOut/Item/@Model.DocId">Назад к документу</a>
+            }
         </p>
     </div>
 </form>
@@ -55,7 +59,7 @@
                 </td>
                 <td>
                     @*<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |*@
-                    <a asp-page="./Details" asp-route-id="@item.Id">Подробно</a> @*|*@
+                    <a asp-page="./Details" asp-route-docId="@item.DocId">Подробно</a> @*|*@
                     @*<a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>*@
                 </td>
             </tr>
