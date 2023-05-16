@@ -1,0 +1,73 @@
+﻿@page
+@model Pie.Areas.History.Pages.DocsOut.Products.IndexModel
+
+@{
+    ViewData["Title"] = "История товаров расходников";
+}
+
+<h1>История товаров расходников</h1>
+
+<p>
+    @*<a asp-page="Create">Create New</a>*@
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DocOutProductHistory[0].Doc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DocOutProductHistory[0].DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DocOutProductHistory[0].User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DocOutProductHistory[0].Product)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DocOutProductHistory[0].CountPlan)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DocOutProductHistory[0].CountFact)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DocOutProductHistory[0].ChangeReason)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.DocOutProductHistory)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Doc.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CountPlan)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CountFact)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ChangeReason.Name)
+                </td>
+                <td>
+                    @*<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |*@
+                    <a asp-page="./Details" asp-route-id="@item.Id">Подробно</a> @*|*@
+                    @*<a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,64 @@
+﻿@page
+@model Pie.Areas.History.Pages.DocsOut.IndexModel
+
+@{
+    ViewData["Title"] = "История расходников";
+}
+
+<h1>История расходников</h1>
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Поиск по наименованию:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Поиск" class="btn btn-primary" /> |
+            <a asp-page="./Index">Назад к полному списку</a>
+        </p>
+    </div>
+</form>
+<p>
+    @*<a asp-page="Create">Create New</a>*@
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DocOutHistory[0].Doc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DocOutHistory[0].DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DocOutHistory[0].User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DocOutHistory[0].Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.DocOutHistory)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Doc.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status.Name)
+                </td>
+                <td>
+                    @*<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |*@
+                    <a asp-page="./Details" asp-route-id="@item.Id">Подробно</a> @*|*@
+                    @*<a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

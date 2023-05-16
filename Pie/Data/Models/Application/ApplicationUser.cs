@@ -21,5 +21,8 @@ namespace Pie.Data.Models.Application
 
         [NotMapped]
         public string? Barcode => BarcodeGuidConvert.GetBarcodeBase64(Id);
+
+        [NotMapped]
+        public string FullName => $"{FirstName ?? string.Empty} {LastName ?? string.Empty}";
     }
 }
