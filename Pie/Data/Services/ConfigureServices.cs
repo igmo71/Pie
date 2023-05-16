@@ -15,6 +15,7 @@ namespace Pie.Data.Services
             services.AddScoped<DocInService>();
             services.AddScoped<DocOutService>();
             services.AddScoped<DocOutHistoryService>();
+            services.AddScoped<DocOutProductHistoryService>();
             services.AddScoped<ProductService>();
             services.AddScoped<WarehouseService>();
             services.AddScoped<StatusInService>();

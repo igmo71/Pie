@@ -49,6 +49,7 @@ namespace Pie.Pages.DocsOut
             if (docVm == null || docVm.Value == null) return;
             ServiceResult result = await DocService.SendAsync(docVm.Value);
         }
+
         private async Task PrintAsync()
         {
             if (JSRuntime == null) return;
