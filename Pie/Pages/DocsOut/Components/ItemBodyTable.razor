@@ -2,6 +2,7 @@
 <div>
     @*<QuickGrid Items="@(doc?.Products?.AsQueryable<DocOutProduct>())" Class="table table-bordered table-hover">*@
     <QuickGrid Items="@FilteredProducts" Class="table table-bordered table-hover">
+        <PropertyColumn Property="@(p => p.LineNumber)" Title="№" Sortable="true"></PropertyColumn>
         <PropertyColumn Property="@(p => p.Product != null ? p.Product.Name : string.Empty)" Title="Товар" Sortable="true">
             <ColumnOptions>
                 <div class="search-box">

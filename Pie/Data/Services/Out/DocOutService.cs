@@ -53,7 +53,7 @@ namespace Pie.Data.Services.Out
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
                 .Include(d => d.Warehouse)
-                .Include(d => d.Products).ThenInclude(p => p.Product)
+                .Include(d => d.Products.OrderBy(p => p.LineNumber)).ThenInclude(p => p.Product)
                 .Include(d => d.BaseDocs).ThenInclude(b => b.BaseDoc)
                 .FirstOrDefaultAsync(d => d.Id == id);
             return doc;
@@ -81,6 +81,7 @@ namespace Pie.Data.Services.Out
                 .OrderBy(d => d.StatusKey.GetValueOrDefault())
                     .ThenBy(d => d.QueueKey.GetValueOrDefault())
                     .ThenByDescending(d => d.ShipDateTime)
+                .Take(100)
                 .GroupBy(e => e.QueueKey.GetValueOrDefault())
                 .ToDictionaryAsync(g => g.Key, g => g.ToList());
             return result;
