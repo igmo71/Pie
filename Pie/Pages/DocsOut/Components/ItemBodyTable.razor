@@ -39,7 +39,7 @@
     {
         get
         {
-            var result = DocVm?.Item?.Products?.AsQueryable();
+            var result = DocVm?.Value?.Products?.AsQueryable();
 
             if (!string.IsNullOrEmpty(nameFilter))
             {

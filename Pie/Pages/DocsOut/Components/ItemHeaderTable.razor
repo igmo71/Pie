@@ -4,12 +4,12 @@
     <table class="table table-sm table-borderless">
         <tr>
             <th>Склад:</th>
-            <td>@DocVm?.Item?.Warehouse?.Name</td>
+            <td>@DocVm?.Value?.Warehouse?.Name</td>
             <th>Документы основания:</th>
             <td>
-                @if (DocVm != null && DocVm.Item != null && DocVm?.Item?.BaseDocs != null)
+                @if (DocVm != null && DocVm.Value != null && DocVm?.Value?.BaseDocs != null)
                 {
-                    @foreach (var item in DocVm.Item.BaseDocs)
+                    @foreach (var item in DocVm.Value.BaseDocs)
                     {
                         <div>@item.BaseDoc?.Name</div>
                     }
@@ -18,21 +18,21 @@
         </tr>
         <tr>
             <th>Статус:</th>
-            <td>@DocVm?.Item?.Status?.Name</td>
+            <td>@DocVm?.Value?.Status?.Name</td>
             <th>В работе:</th>
             <td>@DocVm?.UserName</td>
         </tr>
         <tr>
             <th>Очередь:</th>
-            <td>@DocVm?.Item?.Queue?.Name</td>
+            <td>@DocVm?.Value?.Queue?.Name</td>
             <th>Комментарий:</th>
-            <td>@DocVm?.Item?.Comment</td>
+            <td>@DocVm?.Value?.Comment</td>
         </tr>
         <tr>
             <th>Дата отгрузки:</th>
-            <td>@DocVm?.Item?.ShipDateTime</td>
-            <th></th>
-            <td></td>
+            <td>@DocVm?.Value?.ShipDateTime</td>
+            <th>Вес: </th>
+            <td>@DocVm?.Weight</td>
         </tr>
     </table>
 }

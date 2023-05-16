@@ -31,6 +31,9 @@
         <div>
             Дата отгрузки: @Doc?.ShipDateTime
         </div>
+        <div>
+            Вес: @Doc?.Products.Sum(p => p.Weight)
+        </div>
     </div>
     <div class="card-footer">
         <div>

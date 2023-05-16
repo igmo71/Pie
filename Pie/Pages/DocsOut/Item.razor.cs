@@ -46,8 +46,8 @@ namespace Pie.Pages.DocsOut
 
         private async Task SendDocAsync()
         {
-            if (docVm == null || docVm.Item == null) return;
-            ServiceResult result = await DocService.SendAsync(docVm.Item);
+            if (docVm == null || docVm.Value == null) return;
+            ServiceResult result = await DocService.SendAsync(docVm.Value);
         }
         private async Task PrintAsync()
         {

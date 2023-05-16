@@ -58,7 +58,7 @@ namespace Pie.Data.Services.Out
         public async Task<DocOutVm?> GetVmAsync(Guid id)
         {
             DocOutVm? result = new();
-            result.Item = await GetAsync(id);
+            result.Value = await GetAsync(id);
             result.UserName = await _userService.GetCurrentUserNameAsync();
             result.Barcode = BarcodeGuidConvert.GetBarcodeBase64(id);
 
