@@ -2,12 +2,19 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.WebEncoders.Testing;
 using Pie.Areas.Identity;
+using Pie.Common;
 using Pie.Connectors;
+using Pie.Connectors.Connector1c;
 using Pie.Data;
 using Pie.Data.Models.Application;
 using Pie.Data.Services;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Unicode;
 
 namespace Pie
 {
@@ -71,10 +78,20 @@ namespace Pie
 
             builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
 
+            builder.Services.Configure<JsonSerializerOptions>(options =>
+            {
+                options.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                options.PropertyNameCaseInsensitive = true;
+                options.WriteIndented = true;
+                options.Encoder = JavaScriptEncoder.Create(new TextEncoderSettings(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic));
+            });
+
             builder.Services.AddControllers()
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                    options.JsonSerializerOptions.WriteIndented = true;
                 });
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();

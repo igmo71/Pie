@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Pie.Common;
 using Pie.Connectors.Connector1c;
 using Pie.Data.Models;
 using Pie.Data.Models.Out;
 using Pie.Data.Services.Application;
+using System.Text.Json;
 
 namespace Pie.Data.Services.Out
 {
@@ -13,28 +15,30 @@ namespace Pie.Data.Services.Out
         private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
         private readonly BaseDocService _baseDocService;
         private readonly QueueOutService _queueService;
-        private readonly Service1c _service1C;
+        private readonly Service1c _service1c;
         private readonly ApplicationUserService _userService;
         private readonly DocOutHistoryService _docHistoryService;
         private readonly DocOutProductHistoryService _docProductHistoryService;
         private readonly ILogger<DocOutService> _logger;
+        private readonly JsonSerializerOptions _jsonOptions;
 
         public static event EventHandler<Guid>? DocCreated;
 
         public DocOutService(ApplicationDbContext context, IDbContextFactory<ApplicationDbContext> contextFactory,
-            BaseDocService baseDocService, QueueOutService queueService, Service1c service1C,
+            BaseDocService baseDocService, QueueOutService queueService, Service1c service1c,
             ApplicationUserService userService, DocOutHistoryService docHistoryService, DocOutProductHistoryService docProductHistoryService,
-            ILogger<DocOutService> logger)
+            ILogger<DocOutService> logger, IOptions<JsonSerializerOptions> jsonOptions)
         {
             _context = context;
             _contextFactory = contextFactory;
             _baseDocService = baseDocService;
             _queueService = queueService;
-            _service1C = service1C;
+            _service1c = service1c;
             _userService = userService;
             _docHistoryService = docHistoryService;
             _docProductHistoryService = docProductHistoryService;
             _logger = logger;
+            _jsonOptions = jsonOptions.Value;
         }
         public async Task<List<DocOut>> GetListAsync()
         {
@@ -188,12 +192,15 @@ namespace Pie.Data.Services.Out
 
             try
             {
-                await _service1C.SendOutAsync(doc);
-                result.IsSuccess = true;
+                throw new ApplicationException("Test Application Exception");
+                DocOutDto dto = DocOutDto.MapFromDocOut(doc);
+                var service1cResult = await _service1c.SendOutAsync(dto);
+                result = service1cResult;
             }
             catch (Exception ex)
             {
                 result.Message = ex.Message;
+                _logger.LogError("DocOutService SendAsync {DocOut}", JsonSerializer.Serialize(doc, _jsonOptions));
                 //throw;
             }            
 

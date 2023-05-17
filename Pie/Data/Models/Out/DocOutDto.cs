@@ -7,9 +7,9 @@
         public string? Number { get; set; }
         public DateTime DateTime { get; set; }
         public bool Active { get; set; }
-        public Guid WarehouseId { get; set; }
-        public int StatusKey { get; set; }
-        public int QueueKey { get; set; }
+        public Guid? WarehouseId { get; set; }
+        public int? StatusKey { get; set; }
+        public int? QueueKey { get; set; }
         public string? QueueNumber { get; set; }
         public string? Comment { get; set; }
         public DateTime ShipDateTime { get; set; }
@@ -33,7 +33,7 @@
                 ShipDateTime = dto.ShipDateTime
             };
 
-            if (dto.Products != null)
+            if (dto.Products != null && dto.Products.Count > 0)
             {
                 foreach (var item in dto.Products)
                 {
@@ -50,7 +50,7 @@
                 }
             }
 
-            if (dto.BaseDocs != null)
+            if (dto.BaseDocs != null && dto.BaseDocs.Count > 0)
             {
                 foreach (var item in dto.BaseDocs)
                 {
@@ -64,6 +64,57 @@
             }
 
             return doc;
+        }
+
+        public static DocOutDto MapFromDocOut(DocOut doc)
+        {
+            DocOutDto dto = new()
+            {
+                Id = doc.Id,
+                Name = doc.Name,
+                Number = doc.Number,
+                DateTime = doc.DateTime,
+                Active = doc.Active,
+                WarehouseId = doc.WarehouseId,
+                StatusKey = doc.StatusKey,
+                QueueKey = doc.QueueKey,
+                QueueNumber = doc.QueueNumber,
+                Comment = doc.Comment,
+                ShipDateTime = doc.ShipDateTime
+            };
+
+            if (doc.Products != null && doc.Products.Count > 0)
+            {
+                dto.Products = new List<ProductDto>();
+                foreach (var item in doc.Products)
+                {
+                    ProductDto product = new()
+                    {
+                        ProductId = item.ProductId,
+                        LineNumber = item.LineNumber,
+                        CountPlan = item.CountPlan,
+                        CountFact = item.CountFact,
+                        Weight = item.Weight
+                    };
+                    dto.Products.Add(product);
+                }
+            }
+
+            if (doc.BaseDocs != null && doc.BaseDocs.Count > 0)
+            {
+                dto.BaseDocs = new List<BaseDocDto>();
+                foreach (var item in doc.BaseDocs)
+                {
+                    BaseDocDto baseDoc = new()
+                    {
+                        BaseDocId = item.BaseDocId,
+                        Name = item.BaseDoc?.Name
+                    };
+                    dto.BaseDocs.Add(baseDoc);
+                }
+            }
+
+            return dto;
         }
     }
 
