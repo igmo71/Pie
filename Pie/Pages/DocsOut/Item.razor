@@ -1,5 +1,6 @@
 ﻿@page "/DocsOut/Item/{id}"
 
+@using Pie.Common;
 @using Pie.Data.Models;
 @using Pie.Data.Models.Out;
 @using Pie.Pages.Components
@@ -30,6 +31,16 @@
     </div>
 </div>
 
+
+@*<div class="col-4 p-0 d-flex justify-content-end d-none d-print-inline">*@
+<div class="col-4 p-0 d-flex justify-content-end">
+    <img src=@($"data:image/jpeg;base64,{docVm?.Barcode}") width="256" height="62" alt="штрих код" />
+</div>
+@*<div class="col-4 p-0 d-flex justify-content-end d-none d-print-inline">*@
+<div class="col-4 p-0 d-flex justify-content-end">
+    <img src=@($"data:image/jpeg;base64,{docVm?.Barcode}") alt="штрих код" />
+</div>
+
 <div>@pageMessage</div>
 
 <ItemHeaderTable DocVm="@docVm"></ItemHeaderTable>
@@ -42,7 +53,7 @@
     {
         get
         {
-            var result = docVm?.Value ?.Products?.AsQueryable();
+            var result = docVm?.Value?.Products?.AsQueryable();
 
             if (!string.IsNullOrEmpty(nameFilter))
             {

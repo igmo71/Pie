@@ -65,7 +65,7 @@ namespace Pie.Data.Services.Out
             DocOutVm? result = new();
             result.Value = await GetAsync(id);
             result.UserName = await _userService.GetCurrentUserNameAsync();
-            result.Barcode = BarcodeGuidConvert.GetBarcodeBase64(id);
+            result.Barcode = BarcodeGenerator.GetBarCode128(id);
 
             return result;
         }

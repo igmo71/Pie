@@ -3,11 +3,19 @@ using System.Numerics;
 
 namespace Pie.Common
 {
-    public static class BarcodeGuidConvert
+    public static class GuidBarcodeConvert_copy
     {
         private const string alphabet = "0123456789abcdef";
 
-        public static string ToNumericString(Guid guid)
+        public static string GuidStringToNumericString(string guidString)
+        {
+            if (!Guid.TryParse(guidString, out Guid guid))
+                throw new ApplicationException($"Guid. Failure to parse ({guidString}) ");
+
+            return GuidToNumericString(guid);
+        }
+
+        public static string GuidToNumericString(Guid guid)
         {
             string value = guid.ToString("n");
 
@@ -25,18 +33,11 @@ namespace Pie.Common
             return result;
         }
 
-        public static string ToNumericString(string guidString)
-        {
-            if (!Guid.TryParse(guidString, out Guid guid))
-                throw new ApplicationException($"Guid. Failure to parse ({guidString}) ");
-
-            return ToNumericString(guid);
-        }
-
-        public static Guid FromNumericString(string numericString)
+        public static Guid GuidFromNumericString(string numericString)
         {
             if (!BigInteger.TryParse(numericString, out BigInteger bigInt))
                 throw new ApplicationException($"BigInteger. Failure to parse ({numericString}) ");
+            
             string result = "";
 
             while (bigInt > 0)
@@ -51,30 +52,15 @@ namespace Pie.Common
 
             if (!Guid.TryParse(result, out Guid guid))
                 throw new ApplicationException($"Guid. Failure to parse ({result}) ");
+           
             return guid;
         }
 
-        public static string FromNumericStringAsString(string numericString)
+        public static string GuidStringFromNumericString(string numericString)
         {
-            Guid guid = FromNumericString(numericString);
+            Guid guid = GuidFromNumericString(numericString);
 
             return guid.ToString();
-        }
-
-        public static string? GetBarcodeBase64(string idString)
-        {
-            var numericString = ToNumericString(idString);
-            var barcode = new Barcode(numericString, NetBarcode.Type.Code128, false);
-            var result = barcode.GetBase64Image();
-            return result;
-        }
-
-        public static string? GetBarcodeBase64(Guid idGuid)
-        {
-            var numericString = ToNumericString(idGuid);
-            var barcode = new Barcode(numericString, NetBarcode.Type.Code128, false);
-            var result = barcode.GetBase64Image();
-            return result;
         }
     }
 }

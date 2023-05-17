@@ -22,7 +22,9 @@
     <PackageReference Include="NetBarcode" Version="1.7.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
     <PackageReference Include="Seq.Extensions.Logging" Version="6.1.0" />
+    <PackageReference Include="SkiaSharp" Version="2.88.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="ZXing.Net" Version="0.16.9" />
   </ItemGroup>
 
   <ItemGroup>
