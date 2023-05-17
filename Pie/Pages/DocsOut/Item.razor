@@ -6,7 +6,8 @@
 @using Pie.Pages.Components
 @using Pie.Pages.DocsOut.Components
 
-<ScanBarcode OnScannedBarcode="ScannedBarcode"></ScanBarcode>
+<ScanBarcode OnScannedBarcode="ScannedBarcodeAsync"></ScanBarcode>
+<Notification @ref="@notification" />
 
 <div class="row d-print-none">
     <div class="col-auto">
@@ -31,16 +32,6 @@
     </div>
 </div>
 
-
-@*<div class="col-4 p-0 d-flex justify-content-end d-none d-print-inline">*@
-<div class="col-4 p-0 d-flex justify-content-end">
-    <img src=@($"data:image/jpeg;base64,{docVm?.Barcode}") width="256" height="62" alt="штрих код" />
-</div>
-@*<div class="col-4 p-0 d-flex justify-content-end d-none d-print-inline">*@
-<div class="col-4 p-0 d-flex justify-content-end">
-    <img src=@($"data:image/jpeg;base64,{docVm?.Barcode}") alt="штрих код" />
-</div>
-
 <div>@pageMessage</div>
 
 <ItemHeaderTable DocVm="@docVm"></ItemHeaderTable>
@@ -59,6 +50,7 @@
             {
                 result = result?.Where(p => p.Product.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
             }
+
             return result;
         }
     }

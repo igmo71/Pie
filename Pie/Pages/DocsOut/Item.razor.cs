@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using Pie.Data.Models.Out;
 using Pie.Data.Services;
 using Pie.Data.Services.Out;
+using Pie.Pages.Components;
 
 namespace Pie.Pages.DocsOut
 {
@@ -17,6 +18,7 @@ namespace Pie.Pages.DocsOut
         private DocOutVm? docVm;
         private string? barcode;
         private List<ChangeReasonOut>? changeReasons;
+        private Notification notification = new();
         private string pageMessage = string.Empty;
 
         protected override async Task OnInitializedAsync()
@@ -37,16 +39,26 @@ namespace Pie.Pages.DocsOut
             docVm = await DocService.GetVmAsync(Guid.Parse(Id));
         }
 
-        private void ScannedBarcode(string barcode)
+        private async Task ScannedBarcodeAsync(string barcode)
         {
             this.barcode = barcode;
-            pageMessage = barcode ?? string.Empty;
+            await notification.ShowAndHideAsync(this.barcode, 1);
         }
 
         private async Task SendDocAsync()
         {
             if (docVm == null || docVm.Value == null) return;
-            ServiceResult result = await DocService.SendAsync(docVm.Value);
+
+            notification.Show("Запрос изменения статуса ...");
+
+            ServiceResult serviceResult = await DocService.SendAsync(docVm.Value);
+
+            if (!serviceResult.IsSuccess)
+            {
+                await notification.SetMessageAndHideAsync($"Ошибка изменения статуса: {serviceResult.Message}", 2);
+                return;
+            }
+            await notification.SetMessageAndHideAsync($"Запрос изменения статуса - OK", 2);
         }
 
         private async Task PrintAsync()

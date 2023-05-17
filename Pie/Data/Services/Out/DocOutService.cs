@@ -178,9 +178,16 @@ namespace Pie.Data.Services.Out
         {
             ServiceResult result = new();
 
-            await _service1C.SendOutAsync(doc);
-
-            result.IsSuccess = true;
+            try
+            {
+                await _service1C.SendOutAsync(doc);
+                result.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                result.Message = ex.Message;
+                //throw;
+            }            
 
             if (result.IsSuccess)
             {

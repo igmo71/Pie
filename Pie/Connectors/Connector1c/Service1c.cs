@@ -27,6 +27,8 @@ namespace Pie.Connectors.Connector1c
 
         public async Task<Service1cResult> SendOutAsync(DocOut doc)
         {
+            throw new ApplicationException("Test Application Exception");
+
             Service1cResult result = new();
 
             return result;
