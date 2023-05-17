@@ -24,8 +24,8 @@
 
 <div class="row d-flex justify-content-between">
     <div class="col-2 px-1"><h3>@docVm?.Value?.QueueNumber</h3></div>
-    <div class="col-7 px-1"><h4>@docVm?.Value?.Name</h4></div>
-    <div class="col-3 p-0 d-flex justify-content-end d-none d-print-inline">
+    <div class="col-6 px-1"><h4>@docVm?.Value?.Name</h4></div>
+    <div class="col-4 p-0 d-flex justify-content-end d-none d-print-inline">
         <img src=@($"data:image/jpeg;base64,{docVm?.Barcode}") width="256" height="62" alt="штрих код" />
     </div>
 </div>

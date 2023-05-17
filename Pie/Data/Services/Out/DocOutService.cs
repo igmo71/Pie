@@ -43,6 +43,7 @@ namespace Pie.Data.Services.Out
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
                 .Include(d => d.Warehouse)
+                .Take(100)
                 .ToListAsync();
             return docs;
         }

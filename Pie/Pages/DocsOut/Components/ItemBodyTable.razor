@@ -11,7 +11,7 @@
             </ColumnOptions>
         </PropertyColumn>
         <PropertyColumn Property="@(p => p.Weight)" Title="Вес" Sortable="true" />
-        <PropertyColumn Property="@(p => p.CountPlan)" Title="Кол-во план" Sortable="true"></PropertyColumn>
+        <PropertyColumn Property="@(p => p.CountPlan)" Title="Кол план" Sortable="true"></PropertyColumn>
         @*<PropertyColumn Property="@(p => p.CountFact)" Title="Кол-во факт" Sortable="true"></PropertyColumn>*@
         <TemplateColumn Title="Кол факт" Class="p-0 m-0">
             <div class="@(context.CountFact == context.CountPlan ? string.Empty : "alert  alert-warning") m-0 p-2">
@@ -22,7 +22,7 @@
                 @context.CountFact @detail
             </div>
         </TemplateColumn>
-        <TemplateColumn Title="Изменить">
+        <TemplateColumn Title="Изменить" Class="d-print-none">
             <button class="btn btn-outline-primary" @onclick="@(() => EditDoc(context))"><i class="bi bi-pencil-square"></i></button>
         </TemplateColumn>
     </QuickGrid>
