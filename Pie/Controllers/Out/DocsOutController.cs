@@ -60,7 +60,7 @@ namespace Pie.Controllers.Out
 
             var result = await _docService.CreateAsync(docDto);
 
-            _eventDispatcher.OnDocOutCreated(docDto.Id);
+            //_eventDispatcher.OnDocOutCreated(docDto.Id);
 
             return CreatedAtAction("GetDoc", new { id = result.Id }, result);
         }

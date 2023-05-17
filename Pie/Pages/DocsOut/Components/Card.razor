@@ -3,41 +3,41 @@
 <div class="card border-@cardColor shadow rounded mb-2">
     <div class="card-header bg-@cardColor bg-opacity-75 text-white p-2">
         <div class="row">
-            <div class="col-3">
-                <div>@Doc?.QueueNumber</div>
+            <div class="col-9 d-flex justify-content-center">
+                <div>
+                    <span>№ </span><span>@Doc?.Number</span>
+                </div>
             </div>
-            <div class="col-9">
+            <div class="col-3 d-flex justify-content-center h5">
+                <div>@Doc?.QueueNumber</div>
             </div>
         </div>
     </div>
-    <div class="card-body p-2">
+    <div class="card-body p-2">  
         <div>
-            <span>№ </span>
-            <span><a href="/DocsOut/Item/@Doc?.Id">@Doc?.Number</a></span>
+            <i class="bi bi-calendar-event"></i><span> Дата отгрузки: </span><span>@Doc?.ShipDateTime</span>
         </div>
         <div>
-            <span>от </span>
-            <span><a href="/DocsOut/Item/@Doc?.Id">@Doc?.DateTime</a></span>
+            <i class="bi bi-building"></i><span> Склад: </span><span>@Doc?.Warehouse?.Name</span>
         </div>
         <div>
-            Склад: @Doc?.Warehouse?.Name
+            <i class="bi bi-clipboard-check"></i><span> Статус: </span><span>@Doc?.Status?.Name</span>
         </div>
         <div>
-            Статус: @Doc?.Status?.Name
+            <i class="bi bi-people"></i><span> Очередь: </span><span>@Doc?.Queue?.Name</span>
         </div>
         <div>
-            Очередь: @Doc?.Queue?.Name
-        </div>
-        <div>
-            Дата отгрузки: @Doc?.ShipDateTime
-        </div>
-        <div>
-            Вес: @Doc?.Products.Sum(p => p.Weight)
+            <span>@Doc?.Comment</span>
         </div>
     </div>
     <div class="card-footer">
-        <div>
-            @Doc?.Comment
+        <div class="row">
+            <div class="col">
+                <i class="bi bi-minecart-loaded"></i><span> Вес: </span><span>@Doc?.Products.Sum(p => p.Weight)</span>
+            </div>
+            <div class="col">
+                <i class="bi bi-list-ol"></i><span> Кол строк: </span><span>@Doc?.Products.Count</span>
+            </div>
         </div>
     </div>
 </div>

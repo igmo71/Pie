@@ -1,15 +1,23 @@
 ﻿@using Pie.Data.Models.Out;
+@inject NavigationManager NavigationManager
 
 @if (Docs is not null)
 {
     <div style="overflow-y: scroll; max-height: 800px;">
         @foreach (var doc in Docs)
         {
-            <Card Doc="@doc"></Card>
+            <div class="me-2" @onclick="@(() => OnClick(doc.Id))">
+                <Card Doc="@doc"></Card>
+            </div>
         }
     </div>
 }
 
 @code {
     [Parameter] public List<DocOut>? Docs { get; set; }
+
+    private void OnClick(Guid id)
+    {
+        NavigationManager.NavigateTo($"DocsOut/Item/{id}");
+    }
 }

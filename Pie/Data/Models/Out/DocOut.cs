@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Pie.Data.Models.Out
 {
@@ -17,5 +19,8 @@ namespace Pie.Data.Models.Out
         public string? QueueNumber { get; set; }
 
         public DateTime ShipDateTime { get; set; }
+
+        [NotMapped]
+        public float Weight => Products.Sum(x => x.Weight);
     }
 }

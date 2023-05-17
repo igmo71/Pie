@@ -19,7 +19,7 @@ namespace Pie.Data.Services.Out
         private readonly DocOutProductHistoryService _docProductHistoryService;
         private readonly ILogger<DocOutService> _logger;
 
-        public event EventHandler<Guid>? DocCreated;
+        public static event EventHandler<Guid>? DocCreated;
 
         public DocOutService(ApplicationDbContext context, IDbContextFactory<ApplicationDbContext> contextFactory,
             BaseDocService baseDocService, QueueOutService queueService, Service1c service1C,
@@ -27,7 +27,6 @@ namespace Pie.Data.Services.Out
             ILogger<DocOutService> logger)
         {
             _context = context;
-            //_context = contextFactory.CreateDbContext();
             _contextFactory = contextFactory;
             _baseDocService = baseDocService;
             _queueService = queueService;
@@ -62,15 +61,15 @@ namespace Pie.Data.Services.Out
 
         public async Task<DocOutVm?> GetVmAsync(Guid id)
         {
-            DocOutVm? result = new();
-            result.Value = await GetAsync(id);
-            result.UserName = await _userService.GetCurrentUserNameAsync();
-            result.Barcode = BarcodeGenerator.GetBarCode128(id);
+            DocOutVm? vm = new();
+            vm.Value = await GetAsync(id);
+            vm.UserName = await _userService.GetCurrentUserNameAsync();
+            vm.Barcode = BarcodeGenerator.GetBarCode128(id);
 
-            return result;
+            return vm;
         }
 
-        public async Task<Dictionary<int, List<DocOut>>> GetDictionaryByQueue(SearchOutParameters searchParameters)
+        public async Task<Dictionary<int, List<DocOut>>> GetDictionaryByQueueAsync(SearchOutParameters searchParameters)
         {
             using var context = _contextFactory.CreateDbContext();
 
@@ -79,6 +78,7 @@ namespace Pie.Data.Services.Out
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
                 .Include(d => d.Warehouse)
+                .Include(d => d.Products)
                 .OrderBy(d => d.StatusKey.GetValueOrDefault())
                     .ThenBy(d => d.QueueKey.GetValueOrDefault())
                     .ThenByDescending(d => d.ShipDateTime)
@@ -86,6 +86,13 @@ namespace Pie.Data.Services.Out
                 .GroupBy(e => e.QueueKey.GetValueOrDefault())
                 .ToDictionaryAsync(g => g.Key, g => g.ToList());
             return result;
+        }
+
+        public async Task<DocOutDictionaryByQueueVm> GetDictionaryByQueueVmAsync(SearchOutParameters searchParameters)
+        {
+            DocOutDictionaryByQueueVm vm = new();
+            vm.Value = await GetDictionaryByQueueAsync(searchParameters);
+            return vm;
         }
 
         public async Task<Dictionary<int, int>?> GetCountByStatusAsync(SearchOutParameters searchParameters)
@@ -126,6 +133,7 @@ namespace Pie.Data.Services.Out
             try
             {
                 await _context.SaveChangesAsync();
+                OnCreated(doc.Id);
             }
             catch (Exception ex)
             {
@@ -189,7 +197,7 @@ namespace Pie.Data.Services.Out
                 //throw;
             }            
 
-            if (result.IsSuccess)
+            if (result.IsSuccess) // TODO: Обновить статус !!! Возможно, перезапросить из базы, вызвать событие... 
             {
                 await _docHistoryService.CreateAsync(doc);
                 await _docProductHistoryService.CreateAsync(doc);
