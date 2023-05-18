@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Pie.Data.Models.Identity;
+using Pie.Data.Services.Identity;
 
 namespace Pie.Controllers.Identity
 {
@@ -9,16 +10,29 @@ namespace Pie.Controllers.Identity
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<AppUser> _userManager;
+        private readonly AppUserService _userService;
 
-        public UsersController(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
+        public UsersController(AppUserService userService)
         {
-            _roleManager = roleManager;
-            _userManager = userManager;
+            _userService = userService;
         }
 
         [HttpGet]
-        public IActionResult GetUsers() => Ok(_userManager.Users.ToList());
+        public async Task<IActionResult> GetUsersAsync()
+        {
+            List<AppUser> users = await _userService.GetUserListAsync();
+
+            return Ok(users);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserDtoAsync(string id)
+        {
+            AppUserDto? userDto = await _userService.GetUserDtoAsync(id);
+            if(userDto == null)
+                return NotFound();
+
+            return Ok(userDto);
+        }
     }
 }

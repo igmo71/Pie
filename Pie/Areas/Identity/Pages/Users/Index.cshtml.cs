@@ -15,9 +15,9 @@ namespace Pie.Areas.Identity.Pages.Users
 
         public List<AppUser> Users { get; set; } = default!;
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            Users = _userService.GetUserList();
+            Users = await _userService.GetUserListAsync();
         }
     }
 }
