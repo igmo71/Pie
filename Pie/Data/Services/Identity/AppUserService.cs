@@ -14,17 +14,20 @@ namespace Pie.Data.Services.Identity
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IUserStore<AppUser> _userStore;
         private readonly IUserEmailStore<AppUser> _emailStore;
         private readonly ILogger<AppUserService> _logger;
         private readonly IConfiguration _configuration;
 
         public AppUserService(IHttpContextAccessor contextAccessor, ILogger<AppUserService> logger,
-            UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IUserStore<AppUser> userStore, IConfiguration configuration)
+            UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager,
+                IUserStore<AppUser> userStore, IConfiguration configuration)
         {
             _contextAccessor = contextAccessor;
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _configuration = configuration;
@@ -77,8 +80,16 @@ namespace Pie.Data.Services.Identity
 
         public async Task<List<AppUser>> GetUserListAsync()
         {
-            var result = await _userManager.Users.ToListAsync();
-            return result;
+            var users = await _userManager.Users.ToListAsync();
+            return users;
+        }
+
+        public async Task<List<AppUserDto>> GetUserDtoListAsync()
+        {
+            var users = await _userManager.Users.ToListAsync();
+            var userDtos = users.Select(u => AppUserDto.MapFromAppUser(u)).ToList();
+
+            return userDtos;
         }
 
         public async Task<ServiceResult> CreateAsync(CreateUserDto createUserDto)
@@ -210,6 +221,104 @@ namespace Pie.Data.Services.Identity
             string token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
 
             return token;
+        }
+
+        public async Task<ServiceResult> CreateRoleAsync(string name)
+        {
+            ServiceResult result = new() { Errors = new List<string>()};
+
+            if (string.IsNullOrEmpty(name))
+            {
+                result.Errors.Add("Roles name is empty");
+                return result;
+            }
+
+            IdentityResult identityResult = await _roleManager.CreateAsync(new IdentityRole(name));
+
+            if (!identityResult.Succeeded)
+            {
+                result.Errors.Add("Create role error");
+                return result;
+            }
+
+            result.IsSuccess = true;
+            return result;
+        }
+
+        public async Task<ServiceResult> DeleteRoleAsync(string roleId)
+        {
+            ServiceResult result = new() { Errors = new List<string>() };
+
+            var role = await _roleManager.FindByIdAsync(roleId);
+            if (role == null)
+            {
+                result.Errors.Add("Role not found");
+                return result;
+            }
+
+            IdentityResult identityResult = await _roleManager.DeleteAsync(role);
+            if (!identityResult.Succeeded)
+            {
+                result.Errors.Add("Delete role error");
+                return result;
+            }
+
+            result.IsSuccess= true;
+            return result;
+        }
+
+        public List<IdentityRole> GetRoles()
+        {
+            List<IdentityRole> roles = _roleManager.Roles.ToList();
+
+            return roles;
+        }
+
+        public async Task<ServiceResult<IList<string>>> GetUserRolesAsync(string userId)
+        {
+            ServiceResult<IList<string>> result = new() { Errors = new List<string>() };
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                result.Errors.Add("User not found");
+                return result;
+            }
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            result.Value = userRoles;
+            result.IsSuccess = true;
+            return result;
+        }
+
+        public async Task<ServiceResult> AddRolesAsync(string userId, List<string> roles)
+        {
+            ServiceResult result = new() { Errors = new List<string>() };
+
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                if (user == null)
+                {
+                    result.Errors.Add("User not found");
+                    return result;
+                }
+
+            // все роли
+            var allRoles = _roleManager.Roles.ToList();
+            // список ролей пользователя
+            var userRoles = await _userManager.GetRolesAsync(user);
+            // список ролей, которые были добавлены
+            var addedRoles = roles.Except(userRoles);
+            // роли, которые были удалены
+            var removedRoles = userRoles.Except(roles);
+
+            await _userManager.AddToRolesAsync(user, addedRoles);
+
+            await _userManager.RemoveFromRolesAsync(user, removedRoles);
+
+            result.IsSuccess = true;
+            return result;
         }
     }
 }

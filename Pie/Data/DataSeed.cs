@@ -35,8 +35,8 @@ namespace Pie.Data
                 new AppUser
                 {
                     Id = "22919707-7d2c-450d-92e7-19f36935bcdb",
-                    FirstName = "Игорь",
-                    LastName = "Могильницкий",
+                    FirstName = "Админ",
+                    LastName = null,
                     UserName = "igmo@dobroga.ru",
                     NormalizedUserName = "IGMO@DOBROGA.RU",
                     Email = "igmo@dobroga.ru",
@@ -55,18 +55,18 @@ namespace Pie.Data
                 },
                 new AppUser
                 {
-                    Id = "32d120ec-0b91-498c-9686-ea4c54055eea",
-                    FirstName = "Service1c",
+                    Id = "0b60c927-0e9f-4fa7-8422-e0e16e6fa5f4",
+                    FirstName = nameof(Service1c),
                     LastName = null,
-                    UserName = "sservice1c@www",
-                    NormalizedUserName = "SERVICE1C@WWW",
-                    Email = "service1c@www",
-                    NormalizedEmail = "SERVICE1C@WWW",
+                    UserName = $"{nameof(Service1c)}@www",
+                    NormalizedUserName = $"{nameof(Service1c).ToUpper()}@WWW",
+                    Email = $"{nameof(Service1c)}@www",
+                    NormalizedEmail = $"{nameof(Service1c).ToUpper()}@WWW",
                     EmailConfirmed = true,
                     //Password: Sevice1c#
-                    PasswordHash = "AQAAAAIAAYagAAAAEIHHR+DT7F6q8Hj0xIaJuPmDXFFg8AtpXq8g9sZEsyj0Kd9CgI46tieMAmGfM/ylGQ==",
-                    SecurityStamp = "UY354VXSJNT2ZAQFGLIEFHHKNH4RWSG2",
-                    ConcurrencyStamp = "7cdede00-f440-46f9-a49d-82f2d00d994d",
+                    PasswordHash = "AQAAAAIAAYagAAAAEAOaCAADpFz/XmkyKhEkd0FjnlPHtkUSiV7GdH10SvSKvK4eZhtJHFnWl66jxbydXw==",
+                    SecurityStamp = "JCSGTYDEWVEPHPV7DDVTSY263NY4JDBP",
+                    ConcurrencyStamp = "655eae0d-3ab4-4688-87ec-700d6c6c9567",
                     PhoneNumber = null,
                     PhoneNumberConfirmed = false,
                     TwoFactorEnabled = false,
@@ -80,14 +80,14 @@ namespace Pie.Data
             builder.Entity<IdentityRole>().HasData(
                 new IdentityRole { Id = "d6bfb7c2-9a45-45e5-b27a-3b7cba85527f", Name = "Admin", NormalizedName = "ADMIN", ConcurrencyStamp = null },
                 new IdentityRole { Id = "9423e7b8-b496-41e8-b9c9-416b74823db9", Name = "User", NormalizedName = "USER", ConcurrencyStamp = null },
-                new IdentityRole { Id = "049c2135-b769-4ea5-986a-a5231330fe46", Name = "Service1c", NormalizedName = "SERVICE1C", ConcurrencyStamp = null }
+                new IdentityRole { Id = "049c2135-b769-4ea5-986a-a5231330fe46", Name = nameof(Service1c), NormalizedName = nameof(Service1c).ToUpper(), ConcurrencyStamp = null }
                 );
 
             builder.Entity<IdentityUserRole<string>>().HasData(
                 new IdentityUserRole<string> { UserId = "22919707-7d2c-450d-92e7-19f36935bcdb", RoleId = "9423e7b8-b496-41e8-b9c9-416b74823db9" },
                 new IdentityUserRole<string> { UserId = "22919707-7d2c-450d-92e7-19f36935bcdb", RoleId = "d6bfb7c2-9a45-45e5-b27a-3b7cba85527f" },
                 new IdentityUserRole<string> { UserId = "22919707-7d2c-450d-92e7-19f36935bcdb", RoleId = "049c2135-b769-4ea5-986a-a5231330fe46" },
-                new IdentityUserRole<string> { UserId = "32d120ec-0b91-498c-9686-ea4c54055eea", RoleId = "049c2135-b769-4ea5-986a-a5231330fe46" }
+                new IdentityUserRole<string> { UserId = "0b60c927-0e9f-4fa7-8422-e0e16e6fa5f4", RoleId = "049c2135-b769-4ea5-986a-a5231330fe46" }
                 );
         }
     }

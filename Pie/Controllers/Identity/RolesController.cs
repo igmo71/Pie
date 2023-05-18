@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Pie.Data.Models.Identity;
+using Pie.Data.Services;
+using Pie.Data.Services.Identity;
 
 namespace Pie.Controllers.Identity
 {
@@ -10,25 +12,29 @@ namespace Pie.Controllers.Identity
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<AppUser> _userManager;
+        private readonly AppUserService _userService;
 
-        public RolesController(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
+        public RolesController(AppUserService userService, RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
         {
+            _userService = userService;
             _roleManager = roleManager;
             _userManager = userManager;
         }
 
         [HttpGet]
-        public IActionResult GetRoles() => Ok(_roleManager.Roles.ToList());
-        
+        public IActionResult GetRoles()
+        {
+            List<IdentityRole> roles = _userService.GetRoles();
+
+            return Ok(roles);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateRole(string name)
         {
-            if (string.IsNullOrEmpty(name))
-                return BadRequest();
-
-            IdentityResult result = await _roleManager.CreateAsync(new IdentityRole(name));
-            if (!result.Succeeded)
-                return Problem();
+            ServiceResult result = await _userService.CreateRoleAsync(name);
+            if(!result.IsSuccess)
+                return BadRequest(result);
 
             return Ok(name);
         }
@@ -36,47 +42,30 @@ namespace Pie.Controllers.Identity
         [HttpDelete("{roleId}")]
         public async Task<IActionResult> DeleteRole(string roleId)
         {
-            var role = await _roleManager.FindByIdAsync(roleId);
-            if (role == null)
-                return BadRequest();
-
-            IdentityResult result = await _roleManager.DeleteAsync(role);
-            if (!result.Succeeded)
-                return Problem();
+            ServiceResult result = await _userService.DeleteRoleAsync(roleId);
+            if (!result.IsSuccess)
+                return BadRequest(result);
 
             return Ok();
         }
 
         [HttpGet("UserRoles")]
-        public async Task<IActionResult> UserRoles(string userId)
+        public async Task<IActionResult> GetUserRoles(string userId)
         {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-                return NotFound();
+            var result = await _userService.GetUserRolesAsync(userId);
+            if (!result.IsSuccess)
+                return BadRequest(result);
 
-            var userRoles = await _userManager.GetRolesAsync(user);
+            var userRoles = result.Value;
             return Ok(userRoles);
         }
 
         [HttpPost("{userId}")]
         public async Task<IActionResult> AddRoles(string userId, List<string> roles)
         {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-                return NotFound(userId);
-
-            // все роли
-            var allRoles = _roleManager.Roles.ToList();
-            // список ролей пользователя
-            var userRoles = await _userManager.GetRolesAsync(user);
-            // список ролей, которые были добавлены
-            var addedRoles = roles.Except(userRoles);
-            // роли, которые были удалены
-            var removedRoles = userRoles.Except(roles);
-
-            await _userManager.AddToRolesAsync(user, addedRoles);
-
-            await _userManager.RemoveFromRolesAsync(user, removedRoles);
+            ServiceResult result = await _userService.AddRolesAsync(userId, roles);
+            if (!result.IsSuccess)
+                return BadRequest(result);
 
             return Ok();
         }

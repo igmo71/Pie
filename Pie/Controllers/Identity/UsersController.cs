@@ -16,9 +16,9 @@ namespace Pie.Controllers.Identity
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetUsersAsync()
+        public async Task<IActionResult> GetUsersDtoAsync()
         {
-            List<AppUser> users = await _userService.GetUserListAsync();
+            List<AppUserDto> users = await _userService.GetUserDtoListAsync();
 
             return Ok(users);
         }

@@ -6,6 +6,7 @@ using Pie.Data.Models;
 using Pie.Data.Models.Out;
 using Pie.Data.Services.Identity;
 using System.Text.Json;
+using ZXing;
 
 namespace Pie.Data.Services.Out
 {
@@ -121,13 +122,21 @@ namespace Pie.Data.Services.Out
             }
 
             DocOut doc = DocOutDto.MapToDocOut(docDto);
-            _ = await CreateAsync(doc);
+            ServiceResult<DocOut> result = await CreateAsync(doc);
+
+            if (result.IsSuccess) // TODO: Обновить статус !!! Возможно, перезапросить из базы, вызвать событие... 
+            {
+                await _docHistoryService.CreateAsync(doc);
+                await _docProductHistoryService.CreateAsync(doc);
+            }
 
             return docDto;
         }
 
-        public async Task<DocOut> CreateAsync(DocOut doc)
+        public async Task<ServiceResult<DocOut>> CreateAsync(DocOut doc)
         {
+            ServiceResult<DocOut> result = new();
+
             if (Exists(doc.Id))
                 await DeleteAsync(doc.Id);
 
@@ -144,7 +153,9 @@ namespace Pie.Data.Services.Out
                 throw;
             }
 
-            return doc;
+            result.IsSuccess = true;
+            result.Value = doc;
+            return result;
         }
 
         public async Task UpdateAsync(DocOut doc)
