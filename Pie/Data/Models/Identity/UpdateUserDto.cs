@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Pie.Data.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace Pie.Data.Models.Identity
 {
@@ -48,4 +49,7 @@ namespace Pie.Data.Models.Identity
             return userDto;
         }
     }
+
+    public class UpdateUserResult : ServiceResult
+    { }
 }

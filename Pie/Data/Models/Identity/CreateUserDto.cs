@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Pie.Data.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace Pie.Data.Models.Identity
 {
@@ -30,4 +31,7 @@ namespace Pie.Data.Models.Identity
         [Display(Name = "Склад")]
         public Guid? WarehouseId { get; set; }
     }
+
+    public class CreateUserResult : ServiceResult
+    {}
 }

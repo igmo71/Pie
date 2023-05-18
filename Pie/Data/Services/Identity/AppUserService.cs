@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Pie.Data.Models.Identity;
 using System.Security.Claims;
 
@@ -146,6 +147,14 @@ namespace Pie.Data.Services.Identity
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
             return (IUserEmailStore<AppUser>)_userStore;
+        }
+
+        public async Task<AuthUserResult> Login([FromBody] AuthUserDto authUserDto)
+        {
+            AuthUserResult result = new();
+
+
+            return result;
         }
     }
 }

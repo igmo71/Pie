@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Pie.Data.Models.Identity;
-using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -25,13 +24,13 @@ namespace Pie.Controllers.Identity
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] ApiUserLogin apiUserLogin)
+        public async Task<IActionResult> Login([FromBody] AuthUserDto authUserDto)
         {
-            var user = await _userManager.FindByNameAsync(apiUserLogin.UserName);
+            var user = await _userManager.FindByNameAsync(authUserDto.UserName);
             if (user == null)
-                return NotFound(apiUserLogin.UserName);
+                return NotFound(authUserDto.UserName);
 
-            var result = await _signInManager.PasswordSignInAsync(user, apiUserLogin.Password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(user, authUserDto.Password, false, false);
             if (!result.Succeeded)
                 return Problem();
 
@@ -56,15 +55,6 @@ namespace Pie.Controllers.Identity
                 );
 
             return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(jwt) });
-        }
-
-        public class ApiUserLogin
-        {
-            [Required]
-            public string UserName { get; set; } = null!;
-
-            [Required]
-            public string Password { get; set; } = null!;
         }
     }
 }
