@@ -203,7 +203,6 @@ namespace Pie.Data.Services.Out
 
             try
             {
-                throw new ApplicationException("Test Application Exception");
                 DocOutDto dto = DocOutDto.MapFromDocOut(doc);
                 var service1cResult = await _service1c.SendOutAsync(dto);
                 result = service1cResult;

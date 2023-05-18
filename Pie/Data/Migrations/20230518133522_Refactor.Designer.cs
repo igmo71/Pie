@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Pie.Data;
@@ -11,9 +12,11 @@ using Pie.Data;
 namespace Pie.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230518133522_Refactor")]
+    partial class Refactor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -343,18 +346,18 @@ namespace Pie.Data.Migrations
                         },
                         new
                         {
-                            Id = "d90e31c9-e19f-4ee7-9580-d856daba6d02",
+                            Id = "0b60c927-0e9f-4fa7-8422-e0e16e6fa5f4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c9023eae-8542-460f-af6c-fb2361ae2be0",
+                            ConcurrencyStamp = "655eae0d-3ab4-4688-87ec-700d6c6c9567",
                             Email = "Service1c@www",
                             EmailConfirmed = true,
                             FirstName = "Service1c",
                             LockoutEnabled = true,
                             NormalizedEmail = "SERVICE1C@WWW",
                             NormalizedUserName = "SERVICE1C@WWW",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAP/xtaltm7cuB/Bk/sRF/GDtCtQf9B1ghEEbr6eprNlsKYsaGt5ncmcR/utO76tWw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAOaCAADpFz/XmkyKhEkd0FjnlPHtkUSiV7GdH10SvSKvK4eZhtJHFnWl66jxbydXw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6WMMOSBLWGF45HZLH5OJIQADMFB6YJGQ",
+                            SecurityStamp = "JCSGTYDEWVEPHPV7DDVTSY263NY4JDBP",
                             TwoFactorEnabled = false,
                             UserName = "Service1c@www"
                         });

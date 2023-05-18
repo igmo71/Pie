@@ -55,7 +55,7 @@ namespace Pie.Data
                 },
                 new AppUser
                 {
-                    Id = "0b60c927-0e9f-4fa7-8422-e0e16e6fa5f4",
+                    Id = "d90e31c9-e19f-4ee7-9580-d856daba6d02",
                     FirstName = nameof(Service1c),
                     LastName = null,
                     UserName = $"{nameof(Service1c)}@www",
@@ -64,9 +64,9 @@ namespace Pie.Data
                     NormalizedEmail = $"{nameof(Service1c).ToUpper()}@WWW",
                     EmailConfirmed = true,
                     //Password: Sevice1c#
-                    PasswordHash = "AQAAAAIAAYagAAAAEAOaCAADpFz/XmkyKhEkd0FjnlPHtkUSiV7GdH10SvSKvK4eZhtJHFnWl66jxbydXw==",
-                    SecurityStamp = "JCSGTYDEWVEPHPV7DDVTSY263NY4JDBP",
-                    ConcurrencyStamp = "655eae0d-3ab4-4688-87ec-700d6c6c9567",
+                    PasswordHash = "AQAAAAIAAYagAAAAEAP/xtaltm7cuB/Bk/sRF/GDtCtQf9B1ghEEbr6eprNlsKYsaGt5ncmcR/utO76tWw==",
+                    SecurityStamp = "6WMMOSBLWGF45HZLH5OJIQADMFB6YJGQ",
+                    ConcurrencyStamp = "c9023eae-8542-460f-af6c-fb2361ae2be0",
                     PhoneNumber = null,
                     PhoneNumberConfirmed = false,
                     TwoFactorEnabled = false,

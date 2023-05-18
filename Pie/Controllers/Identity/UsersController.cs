@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Pie.Data.Models.Identity;
+using Pie.Data.Services;
 using Pie.Data.Services.Identity;
 
 namespace Pie.Controllers.Identity
@@ -31,6 +32,36 @@ namespace Pie.Controllers.Identity
                 return NotFound();
 
             return Ok(userDto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateUser(CreateUserDto createUserDto)
+        {
+            ServiceResult result = await _userService.CreateAsync(createUserDto);
+            if (!result.IsSuccess)
+                return BadRequest(result);
+
+            return Ok(createUserDto);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateUser(UpdateUserDto updateUserDto)
+        {
+            ServiceResult result = await _userService.UpdateAsync(updateUserDto);
+            if (!result.IsSuccess)
+                return BadRequest(result);
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            ServiceResult result = await _userService.DeleteAsync(id);
+            if (!result.IsSuccess)
+                return BadRequest(result);
+
+            return NoContent();
         }
     }
 }

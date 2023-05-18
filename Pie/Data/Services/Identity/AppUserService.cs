@@ -127,7 +127,11 @@ namespace Pie.Data.Services.Identity
             ServiceResult result = new();
 
             AppUser? user = await _userManager.FindByIdAsync(updateUserDto.Id);
-            if (user == null) return result;
+            if (user == null)
+            {
+                result.Errors.Add("User not found");
+                return result;
+            }
 
             user.FirstName = updateUserDto.FirstName;
             user.LastName = updateUserDto.LastName;
@@ -144,6 +148,32 @@ namespace Pie.Data.Services.Identity
             {
                 result.Errors = identityResult.Errors.Select(e => e.Description).ToList();
                 _logger.LogInformation("User update error: {errors}", result.Errors);
+            }
+
+            return result;
+        }
+
+        public async Task<ServiceResult> DeleteAsync(string userId)
+        {
+            ServiceResult result = new();
+
+            AppUser? user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                result.Errors.Add("User not found");
+                return result;
+            }
+
+            IdentityResult identityResult = await _userManager.DeleteAsync(user);
+            if (identityResult.Succeeded)
+            {
+                result.IsSuccess = true;
+                _logger.LogInformation("User deleted");
+            }
+            else
+            {
+                result.Errors = identityResult.Errors.Select(e => e.Description).ToList();
+                _logger.LogInformation("User delete error: {errors}", result.Errors);
             }
 
             return result;
@@ -225,7 +255,7 @@ namespace Pie.Data.Services.Identity
 
         public async Task<ServiceResult> CreateRoleAsync(string name)
         {
-            ServiceResult result = new() { Errors = new List<string>()};
+            ServiceResult result = new();
 
             if (string.IsNullOrEmpty(name))
             {
@@ -247,7 +277,7 @@ namespace Pie.Data.Services.Identity
 
         public async Task<ServiceResult> DeleteRoleAsync(string roleId)
         {
-            ServiceResult result = new() { Errors = new List<string>() };
+            ServiceResult result = new();
 
             var role = await _roleManager.FindByIdAsync(roleId);
             if (role == null)
@@ -263,7 +293,7 @@ namespace Pie.Data.Services.Identity
                 return result;
             }
 
-            result.IsSuccess= true;
+            result.IsSuccess = true;
             return result;
         }
 
@@ -276,7 +306,7 @@ namespace Pie.Data.Services.Identity
 
         public async Task<ServiceResult<IList<string>>> GetUserRolesAsync(string userId)
         {
-            ServiceResult<IList<string>> result = new() { Errors = new List<string>() };
+            ServiceResult<IList<string>> result = new();
 
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -294,7 +324,7 @@ namespace Pie.Data.Services.Identity
 
         public async Task<ServiceResult> AddRolesAsync(string userId, List<string> roles)
         {
-            ServiceResult result = new() { Errors = new List<string>() };
+            ServiceResult result = new();
 
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)

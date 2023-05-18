@@ -15,16 +15,16 @@
     </div>
     <div class="card-body p-2">  
         <div>
-            <i class="bi bi-calendar-event"></i><span> Дата отгрузки: </span><span>@Doc?.ShipDateTime</span>
+            <i class="bi bi-calendar-event"></i><span class="small"> Дата отгрузки: </span><span>@Doc?.ShipDateTime</span>
         </div>
         <div>
-            <i class="bi bi-building"></i><span> Склад: </span><span>@Doc?.Warehouse?.Name</span>
+            <i class="bi bi-building"></i><span class="small"> Склад: </span><span>@Doc?.Warehouse?.Name</span>
         </div>
         <div>
-            <i class="bi bi-clipboard-check"></i><span> Статус: </span><span>@Doc?.Status?.Name</span>
+            <i class="bi bi-clipboard-check"></i><span class="small"> Статус: </span><span>@Doc?.Status?.Name</span>
         </div>
         <div>
-            <i class="bi bi-people"></i><span> Очередь: </span><span>@Doc?.Queue?.Name</span>
+            <i class="bi bi-people"></i><span class="small"> Очередь: </span><span>@Doc?.Queue?.Name</span>
         </div>
         <div>
             <span>@Doc?.Comment</span>
@@ -33,10 +33,10 @@
     <div class="card-footer">
         <div class="row">
             <div class="col">
-                <i class="bi bi-minecart-loaded"></i><span> Вес: </span><span>@Doc?.Weight)</span>
+                <i class="bi bi-minecart-loaded"></i><span class="small"> Вес: </span><span>@Doc?.Weight</span>
             </div>
             <div class="col">
-                <i class="bi bi-list-ol"></i><span> Кол строк: </span><span>@Doc?.Products.Count</span>
+                <i class="bi bi-list-ol"></i><span class="small"> Кол строк: </span><span>@Doc?.Products.Count</span>
             </div>
         </div>
     </div>
