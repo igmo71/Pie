@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\History\Pages\DocsIn\" />
+    <Folder Include="Data\Models\Application\" />
   </ItemGroup>
 
 </Project>

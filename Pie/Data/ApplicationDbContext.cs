@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models;
-using Pie.Data.Models.Application;
+using Pie.Data.Models.Identity;
 using Pie.Data.Models.In;
 using Pie.Data.Models.Out;
 

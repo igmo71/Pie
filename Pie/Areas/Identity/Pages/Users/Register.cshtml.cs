@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Pie.Data.Models;
-using Pie.Data.Models.Application;
+using Pie.Data.Models.Identity;
 using Pie.Data.Services;
-using Pie.Data.Services.Application;
+using Pie.Data.Services.Identity;
 
 namespace Pie.Areas.Identity.Pages.Users
 {

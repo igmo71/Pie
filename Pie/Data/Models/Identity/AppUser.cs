@@ -3,7 +3,7 @@ using Pie.Common;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Pie.Data.Models.Application
+namespace Pie.Data.Models.Identity
 {
     public class AppUser : IdentityUser
     {
@@ -20,7 +20,7 @@ namespace Pie.Data.Models.Application
         public Warehouse? Warehouse { get; set; }
 
         [NotMapped]
-        public string? Barcode => BarcodeGenerator.GetBarCode128(Id);     
+        public string? Barcode => BarcodeGenerator.GetBarCode128(Id);
 
         [NotMapped]
         public string FullName => $"{FirstName ?? string.Empty} {LastName ?? string.Empty}";

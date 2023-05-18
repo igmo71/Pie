@@ -5,7 +5,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Pie.Data.Models.Application;
+using Pie.Data.Models.Identity;
 using System.ComponentModel.DataAnnotations;
 namespace Pie.Areas.Identity.Pages.Account
 {

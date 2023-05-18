@@ -1,4 +1,4 @@
-﻿using Pie.Data.Models.Application;
+﻿using Pie.Data.Models.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace Pie.Data.Models

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using Pie.Data.Models.Application;
+using Pie.Data.Models.Identity;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Text;

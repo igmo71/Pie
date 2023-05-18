@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Pie.Data.Models.Application;
+using Pie.Data.Models.Identity;
 using System.Security.Claims;
 
-namespace Pie.Data.Services.Application
+namespace Pie.Data.Services.Identity
 {
     public class AppUserService
     {

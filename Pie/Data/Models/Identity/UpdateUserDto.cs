@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Pie.Data.Models.Application
+namespace Pie.Data.Models.Identity
 {
     public class UpdateUserDto
     {

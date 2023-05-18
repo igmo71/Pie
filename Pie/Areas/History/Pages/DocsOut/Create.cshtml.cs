@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Pie.Data.Models.Application;
+using Pie.Data.Models.Identity;
 using Pie.Data.Models.Out;
 
 namespace Pie.Areas.History.Pages.DocsOut

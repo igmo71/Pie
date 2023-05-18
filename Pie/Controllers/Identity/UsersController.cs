@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Pie.Data.Models.Application;
+using Pie.Data.Models.Identity;
 
 namespace Pie.Controllers.Identity
 {
