@@ -2,14 +2,10 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.WebEncoders.Testing;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Pie.Areas.Identity;
-using Pie.Common;
 using Pie.Connectors;
-using Pie.Connectors.Connector1c;
 using Pie.Data;
 using Pie.Data.Models.Application;
 using Pie.Data.Services;
@@ -104,7 +100,7 @@ namespace Pie
                 options.Encoder = JavaScriptEncoder.Create(new TextEncoderSettings(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic));
             });
 
-            builder.Services.AddControllers()
+            builder.Services.AddControllers()                
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;

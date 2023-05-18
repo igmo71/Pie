@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Pie.Connectors.Connector1c;
 using Pie.Data.Models.Application;
 using Pie.Data.Models.Out;
 
@@ -50,28 +51,29 @@ namespace Pie.Data
                     LockoutEnabled = true,
                     LockoutEnd = null,
                     AccessFailedCount = 0,
-                    WarehouseId = null,
+                    WarehouseId = null
                 },
                 new ApplicationUser
                 {
-                    Id = "dac280ae-d800-4514-9cb3-6f0527f64362",
+                    Id = "32d120ec-0b91-498c-9686-ea4c54055eea",
                     FirstName = "Service1c",
-                    LastName = "",
-                    UserName = "service1c@www",
+                    LastName = null,
+                    UserName = "sservice1c@www",
                     NormalizedUserName = "SERVICE1C@WWW",
-                    Email = "igmo@dobroga.ru",
-                    NormalizedEmail = "IGMO@DOBROGA.RU",
+                    Email = "service1c@www",
+                    NormalizedEmail = "SERVICE1C@WWW",
                     EmailConfirmed = true,
-                    PasswordHash = "AQAAAAIAAYagAAAAEJWjl+y/4tw/by0z6i35RZfLWs5CcODEl8KhcIoU6I7HLBY8ZRv8AM+8PkYJ0uRRww==",
-                    SecurityStamp = "FZ73ACPZY4KCUGYVMFVSLF2K22EYYIUL",
-                    ConcurrencyStamp = "6694ed71-f70e-4d14-9ba0-fbb71a4b7d65",
+                    //Password: Sevice1c#
+                    PasswordHash = "AQAAAAIAAYagAAAAEIHHR+DT7F6q8Hj0xIaJuPmDXFFg8AtpXq8g9sZEsyj0Kd9CgI46tieMAmGfM/ylGQ==",
+                    SecurityStamp = "UY354VXSJNT2ZAQFGLIEFHHKNH4RWSG2",
+                    ConcurrencyStamp = "7cdede00-f440-46f9-a49d-82f2d00d994d",
                     PhoneNumber = null,
                     PhoneNumberConfirmed = false,
                     TwoFactorEnabled = false,
                     LockoutEnabled = true,
                     LockoutEnd = null,
                     AccessFailedCount = 0,
-                    WarehouseId = null,
+                    WarehouseId = null
                 }
                 );
 
@@ -82,10 +84,10 @@ namespace Pie.Data
                 );
 
             builder.Entity<IdentityUserRole<string>>().HasData(
-                new IdentityUserRole<string> { UserId = "22919707-7d2c-450d-92e7-19f36935bcdb", RoleId = "049c2135-b769-4ea5-986a-a5231330fe46" },
                 new IdentityUserRole<string> { UserId = "22919707-7d2c-450d-92e7-19f36935bcdb", RoleId = "9423e7b8-b496-41e8-b9c9-416b74823db9" },
                 new IdentityUserRole<string> { UserId = "22919707-7d2c-450d-92e7-19f36935bcdb", RoleId = "d6bfb7c2-9a45-45e5-b27a-3b7cba85527f" },
-                new IdentityUserRole<string> { UserId = "dac280ae-d800-4514-9cb3-6f0527f64362", RoleId = "049c2135-b769-4ea5-986a-a5231330fe46" }
+                new IdentityUserRole<string> { UserId = "22919707-7d2c-450d-92e7-19f36935bcdb", RoleId = "049c2135-b769-4ea5-986a-a5231330fe46" },
+                new IdentityUserRole<string> { UserId = "32d120ec-0b91-498c-9686-ea4c54055eea", RoleId = "049c2135-b769-4ea5-986a-a5231330fe46" }
                 );
         }
     }

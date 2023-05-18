@@ -81,6 +81,7 @@ namespace Pie.Data.Services.Application
 
             await _userStore.SetUserNameAsync(user, createUserDto.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, createUserDto.Email, CancellationToken.None);
+            await _emailStore.SetEmailConfirmedAsync(user, true, CancellationToken.None);
 
             IdentityResult identityResult = await _userManager.CreateAsync(user, createUserDto.Password);
 

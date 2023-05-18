@@ -8,7 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Pie.Controllers
+namespace Pie.Controllers.Identity
 {
     [Route("api/[controller]")]
     [ApiController]

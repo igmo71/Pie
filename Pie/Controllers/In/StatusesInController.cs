@@ -5,7 +5,6 @@ using Pie.Data.Services.In;
 
 namespace Pie.Controllers.In
 {
-    [Authorize(Roles ="Service1c")]
     [Route("api/[controller]")]
     [ApiController]
     public class StatusesInController : ControllerBase
