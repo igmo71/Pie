@@ -77,19 +77,15 @@ namespace Pie
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
-                        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
                         ValidateAudience = true,
-                        ValidAudience = builder.Configuration["JWT:ValidAudience"],
                         ValidateIssuerSigningKey = true,
+                        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+                        ValidAudience = builder.Configuration["JWT:ValidAudience"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:IssuerSigningKey"] 
-                            ?? throw new InvalidOperationException("JWT:IssuerSigningKey not found."))),
+                            ?? throw new ApplicationException("Issuer Signing Key not found."))),
                         ValidateLifetime = true
                     };
                 });
-
-            builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
-
-            builder.Services.AddServerSideBlazor();
 
             builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ApplicationUser>>();
 
@@ -108,6 +104,7 @@ namespace Pie
                     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
                     options.JsonSerializerOptions.WriteIndented = true;
                 });
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(options =>
             {
@@ -135,6 +132,11 @@ namespace Pie
                     }
                 });
             });
+
+            builder.Services.AddRazorPages()
+                .AddRazorRuntimeCompilation();
+
+            builder.Services.AddServerSideBlazor();
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddApplicationServices();
