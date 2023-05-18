@@ -20,8 +20,7 @@ namespace Pie.Data.Models.Application
         public Warehouse? Warehouse { get; set; }
 
         [NotMapped]
-        public string? Barcode => BarcodeGenerator.GetBarCode128(Id);
-     
+        public string? Barcode => BarcodeGenerator.GetBarCode128(Id);     
 
         [NotMapped]
         public string FullName => $"{FirstName ?? string.Empty} {LastName ?? string.Empty}";

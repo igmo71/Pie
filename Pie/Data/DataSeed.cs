@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Pie.Data.Models.Application;
 using Pie.Data.Models.Out;
 
 namespace Pie.Data
@@ -26,6 +28,64 @@ namespace Pie.Data
 
             builder.Entity<QueueNumber>().HasData(
                 new QueueNumber { CharValue = 0, NumValue = 0, Value = "A000" }
+                );
+
+            builder.Entity<ApplicationUser>().HasData(
+                new ApplicationUser
+                {
+                    Id = "22919707-7d2c-450d-92e7-19f36935bcdb",
+                    FirstName = "Игорь",
+                    LastName = "Могильницкий",
+                    UserName = "igmo@dobroga.ru",
+                    NormalizedUserName = "IGMO@DOBROGA.RU",
+                    Email = "igmo@dobroga.ru",
+                    NormalizedEmail = "IGMO@DOBROGA.RU",
+                    EmailConfirmed = true,
+                    PasswordHash = "AQAAAAIAAYagAAAAEDgydLmvi4/0kDXZB6+ShJFMNIK8Xzgaawytbvp8IMJquSZ/4hO8sPu9mlXC5uS9IQ==",
+                    SecurityStamp = "HCJOWYFSM63CJOZM5AZAGXSHEI257BCI",
+                    ConcurrencyStamp = "2b68aa3c-d884-475f-8a7a-f72d5666f9ae",
+                    PhoneNumber = null,
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnabled = true,
+                    LockoutEnd = null,
+                    AccessFailedCount = 0,
+                    WarehouseId = null,
+                },
+                new ApplicationUser
+                {
+                    Id = "dac280ae-d800-4514-9cb3-6f0527f64362",
+                    FirstName = "Service1c",
+                    LastName = "",
+                    UserName = "service1c@www",
+                    NormalizedUserName = "SERVICE1C@WWW",
+                    Email = "igmo@dobroga.ru",
+                    NormalizedEmail = "IGMO@DOBROGA.RU",
+                    EmailConfirmed = true,
+                    PasswordHash = "AQAAAAIAAYagAAAAEJWjl+y/4tw/by0z6i35RZfLWs5CcODEl8KhcIoU6I7HLBY8ZRv8AM+8PkYJ0uRRww==",
+                    SecurityStamp = "FZ73ACPZY4KCUGYVMFVSLF2K22EYYIUL",
+                    ConcurrencyStamp = "6694ed71-f70e-4d14-9ba0-fbb71a4b7d65",
+                    PhoneNumber = null,
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnabled = true,
+                    LockoutEnd = null,
+                    AccessFailedCount = 0,
+                    WarehouseId = null,
+                }
+                );
+
+            builder.Entity<IdentityRole>().HasData(
+                new IdentityRole { Id = "d6bfb7c2-9a45-45e5-b27a-3b7cba85527f", Name = "Admin", NormalizedName = "ADMIN", ConcurrencyStamp = null },
+                new IdentityRole { Id = "9423e7b8-b496-41e8-b9c9-416b74823db9", Name = "User", NormalizedName = "USER", ConcurrencyStamp = null },
+                new IdentityRole { Id = "049c2135-b769-4ea5-986a-a5231330fe46", Name = "Service1c", NormalizedName = "SERVICE1C", ConcurrencyStamp = null }
+                );
+
+            builder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string> { UserId = "22919707-7d2c-450d-92e7-19f36935bcdb", RoleId = "049c2135-b769-4ea5-986a-a5231330fe46" },
+                new IdentityUserRole<string> { UserId = "22919707-7d2c-450d-92e7-19f36935bcdb", RoleId = "9423e7b8-b496-41e8-b9c9-416b74823db9" },
+                new IdentityUserRole<string> { UserId = "22919707-7d2c-450d-92e7-19f36935bcdb", RoleId = "d6bfb7c2-9a45-45e5-b27a-3b7cba85527f" },
+                new IdentityUserRole<string> { UserId = "dac280ae-d800-4514-9cb3-6f0527f64362", RoleId = "049c2135-b769-4ea5-986a-a5231330fe46" }
                 );
         }
     }
