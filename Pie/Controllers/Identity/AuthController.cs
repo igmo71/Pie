@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Pie.Data.Models.Application;
@@ -26,13 +25,13 @@ namespace Pie.Controllers.Identity
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] UserForApiLogin loginUser)
+        public async Task<IActionResult> Login([FromBody] ApiUserLogin apiUserLogin)
         {
-            var user = await _userManager.FindByNameAsync(loginUser.UserName);
+            var user = await _userManager.FindByNameAsync(apiUserLogin.UserName);
             if (user == null)
-                return NotFound(loginUser.UserName);
+                return NotFound(apiUserLogin.UserName);
 
-            var result = await _signInManager.PasswordSignInAsync(user, loginUser.Password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(user, apiUserLogin.Password, false, false);
             if (!result.Succeeded)
                 return Problem();
 
@@ -49,15 +48,17 @@ namespace Pie.Controllers.Identity
             var jwt = new JwtSecurityToken(
                 issuer: _configuration["JWT:ValidIssuer"],
                 audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(double.Parse(_configuration["JWT:ExpiryInMinutes"] ?? throw new InvalidOperationException("JWT:ExpiryInMinutes not found.")))),
-                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:IssuerSigningKey"] ?? throw new InvalidOperationException("JWT:IssuerSigningKey not found."))), SecurityAlgorithms.HmacSha256),
+                expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(double.Parse(_configuration["JWT:ExpiryInMinutes"] 
+                    ?? throw new ApplicationException("Expiry In Minutes not found.")))),
+                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:IssuerSigningKey"] 
+                    ?? throw new ApplicationException("Issuer Signing Key not found."))), SecurityAlgorithms.HmacSha256),
                 claims: claims
                 );
 
             return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(jwt) });
         }
 
-        public class UserForApiLogin
+        public class ApiUserLogin
         {
             [Required]
             public string UserName { get; set; } = null!;
