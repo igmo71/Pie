@@ -17,7 +17,7 @@ namespace Pie.Areas.Identity.Pages.Users
             _warehouseService = warehouseService;
         }
 
-        public ApplicationUser AppUser { get; set; } = default!;
+        public AppUser AppUser { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(string? id)
         {

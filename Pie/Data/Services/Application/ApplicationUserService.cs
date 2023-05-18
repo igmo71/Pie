@@ -7,13 +7,13 @@ namespace Pie.Data.Services.Application
     public class ApplicationUserService
     {
         private readonly IHttpContextAccessor _contextAccessor;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IUserStore<ApplicationUser> _userStore;
-        private readonly IUserEmailStore<ApplicationUser> _emailStore;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IUserStore<AppUser> _userStore;
+        private readonly IUserEmailStore<AppUser> _emailStore;
         private readonly ILogger<ApplicationUserService> _logger;
 
         public ApplicationUserService(IHttpContextAccessor contextAccessor, ILogger<ApplicationUserService> logger,
-            UserManager<ApplicationUser> userManager, IUserStore<ApplicationUser> userStore)
+            UserManager<AppUser> userManager, IUserStore<AppUser> userStore)
         {
             _contextAccessor = contextAccessor;
             _userManager = userManager;
@@ -31,7 +31,7 @@ namespace Pie.Data.Services.Application
             }
         }
 
-        public async Task<ApplicationUser?> GetCurrentUserAsync()
+        public async Task<AppUser?> GetCurrentUserAsync()
         {
             var user = await _userManager.FindByIdAsync(CurrentUserId);
             return user;
@@ -44,13 +44,13 @@ namespace Pie.Data.Services.Application
             return name;
         }
 
-        public async Task<ApplicationUser?> GetUserAsync(string id)
+        public async Task<AppUser?> GetUserAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             return user;
         }
 
-        public async Task<ApplicationUser?> GetUserDtoAsync(string id)
+        public async Task<AppUser?> GetUserDtoAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             return user;
@@ -63,7 +63,7 @@ namespace Pie.Data.Services.Application
             return name;
         }
 
-        public List<ApplicationUser> GetUserList()
+        public List<AppUser> GetUserList()
         {
             var result = _userManager.Users.ToList();
             return result;
@@ -73,7 +73,7 @@ namespace Pie.Data.Services.Application
         {
             ServiceResult result = new();
 
-            ApplicationUser user = CreateUser();
+            AppUser user = CreateUser();
 
             user.FirstName = createUserDto.FirstName;
             user.LastName = createUserDto.LastName;
@@ -103,7 +103,7 @@ namespace Pie.Data.Services.Application
         {
             ServiceResult result = new();
 
-            ApplicationUser? user = await _userManager.FindByIdAsync(updateUserDto.Id);
+            AppUser? user = await _userManager.FindByIdAsync(updateUserDto.Id);
             if (user == null) return result;
 
             user.FirstName = updateUserDto.FirstName;
@@ -126,26 +126,26 @@ namespace Pie.Data.Services.Application
             return result;
         }
 
-        private ApplicationUser CreateUser()
+        private AppUser CreateUser()
         {
             try
             {
-                var user = Activator.CreateInstance<ApplicationUser>();
+                var user = Activator.CreateInstance<AppUser>();
                 return user;
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. ");
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(AppUser)}'. ");
             }
         }
 
-        private IUserEmailStore<ApplicationUser> GetEmailStore()
+        private IUserEmailStore<AppUser> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<ApplicationUser>)_userStore;
+            return (IUserEmailStore<AppUser>)_userStore;
         }
     }
 }

@@ -13,6 +13,6 @@ namespace Pie.Data.Models
         [MaxLength(36)]
         public string? UserId { get; set; }
         [Display(Name = "Пользователь")]
-        public ApplicationUser? User { get; set; }
+        public AppUser? User { get; set; }
     }
 }

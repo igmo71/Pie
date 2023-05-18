@@ -13,7 +13,7 @@ namespace Pie.Areas.Identity.Pages.Users
             _userService = userService;
         }
 
-        public List<ApplicationUser> Users { get; set; } = default!;
+        public List<AppUser> Users { get; set; } = default!;
 
         public void OnGet()
         {

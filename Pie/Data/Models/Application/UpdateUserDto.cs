@@ -34,7 +34,7 @@ namespace Pie.Data.Models.Application
         [Display(Name = "Склад")]
         public Guid? WarehouseId { get; set; }
 
-        public static UpdateUserDto MapFromApplicationUser(ApplicationUser user)
+        public static UpdateUserDto MapFromApplicationUser(AppUser user)
         {
             UpdateUserDto userDto = new UpdateUserDto()
             {

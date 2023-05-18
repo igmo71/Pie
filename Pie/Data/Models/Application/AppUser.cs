@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Pie.Data.Models.Application
 {
-    public class ApplicationUser : IdentityUser
+    public class AppUser : IdentityUser
     {
         [MaxLength(100)]
         [Display(Name = "Имя")]

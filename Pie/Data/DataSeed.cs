@@ -31,8 +31,8 @@ namespace Pie.Data
                 new QueueNumber { CharValue = 0, NumValue = 0, Value = "A000" }
                 );
 
-            builder.Entity<ApplicationUser>().HasData(
-                new ApplicationUser
+            builder.Entity<AppUser>().HasData(
+                new AppUser
                 {
                     Id = "22919707-7d2c-450d-92e7-19f36935bcdb",
                     FirstName = "Игорь",
@@ -53,7 +53,7 @@ namespace Pie.Data
                     AccessFailedCount = 0,
                     WarehouseId = null
                 },
-                new ApplicationUser
+                new AppUser
                 {
                     Id = "32d120ec-0b91-498c-9686-ea4c54055eea",
                     FirstName = "Service1c",

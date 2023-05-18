@@ -19,7 +19,7 @@ namespace Pie.Areas.History.Pages.DocsOut
         {
             ViewData["DocId"] = new SelectList(_context.DocsOut, "Id", "Name");
             ViewData["StatusKey"] = new SelectList(_context.StatusesOut, "Key", "Name");
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", $"{nameof(ApplicationUser.FullName)}");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", $"{nameof(AppUser.FullName)}");
             return Page();
         }
 

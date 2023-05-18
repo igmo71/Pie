@@ -10,9 +10,9 @@ namespace Pie.Controllers.Identity
     public class UsersController : ControllerBase
     {
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly UserManager<AppUser> _userManager;
 
-        public UsersController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+        public UsersController(RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
         {
             _roleManager = roleManager;
             _userManager = userManager;
