@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Pie.Data.Models.Out;
 using Pie.Data.Services.Out;
 
 namespace Pie.Controllers.Out
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class StatusesOutController : ControllerBase
