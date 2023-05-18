@@ -9,6 +9,7 @@ namespace Pie.Common
     {
         private const string alphabet = "0123456789abcdef";
 
+        // For Docs
         public static string GuidToNumericString(Guid guid)
         {
             string formattedGuid = guid.ToString("n");
@@ -18,6 +19,7 @@ namespace Pie.Common
             return numericString;
         }
 
+        // For AppUser
         public static string GuidStringToNumericString(string guidString)
         {
             string formattedGuid = Guid.Parse(guidString).ToString("n");
@@ -43,6 +45,7 @@ namespace Pie.Common
             return numericString;
         }
 
+        // For Docs
         public static Guid GuidFromNumericString(string numericString)
         {
             if (!BigInteger.TryParse(numericString, out BigInteger bigInt))
@@ -66,6 +69,7 @@ namespace Pie.Common
             return guid;
         }
 
+        // For AppUser
         public static string GuidStringFromNumericString(string numericString)
         {
             Guid guid = GuidFromNumericString(numericString);

@@ -9,7 +9,7 @@ namespace Pie.Data.Services.Out
         {
             if (parameters.IsBarcode && !string.IsNullOrEmpty(parameters.SearchBarcode))
             {
-                var id = GuidBarcodeConvert.GuidFromNumericString(parameters.SearchBarcode);
+                Guid id = GuidBarcodeConvert.GuidFromNumericString(parameters.SearchBarcode);
                 query = query.Where(e => e.Id == id || e.BaseDocs.Any(bd => bd.BaseDocId == id));
             }
 
