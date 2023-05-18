@@ -85,7 +85,7 @@ namespace Pie.Data.Services.Identity
         {
             ServiceResult result = new();
 
-            AppUser user = CreateUser();
+            AppUser user = CreateUserInstance();
 
             user.FirstName = createUserDto.FirstName;
             user.LastName = createUserDto.LastName;
@@ -138,7 +138,7 @@ namespace Pie.Data.Services.Identity
             return result;
         }
 
-        private AppUser CreateUser()
+        private AppUser CreateUserInstance()
         {
             try
             {
