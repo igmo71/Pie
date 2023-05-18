@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Pie.Common;
 using Pie.Data.Models.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -59,6 +60,13 @@ namespace Pie.Data.Services.Identity
         public async Task<AppUser?> GetUserAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
+            return user;
+        }
+
+        public async Task<AppUser?> GetUserByBarcodeAsync(string barcode)
+        {
+            string userId =  GuidBarcodeConvert.GuidStringFromNumericString(barcode);
+            var user = await _userManager.FindByIdAsync(userId);
             return user;
         }
 

@@ -1,5 +1,6 @@
 ﻿using NetBarcode;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Numerics;
 
 namespace Pie.Common
@@ -8,27 +9,36 @@ namespace Pie.Common
     {
         private const string alphabet = "0123456789abcdef";
 
+        public static string GuidToNumericString(Guid guid)
+        {
+            string formattedGuid = guid.ToString("n");
+
+            string numericString = GetNumericString(formattedGuid);
+
+            return numericString;
+        }
+
         public static string GuidStringToNumericString(string guidString)
+        {
+            string formattedGuid = Guid.Parse(guidString).ToString("n");
+
+            string numericString = GetNumericString(formattedGuid);
+
+            return numericString;
+        }
+
+        private static string GetNumericString(string formattedGuid)
         {
             BigInteger bigInt = 0;
 
-            for (int i = 0; i < guidString.Length; i++)
+            for (int i = 0; i < formattedGuid.Length; i++)
             {
-                bigInt = bigInt * 16 + alphabet.IndexOf(guidString.Substring(i, 1));
+                bigInt = bigInt * 16 + alphabet.IndexOf(formattedGuid.Substring(i, 1));
             }
 
             string numericString = bigInt.ToString();
 
             numericString = numericString.Length % 2 != 0 ? $"0{numericString}" : numericString;
-
-            return numericString;
-        }
-
-        public static string GuidToNumericString(Guid guid)
-        {
-            string guidString = guid.ToString("n");
-
-            string numericString = GuidStringToNumericString(guidString);
 
             return numericString;
         }
