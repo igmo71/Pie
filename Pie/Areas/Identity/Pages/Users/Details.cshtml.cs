@@ -8,10 +8,10 @@ namespace Pie.Areas.Identity.Pages.Users
 {
     public class DetailsModel : PageModel
     {
-        private readonly ApplicationUserService _userService;
+        private readonly AppUserService _userService;
         private readonly WarehouseService _warehouseService;
 
-        public DetailsModel(ApplicationUserService userService, WarehouseService warehouseService)
+        public DetailsModel(AppUserService userService, WarehouseService warehouseService)
         {
             _userService = userService;
             _warehouseService = warehouseService;

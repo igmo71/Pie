@@ -4,15 +4,15 @@ using System.Security.Claims;
 
 namespace Pie.Data.Services.Application
 {
-    public class ApplicationUserService
+    public class AppUserService
     {
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly UserManager<AppUser> _userManager;
         private readonly IUserStore<AppUser> _userStore;
         private readonly IUserEmailStore<AppUser> _emailStore;
-        private readonly ILogger<ApplicationUserService> _logger;
+        private readonly ILogger<AppUserService> _logger;
 
-        public ApplicationUserService(IHttpContextAccessor contextAccessor, ILogger<ApplicationUserService> logger,
+        public AppUserService(IHttpContextAccessor contextAccessor, ILogger<AppUserService> logger,
             UserManager<AppUser> userManager, IUserStore<AppUser> userStore)
         {
             _contextAccessor = contextAccessor;

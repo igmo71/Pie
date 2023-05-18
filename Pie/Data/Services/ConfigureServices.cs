@@ -9,7 +9,7 @@ namespace Pie.Data.Services
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddSingleton<WeatherForecastService>();
-            services.AddScoped<ApplicationUserService>();
+            services.AddScoped<AppUserService>();
             services.AddScoped<SearchOutParameters>();
             services.AddScoped<BaseDocService>();
             services.AddScoped<DocInService>();

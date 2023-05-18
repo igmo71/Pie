@@ -6,9 +6,9 @@ namespace Pie.Areas.Identity.Pages.Users
 {
     public class IndexModel : PageModel
     {
-        private readonly ApplicationUserService _userService;
+        private readonly AppUserService _userService;
 
-        public IndexModel(ApplicationUserService userService)
+        public IndexModel(AppUserService userService)
         {
             _userService = userService;
         }

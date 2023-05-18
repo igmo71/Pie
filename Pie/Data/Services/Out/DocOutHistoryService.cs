@@ -7,9 +7,9 @@ namespace Pie.Data.Services.Out
     public class DocOutHistoryService
     {
         private readonly ApplicationDbContext _context;
-        private readonly ApplicationUserService _userService;
+        private readonly AppUserService _userService;
 
-        public DocOutHistoryService(ApplicationDbContext context, ApplicationUserService userService)
+        public DocOutHistoryService(ApplicationDbContext context, AppUserService userService)
         {
             _context = context;
             _userService = userService;

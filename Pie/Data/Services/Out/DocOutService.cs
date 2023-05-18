@@ -16,7 +16,7 @@ namespace Pie.Data.Services.Out
         private readonly BaseDocService _baseDocService;
         private readonly QueueOutService _queueService;
         private readonly Service1c _service1c;
-        private readonly ApplicationUserService _userService;
+        private readonly AppUserService _userService;
         private readonly DocOutHistoryService _docHistoryService;
         private readonly DocOutProductHistoryService _docProductHistoryService;
         private readonly ILogger<DocOutService> _logger;
@@ -26,7 +26,7 @@ namespace Pie.Data.Services.Out
 
         public DocOutService(ApplicationDbContext context, IDbContextFactory<ApplicationDbContext> contextFactory,
             BaseDocService baseDocService, QueueOutService queueService, Service1c service1c,
-            ApplicationUserService userService, DocOutHistoryService docHistoryService, DocOutProductHistoryService docProductHistoryService,
+            AppUserService userService, DocOutHistoryService docHistoryService, DocOutProductHistoryService docProductHistoryService,
             ILogger<DocOutService> logger, IOptions<JsonSerializerOptions> jsonOptions)
         {
             _context = context;

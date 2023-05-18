@@ -10,11 +10,11 @@ namespace Pie.Areas.Identity.Pages.Users
 {
     public class RegisterModel : PageModel
     {
-        private readonly ApplicationUserService _userService;
+        private readonly AppUserService _userService;
         private readonly WarehouseService _warehouseService;
         private readonly ILogger<RegisterModel> _logger;
 
-        public RegisterModel(ApplicationUserService userService, WarehouseService warehouseService, ILogger<RegisterModel> logger)
+        public RegisterModel(AppUserService userService, WarehouseService warehouseService, ILogger<RegisterModel> logger)
         {
             _userService = userService;
             _warehouseService = warehouseService;

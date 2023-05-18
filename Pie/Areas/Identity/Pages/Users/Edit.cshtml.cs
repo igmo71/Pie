@@ -10,10 +10,10 @@ namespace Pie.Areas.Identity.Pages.Users
 {
     public class EditModel : PageModel
     {
-        private readonly ApplicationUserService _userService;
+        private readonly AppUserService _userService;
         private readonly WarehouseService _warehouseService;
 
-        public EditModel(ApplicationUserService userService, WarehouseService warehouseService)
+        public EditModel(AppUserService userService, WarehouseService warehouseService)
         {
             _userService = userService;
             _warehouseService = warehouseService;
@@ -38,7 +38,7 @@ namespace Pie.Areas.Identity.Pages.Users
             }
             else
             {
-                UpdateUserDto = UpdateUserDto.MapFromApplicationUser(user);
+                UpdateUserDto = UpdateUserDto.MapFromAppUser(user);
             }
             return Page();
         }
