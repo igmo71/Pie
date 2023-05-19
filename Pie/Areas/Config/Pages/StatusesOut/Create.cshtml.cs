@@ -15,7 +15,7 @@ namespace Pie.Areas.Config.Pages.StatusesOut
         }
 
         [BindProperty]
-        public StatusOut StatusOut { get; set; } = default!;
+        public StatusOut Status { get; set; } = default!;
 
         public IActionResult OnGet()
         {
@@ -27,7 +27,7 @@ namespace Pie.Areas.Config.Pages.StatusesOut
             if (!ModelState.IsValid)
                 return Page();
 
-            await _statusService.CreateAsync(StatusOut);
+            await _statusService.CreateAsync(Status);
 
             return RedirectToPage("./Index");
         }

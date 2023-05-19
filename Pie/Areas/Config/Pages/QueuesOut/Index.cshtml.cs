@@ -14,11 +14,11 @@ namespace Pie.Areas.Config.Pages.QueuesOut
             _queueService = queueService;
         }
 
-        public IList<QueueOut> QueueList { get; set; } = default!;
+        public IList<QueueOut> Queues { get; set; } = default!;
 
         public async Task<IActionResult> OnGet()
         {
-            QueueList = await _queueService.GetListAsync();
+            Queues = await _queueService.GetListAsync();
 
             return Page();
         }

@@ -14,7 +14,7 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsOut
             _changeReasonService = changeReasonService;
         }
 
-        public ChangeReasonOut ChangeReasonOut { get; set; } = default!;
+        public ChangeReasonOut ChangeReason { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -26,7 +26,7 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsOut
             if (changeReason == null)
                 return NotFound();
             else
-                ChangeReasonOut = changeReason;
+                ChangeReason = changeReason;
 
             return Page();
         }

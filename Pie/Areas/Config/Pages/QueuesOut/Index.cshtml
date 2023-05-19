@@ -13,31 +13,31 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.QueueList[0].Name)
+                @Html.DisplayNameFor(model => model.Queues[0].Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.QueueList[0].Active)
+                @Html.DisplayNameFor(model => model.Queues[0].Active)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.QueueList[0].Key)
+                @Html.DisplayNameFor(model => model.Queues[0].Key)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.QueueList[0].Days)
+                @Html.DisplayNameFor(model => model.Queues[0].Days)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.QueueList[0].Hours)
+                @Html.DisplayNameFor(model => model.Queues[0].Hours)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.QueueList[0].Minutes)
+                @Html.DisplayNameFor(model => model.Queues[0].Minutes)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.QueueList[0].ConcreteTime)
+                @Html.DisplayNameFor(model => model.Queues[0].ConcreteTime)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.QueueList)
+        @foreach (var item in Model.Queues)
         {
             <tr>                
                 <td>

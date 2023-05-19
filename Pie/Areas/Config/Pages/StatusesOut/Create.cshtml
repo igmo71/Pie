@@ -14,18 +14,18 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="StatusOut.Name" class="control-label"></label>
-                <input asp-for="StatusOut.Name" class="form-control" />
-                <span asp-validation-for="StatusOut.Name" class="text-danger"></span>
+                <label asp-for="Status.Name" class="control-label"></label>
+                <input asp-for="Status.Name" class="form-control" />
+                <span asp-validation-for="Status.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StatusOut.Key" class="control-label"></label>
-                <input asp-for="StatusOut.Key" class="form-control" />
-                <span asp-validation-for="StatusOut.Key" class="text-danger"></span>
+                <label asp-for="Status.Key" class="control-label"></label>
+                <input asp-for="Status.Key" class="form-control" />
+                <span asp-validation-for="Status.Key" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="StatusOut.Active" /> @Html.DisplayNameFor(model => model.StatusOut.Active)
+                    <input class="form-check-input" asp-for="Status.Active" /> @Html.DisplayNameFor(model => model.Status.Active)
                 </label>
             </div>
             <div class="form-group">

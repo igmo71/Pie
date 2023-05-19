@@ -13,11 +13,11 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsOut
             _changeReasonService = changeReasonService;
         }
 
-        public IList<ChangeReasonOut> ChangeReasonOut { get; set; } = default!;
+        public IList<ChangeReasonOut> ChangeReasons { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
-            ChangeReasonOut = await _changeReasonService.GetListAsync();
+            ChangeReasons = await _changeReasonService.GetListAsync();
         }
     }
 }

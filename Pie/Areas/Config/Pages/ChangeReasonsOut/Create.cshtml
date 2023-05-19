@@ -14,13 +14,13 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="ChangeReasonOut.Name" class="control-label"></label>
-                <input asp-for="ChangeReasonOut.Name" class="form-control" />
-                <span asp-validation-for="ChangeReasonOut.Name" class="text-danger"></span>
+                <label asp-for="ChangeReason.Name" class="control-label"></label>
+                <input asp-for="ChangeReason.Name" class="form-control" />
+                <span asp-validation-for="ChangeReason.Name" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="ChangeReasonOut.Active" /> @Html.DisplayNameFor(model => model.ChangeReasonOut.Active)
+                    <input class="form-check-input" asp-for="ChangeReason.Active" /> @Html.DisplayNameFor(model => model.ChangeReason.Active)
                 </label>
             </div>
             <div class="form-group">

@@ -14,7 +14,7 @@ namespace Pie.Areas.Config.Pages.QueuesOut
             _queueOutService = queueOutService;
         }
 
-        public QueueOut QueueOut { get; set; } = default!;
+        public QueueOut Queue { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -26,7 +26,7 @@ namespace Pie.Areas.Config.Pages.QueuesOut
             if (queue == null)
                 return NotFound();
             else
-                QueueOut = queue;
+                Queue = queue;
 
             return Page();
         }

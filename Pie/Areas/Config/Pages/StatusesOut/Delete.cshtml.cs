@@ -15,7 +15,7 @@ namespace Pie.Areas.Config.Pages.StatusesOut
         }
 
         [BindProperty]
-        public StatusOut StatusOut { get; set; } = default!;
+        public StatusOut Status { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -27,7 +27,7 @@ namespace Pie.Areas.Config.Pages.StatusesOut
             if (status == null)
                 return NotFound();            
             else
-                StatusOut = status;
+                Status = status;
 
             return Page();
         }

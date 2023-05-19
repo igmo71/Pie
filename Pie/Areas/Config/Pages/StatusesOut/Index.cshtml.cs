@@ -13,11 +13,11 @@ namespace Pie.Areas.Config.Pages.StatusesOut
             _statusOutService = statusOutService;
         }
 
-        public IList<StatusOut> StatusOut { get; set; } = default!;
+        public IList<StatusOut> Statuses { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
-            StatusOut = await _statusOutService.GetListAsync();
+            Statuses = await _statusOutService.GetListAsync();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models.Out;
 using Pie.Data.Services.Out;
 
@@ -16,7 +15,7 @@ namespace Pie.Areas.Config.Pages.StatusesOut
         }
 
         [BindProperty]
-        public StatusOut StatusOut { get; set; } = default!;
+        public StatusOut Status { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -30,7 +29,7 @@ namespace Pie.Areas.Config.Pages.StatusesOut
             {
                 return NotFound();
             }
-            StatusOut = status;
+            Status = status;
             return Page();
         }
 
@@ -39,34 +38,11 @@ namespace Pie.Areas.Config.Pages.StatusesOut
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
-            _context.Attach(StatusOut).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StatusOutExists(StatusOut.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _statusOutService.UpdateAsync(Status);
 
             return RedirectToPage("./Index");
-        }
-
-        private bool StatusOutExists(Guid id)
-        {
-            return _context.StatusesOut.Any(e => e.Id == id);
         }
     }
 }

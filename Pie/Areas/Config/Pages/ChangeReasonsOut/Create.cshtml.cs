@@ -20,7 +20,7 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsOut
         }
 
         [BindProperty]
-        public ChangeReasonOut ChangeReasonOut { get; set; } = default!;
+        public ChangeReasonOut ChangeReason { get; set; } = default!;
 
         
         public async Task<IActionResult> OnPostAsync()
@@ -28,7 +28,7 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsOut
             if (!ModelState.IsValid)
                 return Page();
 
-            await _changeReasonService.CreateAsync(ChangeReasonOut);
+            await _changeReasonService.CreateAsync(ChangeReason);
 
             return RedirectToPage("./Index");
         }
