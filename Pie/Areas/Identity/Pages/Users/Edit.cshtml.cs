@@ -31,14 +31,15 @@ namespace Pie.Areas.Identity.Pages.Users
 
             List<Warehouse> warehouses = await _warehouseService.GetListActiveAsync();
             WarehouseSL = new SelectList(warehouses, nameof(Warehouse.Id), nameof(Warehouse.Name));
-            var user = await _userService.GetUserAsync(id);
-            if (user == null)
+            
+            var userDto = await _userService.GetUpdateUserDtoAsync(id);
+            if (userDto == null)
             {
                 return NotFound();
             }
             else
             {
-                UpdateUserDto = UpdateUserDto.MapFromAppUser(user);
+                UpdateUserDto = userDto;
             }
             return Page();
         }

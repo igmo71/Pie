@@ -34,20 +34,36 @@ namespace Pie.Data.Services.Out
             IQueryable<DocOutHistory> query = _context.DocsOutHistory.AsNoTracking()
                     .Include(d => d.Doc)
                     .Include(d => d.Status)
-                    .Include(d => d.User);
+                    .Include(d => d.User)
+                    .Where(d => d.Doc != null);
 
             if (!string.IsNullOrEmpty(searchString))
-                query = query.Where(d => d.Doc != null && d.Doc.Name != null && d.Doc.Name.ToUpper().Contains(searchString.ToUpper()));
+                query = query.Where(d => d.Doc!.Name != null && d.Doc.Name.ToUpper().Contains(searchString.ToUpper()));
 
             if (docId != null)
-                query = query.Where(d => d.Doc != null && d.DocId == docId);
+                query = query.Where(d => d.DocId == docId);
 
             List<DocOutHistory> result = await query
-                .OrderBy(d => d.Doc.Name).ThenBy(d => d.DateTime)
+                .OrderBy(d => d.Doc!.Name).ThenBy(d => d.DateTime)
                 .Take(50)
                 .ToListAsync();
 
             return result;
+        }
+
+        public async Task<string?> GetAtWorkUserIdAsync(Guid docId)
+        {
+            var docHistory = await GetListAsync(null, docId);
+            var userId = docHistory.LastOrDefault()?.UserId;
+            return userId;
+        }
+
+        public async Task<string?> GetAtWorkUserNameAsync(Guid docId)
+        {
+            var userId = await GetAtWorkUserIdAsync(docId);
+            if(userId == null) return null;
+            string? userName = await _userService.GetUserNameAsync(userId);
+            return userName;
         }
     }
 }

@@ -35,6 +35,12 @@ namespace Pie.Data.Models.Identity
         [Display(Name = "Склад")]
         public Guid? WarehouseId { get; set; }
 
+        [Display(Name = "Активен")]
+        public bool Active { get; set; }
+
+        [Display(Name = "Роли")]
+        public Dictionary<string, bool>? Roles { get; set; }
+
         public static UpdateUserDto MapFromAppUser(AppUser user)
         {
             UpdateUserDto userDto = new UpdateUserDto()
@@ -44,6 +50,7 @@ namespace Pie.Data.Models.Identity
                 LastName = user.LastName,
                 Email = user.Email ?? string.Empty,
                 WarehouseId = user.WarehouseId,
+                Active = user.LockoutEnd == null
             };
 
             return userDto;

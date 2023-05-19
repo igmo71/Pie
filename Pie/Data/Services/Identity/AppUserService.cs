@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using NuGet.Packaging.Signing;
 using Pie.Common;
 using Pie.Data.Models.Identity;
 using System.IdentityModel.Tokens.Jwt;
@@ -20,19 +20,21 @@ namespace Pie.Data.Services.Identity
         private readonly IUserEmailStore<AppUser> _emailStore;
         private readonly ILogger<AppUserService> _logger;
         private readonly IConfiguration _configuration;
+        private readonly WarehouseService _warehouseService;
 
         public AppUserService(IHttpContextAccessor contextAccessor, ILogger<AppUserService> logger,
             UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager,
-                IUserStore<AppUser> userStore, IConfiguration configuration)
+                IUserStore<AppUser> userStore, IConfiguration configuration, WarehouseService warehouseService)
         {
             _contextAccessor = contextAccessor;
+            _logger = logger;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
             _configuration = configuration;
-            _logger = logger;
+            _warehouseService = warehouseService;
         }
 
         public string CurrentUserId
@@ -63,6 +65,21 @@ namespace Pie.Data.Services.Identity
             return user;
         }
 
+        public async Task<string> GetUserNameAsync(string id)
+        {
+            var user = await GetUserAsync(id);
+            string name = $"{user?.FirstName} {user?.LastName}";
+            return name;
+        }
+
+        public async Task<AppUser?> GetUserByBarcodeAsync(string? barcode)
+        {
+            if (barcode == null) return default;
+            string userId = GuidBarcodeConvert.GuidStringFromNumericString(barcode);
+            var user = await _userManager.FindByIdAsync(userId);
+            return user;
+        }
+
         public async Task<string?> GetUserIdByBarcodeAsync(string? barcode)
         {
             var user = await GetUserByBarcodeAsync(barcode);
@@ -76,6 +93,19 @@ namespace Pie.Data.Services.Identity
             return result ?? CurrentUserId;
         }
 
+        public async Task<AppUserDto?> GetUserDtoAsync(string id)
+        {
+            var user = await GetUserAsync(id);
+            if (user == null) return default;
+
+            AppUserDto? userDto = AppUserDto.MapFromAppUser(user);
+            userDto.Warehouse = (await _warehouseService.GetAsync(user.WarehouseId))?.Name;
+
+            userDto.Roles = (await GetUserRolesAsync(id))?.Value?.ToList();
+
+            return userDto;
+        }
+
         public async Task<AppUserDto?> GetUserDtoByBarcodeAsync(string? barcode)
         {
             AppUser? user = await GetUserByBarcodeAsync(barcode);
@@ -83,30 +113,6 @@ namespace Pie.Data.Services.Identity
 
             AppUserDto? userDto = AppUserDto.MapFromAppUser(user);
             return userDto;
-        }
-
-        public async Task<AppUser?> GetUserByBarcodeAsync(string? barcode)
-        {
-            if (barcode == null) return default;
-            string userId =  GuidBarcodeConvert.GuidStringFromNumericString(barcode);
-            var user = await _userManager.FindByIdAsync(userId);
-            return user;
-        }
-
-        public async Task<AppUserDto?> GetUserDtoAsync(string id)
-        {
-            var user = await GetUserAsync(id);
-            if (user == null) return default;
-
-            AppUserDto userDto = AppUserDto.MapFromAppUser(user);
-            return userDto;
-        }
-
-        public async Task<string> GetUserNameAsync(string id)
-        {
-            var user = await GetUserAsync(id);
-            string name = $"{user?.FirstName} {user?.LastName}";
-            return name;
         }
 
         public async Task<List<AppUser>> GetUserListAsync()
@@ -117,10 +123,36 @@ namespace Pie.Data.Services.Identity
 
         public async Task<List<AppUserDto>> GetUserDtoListAsync()
         {
-            var users = await _userManager.Users.ToListAsync();
-            var userDtos = users.Select(u => AppUserDto.MapFromAppUser(u)).ToList();
-
+            var users = await GetUserListAsync();
+            var userDtos = new List<AppUserDto>();
+            foreach (var user in users)
+            {
+                AppUserDto userDto = AppUserDto.MapFromAppUser(user);
+                userDto.Warehouse = (await _warehouseService.GetAsync(user.WarehouseId))?.Name;
+                userDto.Roles = (await GetUserRolesAsync(user.Id))?.Value?.ToList();
+                userDtos.Add(userDto);
+            }
             return userDtos;
+        }
+
+        public async Task<UpdateUserDto?> GetUpdateUserDtoAsync(string id)
+        {
+            var user = await GetUserAsync(id);
+            if (user == null) return default;
+
+            var userDto = UpdateUserDto.MapFromAppUser(user);
+
+            userDto.Roles = new Dictionary<string, bool>();
+            List<IdentityRole> roles = GetRoles();
+            if (roles != null && roles.Count > 0)
+            {
+                foreach (var role in roles)
+                {
+                    if (!string.IsNullOrEmpty(role.Name))
+                        userDto.Roles.Add(role.Name, await _userManager.IsInRoleAsync(user, role.Name));
+                }
+            }
+            return userDto;
         }
 
         public async Task<ServiceResult> CreateAsync(CreateUserDto createUserDto)
@@ -167,6 +199,16 @@ namespace Pie.Data.Services.Identity
             user.FirstName = updateUserDto.FirstName;
             user.LastName = updateUserDto.LastName;
             user.WarehouseId = updateUserDto.WarehouseId;
+
+            if (!updateUserDto.Active)
+                await BlockAsync(updateUserDto.Id);
+            else
+                await UnblockAsync(updateUserDto.Id);
+            if (updateUserDto.Roles != null && updateUserDto.Roles.Count > 0)
+            {
+                List<string> roles = updateUserDto.Roles.Where(kvp => kvp.Value).Select(kvp => kvp.Key).ToList();
+                await AddRolesAsync(user.Id, roles);
+            }
 
             IdentityResult identityResult = await _userManager.UpdateAsync(user);
 
@@ -380,6 +422,20 @@ namespace Pie.Data.Services.Identity
 
             result.IsSuccess = true;
             return result;
+        }
+
+        internal async Task BlockAsync(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user != null)
+                await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.MaxValue);
+        }
+
+        internal async Task UnblockAsync(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user != null)
+                await _userManager.SetLockoutEndDateAsync(user, null);
         }
     }
 }

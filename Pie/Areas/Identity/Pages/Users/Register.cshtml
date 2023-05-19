@@ -1,15 +1,16 @@
 ﻿@page
 @model Pie.Areas.Identity.Pages.Users.RegisterModel
+
 @{
-    ViewData["Title"] = "Регистрация";
+    ViewData["Title"] = "Регистрация";  
 }
 
-<h1>@ViewData["Title"]</h1>
+<h2>@ViewData["Title"]</h2>
 
 <div class="row">
     <div class="col-md-4">
         <form id="registerForm" method="post">
-            <h2>Создать нового пользователя.</h2>
+            <h4>Создать нового пользователя.</h4>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">

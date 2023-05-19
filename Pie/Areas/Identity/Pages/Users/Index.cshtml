@@ -5,7 +5,7 @@
     ViewData["Title"] = "Пользователи";
 }
 
-<h1>Пользователи</h1>
+<h2>Пользователи</h2>
 
 <p>
     <a asp-page="/Users/Register">Создать</a>
@@ -22,6 +22,15 @@
             <th>
                 @Html.DisplayNameFor(model => model.Users[0].Email)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Users[0].Warehouse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Users[0].Active)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Users[0].Roles)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -37,6 +46,21 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Warehouse)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Active)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Roles)*@
+                    @if (item.Roles != null){
+                        @foreach (var role in item.Roles)
+                        {
+                            <span> @role </span>
+                        }
+                    }
                 </td>
                 <td>
                     <a asp-page="./Edit" asp-route-id="@item.Id">Изменить</a> |

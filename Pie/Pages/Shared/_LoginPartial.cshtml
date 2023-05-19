@@ -18,13 +18,11 @@
         <li class="nav-item">
             @if (User.IsInRole("Admin"))
             {
-                <a id="config" class="nav-link text-dark" asp-area="Config" asp-page="/Index">Настройки</a>
+                <a id="config" class="nav-link text-dark" asp-area="Config" asp-page="/Index"><i class="bi bi-tools"></i><span> Настройки</span></a>
             }
         </li>
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                История
-            </a>
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-binoculars"></i><span> История</span></a>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="/History/DocsIn">Приходников</a></li>
                 <li><a class="dropdown-item" href="/History/DocsIn/Products">Их товаров</a></li>

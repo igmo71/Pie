@@ -13,6 +13,7 @@ namespace Pie.Pages.DocsOut
         [Inject] public required DocOutService DocService { get; set; }
         [Inject] public required ChangeReasonOutService ChangeReasonService { get; set; }
         [Inject] public required AppUserService AppUserService { get; set; }
+        [Inject] public required NavigationManager NavigationManager { get; set; }
         [Inject] public IJSRuntime? JSRuntime { get; set; }
 
         [Parameter] public string? Id { get; set; }
@@ -61,6 +62,8 @@ namespace Pie.Pages.DocsOut
                 return;
             }
             await notification.SetMessageAndHideAsync($"Запрос изменения статуса - OK", 2);
+
+            NavigationManager.NavigateTo($"DocsOut/List");
         }
 
         private async Task PrintAsync()

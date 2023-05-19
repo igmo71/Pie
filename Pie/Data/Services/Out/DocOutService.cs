@@ -68,7 +68,7 @@ namespace Pie.Data.Services.Out
         {
             DocOutVm? vm = new();
             vm.Value = await GetAsync(id);
-            vm.UserName = await _userService.GetCurrentUserNameAsync();
+            vm.AtWorkUserName = await _docHistoryService.GetAtWorkUserNameAsync(id);
             vm.Barcode = BarcodeGenerator.GetBarCode128(id);
 
             return vm;

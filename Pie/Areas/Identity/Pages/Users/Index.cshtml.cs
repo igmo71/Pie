@@ -13,11 +13,11 @@ namespace Pie.Areas.Identity.Pages.Users
             _userService = userService;
         }
 
-        public List<AppUser> Users { get; set; } = default!;
+        public List<AppUserDto> Users { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
-            Users = await _userService.GetUserListAsync();
+            Users = await _userService.GetUserDtoListAsync();
         }
     }
 }
