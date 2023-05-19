@@ -1,46 +1,58 @@
 ﻿@using Pie.Data.Models.Out;
+@inject NavigationManager NavigationManager
 
-<div class="card border-@cardColor shadow rounded mb-2">
-    <div class="card-header bg-@cardColor bg-opacity-75 text-white p-2">
-        <div class="row">
-            <div class="col-9 d-flex justify-content-center">
-                <div>
-                    <span>№ </span><span>@Doc?.Number</span>
+@if (Doc != null)
+{
+    <div class="card border-@cardColor shadow rounded mb-2">
+        <a href="#" style="text-decoration:none">
+            <div class="card-header bg-@cardColor bg-opacity-75 text-white p-2" @onclick="@(() => OnClick(Doc!.Id))">
+                <div class="row">
+                    <div class="col-1 d-flex justify-content-center">
+                        <i class="bi bi-layout-text-window-reverse"></i>
+                    </div>
+                    <div class="col-8 d-flex justify-content-center">
+                        <div>
+                            <span>№ </span><span>@Doc?.Number</span>
+                        </div>
+                    </div>
+                    <div class="col-3 d-flex justify-content-center h5">
+                        <div>@Doc?.QueueNumber</div>
+                    </div>
                 </div>
             </div>
-            <div class="col-3 d-flex justify-content-center h5">
-                <div>@Doc?.QueueNumber</div>
+        </a>
+        <div class="card-body p-2">
+            <div>
+                <i class="bi bi-calendar-event"></i><span class="small"> Дата отгрузки: </span><span>@Doc?.ShipDateTime</span>
+            </div>
+            <div>
+                <i class="bi bi-building"></i><span class="small"> Склад: </span><span>@Doc?.Warehouse?.Name</span>
+            </div>
+            <div>
+                <i class="bi bi-clipboard-check"></i><span class="small"> Статус: </span><span>@Doc?.Status?.Name</span>
+            </div>
+            <div>
+                <i class="bi bi-people"></i><span class="small"> Очередь: </span><span>@Doc?.Queue?.Name</span>
+            </div>
+            <div>
+                @if (@Doc?.Comment != null && !string.IsNullOrEmpty(@Doc?.Comment))
+                {
+                    <i class="bi bi-chat-left-text"></i><span> @Doc?.Comment</span>
+                }
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col">
+                    <i class="bi bi-minecart-loaded"></i><span class="small"> Вес: </span><span>@Doc?.Weight</span>
+                </div>
+                <div class="col">
+                    <i class="bi bi-list-ol"></i><span class="small"> Кол строк: </span><span>@Doc?.Products.Count</span>
+                </div>
             </div>
         </div>
     </div>
-    <div class="card-body p-2">  
-        <div>
-            <i class="bi bi-calendar-event"></i><span class="small"> Дата отгрузки: </span><span>@Doc?.ShipDateTime</span>
-        </div>
-        <div>
-            <i class="bi bi-building"></i><span class="small"> Склад: </span><span>@Doc?.Warehouse?.Name</span>
-        </div>
-        <div>
-            <i class="bi bi-clipboard-check"></i><span class="small"> Статус: </span><span>@Doc?.Status?.Name</span>
-        </div>
-        <div>
-            <i class="bi bi-people"></i><span class="small"> Очередь: </span><span>@Doc?.Queue?.Name</span>
-        </div>
-        <div>
-            <span>@Doc?.Comment</span>
-        </div>
-    </div>
-    <div class="card-footer">
-        <div class="row">
-            <div class="col">
-                <i class="bi bi-minecart-loaded"></i><span class="small"> Вес: </span><span>@Doc?.Weight</span>
-            </div>
-            <div class="col">
-                <i class="bi bi-list-ol"></i><span class="small"> Кол строк: </span><span>@Doc?.Products.Count</span>
-            </div>
-        </div>
-    </div>
-</div>
+}
 
 @code {
     [Parameter] public DocOut? Doc { get; set; }
@@ -54,5 +66,10 @@
 
         if (Doc.ShipDateTime != new DateTime() && Doc.ShipDateTime < DateTime.Now)
             cardColor = "danger";
+    }
+
+    private void OnClick(Guid id)
+    {
+        NavigationManager.NavigateTo($"DocsOut/Item/{id}");
     }
 }
