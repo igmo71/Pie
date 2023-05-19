@@ -20,7 +20,7 @@
             <a asp-page="./Index">Сбросить поиск</a> |
             @if (@Model.DocId != null)
             {
-                <a href="/DocsOut/Item/@Model.DocId" title="Назад к документу">Назад к документу</a>
+                <a href="/DocsOut/Item/@Model.DocId" title="Открыть документ">Открыть документ</a>
             }
         </p>
     </div>
@@ -48,8 +48,8 @@
         @foreach (var item in Model.DocOutHistory)
         {
             <tr>
-                <td>
-                    <a href="/DocsOut/Item/@item.DocId" title="Назад к документу">
+                <td>                    
+                    <a asp-page="./Index" asp-route-docId="@item.Doc.Id" title="Выбрать">
                         @Html.DisplayFor(modelItem => item.Doc.Name)
                     </a>
                 </td>
