@@ -212,7 +212,7 @@ namespace Pie.Data.Services.Out
                 result.Message = ex.Message;
                 _logger.LogError("DocOutService SendAsync {DocOut}", JsonSerializer.Serialize(doc, _jsonOptions));
                 //throw;
-            }            
+            }
 
             if (result.IsSuccess) // TODO: Обновить статус !!! Возможно, перезапросить из базы, вызвать событие... 
             {

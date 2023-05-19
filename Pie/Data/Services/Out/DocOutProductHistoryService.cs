@@ -24,7 +24,7 @@ namespace Pie.Data.Services.Out
                     DocOutProductHistory docProductHistory = new DocOutProductHistory()
                     {
                         DateTime = DateTime.Now,
-                        UserId = barcode == null ? _userService.CurrentUserId : await _userService.GetUserIdByBarcodeAsync(barcode),
+                        UserId = await _userService.GetUserIdByBarcodeOrCurrentAsync(barcode),
                         DocId = doc.Id,
                         ProductId = product.ProductId,
                         LineNumber = product.LineNumber,
@@ -44,16 +44,18 @@ namespace Pie.Data.Services.Out
                 .Include(d => d.ChangeReason)
                 .Include(d => d.Doc)
                 .Include(d => d.Product)
-                .Include(d => d.User);
+                .Include(d => d.User)
+                .Where(d => d.Doc != null);
 
             if (!string.IsNullOrEmpty(searchString))
-                queryProduct = queryProduct.Where(d => d.Doc != null && d.Doc.Name != null && d.Doc.Name.ToUpper().Contains(searchString.ToUpper()));
+                queryProduct = queryProduct
+                    .Where(d => d.Doc!.Name != null && d.Doc.Name.ToUpper().Contains(searchString.ToUpper()));
 
             if (docId != null)
-                queryProduct = queryProduct.Where(d => d.Doc != null && d.DocId == docId);
+                queryProduct = queryProduct.Where(d => d.DocId == docId);
 
             List<DocOutProductHistory> result = await queryProduct
-                .OrderBy(d => d.Doc.Name).ThenBy(d => d.LineNumber).ThenBy(d => d.DateTime)
+                .OrderBy(d => d.Doc!.Name).ThenBy(d => d.LineNumber).ThenBy(d => d.DateTime)
                 .Take(50)
                 .ToListAsync();
 

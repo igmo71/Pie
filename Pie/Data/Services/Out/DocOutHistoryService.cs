@@ -20,7 +20,7 @@ namespace Pie.Data.Services.Out
             DocOutHistory docHistory = new DocOutHistory()
             {
                 DateTime = DateTime.Now,
-                UserId = barcode == null ? _userService.CurrentUserId : await _userService.GetUserIdByBarcodeAsync(barcode),
+                UserId = await _userService.GetUserIdByBarcodeOrCurrentAsync(barcode),
                 DocId = doc.Id,
                 StatusKey = doc.StatusKey
             };

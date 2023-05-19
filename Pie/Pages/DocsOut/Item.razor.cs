@@ -12,14 +12,13 @@ namespace Pie.Pages.DocsOut
     {
         [Inject] public required DocOutService DocService { get; set; }
         [Inject] public required ChangeReasonOutService ChangeReasonService { get; set; }
-        [Inject]
-        public required AppUserService AppUserService { get; set; }
+        [Inject] public required AppUserService AppUserService { get; set; }
         [Inject] public IJSRuntime? JSRuntime { get; set; }
 
         [Parameter] public string? Id { get; set; }
 
         private DocOutVm? docVm;
-        private string? barcode;
+        //private string? barcode;
         private List<ChangeReasonOut>? changeReasons;
         private Notification notification = new();
         private string pageMessage = string.Empty;

@@ -63,14 +63,20 @@ namespace Pie.Data.Services.Identity
             return user;
         }
 
-        public async Task<string?> GetUserIdByBarcodeAsync(string barcode)
+        public async Task<string?> GetUserIdByBarcodeAsync(string? barcode)
         {
             var user = await GetUserByBarcodeAsync(barcode);
             string? userId = user?.Id;
             return userId;
         }
 
-        public async Task<AppUserDto?> GetUserDtoByBarcodeAsync(string barcode)
+        public async Task<string?> GetUserIdByBarcodeOrCurrentAsync(string? barcode)
+        {
+            var result = await GetUserIdByBarcodeAsync(barcode);
+            return result ?? CurrentUserId;
+        }
+
+        public async Task<AppUserDto?> GetUserDtoByBarcodeAsync(string? barcode)
         {
             AppUser? user = await GetUserByBarcodeAsync(barcode);
             if (user == null) return default;
@@ -79,8 +85,9 @@ namespace Pie.Data.Services.Identity
             return userDto;
         }
 
-        public async Task<AppUser?> GetUserByBarcodeAsync(string barcode)
+        public async Task<AppUser?> GetUserByBarcodeAsync(string? barcode)
         {
+            if (barcode == null) return default;
             string userId =  GuidBarcodeConvert.GuidStringFromNumericString(barcode);
             var user = await _userManager.FindByIdAsync(userId);
             return user;
