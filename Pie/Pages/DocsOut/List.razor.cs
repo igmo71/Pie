@@ -63,18 +63,21 @@ namespace Pie.Pages.DocsOut
             await GetDocsAsync();
             await GetCountByStatusAsync();
             await InvokeAsync(StateHasChanged);
-            //TryOpenItem();
+            TryOpenSingleDoc();
         }
 
-        private void TryOpenItem()
+        private void TryOpenSingleDoc()
         {
-            if (IsDocumentSingle(out Guid? id))
+            if (SearchParameters.IsBarcode)
             {
-                SearchParameters.ClearSearchByBarcode();
-                NavigationManager?.NavigateTo($"DocsOut/Item/{id}");
+                if (IsDocumentSingle(out Guid? id))
+                {
+                    SearchParameters.ClearSearchByBarcode();
+                    NavigationManager?.NavigateTo($"DocsOut/Item/{id}");
+                }
+                else
+                    SearchParameters.StatusKey = null;
             }
-            else
-                SearchParameters.StatusKey = null;
         }
 
         private bool IsDocumentSingle(out Guid? id)
