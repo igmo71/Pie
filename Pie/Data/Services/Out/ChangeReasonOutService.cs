@@ -28,7 +28,7 @@ namespace Pie.Data.Services.Out
 
         public async Task<ChangeReasonOut> CreateAsync(ChangeReasonOut changeReason)
         {
-            if (ChangeReasonExists(changeReason.Id))
+            if (Exists(changeReason.Id))
             {
                 await UpdateAsync(changeReason);
             }
@@ -51,7 +51,7 @@ namespace Pie.Data.Services.Out
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!ChangeReasonExists(changeReason.Id))
+                if (!Exists(changeReason.Id))
                 {
                     throw new ApplicationException($"ChangeReasonOutService UpdateAsync NotFount {changeReason.Id}", ex);
                 }
@@ -70,7 +70,7 @@ namespace Pie.Data.Services.Out
             await _context.SaveChangesAsync();
         }
 
-        private bool ChangeReasonExists(Guid id)
+        private bool Exists(Guid id)
         {
             return _context.ChangeReasonsOut.Any(e => e.Id == id);
         }

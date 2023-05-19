@@ -1,36 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Pie.Data.Models.Out;
+using Pie.Data.Services.Out;
 
 namespace Pie.Areas.Config.Pages.StatusesOut
 {
     public class CreateModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly StatusOutService _statusService;
 
-        public CreateModel(Pie.Data.ApplicationDbContext context)
+        public CreateModel(StatusOutService statusService)
         {
-            _context = context;
-        }
-
-        public IActionResult OnGet()
-        {
-            return Page();
+            _statusService = statusService;
         }
 
         [BindProperty]
         public StatusOut StatusOut { get; set; } = default!;
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+        public IActionResult OnGet()
+        {
+            return Page();
+        }
+            
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
-            _context.StatusesOut.Add(StatusOut);
-            await _context.SaveChangesAsync();
+            await _statusService.CreateAsync(StatusOut);
 
             return RedirectToPage("./Index");
         }

@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models.Out;
+using Pie.Data.Services.Out;
 
 namespace Pie.Areas.Config.Pages.StatusesOut
 {
     public class IndexModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly StatusOutService _statusOutService;
 
-        public IndexModel(Pie.Data.ApplicationDbContext context)
+        public IndexModel(StatusOutService statusOutService)
         {
-            _context = context;
+            _statusOutService = statusOutService;
         }
 
         public IList<StatusOut> StatusOut { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
-            StatusOut = await _context.StatusesOut.ToListAsync();
+            StatusOut = await _statusOutService.GetListAsync();
         }
     }
 }

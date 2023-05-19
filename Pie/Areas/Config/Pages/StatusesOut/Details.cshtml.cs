@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models.Out;
+using Pie.Data.Services.Out;
 
 namespace Pie.Areas.Config.Pages.StatusesOut
 {
     public class DetailsModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly StatusOutService _statusService;
 
-        public DetailsModel(Pie.Data.ApplicationDbContext context)
+        public DetailsModel(StatusOutService statusService)
         {
-            _context = context;
+            _statusService = statusService;
         }
 
         public StatusOut StatusOut { get; set; } = default!;
@@ -19,19 +19,15 @@ namespace Pie.Areas.Config.Pages.StatusesOut
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var statusout = await _context.StatusesOut.FirstOrDefaultAsync(m => m.Id == id);
-            if (statusout == null)
-            {
+            var status = await _statusService.GetAsync((Guid)id);
+
+            if (status == null)
                 return NotFound();
-            }
             else
-            {
-                StatusOut = statusout;
-            }
+                StatusOut = status;
+
             return Page();
         }
     }

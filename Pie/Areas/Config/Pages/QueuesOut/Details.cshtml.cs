@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models.Out;
+using Pie.Data.Services.Out;
 
 namespace Pie.Areas.Config.Pages.QueuesOut
 {
     public class DetailsModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly QueueOutService _queueOutService;
 
-        public DetailsModel(Pie.Data.ApplicationDbContext context)
+        public DetailsModel(QueueOutService queueOutService)
         {
-            _context = context;
+            _queueOutService = queueOutService;
         }
 
         public QueueOut QueueOut { get; set; } = default!;
@@ -19,19 +19,15 @@ namespace Pie.Areas.Config.Pages.QueuesOut
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var queueout = await _context.QueuesOut.FirstOrDefaultAsync(m => m.Id == id);
-            if (queueout == null)
-            {
+            var queue = await _queueOutService.GetAsync((Guid)id);
+
+            if (queue == null)
                 return NotFound();
-            }
             else
-            {
-                QueueOut = queueout;
-            }
+                QueueOut = queue;
+
             return Page();
         }
     }

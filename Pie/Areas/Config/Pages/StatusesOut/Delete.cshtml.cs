@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models.Out;
+using Pie.Data.Services.Out;
 
 namespace Pie.Areas.Config.Pages.StatusesOut
 {
     public class DeleteModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly StatusOutService _statusService;
 
-        public DeleteModel(Pie.Data.ApplicationDbContext context)
+        public DeleteModel(StatusOutService statusService)
         {
-            _context = context;
+            _statusService = statusService;
         }
 
         [BindProperty]
@@ -20,37 +20,27 @@ namespace Pie.Areas.Config.Pages.StatusesOut
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var statusout = await _context.StatusesOut.FirstOrDefaultAsync(m => m.Id == id);
+            var status = await _statusService.GetAsync((Guid)id);
 
-            if (statusout == null)
-            {
-                return NotFound();
-            }
+            if (status == null)
+                return NotFound();            
             else
-            {
-                StatusOut = statusout;
-            }
+                StatusOut = status;
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var statusout = await _context.StatusesOut.FindAsync(id);
-            if (statusout != null)
-            {
-                StatusOut = statusout;
-                _context.StatusesOut.Remove(StatusOut);
-                await _context.SaveChangesAsync();
-            }
+            if (!_statusService.Exists((Guid)id))
+                return NotFound();
+            else
+                await _statusService.DeleteAsync((Guid)id);
 
             return RedirectToPage("./Index");
         }

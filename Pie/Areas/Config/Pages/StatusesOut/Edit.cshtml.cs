@@ -2,16 +2,17 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models.Out;
+using Pie.Data.Services.Out;
 
 namespace Pie.Areas.Config.Pages.StatusesOut
 {
     public class EditModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly StatusOutService _statusOutService;
 
-        public EditModel(Pie.Data.ApplicationDbContext context)
+        public EditModel(StatusOutService statusOutService)
         {
-            _context = context;
+            _statusOutService = statusOutService;
         }
 
         [BindProperty]
@@ -24,12 +25,12 @@ namespace Pie.Areas.Config.Pages.StatusesOut
                 return NotFound();
             }
 
-            var statusout = await _context.StatusesOut.FirstOrDefaultAsync(m => m.Id == id);
-            if (statusout == null)
+            var status = await _statusOutService.GetAsync((Guid)id);
+            if (status == null)
             {
                 return NotFound();
             }
-            StatusOut = statusout;
+            StatusOut = status;
             return Page();
         }
 

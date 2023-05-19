@@ -9,24 +9,24 @@ namespace Pie.Controllers.Out
     [ApiController]
     public class QueueNumberController : ControllerBase
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly ApplicationDbContext _context;
 
         public QueueNumberController(ApplicationDbContext dbContext)
         {
-            _dbContext = dbContext;
+            _context = dbContext;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var currentQueueNumber = await _dbContext.QueueNumber.FirstOrDefaultAsync()
+            var currentQueueNumber = await _context.QueueNumber.FirstOrDefaultAsync()
                 ?? throw new ApplicationException("QueueNumber no found.");
 
             QueueNumber newQueueNumber = currentQueueNumber.Next(currentQueueNumber);
 
-            _dbContext.QueueNumber.Remove(currentQueueNumber);
-            _dbContext.QueueNumber.Add(newQueueNumber);
-            await _dbContext.SaveChangesAsync();
+            _context.QueueNumber.Remove(currentQueueNumber);
+            _context.QueueNumber.Add(newQueueNumber);
+            await _context.SaveChangesAsync();
 
             return Ok(newQueueNumber.Value);
         }
@@ -34,7 +34,7 @@ namespace Pie.Controllers.Out
         [HttpDelete]
         public async Task<IActionResult> Reset()
         {
-            var currentQueueNumber = await _dbContext.QueueNumber.FirstOrDefaultAsync()
+            var currentQueueNumber = await _context.QueueNumber.FirstOrDefaultAsync()
                 ?? throw new ApplicationException("QueueNumber no found.");
 
             var newQueueNumber = new QueueNumber()
@@ -44,9 +44,9 @@ namespace Pie.Controllers.Out
                 Value = "A00"
             };
 
-            _dbContext.QueueNumber.Remove(currentQueueNumber);
-            _dbContext.QueueNumber.Add(newQueueNumber);
-            await _dbContext.SaveChangesAsync();
+            _context.QueueNumber.Remove(currentQueueNumber);
+            _context.QueueNumber.Add(newQueueNumber);
+            await _context.SaveChangesAsync();
 
             return Ok(newQueueNumber.Value);
         }
