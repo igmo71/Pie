@@ -197,7 +197,7 @@ namespace Pie.Data.Services.Out
             DocCreated?.Invoke(this, id);
         }
 
-        public async Task<ServiceResult> SendAsync(DocOut doc)
+        public async Task<ServiceResult> SendAsync(DocOut doc, string? barcode = null)
         {
             ServiceResult result = new();
 
@@ -216,8 +216,8 @@ namespace Pie.Data.Services.Out
 
             if (result.IsSuccess) // TODO: Обновить статус !!! Возможно, перезапросить из базы, вызвать событие... 
             {
-                await _docHistoryService.CreateAsync(doc);
-                await _docProductHistoryService.CreateAsync(doc);
+                await _docHistoryService.CreateAsync(doc, barcode);
+                await _docProductHistoryService.CreateAsync(doc, barcode);
             }
 
             return result;

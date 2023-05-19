@@ -44,20 +44,17 @@ namespace Pie.Pages.DocsOut
 
         private async Task ScannedBarcodeAsync(string barcode)
         {
-            this.barcode = barcode;
-
-            var user = await AppUserService.GetUserByBarcodeAsync(barcode);
-
-            await notification.ShowAndHideAsync(this.barcode, 1);
+            await notification.ShowAndHideAsync(barcode, 1);
+            await SendDocAsync(barcode);
         }
 
-        private async Task SendDocAsync()
+        private async Task SendDocAsync(string? barcode = null)
         {
             if (docVm == null || docVm.Value == null) return;
 
             notification.Show("Запрос изменения статуса ...");
 
-            ServiceResult serviceResult = await DocService.SendAsync(docVm.Value);
+            ServiceResult serviceResult = await DocService.SendAsync(docVm.Value, barcode);
 
             if (!serviceResult.IsSuccess)
             {

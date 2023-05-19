@@ -15,7 +15,7 @@ namespace Pie.Data.Services.Out
             _userService = userService;
         }
 
-        public async Task CreateAsync(DocOut doc)
+        public async Task CreateAsync(DocOut doc, string? barcode = null)
         {
             foreach (var product in doc.Products)
             {
@@ -24,7 +24,7 @@ namespace Pie.Data.Services.Out
                     DocOutProductHistory docProductHistory = new DocOutProductHistory()
                     {
                         DateTime = DateTime.Now,
-                        UserId = _userService.CurrentUserId,
+                        UserId = barcode == null ? _userService.CurrentUserId : await _userService.GetUserIdByBarcodeAsync(barcode),
                         DocId = doc.Id,
                         ProductId = product.ProductId,
                         LineNumber = product.LineNumber,
