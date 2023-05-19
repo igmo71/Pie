@@ -87,7 +87,7 @@ namespace Pie.Data
                 new IdentityUserRole<string> { UserId = "22919707-7d2c-450d-92e7-19f36935bcdb", RoleId = "9423e7b8-b496-41e8-b9c9-416b74823db9" },
                 new IdentityUserRole<string> { UserId = "22919707-7d2c-450d-92e7-19f36935bcdb", RoleId = "d6bfb7c2-9a45-45e5-b27a-3b7cba85527f" },
                 new IdentityUserRole<string> { UserId = "22919707-7d2c-450d-92e7-19f36935bcdb", RoleId = "049c2135-b769-4ea5-986a-a5231330fe46" },
-                new IdentityUserRole<string> { UserId = "0b60c927-0e9f-4fa7-8422-e0e16e6fa5f4", RoleId = "049c2135-b769-4ea5-986a-a5231330fe46" }
+                new IdentityUserRole<string> { UserId = "d90e31c9-e19f-4ee7-9580-d856daba6d02", RoleId = "049c2135-b769-4ea5-986a-a5231330fe46" }
                 );
         }
     }

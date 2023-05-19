@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -25,33 +26,6 @@ namespace Pie.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetRoles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    FirstName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    LastName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    PasswordHash = table.Column<string>(type: "text", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -95,17 +69,26 @@ namespace Pie.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "QueueNumber",
+                columns: table => new
+                {
+                    Value = table.Column<string>(type: "text", nullable: false),
+                    CharValue = table.Column<int>(type: "integer", nullable: false),
+                    NumValue = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_QueueNumber", x => x.Value);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "QueuesIn",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Active = table.Column<bool>(type: "boolean", nullable: false),
-                    Key = table.Column<int>(type: "integer", nullable: false),
-                    Days = table.Column<int>(type: "integer", nullable: false),
-                    Hours = table.Column<int>(type: "integer", nullable: false),
-                    Minutes = table.Column<int>(type: "integer", nullable: false),
-                    ConcreteTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false)
+                    Key = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -118,13 +101,13 @@ namespace Pie.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Active = table.Column<bool>(type: "boolean", nullable: false),
-                    Key = table.Column<int>(type: "integer", nullable: false),
                     Days = table.Column<int>(type: "integer", nullable: false),
                     Hours = table.Column<int>(type: "integer", nullable: false),
                     Minutes = table.Column<int>(type: "integer", nullable: false),
-                    ConcreteTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false)
+                    ConcreteTime = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Active = table.Column<bool>(type: "boolean", nullable: false),
+                    Key = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -194,6 +177,115 @@ namespace Pie.Data.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    FirstName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    LastName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    WarehouseId = table.Column<Guid>(type: "uuid", nullable: true),
+                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Warehouses_WarehouseId",
+                        column: x => x.WarehouseId,
+                        principalTable: "Warehouses",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DocsIn",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    StatusKey = table.Column<int>(type: "integer", nullable: true),
+                    QueueKey = table.Column<int>(type: "integer", nullable: true),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Active = table.Column<bool>(type: "boolean", nullable: false),
+                    Number = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    DateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    WarehouseId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Comment = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DocsIn", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DocsIn_QueuesIn_QueueKey",
+                        column: x => x.QueueKey,
+                        principalTable: "QueuesIn",
+                        principalColumn: "Key",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_DocsIn_StatusesIn_StatusKey",
+                        column: x => x.StatusKey,
+                        principalTable: "StatusesIn",
+                        principalColumn: "Key",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_DocsIn_Warehouses_WarehouseId",
+                        column: x => x.WarehouseId,
+                        principalTable: "Warehouses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DocsOut",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    StatusKey = table.Column<int>(type: "integer", nullable: true),
+                    QueueKey = table.Column<int>(type: "integer", nullable: true),
+                    QueueNumber = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: true),
+                    ShipDateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Active = table.Column<bool>(type: "boolean", nullable: false),
+                    Number = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    DateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    WarehouseId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Comment = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DocsOut", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DocsOut_QueuesOut_QueueKey",
+                        column: x => x.QueueKey,
+                        principalTable: "QueuesOut",
+                        principalColumn: "Key",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_DocsOut_StatusesOut_StatusKey",
+                        column: x => x.StatusKey,
+                        principalTable: "StatusesOut",
+                        principalColumn: "Key",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_DocsOut_Warehouses_WarehouseId",
+                        column: x => x.WarehouseId,
+                        principalTable: "Warehouses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -282,82 +374,6 @@ namespace Pie.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DocsIn",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    StatusKey = table.Column<int>(type: "integer", nullable: true),
-                    QueueKey = table.Column<int>(type: "integer", nullable: true),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Active = table.Column<bool>(type: "boolean", nullable: false),
-                    Number = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
-                    DateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    WarehouseId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Comment = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DocsIn", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_DocsIn_QueuesIn_QueueKey",
-                        column: x => x.QueueKey,
-                        principalTable: "QueuesIn",
-                        principalColumn: "Key",
-                        onDelete: ReferentialAction.SetNull);
-                    table.ForeignKey(
-                        name: "FK_DocsIn_StatusesIn_StatusKey",
-                        column: x => x.StatusKey,
-                        principalTable: "StatusesIn",
-                        principalColumn: "Key",
-                        onDelete: ReferentialAction.SetNull);
-                    table.ForeignKey(
-                        name: "FK_DocsIn_Warehouses_WarehouseId",
-                        column: x => x.WarehouseId,
-                        principalTable: "Warehouses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DocsOut",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    StatusKey = table.Column<int>(type: "integer", nullable: true),
-                    QueueKey = table.Column<int>(type: "integer", nullable: true),
-                    QueueNumber = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: true),
-                    ShipDateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Active = table.Column<bool>(type: "boolean", nullable: false),
-                    Number = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
-                    DateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    WarehouseId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Comment = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DocsOut", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_DocsOut_QueuesOut_QueueKey",
-                        column: x => x.QueueKey,
-                        principalTable: "QueuesOut",
-                        principalColumn: "Key",
-                        onDelete: ReferentialAction.SetNull);
-                    table.ForeignKey(
-                        name: "FK_DocsOut_StatusesOut_StatusKey",
-                        column: x => x.StatusKey,
-                        principalTable: "StatusesOut",
-                        principalColumn: "Key",
-                        onDelete: ReferentialAction.SetNull);
-                    table.ForeignKey(
-                        name: "FK_DocsOut_Warehouses_WarehouseId",
-                        column: x => x.WarehouseId,
-                        principalTable: "Warehouses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "DocInBaseDocs",
                 columns: table => new
                 {
@@ -389,8 +405,10 @@ namespace Pie.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     DocId = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LineNumber = table.Column<int>(type: "integer", nullable: false),
                     CountPlan = table.Column<float>(type: "real", nullable: false),
-                    CountFact = table.Column<float>(type: "real", nullable: false)
+                    CountFact = table.Column<float>(type: "real", nullable: false),
+                    Weight = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -419,6 +437,7 @@ namespace Pie.Data.Migrations
                     DateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     UserId = table.Column<string>(type: "character varying(36)", maxLength: 36, nullable: true),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LineNumber = table.Column<int>(type: "integer", nullable: false),
                     CountPlan = table.Column<float>(type: "real", nullable: false),
                     CountFact = table.Column<float>(type: "real", nullable: false)
                 },
@@ -516,8 +535,10 @@ namespace Pie.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     DocId = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LineNumber = table.Column<int>(type: "integer", nullable: false),
                     CountPlan = table.Column<float>(type: "real", nullable: false),
-                    CountFact = table.Column<float>(type: "real", nullable: false)
+                    CountFact = table.Column<float>(type: "real", nullable: false),
+                    Weight = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -546,6 +567,7 @@ namespace Pie.Data.Migrations
                     DateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     UserId = table.Column<string>(type: "character varying(36)", maxLength: 36, nullable: true),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LineNumber = table.Column<int>(type: "integer", nullable: false),
                     CountPlan = table.Column<float>(type: "real", nullable: false),
                     CountFact = table.Column<float>(type: "real", nullable: false)
                 },
@@ -612,6 +634,30 @@ namespace Pie.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "049c2135-b769-4ea5-986a-a5231330fe46", null, "Service1c", "SERVICE1C" },
+                    { "9423e7b8-b496-41e8-b9c9-416b74823db9", null, "User", "USER" },
+                    { "d6bfb7c2-9a45-45e5-b27a-3b7cba85527f", null, "Admin", "ADMIN" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "WarehouseId" },
+                values: new object[,]
+                {
+                    { "22919707-7d2c-450d-92e7-19f36935bcdb", 0, "2b68aa3c-d884-475f-8a7a-f72d5666f9ae", "igmo@dobroga.ru", true, "Админ", null, true, null, "IGMO@DOBROGA.RU", "IGMO@DOBROGA.RU", "AQAAAAIAAYagAAAAEDgydLmvi4/0kDXZB6+ShJFMNIK8Xzgaawytbvp8IMJquSZ/4hO8sPu9mlXC5uS9IQ==", null, false, "HCJOWYFSM63CJOZM5AZAGXSHEI257BCI", false, "igmo@dobroga.ru", null },
+                    { "d90e31c9-e19f-4ee7-9580-d856daba6d02", 0, "c9023eae-8542-460f-af6c-fb2361ae2be0", "Service1c@www", true, "Service1c", null, true, null, "SERVICE1C@WWW", "SERVICE1C@WWW", "AQAAAAIAAYagAAAAEAP/xtaltm7cuB/Bk/sRF/GDtCtQf9B1ghEEbr6eprNlsKYsaGt5ncmcR/utO76tWw==", null, false, "6WMMOSBLWGF45HZLH5OJIQADMFB6YJGQ", false, "Service1c@www", null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "QueueNumber",
+                columns: new[] { "Value", "CharValue", "NumValue" },
+                values: new object[] { "A000", 0, 0 });
+
+            migrationBuilder.InsertData(
                 table: "QueuesOut",
                 columns: new[] { "Id", "Active", "ConcreteTime", "Days", "Hours", "Key", "Minutes", "Name" },
                 values: new object[,]
@@ -634,6 +680,17 @@ namespace Pie.Data.Migrations
                     { new Guid("c2c5935d-b332-4d84-b1fd-309ad8a65356"), true, 0, "Подготовлено" },
                     { new Guid("e1a4c395-f7a3-40af-82ab-ad545e51eca7"), true, 1, "КОтбору" },
                     { new Guid("e911589b-613c-42ad-ad56-7083c481c4b4"), false, 4, "Проверен" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { "049c2135-b769-4ea5-986a-a5231330fe46", "22919707-7d2c-450d-92e7-19f36935bcdb" },
+                    { "9423e7b8-b496-41e8-b9c9-416b74823db9", "22919707-7d2c-450d-92e7-19f36935bcdb" },
+                    { "d6bfb7c2-9a45-45e5-b27a-3b7cba85527f", "22919707-7d2c-450d-92e7-19f36935bcdb" },
+                    { "049c2135-b769-4ea5-986a-a5231330fe46", "d90e31c9-e19f-4ee7-9580-d856daba6d02" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -666,6 +723,11 @@ namespace Pie.Data.Migrations
                 name: "EmailIndex",
                 table: "AspNetUsers",
                 column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_WarehouseId",
+                table: "AspNetUsers",
+                column: "WarehouseId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -855,6 +917,9 @@ namespace Pie.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "DocsOutHistory");
+
+            migrationBuilder.DropTable(
+                name: "QueueNumber");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

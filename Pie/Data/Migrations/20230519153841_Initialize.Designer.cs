@@ -12,8 +12,8 @@ using Pie.Data;
 namespace Pie.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230516121515_AddLineNumber")]
-    partial class AddLineNumber
+    [Migration("20230519153841_Initialize")]
+    partial class Initialize
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,6 +49,26 @@ namespace Pie.Data.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "d6bfb7c2-9a45-45e5-b27a-3b7cba85527f",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "9423e7b8-b496-41e8-b9c9-416b74823db9",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "049c2135-b769-4ea5-986a-a5231330fe46",
+                            Name = "Service1c",
+                            NormalizedName = "SERVICE1C"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -138,6 +158,28 @@ namespace Pie.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "22919707-7d2c-450d-92e7-19f36935bcdb",
+                            RoleId = "9423e7b8-b496-41e8-b9c9-416b74823db9"
+                        },
+                        new
+                        {
+                            UserId = "22919707-7d2c-450d-92e7-19f36935bcdb",
+                            RoleId = "d6bfb7c2-9a45-45e5-b27a-3b7cba85527f"
+                        },
+                        new
+                        {
+                            UserId = "22919707-7d2c-450d-92e7-19f36935bcdb",
+                            RoleId = "049c2135-b769-4ea5-986a-a5231330fe46"
+                        },
+                        new
+                        {
+                            UserId = "d90e31c9-e19f-4ee7-9580-d856daba6d02",
+                            RoleId = "049c2135-b769-4ea5-986a-a5231330fe46"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -161,7 +203,54 @@ namespace Pie.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Pie.Data.Models.Application.ApplicationUser", b =>
+            modelBuilder.Entity("Pie.Data.Models.BaseDoc", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BaseDocs");
+                });
+
+            modelBuilder.Entity("Pie.Data.Models.ChangeReason", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("character varying(21)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChangeReasons");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("ChangeReason");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("Pie.Data.Models.Identity.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -236,53 +325,42 @@ namespace Pie.Data.Migrations
                     b.HasIndex("WarehouseId");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
 
-            modelBuilder.Entity("Pie.Data.Models.BaseDoc", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BaseDocs");
-                });
-
-            modelBuilder.Entity("Pie.Data.Models.ChangeReason", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("Active")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("character varying(21)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ChangeReasons");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("ChangeReason");
-
-                    b.UseTphMappingStrategy();
+                    b.HasData(
+                        new
+                        {
+                            Id = "22919707-7d2c-450d-92e7-19f36935bcdb",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "2b68aa3c-d884-475f-8a7a-f72d5666f9ae",
+                            Email = "igmo@dobroga.ru",
+                            EmailConfirmed = true,
+                            FirstName = "Админ",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "IGMO@DOBROGA.RU",
+                            NormalizedUserName = "IGMO@DOBROGA.RU",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDgydLmvi4/0kDXZB6+ShJFMNIK8Xzgaawytbvp8IMJquSZ/4hO8sPu9mlXC5uS9IQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "HCJOWYFSM63CJOZM5AZAGXSHEI257BCI",
+                            TwoFactorEnabled = false,
+                            UserName = "igmo@dobroga.ru"
+                        },
+                        new
+                        {
+                            Id = "d90e31c9-e19f-4ee7-9580-d856daba6d02",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "c9023eae-8542-460f-af6c-fb2361ae2be0",
+                            Email = "Service1c@www",
+                            EmailConfirmed = true,
+                            FirstName = "Service1c",
+                            LockoutEnabled = true,
+                            NormalizedEmail = "SERVICE1C@WWW",
+                            NormalizedUserName = "SERVICE1C@WWW",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAP/xtaltm7cuB/Bk/sRF/GDtCtQf9B1ghEEbr6eprNlsKYsaGt5ncmcR/utO76tWw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "6WMMOSBLWGF45HZLH5OJIQADMFB6YJGQ",
+                            TwoFactorEnabled = false,
+                            UserName = "Service1c@www"
+                        });
                 });
 
             modelBuilder.Entity("Pie.Data.Models.In.DocIn", b =>
@@ -434,6 +512,9 @@ namespace Pie.Data.Migrations
 
                     b.Property<Guid>("DocId")
                         .HasColumnType("uuid");
+
+                    b.Property<int>("LineNumber")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
@@ -657,6 +738,9 @@ namespace Pie.Data.Migrations
 
                     b.Property<Guid>("DocId")
                         .HasColumnType("uuid");
+
+                    b.Property<int>("LineNumber")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
@@ -920,7 +1004,7 @@ namespace Pie.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Pie.Data.Models.Application.ApplicationUser", null)
+                    b.HasOne("Pie.Data.Models.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -929,7 +1013,7 @@ namespace Pie.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Pie.Data.Models.Application.ApplicationUser", null)
+                    b.HasOne("Pie.Data.Models.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -944,7 +1028,7 @@ namespace Pie.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Pie.Data.Models.Application.ApplicationUser", null)
+                    b.HasOne("Pie.Data.Models.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -953,14 +1037,14 @@ namespace Pie.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Pie.Data.Models.Application.ApplicationUser", null)
+                    b.HasOne("Pie.Data.Models.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Pie.Data.Models.Application.ApplicationUser", b =>
+            modelBuilder.Entity("Pie.Data.Models.Identity.AppUser", b =>
                 {
                     b.HasOne("Pie.Data.Models.Warehouse", "Warehouse")
                         .WithMany()
@@ -1028,7 +1112,7 @@ namespace Pie.Data.Migrations
                         .HasPrincipalKey("Key")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("Pie.Data.Models.Application.ApplicationUser", "User")
+                    b.HasOne("Pie.Data.Models.Identity.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -1078,7 +1162,7 @@ namespace Pie.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Pie.Data.Models.Application.ApplicationUser", "User")
+                    b.HasOne("Pie.Data.Models.Identity.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -1151,7 +1235,7 @@ namespace Pie.Data.Migrations
                         .HasPrincipalKey("Key")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("Pie.Data.Models.Application.ApplicationUser", "User")
+                    b.HasOne("Pie.Data.Models.Identity.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -1201,7 +1285,7 @@ namespace Pie.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Pie.Data.Models.Application.ApplicationUser", "User")
+                    b.HasOne("Pie.Data.Models.Identity.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.SetNull);

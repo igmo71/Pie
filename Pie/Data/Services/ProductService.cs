@@ -30,6 +30,7 @@ namespace Pie.Data.Services
 
         public async Task<Product> CreateAsync(Product product)
         {
+            throw new ApplicationException("Test Exception");
             if (Exists(product.Id))
             {
                 await UpdateAsync(product);
