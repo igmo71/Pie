@@ -21,7 +21,7 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsIn
         [BindProperty]
         public ChangeReasonIn ChangeReasonIn { get; set; } = default!;
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+        
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

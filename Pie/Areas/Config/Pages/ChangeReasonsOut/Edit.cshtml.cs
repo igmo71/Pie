@@ -20,9 +20,7 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsOut
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var changeReason = await _changeReasonService.GetAsync(id);
 
@@ -39,9 +37,7 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsOut
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
             await _changeReasonService.UpdateAsync(ChangeReasonOut);
 
