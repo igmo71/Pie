@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Pie.Areas.Identity;
 using Pie.Connectors;
+using Pie.Connectors.Connector1c;
 using Pie.Data;
 using Pie.Data.Models.Identity;
 using Pie.Data.Services;
@@ -173,6 +174,7 @@ namespace Pie
             app.MapControllers();
             app.MapBlazorHub();
             app.MapFallbackToPage("/_Host");
+            app.MapHub<Hub1c>("/Hub1c");
 
             app.Run();
         }

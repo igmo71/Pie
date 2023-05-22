@@ -26,6 +26,7 @@ namespace Pie.Connectors
 
             services.Configure<Client1c>(nameof(Client1c), connectorsConfigSection.GetSection(nameof(Client1c)));
             services.AddScoped<Service1c>();
+            services.AddScoped<Hub1cService>();
 
             return services;
         }
