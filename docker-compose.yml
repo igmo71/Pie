@@ -5,8 +5,8 @@ services:
     image: ${DOCKER_REGISTRY-}pie
     container_name: pie_container
     ports:
-        - "4431:443"
-        - "801:80"
+        - "44301:443"
+        - "8001:80"
     build:
       context: .
       dockerfile: Pie/Dockerfile
@@ -41,7 +41,7 @@ services:
     container_name: seq_container
     ports:
       - '5341:5341'
-      - '81:80' 
+      - '8002:80' 
     restart: unless-stopped
     environment:
       - ACCEPT_EULA=Y
