@@ -40,7 +40,7 @@ namespace Pie.Connectors.Connector1c
             string? requestUri = $"{_client1cConfig.HttpService}/{nameof(DocOut)}";
             HttpResponseMessage response = await _client1c.PutAsync(requestUri, stringContent);
             string responseContent = await response.Content.ReadAsStringAsync();
-            // TODO: For Testing - Uncomment after
+            // TODO: For Testing - Uncomment for Release !!!
             //if (!response.IsSuccessStatusCode)
             //{
             //    _logger.LogError("Service1c SendOutAsync - {StatusCode} {ResponseContent}", response.StatusCode, responseContent);

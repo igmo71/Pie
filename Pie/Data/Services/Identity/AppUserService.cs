@@ -276,7 +276,7 @@ namespace Pie.Data.Services.Identity
 
         public async Task<AuthUserResult> Login(AuthUserDto authUserDto)
         {
-            AuthUserResult result = new() { Errors = new() };
+            AuthUserResult result = new();
 
             var user = await _userManager.FindByNameAsync(authUserDto.UserName);
             if (user == null)
