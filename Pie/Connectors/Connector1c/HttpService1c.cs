@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Pie.Data.Models.Out;
 using Pie.Data.Services;
+using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
@@ -9,19 +10,30 @@ namespace Pie.Connectors.Connector1c
 {
     public class HttpService1c
     {
-        private readonly HttpClient _client1c;
-        private readonly Client1c _client1cConfig;
-        private readonly ILogger<Service1c> _logger;
+        private readonly HttpClient _httpClient1c;
+        private readonly Client1cConfig _client1cConfig;
         private readonly JsonSerializerOptions _jsonOptions;
+        private readonly ILogger<Service1c> _logger;
 
-        public HttpService1c(IHttpClientFactory clientFactory, IOptionsSnapshot<Client1c> namedOptionsAccessor,
-            ILogger<Service1c> logger, IOptions<JsonSerializerOptions> jsonOptions)
+        public HttpService1c(
+            HttpClient httpClient, 
+            IOptions<Client1cConfig> client1cOptions,
+            IOptions<JsonSerializerOptions> jsonOptions,
+            ILogger<Service1c> logger)
         {
-            _client1c = clientFactory.CreateClient(nameof(Client1c));
-            _client1cConfig = namedOptionsAccessor.Get(nameof(Client1c));
-            _logger = logger;
+
+            _client1cConfig = client1cOptions.Value;
+
+            _httpClient1c = httpClient;
+            _httpClient1c.BaseAddress = new Uri(_client1cConfig.BaseAddress ?? "Client1c BaseAddress not found");
+            _httpClient1c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
+            _httpClient1c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                            "Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_client1cConfig.UserName}:{_client1cConfig.Password}")));
+
             _jsonOptions = jsonOptions.Value;
+            _logger = logger;
         }
+
         public async Task<ServiceResult> SendOutAsync(DocOutDto docDto)
         {
             ServiceResult result = new();
@@ -30,7 +42,7 @@ namespace Pie.Connectors.Connector1c
             string content = JsonSerializer.Serialize(docDto);
             StringContent stringContent = new(content, Encoding.UTF8, MediaTypeNames.Application.Json);
             string? requestUri = $"{_client1cConfig.HttpService}/{nameof(DocOut)}";
-            HttpResponseMessage response = await _client1c.PutAsync(requestUri, stringContent);
+            HttpResponseMessage response = await _httpClient1c.PutAsync(requestUri, stringContent);
             string responseContent = await response.Content.ReadAsStringAsync();
             // TODO: For Testing - Uncomment for Release !!!
             //if (!response.IsSuccessStatusCode)

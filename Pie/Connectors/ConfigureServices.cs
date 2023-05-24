@@ -12,22 +12,16 @@ namespace Pie.Connectors
         {
             IConfigurationSection connectorsConfigSection = configuration.GetSection(ConnectorsConfig.Section);
 
-            ConnectorsConfig connectorsConfig = connectorsConfigSection.Get<ConnectorsConfig>() ?? throw new ApplicationException("Connectors config not found");
+            //ConnectorsConfig connectorsConfig = connectorsConfigSection.Get<ConnectorsConfig>() ?? throw new ApplicationException("Connectors config not found");
 
-            Client1c client1C = connectorsConfig.Client1c ?? throw new ApplicationException("Client1c config not found");
+            //Client1cConfig client1cConfig = connectorsConfig.Client1cConfig ?? throw new ApplicationException("Client1c config not found");
 
-            services.AddHttpClient(nameof(Client1c), httpClient =>
-            {
-                httpClient.BaseAddress = new Uri(client1C.BaseAddress ?? throw new ApplicationException("Client1c BaseAddress not found"));
-                httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-                            "Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($"{client1C.UserName}:{client1C.Password}")));
-            });
+            services.Configure<Client1cConfig>(connectorsConfigSection.GetSection(nameof(Client1cConfig)));
 
-            services.Configure<Client1c>(nameof(Client1c), connectorsConfigSection.GetSection(nameof(Client1c)));
-            services.AddScoped<Service1c>();
-            services.AddScoped<HttpService1c>();
+            //services.AddScoped<HttpService1c>();
+            services.AddHttpClient<HttpService1c>();
             services.AddScoped<HubService1c>();
+            services.AddScoped<Service1c>();
 
             return services;
         }

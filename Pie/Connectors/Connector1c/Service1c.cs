@@ -1,10 +1,6 @@
-﻿using Humanizer;
-using Microsoft.Extensions.Options;
-using Pie.Data.Models.In;
+﻿using Pie.Data.Models.In;
 using Pie.Data.Models.Out;
 using Pie.Data.Services;
-using System.Net.Mime;
-using System.Text;
 using System.Text.Json;
 
 namespace Pie.Connectors.Connector1c
@@ -13,15 +9,19 @@ namespace Pie.Connectors.Connector1c
     {
         private readonly HttpService1c _httpService1c;
         private readonly HubService1c _hubService1c;
-        private readonly ILogger<Service1c> _logger;
         private readonly IConfiguration _configuration;
+        private readonly ILogger<Service1c> _logger;
 
-        public Service1c(HttpService1c httpService1c, HubService1c hubService1c, ILogger<Service1c> logger, IConfiguration configuration)
+        public Service1c(
+            HttpService1c httpService1c, 
+            HubService1c hubService1c, 
+            IConfiguration configuration, 
+            ILogger<Service1c> logger)
         {
             _httpService1c = httpService1c;
             _hubService1c = hubService1c;
-            _logger = logger;
             _configuration = configuration;
+            _logger = logger;
         }
 
         public async Task<ServiceResult> SendInAsync(DocIn doc)

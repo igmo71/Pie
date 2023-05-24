@@ -7,7 +7,7 @@ namespace Pie.Connectors
         public const string Section = "Connectors";
 
 
-        public Client1c? Client1c { get; set; }
+        public Client1cConfig? Client1cConfig { get; set; }
         public bool UseProxy { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Pie.Connectors.Connector1c
 {
-    public class Client1c
+    public class Client1cConfig
     {
         public string? BaseAddress { get; set; }
         public string? UserName { get; set; }
