@@ -11,15 +11,15 @@ namespace Pie.Connectors.Connector1c
 
         public string GetMessage(string message)
         {
-            Console.WriteLine($"Received: {message}");
             OnMessageReceived(message);
-            return $"Received: {message}";
+            return $"Hub Received: {message}";
         }
 
         private void OnMessageReceived(string content)
         {
             MessageReceived?.Invoke(this, content);
         }
+
         public override async Task OnConnectedAsync()
         {
             connectionId = Context.ConnectionId;

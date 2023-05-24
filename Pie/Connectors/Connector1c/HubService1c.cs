@@ -26,7 +26,7 @@ namespace Pie.Connectors.Connector1c
             ServiceResult result = await _hubContext.Clients.Client(Hub1c.ConnectionId)
                 .InvokeAsync<ServiceResult>("PostDocOutDto", docOutDto, CancellationToken.None);
 
-            _logger.LogInformation("SendDocOutAsync: {result}", result);
+            _logger.LogInformation("SendOutAsync: {result}", result);
             return result;
         }
 
