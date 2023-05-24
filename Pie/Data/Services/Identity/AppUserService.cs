@@ -37,17 +37,19 @@ namespace Pie.Data.Services.Identity
             _warehouseService = warehouseService;
         }
 
-        public string CurrentUserId
+        public string? CurrentUserId
         {
             get
             {
                 var userId = _contextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                return string.IsNullOrEmpty(userId) ? string.Empty : userId;
+                //return string.IsNullOrEmpty(userId) ? string.Empty : userId;
+                return userId;
             }
         }
 
         public async Task<AppUser?> GetCurrentUserAsync()
         {
+            if (CurrentUserId == null) return default;
             var user = await _userManager.FindByIdAsync(CurrentUserId);
             return user;
         }
@@ -90,7 +92,8 @@ namespace Pie.Data.Services.Identity
         public async Task<string?> GetUserIdByBarcodeOrCurrentAsync(string? barcode)
         {
             var result = await GetUserIdByBarcodeAsync(barcode);
-            return result ?? CurrentUserId;
+            return result ?? CurrentUserId 
+                ?? "d90e31c9-e19f-4ee7-9580-d856daba6d02"; // TODO: Remove for Release!!!
         }
 
         public async Task<AppUserDto?> GetUserDtoAsync(string id)

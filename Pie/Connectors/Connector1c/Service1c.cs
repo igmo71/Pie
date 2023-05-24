@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Humanizer;
+using Microsoft.Extensions.Options;
 using Pie.Data.Models.In;
 using Pie.Data.Models.Out;
 using Pie.Data.Services;
@@ -10,45 +11,42 @@ namespace Pie.Connectors.Connector1c
 {
     public class Service1c
     {
-        private readonly HttpClient _client1c;
-        private readonly Client1c _client1cConfig;
+        private readonly HttpService1c _httpService1c;
+        private readonly HubService1c _hubService1c;
         private readonly ILogger<Service1c> _logger;
-        private readonly JsonSerializerOptions _jsonOptions;
+        private readonly IConfiguration _configuration;
 
-        public Service1c(IHttpClientFactory clientFactory, IOptionsSnapshot<Client1c> namedOptionsAccessor, ILogger<Service1c> logger, IOptions<JsonSerializerOptions> jsonOptions)
+        public Service1c(HttpService1c httpService1c, HubService1c hubService1c, ILogger<Service1c> logger, IConfiguration configuration)
         {
-            _client1c = clientFactory.CreateClient(nameof(Client1c));
-            _client1cConfig = namedOptionsAccessor.Get(nameof(Client1c));
+            _httpService1c = httpService1c;
+            _hubService1c = hubService1c;
             _logger = logger;
-            _jsonOptions = jsonOptions.Value;
+            _configuration = configuration;
         }
 
-        public async Task<Service1cResult> SendInAsync(DocIn doc)
+        public async Task<ServiceResult> SendInAsync(DocIn doc)
         {
-            Service1cResult result = new();
+            ServiceResult result = new();
 
             return result;
         }
 
         public async Task<ServiceResult> SendOutAsync(DocOutDto docDto)
         {
-            Service1cResult result = new();
+            ServiceResult result = new();
             _logger.LogDebug("Service1c SendOutAsync {DocOutDto}", JsonSerializer.Serialize(docDto));
 
-            string content = JsonSerializer.Serialize(docDto);
-            StringContent stringContent = new(content, Encoding.UTF8, MediaTypeNames.Application.Json);
-            string? requestUri = $"{_client1cConfig.HttpService}/{nameof(DocOut)}";
-            HttpResponseMessage response = await _client1c.PutAsync(requestUri, stringContent);
-            string responseContent = await response.Content.ReadAsStringAsync();
-            // TODO: For Testing - Uncomment for Release !!!
-            //if (!response.IsSuccessStatusCode)
-            //{
-            //    _logger.LogError("Service1c SendOutAsync - {StatusCode} {ResponseContent}", response.StatusCode, responseContent);
-            //    result.Message = responseContent;
-            //    return result;
-            //}
+            var useProxy = _configuration.GetValue<bool>("Connectors:UseProxy");
 
-            result.IsSuccess = true;
+            if (useProxy)
+            {
+                result = await _hubService1c.SendOutAsync(docDto);
+            }
+            else
+            {
+                result = await _httpService1c.SendOutAsync(docDto);
+            }
+
             return result;
         }
     }
