@@ -51,7 +51,7 @@ namespace Pie.Areas.Identity.Pages.Users
 
             ServiceResult result = await _userService.UpdateAsync(UpdateUserDto);
 
-            if (!result.IsSuccess && result.Errors != null && result.Errors.Count != 0)
+            if (!result.IsSuccess)
             {
                 result.Errors?.ForEach(e => ModelState.AddModelError(string.Empty, e));
                 return Page();

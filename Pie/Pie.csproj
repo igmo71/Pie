@@ -10,6 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Models\Application\**" />
+    <Content Remove="Data\Models\Application\**" />
+    <EmbeddedResource Remove="Data\Models\Application\**" />
+    <None Remove="Data\Models\Application\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid" Version="8.0.0-preview.3.23177.8" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0-preview.3.23177.8" />
@@ -26,12 +33,12 @@
     <PackageReference Include="SkiaSharp" Version="2.88.3" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
     <PackageReference Include="ZXing.Net" Version="0.16.9" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Areas\History\Pages\DocsIn\" />
-    <Folder Include="Data\Models\Application\" />
   </ItemGroup>
 
   </Project>

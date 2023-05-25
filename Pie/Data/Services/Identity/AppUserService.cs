@@ -182,7 +182,7 @@ namespace Pie.Data.Services.Identity
             else
             {
                 result.Errors = identityResult.Errors.Select(e => e.Description).ToList();
-                _logger.LogInformation("User create error: {errors}", result.Errors);
+                _logger.LogError("User create error {userId} {@errors}", user.Id, result.Errors);
             }
 
             return result;
@@ -223,7 +223,7 @@ namespace Pie.Data.Services.Identity
             else
             {
                 result.Errors = identityResult.Errors.Select(e => e.Description).ToList();
-                _logger.LogInformation("User update error: {errors}", result.Errors);
+                _logger.LogError("User update error {userId} {@errors}", user.Id, result.Errors);
             }
 
             return result;
@@ -249,7 +249,7 @@ namespace Pie.Data.Services.Identity
             else
             {
                 result.Errors = identityResult.Errors.Select(e => e.Description).ToList();
-                _logger.LogInformation("User delete error: {errors}", result.Errors);
+                _logger.LogError("User delete error {userId} {@errors}", user.Id, result.Errors);
             }
 
             return result;

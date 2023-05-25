@@ -25,6 +25,7 @@ namespace Pie
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
             builder.Services.AddLogging(loggingBuilder =>
             {

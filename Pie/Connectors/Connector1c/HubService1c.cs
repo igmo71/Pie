@@ -18,15 +18,13 @@ namespace Pie.Connectors.Connector1c
 
         private void MessageReceivedHandle(object? sender, string message)
         {
-            _logger.LogInformation($"Received: {message}");
+            _logger.LogInformation($"HubService1c MessageReceivedHandle: {message}");
         }
 
         public async Task<ServiceResult> SendOutAsync(DocOutDto docOutDto)
         {
             ServiceResult result = await _hubContext.Clients.Client(Hub1c.ConnectionId)
                 .InvokeAsync<ServiceResult>("PostDocOutDto", docOutDto, CancellationToken.None);
-
-            _logger.LogInformation("SendOutAsync: {result}", result);
             return result;
         }
 

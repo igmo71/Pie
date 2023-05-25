@@ -4,9 +4,7 @@ using Pie.Common;
 using Pie.Connectors.Connector1c;
 using Pie.Data.Models;
 using Pie.Data.Models.Out;
-using Pie.Data.Services.Identity;
 using System.Text.Json;
-using ZXing;
 
 namespace Pie.Data.Services.Out
 {
@@ -17,7 +15,6 @@ namespace Pie.Data.Services.Out
         private readonly BaseDocService _baseDocService;
         private readonly QueueOutService _queueService;
         private readonly Service1c _service1c;
-        private readonly AppUserService _userService;
         private readonly DocOutHistoryService _docHistoryService;
         private readonly DocOutProductHistoryService _docProductHistoryService;
         private readonly ILogger<DocOutService> _logger;
@@ -25,17 +22,22 @@ namespace Pie.Data.Services.Out
 
         public static event EventHandler<Guid>? DocCreated;
 
-        public DocOutService(ApplicationDbContext context, IDbContextFactory<ApplicationDbContext> contextFactory,
-            BaseDocService baseDocService, QueueOutService queueService, Service1c service1c,
-            AppUserService userService, DocOutHistoryService docHistoryService, DocOutProductHistoryService docProductHistoryService,
-            ILogger<DocOutService> logger, IOptions<JsonSerializerOptions> jsonOptions)
+        public DocOutService(
+            ApplicationDbContext context,
+            IDbContextFactory<ApplicationDbContext> contextFactory,
+            BaseDocService baseDocService,
+            QueueOutService queueService,
+            Service1c service1c,
+            DocOutHistoryService docHistoryService,
+            DocOutProductHistoryService docProductHistoryService,
+            ILogger<DocOutService> logger,
+            IOptions<JsonSerializerOptions> jsonOptions)
         {
             _context = context;
             _contextFactory = contextFactory;
             _baseDocService = baseDocService;
             _queueService = queueService;
             _service1c = service1c;
-            _userService = userService;
             _docHistoryService = docHistoryService;
             _docProductHistoryService = docProductHistoryService;
             _logger = logger;
@@ -122,40 +124,36 @@ namespace Pie.Data.Services.Out
             }
 
             DocOut doc = DocOutDto.MapToDocOut(docDto);
-            ServiceResult<DocOut> result = await CreateAsync(doc);
 
-            if (result.IsSuccess) // TODO: Обновить статус !!! Возможно, перезапросить из базы, вызвать событие... 
-            {
-                await _docHistoryService.CreateAsync(doc);
-                await _docProductHistoryService.CreateAsync(doc);
-            }
+            doc = await CreateAsync(doc);
+
+            OnDocCreated(doc.Id);
+
+            await _docHistoryService.CreateAsync(doc);
+            await _docProductHistoryService.CreateAsync(doc);
 
             return docDto;
         }
 
-        public async Task<ServiceResult<DocOut>> CreateAsync(DocOut doc)
+        public async Task<DocOut> CreateAsync(DocOut doc)
         {
-            ServiceResult<DocOut> result = new();
-
             if (Exists(doc.Id))
                 await DeleteAsync(doc.Id);
 
             await SetShipDateTime(doc);
 
             _context.DocsOut.Add(doc);
+
             try
             {
                 await _context.SaveChangesAsync();
-                OnCreated(doc.Id);
             }
-            catch (Exception ex)
+            catch
             {
                 throw;
             }
 
-            result.IsSuccess = true;
-            result.Value = doc;
-            return result;
+            return doc;
         }
 
         public async Task UpdateAsync(DocOut doc)
@@ -183,7 +181,9 @@ namespace Pie.Data.Services.Out
         {
             var doc = await _context.DocsOut.FindAsync(id)
                 ?? throw new ApplicationException($"DocOutService DeleteDocAsync NotFount {id}");
+
             _context.DocsOut.Remove(doc);
+
             await _context.SaveChangesAsync();
         }
 
@@ -192,34 +192,36 @@ namespace Pie.Data.Services.Out
             return _context.DocsOut.Any(e => e.Id == id);
         }
 
-        protected virtual void OnCreated(Guid id)
+        protected virtual void OnDocCreated(Guid id)
         {
             DocCreated?.Invoke(this, id);
         }
 
         public async Task<ServiceResult> SendAsync(DocOut doc, string? barcode = null)
         {
+            DocOutDto docDto = DocOutDto.MapFromDocOut(doc);
             ServiceResult result = new();
 
             try
             {
-                DocOutDto dto = DocOutDto.MapFromDocOut(doc);
-                var service1cResult = await _service1c.SendOutAsync(dto);
-                result = service1cResult;
+                result = await _service1c.SendOutAsync(docDto);
+                if (!result.IsSuccess)
+                    return result;
+
+                //if (result.Value != null)
+                //    await CreateAsync(result.Value);
             }
             catch (Exception ex)
             {
-                result.Message = ex.Message;
-                _logger.LogError("DocOutService SendAsync {DocOut}", JsonSerializer.Serialize(doc, _jsonOptions));
+                _logger.LogError(ex, "DocOutService SendAsync Exception {@DocOutDto} {Message}", docDto, ex.Message);
+
+                result.IsSuccess = false;
+                result.Message = $"Исключение - {ex.Message}";
+                return result;
                 //throw;
             }
 
-            if (result.IsSuccess) // TODO: Обновить статус !!! Возможно, перезапросить из базы, вызвать событие... 
-            {
-                await _docHistoryService.CreateAsync(doc, barcode);
-                await _docProductHistoryService.CreateAsync(doc, barcode);
-            }
-
+            result.IsSuccess = true;
             return result;
         }
 

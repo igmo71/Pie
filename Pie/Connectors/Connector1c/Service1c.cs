@@ -1,7 +1,6 @@
 ﻿using Pie.Data.Models.In;
 using Pie.Data.Models.Out;
 using Pie.Data.Services;
-using System.Text.Json;
 
 namespace Pie.Connectors.Connector1c
 {
@@ -33,8 +32,7 @@ namespace Pie.Connectors.Connector1c
 
         public async Task<ServiceResult> SendOutAsync(DocOutDto docDto)
         {
-            ServiceResult result = new();
-            _logger.LogDebug("Service1c SendOutAsync {DocOutDto}", JsonSerializer.Serialize(docDto));
+            ServiceResult result;
 
             var useProxy = _configuration.GetValue<bool>("Connectors:UseProxy");
 

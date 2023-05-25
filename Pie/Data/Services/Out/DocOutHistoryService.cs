@@ -17,7 +17,7 @@ namespace Pie.Data.Services.Out
 
         public async Task CreateAsync(DocOut doc, string? barcode = null)
         {
-            DocOutHistory docHistory = new DocOutHistory()
+            DocOutHistory docHistory = new()
             {
                 DateTime = DateTime.Now,
                 UserId = await _userService.GetUserIdByBarcodeOrCurrentAsync(barcode),

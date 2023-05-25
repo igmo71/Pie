@@ -21,7 +21,7 @@ namespace Pie.Data.Services.Out
             {
                 if (product.ChangeReasonId != null)
                 {
-                    DocOutProductHistory docProductHistory = new DocOutProductHistory()
+                    DocOutProductHistory docProductHistory = new()
                     {
                         DateTime = DateTime.Now,
                         UserId = await _userService.GetUserIdByBarcodeOrCurrentAsync(barcode),
