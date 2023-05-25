@@ -15,13 +15,13 @@ namespace Pie.Connectors.Connector1c
         private readonly HttpClient _httpClient1c;
         private readonly Client1cConfig _client1cConfig;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
-        private readonly ILogger<Service1c> _logger;
+        private readonly ILogger<HttpService1c> _logger;
 
         public HttpService1c(
             HttpClient httpClient,
             IOptions<Client1cConfig> client1cOptions,
             IOptions<JsonSerializerOptions> jsonSerializerOptions,
-            ILogger<Service1c> logger)
+            ILogger<HttpService1c> logger)
         {
             //Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             _client1cConfig = client1cOptions.Value;

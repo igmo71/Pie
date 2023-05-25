@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pie", "Pie\Pie.csproj", "{9
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{FECD8582-730F-4CEF-B60F-DDB180DE60C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pie.Proxy", "Pie.Proxy\Pie.Proxy.csproj", "{58D30C7C-89DF-43CF-AA85-9D3E7753B0A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pie.Proxy", "Pie.Proxy\Pie.Proxy.csproj", "{58D30C7C-89DF-43CF-AA85-9D3E7753B0A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -8,9 +8,14 @@ namespace Pie.Proxy
 
             builder.Logging.AddEventLog();
 
-            builder.Services.AddWindowsService(options => options.ServiceName = "Pie.Proxy");
+            IConfigurationSection client1cConfig = builder.Configuration.GetSection(nameof(Client1cConfig));
+            builder.Services.Configure<Client1cConfig>(client1cConfig);
+
+            builder.Services.AddSingleton<HubClient>();
 
             builder.Services.AddHostedService<HealthChecker>();
+
+            builder.Services.AddWindowsService(options => options.ServiceName = "Pie.Proxy");
 
             IHost host = builder.Build();
             host.Run();
