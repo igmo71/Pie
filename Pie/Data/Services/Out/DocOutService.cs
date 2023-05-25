@@ -115,7 +115,7 @@ namespace Pie.Data.Services.Out
             return result;
         }
 
-        public async Task<DocOutDto> CreateAsync(DocOutDto docDto)
+        public async Task<DocOutDto> CreateAsync(DocOutDto docDto, string? barcode = null)
         {
             if (docDto.BaseDocs != null)
             {
@@ -129,8 +129,8 @@ namespace Pie.Data.Services.Out
 
             OnDocCreated(doc.Id);
 
-            await _docHistoryService.CreateAsync(doc);
-            await _docProductHistoryService.CreateAsync(doc);
+            await _docHistoryService.CreateAsync(doc, barcode);
+            await _docProductHistoryService.CreateAsync(doc, barcode);
 
             return docDto;
         }
@@ -143,15 +143,7 @@ namespace Pie.Data.Services.Out
             await SetShipDateTime(doc);
 
             _context.DocsOut.Add(doc);
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch
-            {
-                throw;
-            }
+            await _context.SaveChangesAsync();
 
             return doc;
         }
@@ -197,32 +189,14 @@ namespace Pie.Data.Services.Out
             DocCreated?.Invoke(this, id);
         }
 
-        public async Task<ServiceResult> SendAsync(DocOut doc, string? barcode = null)
+        public async Task SendTo1cAsync(DocOut doc, string? barcode = null)
         {
             DocOutDto docDto = DocOutDto.MapFromDocOut(doc);
-            ServiceResult result = new();
 
-            try
-            {
-                result = await _service1c.SendOutAsync(docDto);
-                if (!result.IsSuccess)
-                    return result;
+            DocOutDto? result = await _service1c.SendOutAsync(docDto);
 
-                //if (result.Value != null)
-                //    await CreateAsync(result.Value);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "DocOutService SendAsync Exception {@DocOutDto} {Message}", docDto, ex.Message);
-
-                result.IsSuccess = false;
-                result.Message = $"Исключение - {ex.Message}";
-                return result;
-                //throw;
-            }
-
-            result.IsSuccess = true;
-            return result;
+            if (result != null)
+                _ = await CreateAsync(result, barcode);
         }
 
         private async Task SetShipDateTime(DocOut doc)

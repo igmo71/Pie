@@ -15,6 +15,7 @@ namespace Pie.Pages.DocsOut
         [Inject] public required AppUserService AppUserService { get; set; }
         [Inject] public required NavigationManager NavigationManager { get; set; }
         [Inject] public IJSRuntime? JSRuntime { get; set; }
+        [Inject] public ILogger<Item>? Logger { get; set; }
 
         [Parameter] public string? Id { get; set; }
 
@@ -54,13 +55,17 @@ namespace Pie.Pages.DocsOut
 
             notification.Show("Запрос изменения статуса ...");
 
-            ServiceResult serviceResult = await DocService.SendAsync(docVm.Value, barcode);
-
-            if (!serviceResult.IsSuccess)
+            try
             {
-                await notification.SetMessageAndHideAsync($"Ошибка изменения статуса: {serviceResult.Message}", 2);
+                await DocService.SendTo1cAsync(docVm.Value, barcode);
+            }
+            catch (Exception ex)
+            {
+                Logger?.LogError(ex, "DocOut.Item SendDocAsync {Message}", ex.Message);
+                await notification.SetMessageAndHideAsync(ex.Message, 2);
                 return;
             }
+
             await notification.SetMessageAndHideAsync($"Запрос изменения статуса - OK", 2);
 
             NavigationManager.NavigateTo($"DocsOut/List");

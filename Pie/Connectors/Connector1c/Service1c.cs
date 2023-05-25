@@ -30,12 +30,11 @@ namespace Pie.Connectors.Connector1c
             return result;
         }
 
-        public async Task<ServiceResult> SendOutAsync(DocOutDto docDto)
+        public async Task<DocOutDto> SendOutAsync(DocOutDto docDto)
         {
-            ServiceResult result;
+            DocOutDto result;
 
             var useProxy = _configuration.GetValue<bool>("Connectors:UseProxy");
-
             if (useProxy)
             {
                 result = await _hubService1c.SendOutAsync(docDto);

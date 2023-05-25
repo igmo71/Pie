@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Azure;
+using Microsoft.Extensions.Options;
 using Pie.Data.Models.In;
 using Pie.Data.Models.Out;
 using Pie.Data.Services;
@@ -44,30 +45,36 @@ namespace Pie.Connectors.Connector1c
             return result;
         }
 
-        public async Task<ServiceResult> SendOutAsync(DocOutDto docDto)
+        public async Task<DocOutDto> SendOutAsync(DocOutDto docDto)
         {
-            ServiceResult result = new();
             _logger.LogDebug("HttpService1c SendOutAsync - Start {DocOutDto.Id} {DocOutDto.Name}", docDto.Id, docDto.Name);
-
+            
             string content = JsonSerializer.Serialize(docDto);
             StringContent stringContent = new(content, Encoding.UTF8, MediaTypeNames.Application.Json);
-            //string? requestUri = $"{_client1cConfig.HttpService}/{nameof(DocOut)}";
-            string? requestUri = $"{_client1cConfig.HttpService}/test";
-            HttpResponseMessage response = await _httpClient1c.PutAsync(requestUri, stringContent);
+            string? requestUri = $"{_client1cConfig.HttpService}/{nameof(DocOut)}";
+            HttpResponseMessage response = await _httpClient1c.PostAsync(requestUri, stringContent);
             string responseContent = await response.Content.ReadAsStringAsync();
-
             if (!response.IsSuccessStatusCode)
             {
-                _logger.LogError("HttpService1c SendOutAsync - {StatusCode} {@RequestMessage} {@DocOutDto} {@ResponseContent}", 
-                    response.StatusCode, response.RequestMessage, docDto, responseContent);
-                result.Message = $"Ответ 1С - {response.StatusCode}";
-                //return result; // TODO: For Testing - Uncomment for Release !!!
+                _logger.LogError("HttpService1c SendOutAsync - {ResponseStatusCode} {@RequestMessage} {@ResponseContent} {@DocOutDto}", response.StatusCode, response.RequestMessage, responseContent, docDto);
+                throw new ApplicationException($"Ошибка запроса к 1С ({response.StatusCode})");
             }
 
-            docDto = JsonSerializer.Deserialize<DocOutDto>(responseContent, _jsonSerializerOptions);
+            DocOutDto? result = JsonSerializer.Deserialize<DocOutDto?>(responseContent, _jsonSerializerOptions);
+            if (result == null)
+            {
+                _logger.LogError("HttpService1c SendOutAsync - 1C returned empty result {@DocOutDto}", docDto);
+                throw new ApplicationException($"1С вернула пустой результат");
+            }
+
             _logger.LogDebug("HttpService1c SendOutAsync - Ok {DocOutDto.Id} {DocOutDto.Name}", docDto.Id, docDto.Name);
-            result.IsSuccess = true;
             return result;
-        }        
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError(ex, "HttpService1c SendOutAsync - {Message} {@DocOutDto}", ex.Message, docDto);
+            //    throw;
+            //}
+        }
     }
 }
