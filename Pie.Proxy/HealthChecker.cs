@@ -1,10 +1,10 @@
 namespace Pie.Proxy
 {
-    public class Worker : BackgroundService
+    public class HealthChecker : BackgroundService
     {
-        private readonly ILogger<Worker> _logger;
+        private readonly ILogger<HealthChecker> _logger;
 
-        public Worker(ILogger<Worker> logger)
+        public HealthChecker(ILogger<HealthChecker> logger)
         {
             _logger = logger;
         }

@@ -4,13 +4,15 @@ namespace Pie.Proxy
     {
         public static void Main(string[] args)
         {
-            IHost host = Host.CreateDefaultBuilder(args)
-                .ConfigureServices(services =>
-                {
-                    services.AddHostedService<Worker>();
-                })
-                .Build();
+            var builder = Host.CreateApplicationBuilder(args);
 
+            builder.Logging.AddEventLog();
+
+            builder.Services.AddWindowsService(options => options.ServiceName = "Pie.Proxy");
+
+            builder.Services.AddHostedService<HealthChecker>();
+
+            IHost host = builder.Build();
             host.Run();
         }
     }
