@@ -118,7 +118,7 @@ namespace Pie.Data.Services.In
         {
             if (docDto.BaseDocs != null)
             {
-                List<BaseDoc>? baseDocs = BaseDocDto.MapToBaseDocList(docDto.BaseDocs);
+                List<BaseDoc>? baseDocs = BaseDocInDto.MapToBaseDocList(docDto.BaseDocs);
                 await _baseDocService.CreateRangeAsync(baseDocs);
             }
 

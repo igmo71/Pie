@@ -11,8 +11,8 @@
         public int? StatusKey { get; set; }
         public int? QueueKey { get; set; }
         public string? Comment { get; set; }
-        public List<ProductDto>? Products { get; set; }
-        public List<BaseDocDto>? BaseDocs { get; set; }
+        public List<ProductInDto>? Products { get; set; }
+        public List<BaseDocInDto>? BaseDocs { get; set; }
 
         public static DocIn MapToDocIn(DocInDto dto)
         {
@@ -79,10 +79,10 @@
 
             if (doc.Products != null && doc.Products.Count > 0)
             {
-                dto.Products = new List<ProductDto>();
+                dto.Products = new List<ProductInDto>();
                 foreach (var item in doc.Products)
                 {
-                    ProductDto product = new()
+                    ProductInDto product = new()
                     {
                         ProductId = item.ProductId,
                         LineNumber = item.LineNumber,
@@ -96,10 +96,10 @@
 
             if (doc.BaseDocs != null && doc.BaseDocs.Count > 0)
             {
-                dto.BaseDocs = new List<BaseDocDto>();
+                dto.BaseDocs = new List<BaseDocInDto>();
                 foreach (var item in doc.BaseDocs)
                 {
-                    BaseDocDto baseDoc = new()
+                    BaseDocInDto baseDoc = new()
                     {
                         BaseDocId = item.BaseDocId,
                         Name = item.BaseDoc?.Name
@@ -112,7 +112,7 @@
         }
     }
 
-    public class ProductDto
+    public class ProductInDto
     {
         public Guid ProductId { get; set; }
         public int LineNumber { get; set; }
@@ -121,12 +121,12 @@
         public float Weight { get; set; }
     }
 
-    public class BaseDocDto
+    public class BaseDocInDto
     {
         public Guid BaseDocId { get; set; }
         public string? Name { get; set; }
 
-        public static BaseDoc MapToBaseDoc(BaseDocDto dto)
+        public static BaseDoc MapToBaseDoc(BaseDocInDto dto)
         {
             BaseDoc baseDoc = new()
             {
@@ -138,7 +138,7 @@
             return baseDoc;
         }
 
-        public static List<BaseDoc> MapToBaseDocList(List<BaseDocDto> dtos)
+        public static List<BaseDoc> MapToBaseDocList(List<BaseDocInDto> dtos)
         {
             List<BaseDoc> list = new();
             foreach (var dto in dtos)

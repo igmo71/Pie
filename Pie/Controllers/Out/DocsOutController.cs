@@ -1,9 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Pie.Connectors.Connector1c;
+﻿using Microsoft.AspNetCore.Mvc;
 using Pie.Data.Models.Out;
-using Pie.Data.Services;
 using Pie.Data.Services.Out;
 
 namespace Pie.Controllers.Out
@@ -15,12 +11,9 @@ namespace Pie.Controllers.Out
     {
         private readonly DocOutService _docService;
 
-        private readonly EventDispatcher _eventDispatcher;
-
-        public DocsOutController(DocOutService docService, EventDispatcher eventDispatcher)
+        public DocsOutController(DocOutService docService)
         {
             _docService = docService;
-            _eventDispatcher = eventDispatcher;
         }
 
         // GET: api/DocsOut
@@ -59,7 +52,7 @@ namespace Pie.Controllers.Out
         // POST: api/DocsOut
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<DocOut>> PostDoc(DocOutDto docDto)
+        public async Task<ActionResult<DocOut>> Post(DocOutDto docDto)
         {
             var result = await _docService.CreateAsync(docDto);
 
