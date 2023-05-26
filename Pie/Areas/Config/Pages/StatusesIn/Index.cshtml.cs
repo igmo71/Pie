@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models.In;
+using Pie.Data.Services.In;
 
 namespace Pie.Areas.Config.Pages.StatusesIn
 {
     public class IndexModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly StatusInService _statusService;
 
-        public IndexModel(Pie.Data.ApplicationDbContext context)
+        public IndexModel(StatusInService statusService)
         {
-            _context = context;
+            _statusService = statusService;
         }
 
-        public IList<StatusIn> StatusIn { get; set; } = default!;
+        public IList<StatusIn> Statuses { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
-            StatusIn = await _context.StatusesIn.ToListAsync();
+            Statuses = await _statusService.GetListAsync();
         }
     }
 }

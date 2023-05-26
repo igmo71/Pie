@@ -7,11 +7,11 @@ namespace Pie.Areas.Config.Pages.QueuesOut
 {
     public class DetailsModel : PageModel
     {
-        private readonly QueueOutService _queueOutService;
+        private readonly QueueOutService _queueService;
 
         public DetailsModel(QueueOutService queueOutService)
         {
-            _queueOutService = queueOutService;
+            _queueService = queueOutService;
         }
 
         public QueueOut Queue { get; set; } = default!;
@@ -21,7 +21,7 @@ namespace Pie.Areas.Config.Pages.QueuesOut
             if (id == null)
                 return NotFound();
 
-            var queue = await _queueOutService.GetAsync((Guid)id);
+            var queue = await _queueService.GetAsync((Guid)id);
 
             if (queue == null)
                 return NotFound();

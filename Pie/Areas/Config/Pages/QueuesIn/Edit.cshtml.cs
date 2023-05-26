@@ -1,71 +1,45 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models.In;
+using Pie.Data.Services.In;
 
 namespace Pie.Areas.Config.Pages.QueuesIn
 {
     public class EditModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly QueueInService _queueService;
 
-        public EditModel(Pie.Data.ApplicationDbContext context)
+        public EditModel(QueueInService queueService)
         {
-            _context = context;
+            _queueService = queueService;
         }
 
         [BindProperty]
-        public QueueIn QueueIn { get; set; } = default!;
+        public QueueIn Queue { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var queuein = await _context.QueuesIn.FirstOrDefaultAsync(m => m.Id == id);
-            if (queuein == null)
-            {
+            var queue = await _queueService.GetAsync((Guid)id);
+
+            if (queue == null)
                 return NotFound();
-            }
-            QueueIn = queuein;
+            else
+                Queue = queue;
+
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
-            _context.Attach(QueueIn).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!QueueInExists(QueueIn.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _queueService.UpdateAsync(Queue);
 
             return RedirectToPage("./Index");
-        }
-
-        private bool QueueInExists(Guid id)
-        {
-            return _context.QueuesIn.Any(e => e.Id == id);
         }
     }
 }

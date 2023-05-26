@@ -1,37 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models.In;
+using Pie.Data.Services.In;
 
 namespace Pie.Areas.Config.Pages.QueuesIn
 {
     public class DetailsModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly QueueInService _queueService;
 
-        public DetailsModel(Pie.Data.ApplicationDbContext context)
+        public DetailsModel(QueueInService queueInService)
         {
-            _context = context;
+            _queueService = queueInService;
         }
 
-        public QueueIn QueueIn { get; set; } = default!;
+        public QueueIn Queue { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var queuein = await _context.QueuesIn.FirstOrDefaultAsync(m => m.Id == id);
-            if (queuein == null)
-            {
+            var queue = await _queueService.GetAsync((Guid)id);
+
+            if (queue == null)
                 return NotFound();
-            }
             else
-            {
-                QueueIn = queuein;
-            }
+                Queue = queue;
+
             return Page();
         }
     }

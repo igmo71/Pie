@@ -14,19 +14,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.StatusIn[0].Name)
+                @Html.DisplayNameFor(model => model.Statuses[0].Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StatusIn[0].Key)
+                @Html.DisplayNameFor(model => model.Statuses[0].Key)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.StatusIn[0].Active)
+                @Html.DisplayNameFor(model => model.Statuses[0].Active)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.StatusIn) {
+@foreach (var item in Model.Statuses) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)

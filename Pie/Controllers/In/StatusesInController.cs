@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Pie.Data.Models.In;
 using Pie.Data.Services.In;
 
@@ -20,7 +19,7 @@ namespace Pie.Controllers.In
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StatusIn>>> GetStatuses()
         {
-            var statuses = await _statusService.GetStatusesAsync();
+            var statuses = await _statusService.GetListAsync();
 
             return Ok(statuses);
         }
@@ -29,7 +28,7 @@ namespace Pie.Controllers.In
         [HttpGet("{id}")]
         public async Task<ActionResult<StatusIn>> GetStatus(Guid id)
         {
-            var status = await _statusService.GetStatusAsync(id);
+            var status = await _statusService.GetAsync(id);
 
             if (status == null)
                 return NotFound();
@@ -45,7 +44,7 @@ namespace Pie.Controllers.In
             if (id != status.Id)
                 return BadRequest();
 
-            await _statusService.UpdateAsync(id, status);
+            await _statusService.UpdateAsync(status);
 
             return NoContent();
         }
@@ -55,7 +54,7 @@ namespace Pie.Controllers.In
         [HttpPost]
         public async Task<ActionResult<StatusIn>> PostStatus(StatusIn status)
         {
-            var result = await _statusService.CreateStatusAsync(status);
+            var result = await _statusService.CreateAsync(status);
 
             return CreatedAtAction("GetStatus", new { id = result.Id }, result);
         }
@@ -64,7 +63,7 @@ namespace Pie.Controllers.In
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStatus(Guid id)
         {
-            await _statusService.DeleteStatusAsync(id);
+            await _statusService.DeleteAsync(id);
 
             return NoContent();
         }

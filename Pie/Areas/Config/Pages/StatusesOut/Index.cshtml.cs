@@ -6,18 +6,18 @@ namespace Pie.Areas.Config.Pages.StatusesOut
 {
     public class IndexModel : PageModel
     {
-        private readonly StatusOutService _statusOutService;
+        private readonly StatusOutService _statusService;
 
-        public IndexModel(StatusOutService statusOutService)
+        public IndexModel(StatusOutService statusService)
         {
-            _statusOutService = statusOutService;
+            _statusService = statusService;
         }
 
         public IList<StatusOut> Statuses { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
-            Statuses = await _statusOutService.GetListAsync();
+            Statuses = await _statusService.GetListAsync();
         }
     }
 }

@@ -22,12 +22,12 @@ namespace Pie.Pages.DocsIn
 
         private async Task GetQueuesAsync()
         {
-            queues = await QueueService.GetQueuesAsync();
+            queues = await QueueService.GetListAsync();
         }
 
         private async Task GetDocsAsync()
         {
-            docs = await DocService.GetDictionaryByQueue();
+            docs = await DocService.GetDictionaryByQueueAsync();
         }
 
         public void Dispose()

@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Pie.Data.Models.Out;
 using Pie.Data.Services.Out;
@@ -16,11 +15,9 @@ namespace Pie.Areas.Config.Pages.QueuesOut
 
         public IList<QueueOut> Queues { get; set; } = default!;
 
-        public async Task<IActionResult> OnGet()
+        public async Task OnGetAsync()
         {
             Queues = await _queueService.GetListAsync();
-
-            return Page();
         }
     }
 }

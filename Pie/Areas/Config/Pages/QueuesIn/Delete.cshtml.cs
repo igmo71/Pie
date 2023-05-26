@@ -1,56 +1,46 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models.In;
+using Pie.Data.Services.In;
 
 namespace Pie.Areas.Config.Pages.QueuesIn
 {
     public class DeleteModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly QueueInService _queueService;
 
-        public DeleteModel(Pie.Data.ApplicationDbContext context)
+        public DeleteModel(QueueInService queueService)
         {
-            _context = context;
+            _queueService = queueService;
         }
 
         [BindProperty]
-        public QueueIn QueueIn { get; set; } = default!;
+        public QueueIn Queue { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var queuein = await _context.QueuesIn.FirstOrDefaultAsync(m => m.Id == id);
+            var queue = await _queueService.GetAsync((Guid)id);
 
-            if (queuein == null)
-            {
+            if (queue == null)
                 return NotFound();
-            }
             else
-            {
-                QueueIn = queuein;
-            }
+                Queue = queue;
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var queuein = await _context.QueuesIn.FindAsync(id);
-            if (queuein != null)
-            {
-                QueueIn = queuein;
-                _context.QueuesIn.Remove(QueueIn);
-                await _context.SaveChangesAsync();
-            }
+            if (!_queueService.Exists((Guid)id))
+                return NotFound();
+            else
+                await _queueService.DeleteAsync((Guid)id);
 
             return RedirectToPage("./Index");
         }

@@ -2,36 +2,36 @@
 @model Pie.Areas.Config.Pages.QueuesIn.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Детали";
 }
 
-<h1>Details</h1>
+<h1>Детали</h1>
 
 <div>
-    <h4>QueueIn</h4>
+    <h4>Очередь</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.QueueIn.Name)
+            @Html.DisplayNameFor(model => model.Queue.Name)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.QueueIn.Name)
+            @Html.DisplayFor(model => model.Queue.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.QueueIn.Key)
+            @Html.DisplayNameFor(model => model.Queue.Key)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.QueueIn.Key)
+            @Html.DisplayFor(model => model.Queue.Key)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.QueueIn.Active)
+            @Html.DisplayNameFor(model => model.Queue.Active)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.QueueIn.Active)
+            @Html.DisplayFor(model => model.Queue.Active)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.QueueIn.Id">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Edit" asp-route-id="@Model.Queue.Id">Изменить</a> |
+    <a asp-page="./Index">Назад к списку</a>
 </div>

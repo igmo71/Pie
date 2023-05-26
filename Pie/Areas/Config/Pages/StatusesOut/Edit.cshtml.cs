@@ -7,11 +7,11 @@ namespace Pie.Areas.Config.Pages.StatusesOut
 {
     public class EditModel : PageModel
     {
-        private readonly StatusOutService _statusOutService;
+        private readonly StatusOutService _statusService;
 
-        public EditModel(StatusOutService statusOutService)
+        public EditModel(StatusOutService statusService)
         {
-            _statusOutService = statusOutService;
+            _statusService = statusService;
         }
 
         [BindProperty]
@@ -24,7 +24,7 @@ namespace Pie.Areas.Config.Pages.StatusesOut
                 return NotFound();
             }
 
-            var status = await _statusOutService.GetAsync((Guid)id);
+            var status = await _statusService.GetAsync((Guid)id);
             if (status == null)
             {
                 return NotFound();
@@ -40,7 +40,7 @@ namespace Pie.Areas.Config.Pages.StatusesOut
             if (!ModelState.IsValid)
                 return Page();
 
-            await _statusOutService.UpdateAsync(Status);
+            await _statusService.UpdateAsync(Status);
 
             return RedirectToPage("./Index");
         }

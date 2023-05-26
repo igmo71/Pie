@@ -1,56 +1,43 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models.In;
+using Pie.Data.Services.In;
 
 namespace Pie.Areas.Config.Pages.ChangeReasonsIn
 {
     public class DeleteModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly ChangeReasonInService _changeReasonService;
 
-        public DeleteModel(Pie.Data.ApplicationDbContext context)
+        public DeleteModel(ChangeReasonInService changeReasonService)
         {
-            _context = context;
+            _changeReasonService = changeReasonService;
         }
 
         [BindProperty]
-        public ChangeReasonIn ChangeReasonIn { get; set; } = default!;
+        public ChangeReasonIn ChangeReason { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var changeReasonin = await _context.ChangeReasonsIn.FirstOrDefaultAsync(m => m.Id == id);
+            var changeReason = await _changeReasonService.GetAsync(id);
 
-            if (changeReasonin == null)
-            {
+            if (changeReason == null)
                 return NotFound();
-            }
             else
-            {
-                ChangeReasonIn = changeReasonin;
-            }
+                ChangeReason = changeReason;
+
             return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(Guid? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var changeReason = await _context.ChangeReasonsIn.FirstOrDefaultAsync(e => e.Id == id);
-            if (changeReason != null)
-            {
-                ChangeReasonIn = changeReason;
-                _context.ChangeReasonsIn.Remove(ChangeReasonIn);
-                await _context.SaveChangesAsync();
-            }
+            await _changeReasonService.DeleteAsync(id);
 
             return RedirectToPage("./Index");
         }

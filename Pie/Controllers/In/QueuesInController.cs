@@ -19,7 +19,7 @@ namespace Pie.Controllers.In
         [HttpGet]
         public async Task<ActionResult<IEnumerable<QueueIn>>> GetQueues()
         {
-            var queues = await _queueService.GetQueuesAsync();
+            var queues = await _queueService.GetListAsync();
             return Ok(queues);
         }
 
@@ -27,7 +27,7 @@ namespace Pie.Controllers.In
         [HttpGet("{id}")]
         public async Task<ActionResult<QueueIn>> GetQueue(Guid id)
         {
-            var queue = await _queueService.GetQueueAsync(id);
+            var queue = await _queueService.GetAsync(id);
 
             if (queue == null)
                 return NotFound();
@@ -43,7 +43,7 @@ namespace Pie.Controllers.In
             if (id != queue.Id)
                 return BadRequest();
 
-            await _queueService.UpdateAsync(id, queue);
+            await _queueService.UpdateAsync(queue);
 
             return NoContent();
         }
@@ -53,7 +53,7 @@ namespace Pie.Controllers.In
         [HttpPost]
         public async Task<ActionResult<QueueIn>> PostQueue(QueueIn queue)
         {
-            var result = await _queueService.CreateQueueAsync(queue);
+            var result = await _queueService.CreateAsync(queue);
 
             return CreatedAtAction("GetQueue", new { id = result.Id }, result);
         }
@@ -62,7 +62,7 @@ namespace Pie.Controllers.In
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteQueue(Guid id)
         {
-            await _queueService.DeleteQueueAsync(id);
+            await _queueService.DeleteAsync(id);
 
             return NoContent();
         }

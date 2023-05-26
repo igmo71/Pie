@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Pie.Data.Models.In;
+using Pie.Data.Services.In;
 
 namespace Pie.Areas.Config.Pages.ChangeReasonsIn
 {
     public class CreateModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly ChangeReasonInService _changeReasonService;
 
-        public CreateModel(Pie.Data.ApplicationDbContext context)
+        public CreateModel(ChangeReasonInService changeReasonService)
         {
-            _context = context;
+            _changeReasonService = changeReasonService;
         }
 
         public IActionResult OnGet()
@@ -19,18 +20,15 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsIn
         }
 
         [BindProperty]
-        public ChangeReasonIn ChangeReasonIn { get; set; } = default!;
+        public ChangeReasonIn ChangeReason { get; set; } = default!;
 
         
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
-            _context.ChangeReasonsIn.Add(ChangeReasonIn);
-            await _context.SaveChangesAsync();
+            await _changeReasonService.CreateAsync(ChangeReason);
 
             return RedirectToPage("./Index");
         }

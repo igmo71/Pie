@@ -43,7 +43,7 @@ namespace Pie.Controllers.In
             if (id != doc.Id)
                 return BadRequest();
 
-            await _docService.UpdateDocAsync(id, doc);
+            await _docService.UpdateAsync(doc);
 
             return NoContent();
         }
@@ -51,18 +51,18 @@ namespace Pie.Controllers.In
         // POST: api/DocsIn
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<DocIn>> PostDoc(DocIn doc)
+        public async Task<ActionResult<DocIn>> PostDoc(DocInDto docDto)
         {
-            var result = await _docService.CreateDocAsync(doc);
+            var result = await _docService.CreateAsync(docDto);
 
             return CreatedAtAction("GetDoc", new { id = result.Id }, result);
         }
 
         // DELETE: api/DocsIn/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDocIn(Guid id)
+        public async Task<IActionResult> DeleteDoc(Guid id)
         {
-            await _docService.DeleteDocAsync(id);
+            await _docService.DeleteAsync(id);
 
             return NoContent();
         }

@@ -1,36 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Pie.Data.Models.In;
+using Pie.Data.Services.In;
 
 namespace Pie.Areas.Config.Pages.StatusesIn
 {
     public class CreateModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly StatusInService _statusService;
 
-        public CreateModel(Pie.Data.ApplicationDbContext context)
+        public CreateModel(StatusInService statusService)
         {
-            _context = context;
+            _statusService = statusService;
         }
+
+        [BindProperty]
+        public StatusIn Status { get; set; } = default!;
 
         public IActionResult OnGet()
         {
             return Page();
         }
-
-        [BindProperty]
-        public StatusIn StatusIn { get; set; } = default!;
-
         
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
-            _context.StatusesIn.Add(StatusIn);
-            await _context.SaveChangesAsync();
+            await _statusService.CreateAsync(Status);
 
             return RedirectToPage("./Index");
         }

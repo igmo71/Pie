@@ -1,36 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Pie.Data.Models.In;
+using Pie.Data.Services.In;
 
 namespace Pie.Areas.Config.Pages.QueuesIn
 {
     public class CreateModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly QueueInService _queueService;
 
-        public CreateModel(Pie.Data.ApplicationDbContext context)
+        public CreateModel(QueueInService queueService)
         {
-            _context = context;
+            _queueService = queueService;
         }
+
+        [BindProperty]
+        public QueueIn Queue { get; set; } = default!;
 
         public IActionResult OnGet()
         {
             return Page();
         }
-
-        [BindProperty]
-        public QueueIn QueueIn { get; set; } = default!;
-
         
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
-            _context.QueuesIn.Add(QueueIn);
-            await _context.SaveChangesAsync();
+            _ = await _queueService.CreateAsync(Queue);
 
             return RedirectToPage("./Index");
         }

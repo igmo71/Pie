@@ -1,21 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models.In;
+using Pie.Data.Services.In;
 
 namespace Pie.Areas.Config.Pages.StatusesIn
 {
     public class EditModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly StatusInService _statusService;
 
-        public EditModel(Pie.Data.ApplicationDbContext context)
+        public EditModel(StatusInService statusService)
         {
-            _context = context;
+            _statusService = statusService;
         }
 
         [BindProperty]
-        public StatusIn StatusIn { get; set; } = default!;
+        public StatusIn Status { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -24,12 +24,12 @@ namespace Pie.Areas.Config.Pages.StatusesIn
                 return NotFound();
             }
 
-            var statusin = await _context.StatusesIn.FirstOrDefaultAsync(m => m.Id == id);
-            if (statusin == null)
+            var status = await _statusService.GetAsync((Guid)id);
+            if (status == null)
             {
                 return NotFound();
             }
-            StatusIn = statusin;
+            Status = status;
             return Page();
         }
 
@@ -38,34 +38,11 @@ namespace Pie.Areas.Config.Pages.StatusesIn
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
-            _context.Attach(StatusIn).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StatusInExists(StatusIn.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _statusService.UpdateAsync(Status);
 
             return RedirectToPage("./Index");
-        }
-
-        private bool StatusInExists(Guid id)
-        {
-            return _context.StatusesIn.Any(e => e.Id == id);
         }
     }
 }

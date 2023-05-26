@@ -1,35 +1,34 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models.In;
+using Pie.Data.Services.In;
 
 namespace Pie.Areas.Config.Pages.ChangeReasonsIn
 {
     public class EditModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly ChangeReasonInService _changeReasonService;
 
-        public EditModel(Pie.Data.ApplicationDbContext context)
+        public EditModel(ChangeReasonInService changeReasonService)
         {
-            _context = context;
+            _changeReasonService = changeReasonService;
         }
 
         [BindProperty]
-        public ChangeReasonIn ChangeReasonIn { get; set; } = default!;
+        public ChangeReasonIn ChangeReason { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var changeReason = await _context.ChangeReasonsIn.FirstOrDefaultAsync(m => m.Id == id);
+            var changeReason = await _changeReasonService.GetAsync(id);
+
             if (changeReason == null)
-            {
                 return NotFound();
-            }
-            ChangeReasonIn = changeReason;
+
+            ChangeReason = changeReason;
+
             return Page();
         }
 
@@ -38,34 +37,11 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsIn
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-            {
                 return Page();
-            }
 
-            _context.Attach(ChangeReasonIn).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ChangeReasonInExists(ChangeReasonIn.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _changeReasonService.UpdateAsync(ChangeReason);
 
             return RedirectToPage("./Index");
-        }
-
-        private bool ChangeReasonInExists(Guid id)
-        {
-            return _context.ChangeReasonsIn.Any(e => e.Id == id);
         }
     }
 }

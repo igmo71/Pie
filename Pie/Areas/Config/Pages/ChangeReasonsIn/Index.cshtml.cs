@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models.In;
+using Pie.Data.Services.In;
 
 namespace Pie.Areas.Config.Pages.ChangeReasonsIn
 {
     public class IndexModel : PageModel
     {
-        private readonly Pie.Data.ApplicationDbContext _context;
+        private readonly ChangeReasonInService _changeReasonService;
 
-        public IndexModel(Pie.Data.ApplicationDbContext context)
+        public IndexModel(ChangeReasonInService changeReasonService)
         {
-            _context = context;
+            _changeReasonService = changeReasonService;
         }
 
-        public IList<ChangeReasonIn> ChangeReasonIn { get; set; } = default!;
+        public IList<ChangeReasonIn> ChangeReasons { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
-            ChangeReasonIn = await _context.ChangeReasonsIn.ToListAsync();
+            ChangeReasons = await _changeReasonService.GetListAsync();
         }
     }
 }
