@@ -2,6 +2,7 @@
 using Pie.Data.Models.In;
 using Pie.Data.Models.Out;
 using Pie.Data.Services;
+using System.Net.Http;
 using System.Text.Json;
 
 namespace Pie.Connectors.Connector1c
@@ -14,26 +15,32 @@ namespace Pie.Connectors.Connector1c
         private readonly ILogger<Service1c> _logger;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
 
+        private readonly IHttpClientFactory _httpClientFactory;
+
         public Service1c(
             HttpService1c httpService1c, 
             HubService1c hubService1c, 
             IConfiguration configuration, 
             ILogger<Service1c> logger,
-            IOptions<JsonSerializerOptions> jsonSerializerOptions)
+            IOptions<JsonSerializerOptions> jsonSerializerOptions
+            ,
+            IHttpClientFactory httpClientFactory)
         {
             _httpService1c = httpService1c;
             _hubService1c = hubService1c;
             _configuration = configuration;
             _logger = logger;
             _jsonSerializerOptions = jsonSerializerOptions.Value;
+
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task<DocOutDto> SendOutAsync(DocOutDto docDto)
         {
             _logger.LogDebug("Service1c SendOutAsync - Start {DocOutDto.Id} {DocOutDto.Name}", docDto.Id, docDto.Name);
-            
-            throw new ApplicationException("Тестовое исключение");
-            
+
+            var httpClient = _httpClientFactory.CreateClient();
+
             string request = JsonSerializer.Serialize(docDto);
             string response;
 
