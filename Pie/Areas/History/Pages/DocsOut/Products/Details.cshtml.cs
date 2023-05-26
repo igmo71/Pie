@@ -25,7 +25,6 @@ namespace Pie.Areas.History.Pages.DocsOut.Products
 
             var docProductHistory = await _context.DocOutProductsHistory.AsNoTracking()
                 .Include(e => e.Product)
-                .Include(e => e.Doc)
                 .Include(e => e.ChangeReason)
                 .Include(e => e.User)
                 .FirstOrDefaultAsync(m => m.Id == id);

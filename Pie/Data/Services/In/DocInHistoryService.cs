@@ -23,6 +23,7 @@ namespace Pie.Data.Services.In
                 DateTime = DateTime.Now,
                 UserId = await _userService.GetUserIdByBarcodeOrCurrentAsync(barcode),
                 DocId = doc.Id,
+                DocName = doc.Name,
                 StatusKey = doc.StatusKey
             };
 
@@ -33,19 +34,18 @@ namespace Pie.Data.Services.In
         public async Task<List<DocInHistory>> GetListAsync(string? searchString, Guid? docId)
         {
             IQueryable<DocInHistory> query = _context.DocsInHistory.AsNoTracking()
-                    .Include(d => d.Doc)
                     .Include(d => d.Status)
                     .Include(d => d.User)
-                    .Where(d => d.Doc != null);
+                    .Where(d => d.DocId != null);
 
             if (!string.IsNullOrEmpty(searchString))
-                query = query.Where(d => d.Doc!.Name != null && d.Doc.Name.ToUpper().Contains(searchString.ToUpper()));
+                query = query.Where(d => d.DocName != null && d.DocName.ToUpper().Contains(searchString.ToUpper()));
 
             if (docId != null)
                 query = query.Where(d => d.DocId == docId);
 
             List<DocInHistory> result = await query
-                .OrderBy(d => d.Doc!.Name).ThenBy(d => d.DateTime)
+                .OrderBy(d => d.DocName).ThenBy(d => d.DateTime)
                 .Take(50)
                 .ToListAsync();
 

@@ -27,7 +27,6 @@ namespace Pie.Areas.History.Pages.DocsOut
             DocId = docId;
 
             var docHistory = await _context.DocsOutHistory.AsNoTracking()
-                .Include(d => d.Doc)
                 .Include(d => d.Status)
                 .Include(d => d.User)
                 .FirstOrDefaultAsync(m => m.DocId == docId);

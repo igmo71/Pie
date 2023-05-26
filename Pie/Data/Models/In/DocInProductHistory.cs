@@ -17,10 +17,10 @@ namespace Pie.Data.Models.In
             ChangeReasonId = product.ChangeReasonId;
         }
 
-        public Guid DocId { get; set; }
+        public Guid? DocId { get; set; }
 
         [Display(Name = "Документ")]
-        public DocIn? Doc { get; set; }
+        public string? DocName { get; set; }
 
         public Guid? ChangeReasonId { get; set; }
 

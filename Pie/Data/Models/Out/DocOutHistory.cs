@@ -13,10 +13,10 @@ namespace Pie.Data.Models.Out
             StatusKey = doc.StatusKey;
         }
 
-        public Guid DocId { get; set; }
+        public Guid? DocId { get; set; }
 
         [Display(Name = "Документ")]
-        public DocOut? Doc { get; set; }
+        public string? DocName { get; set; }
 
         public int? StatusKey { get; set; }
 

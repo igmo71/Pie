@@ -26,6 +26,7 @@ namespace Pie.Data.Services.Out
                         DateTime = DateTime.Now,
                         UserId = await _userService.GetUserIdByBarcodeOrCurrentAsync(barcode),
                         DocId = doc.Id,
+                        DocName = doc.Name,
                         ProductId = product.ProductId,
                         LineNumber = product.LineNumber,
                         CountPlan = product.CountPlan,
@@ -42,20 +43,19 @@ namespace Pie.Data.Services.Out
         {
             IQueryable<DocOutProductHistory> queryProduct = _context.DocOutProductsHistory.AsNoTracking()
                 .Include(d => d.ChangeReason)
-                .Include(d => d.Doc)
                 .Include(d => d.Product)
                 .Include(d => d.User)
-                .Where(d => d.Doc != null);
+                .Where(d => d.DocId != null);
 
             if (!string.IsNullOrEmpty(searchString))
                 queryProduct = queryProduct
-                    .Where(d => d.Doc!.Name != null && d.Doc.Name.ToUpper().Contains(searchString.ToUpper()));
+                    .Where(d => d.DocName != null && d.DocName.ToUpper().Contains(searchString.ToUpper()));
 
             if (docId != null)
                 queryProduct = queryProduct.Where(d => d.DocId == docId);
 
             List<DocOutProductHistory> result = await queryProduct
-                .OrderBy(d => d.Doc!.Name).ThenBy(d => d.LineNumber).ThenBy(d => d.DateTime)
+                .OrderBy(d => d.DocName).ThenBy(d => d.LineNumber).ThenBy(d => d.DateTime)
                 .Take(50)
                 .ToListAsync();
 

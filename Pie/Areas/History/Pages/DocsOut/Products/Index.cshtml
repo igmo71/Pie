@@ -30,7 +30,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DocOutProductHistory[0].Doc)
+                @Html.DisplayNameFor(model => model.DocOutProductHistory[0].DocName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DocOutProductHistory[0].DateTime)
@@ -61,7 +61,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Doc.Name)
+                    @Html.DisplayFor(modelItem => item.DocName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DateTime)

@@ -30,7 +30,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DocOutHistory[0].Doc)
+                @Html.DisplayNameFor(model => model.DocOutHistory[0].DocName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DocOutHistory[0].DateTime)
@@ -49,8 +49,8 @@
         {
             <tr>
                 <td>                    
-                    <a asp-page="./Index" asp-route-docId="@item.Doc.Id" title="Выбрать">
-                        @Html.DisplayFor(modelItem => item.Doc.Name)
+                    <a asp-page="./Index" asp-route-docId="@item.DocId" title="Выбрать">
+                        @Html.DisplayFor(modelItem => item.DocName)
                     </a>
                 </td>
                 <td>
@@ -80,7 +80,7 @@
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.DocOutProductHistory[0].Doc)
+                    @Html.DisplayNameFor(model => model.DocOutProductHistory[0].DocName)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.DocOutProductHistory[0].DateTime)
@@ -111,7 +111,7 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Doc.Name)
+                        @Html.DisplayFor(modelItem => item.DocName)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.DateTime)
