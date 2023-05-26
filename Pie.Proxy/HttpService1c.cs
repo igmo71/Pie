@@ -12,6 +12,7 @@ namespace Pie.Proxy
         private readonly Client1cConfig _client1cConfig;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
         private readonly ILogger<HttpService1c> _logger;
+
         public HttpService1c(
             HttpClient httpClient,
             IOptions<Client1cConfig> client1cOptions,
