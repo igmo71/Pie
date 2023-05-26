@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.SignalR;
-using Pie.Data.Models.Out;
 
 namespace Pie.Connectors.Connector1c
 {
@@ -20,10 +19,10 @@ namespace Pie.Connectors.Connector1c
             _logger.LogInformation($"HubService1c MessageReceivedHandle: {message}");
         }
 
-        public async Task<DocOutDto> SendOutAsync(DocOutDto docOutDto)
+        public async Task<string> SendOutAsync(string request)
         {
-            DocOutDto result = await _hubContext.Clients.Client(Hub1c.ConnectionId)
-                .InvokeAsync<DocOutDto>(method: "PostDocOutDto", arg1: docOutDto, CancellationToken.None);
+            string result = await _hubContext.Clients.Client(Hub1c.ConnectionId)
+                .InvokeAsync<string>(method: "PostDocOutDto", arg1: request, CancellationToken.None);
             return result;
         }
 

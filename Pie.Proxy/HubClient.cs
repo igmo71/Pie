@@ -9,12 +9,10 @@ namespace Pie.Proxy
     public class HubClient
     {
         private readonly HubConnection _hubConnection;
-        private readonly Client1cConfig _client1cConfig;
-        private readonly HttpClient _httpClient1c;
+        private readonly HttpService1c _httpService1c;
         private readonly ILogger<HubClient> _logger;
 
-
-        public HubClient(IConfiguration configuration, IOptions<Client1cConfig> client1cOptions, HttpClient httpClient, ILogger<HubClient> logger)
+        public HubClient(IConfiguration configuration, HttpService1c httpService1c, ILogger<HubClient> logger)
         {
             _logger = logger;
 
@@ -26,16 +24,22 @@ namespace Pie.Proxy
 
             StartConnection().GetAwaiter().GetResult();
 
-            _client1cConfig = client1cOptions.Value;
+            _hubConnection.Closed += async (ex) =>
+            {
+                _logger.LogError(ex, "Disconnected");
+                await StartConnection();
+            };
 
-            _httpClient1c = httpClient;
-            _httpClient1c.BaseAddress = new Uri(_client1cConfig.BaseAddress ?? "Client1c BaseAddress not found");
-            _httpClient1c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-            //_httpClient1c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
-            //_httpClient1c.DefaultRequestHeaders.AcceptCharset.Add(new StringWithQualityHeaderValue("utf-8"));
-            //_httpClient1c.DefaultRequestHeaders.AcceptCharset.Add(new StringWithQualityHeaderValue("windows-1251"));
-            _httpClient1c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-                            "Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_client1cConfig.UserName}:{_client1cConfig.Password}")));
+            _hubConnection.On(
+                methodName: "PostDocOutDto",
+                parameterTypes: new[] { typeof(string) },
+                handler: async (input) =>
+                {
+                    string? result = await OnPostDocOutDto(input);
+                    return result;
+                });
+
+            _httpService1c = httpService1c;
         }
 
         private async Task StartConnection()
@@ -60,6 +64,15 @@ namespace Pie.Proxy
         {
             var result = await _hubConnection.InvokeAsync<string>("GetMessage", message);
             _logger.LogInformation(result);
+        }
+
+        private async Task<string?> OnPostDocOutDto(object?[] input)
+        {
+            string request = input[0] as string ?? throw new ApplicationException("Request is Empty");
+
+                string response = await _httpService1c.SendOutAsync(request);
+
+                return response;
         }
     }
 }

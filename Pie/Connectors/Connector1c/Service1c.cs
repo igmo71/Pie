@@ -1,6 +1,8 @@
-﻿using Pie.Data.Models.In;
+﻿using Microsoft.Extensions.Options;
+using Pie.Data.Models.In;
 using Pie.Data.Models.Out;
 using Pie.Data.Services;
+using System.Text.Json;
 
 namespace Pie.Connectors.Connector1c
 {
@@ -10,40 +12,48 @@ namespace Pie.Connectors.Connector1c
         private readonly HubService1c _hubService1c;
         private readonly IConfiguration _configuration;
         private readonly ILogger<Service1c> _logger;
+        private readonly JsonSerializerOptions _jsonSerializerOptions;
 
         public Service1c(
             HttpService1c httpService1c, 
             HubService1c hubService1c, 
             IConfiguration configuration, 
-            ILogger<Service1c> logger)
+            ILogger<Service1c> logger,
+            IOptions<JsonSerializerOptions> jsonSerializerOptions)
         {
             _httpService1c = httpService1c;
             _hubService1c = hubService1c;
             _configuration = configuration;
             _logger = logger;
-        }
-
-        public async Task<ServiceResult> SendInAsync(DocIn doc)
-        {
-            ServiceResult result = new();
-
-            return result;
+            _jsonSerializerOptions = jsonSerializerOptions.Value;
         }
 
         public async Task<DocOutDto> SendOutAsync(DocOutDto docDto)
         {
-            DocOutDto result;
+            _logger.LogDebug("Service1c SendOutAsync - Start {DocOutDto.Id} {DocOutDto.Name}", docDto.Id, docDto.Name);
+            
+            throw new ApplicationException("Тестовое исключение");
+            
+            string request = JsonSerializer.Serialize(docDto);
+            string response;
 
             var useProxy = _configuration.GetValue<bool>("Connectors:UseProxy");
             if (useProxy)
             {
-                result = await _hubService1c.SendOutAsync(docDto);
+                response = await _hubService1c.SendOutAsync(request);
             }
             else
             {
-                result = await _httpService1c.SendOutAsync(docDto);
+                response = await _httpService1c.SendOutAsync(request);
             }
 
+            DocOutDto? result = JsonSerializer.Deserialize<DocOutDto?>(response, _jsonSerializerOptions);
+            if (result == null)
+            {
+                _logger.LogError("HttpService1c SendOutAsync - 1C returned empty result {@DocOutDto}", docDto);
+                throw new ApplicationException($"1С вернула пустой результат");
+            }
+            _logger.LogDebug("HttpService1c SendOutAsync - Ok {DocOutDto.Id} {DocOutDto.Name}", docDto.Id, docDto.Name);
             return result;
         }
     }

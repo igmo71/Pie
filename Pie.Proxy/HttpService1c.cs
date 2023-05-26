@@ -1,11 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
-using Pie.Data.Models.Out;
 using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 
-namespace Pie.Connectors.Connector1c
+namespace Pie.Proxy
 {
     public class HttpService1c
     {
@@ -13,7 +12,6 @@ namespace Pie.Connectors.Connector1c
         private readonly Client1cConfig _client1cConfig;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
         private readonly ILogger<HttpService1c> _logger;
-
         public HttpService1c(
             HttpClient httpClient,
             IOptions<Client1cConfig> client1cOptions,
@@ -37,10 +35,10 @@ namespace Pie.Connectors.Connector1c
         }
 
         public async Task<string> SendOutAsync(string request)
-        {            
+        {
             StringContent stringContent = new(request, Encoding.UTF8, MediaTypeNames.Application.Json);
 
-            string? requestUri = $"{_client1cConfig.HttpService}/{nameof(DocOut)}";
+            string? requestUri = $"{_client1cConfig.HttpService}/DocOut";
 
             HttpResponseMessage httpResponseMessage = await _httpClient1c.PostAsync(requestUri, stringContent);
 
@@ -48,11 +46,11 @@ namespace Pie.Connectors.Connector1c
 
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
-                _logger.LogError("HttpService1c SendOutAsync - {ResponseStatusCode} {@RequestMessage} {@ResponseContent}", 
+                _logger.LogError("HttpService1c SendOutAsync - {ResponseStatusCode} {@RequestMessage} {@ResponseContent}",
                     httpResponseMessage.StatusCode, httpResponseMessage.RequestMessage, response);
                 throw new ApplicationException($"Ошибка запроса к 1С ({httpResponseMessage.StatusCode})");
             }
-            
+
             return response;
         }
     }

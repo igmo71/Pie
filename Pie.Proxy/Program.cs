@@ -13,6 +13,8 @@ namespace Pie.Proxy
 
             builder.Services.AddSingleton<HubClient>();
 
+            builder.Services.AddHttpClient<HttpService1c>();
+
             builder.Services.AddHostedService<HealthChecker>();
 
             builder.Services.AddWindowsService(options => options.ServiceName = "Pie.Proxy");
