@@ -43,7 +43,7 @@ namespace Pie.Controllers.In
             if (id != queue.Id)
                 return BadRequest();
 
-            await _queueService.UpdateQueueAsync(id, queue);
+            await _queueService.UpdateAsync(id, queue);
 
             return NoContent();
         }

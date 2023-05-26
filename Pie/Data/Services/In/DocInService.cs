@@ -1,58 +1,143 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Pie.Common;
+using Pie.Connectors.Connector1c;
+using Pie.Data.Models;
 using Pie.Data.Models.In;
+using System.Text.Json;
 
 namespace Pie.Data.Services.In
 {
     public class DocInService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
+        private readonly BaseDocService _baseDocService;
+        private readonly QueueInService _queueService;
+        private readonly Service1c _service1c;
+        private readonly DocInHistoryService _docHistoryService;
+        private readonly DocInProductHistoryService _docProductHistoryService;
         private readonly ILogger<DocInService> _logger;
+        private readonly JsonSerializerOptions _jsonOptions;
 
-        public DocInService(ApplicationDbContext context, ILogger<DocInService> logger)
+        public static event EventHandler<Guid>? DocCreated;
+
+        public DocInService(
+            ApplicationDbContext context,
+            IDbContextFactory<ApplicationDbContext> contextFactory,
+            BaseDocService baseDocService,
+            QueueInService queueService,
+            Service1c service1c,
+            DocInHistoryService docHistoryService,
+            DocInProductHistoryService docProductHistoryService,
+            ILogger<DocInService> logger,
+            IOptions<JsonSerializerOptions> jsonOptions)
         {
             _context = context;
+            _contextFactory = contextFactory;
+            _baseDocService = baseDocService;
+            _queueService = queueService;
+            _service1c = service1c;
+            _docHistoryService = docHistoryService;
+            _docProductHistoryService = docProductHistoryService;
             _logger = logger;
+            _jsonOptions = jsonOptions.Value;
         }
 
-        public async Task<IEnumerable<DocIn>> GetDocsAsync()
+        public async Task<List<DocIn>> GetListAsync()
         {
             var docs = await _context.DocsIn.AsNoTracking()
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
                 .Include(d => d.Warehouse)
+                .Take(100)
                 .ToListAsync();
             return docs;
         }
 
-        public async Task<DocIn?> GetDocAsync(Guid id)
+        public async Task<DocIn?> GetAsync(Guid id)
         {
             var doc = await _context.DocsIn.AsNoTracking()
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
                 .Include(d => d.Warehouse)
-                .Include(d => d.Products).ThenInclude(p => p.Product)
+                .Include(d => d.Products.OrderBy(p => p.LineNumber)).ThenInclude(p => p.Product)
                 .Include(d => d.BaseDocs).ThenInclude(b => b.BaseDoc)
                 .FirstOrDefaultAsync(d => d.Id == id);
             return doc;
         }
 
-        public async Task<Dictionary<int, List<DocIn>>> GetDictionaryByQueue()
+        public async Task<DocInVm?> GetVmAsync(Guid id)
         {
+            DocInVm? vm = new();
+            vm.Value = await GetAsync(id);
+            vm.AtWorkUserName = await _docHistoryService.GetAtWorkUserNameAsync(id);
+            vm.Barcode = BarcodeGenerator.GetBarCode128(id);
+
+            return vm;
+        }
+
+        public async Task<Dictionary<int, List<DocIn>>> GetDictionaryByQueueAsync(SearchInParameters searchParameters)
+        {
+            using var context = _contextFactory.CreateDbContext();
+
             var result = await _context.DocsIn.AsNoTracking()
+                .Search(searchParameters)
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
                 .Include(d => d.Warehouse)
+                .Include(d => d.Products)
                 .OrderBy(d => d.StatusKey.GetValueOrDefault())
                     .ThenBy(d => d.QueueKey.GetValueOrDefault())
+                .Take(100)
                 .GroupBy(e => e.QueueKey.GetValueOrDefault())
                 .ToDictionaryAsync(g => g.Key, g => g.ToList());
             return result;
         }
 
-        public async Task<DocIn> CreateDocAsync(DocIn doc)
+        public async Task<DocInDictionaryByQueueVm> GetDictionaryByQueueVmAsync(SearchInParameters searchParameters)
         {
-            if (DocExists(doc.Id))
-                await UpdateDocAsync(doc.Id, doc);
+            DocInDictionaryByQueueVm vm = new();
+            vm.Value = await GetDictionaryByQueueAsync(searchParameters);
+            return vm;
+        }
+
+        public async Task<Dictionary<int, int>?> GetCountByStatusAsync(SearchInParameters searchParameters)
+        {
+            using var context = _contextFactory.CreateDbContext();
+
+            var result = await context.DocsIn.AsNoTracking()
+            .Search(searchParameters.ExceptStatus())
+            .GroupBy(e => e.StatusKey.GetValueOrDefault())
+            .Select(e => new { e.Key, Value = e.Count() })
+            .ToDictionaryAsync(e => e.Key, e => e.Value);
+
+            return result;
+        }
+        public async Task<DocInDto> CreateAsync(DocInDto docDto, string? barcode = null)
+        {
+            if (docDto.BaseDocs != null)
+            {
+                List<BaseDoc>? baseDocs = BaseDocDto.MapToBaseDocList(docDto.BaseDocs);
+                await _baseDocService.CreateRangeAsync(baseDocs);
+            }
+
+            DocIn doc = DocInDto.MapToDocIn(docDto);
+
+            doc = await CreateAsync(doc);
+
+            OnDocCreated(doc.Id);
+
+            await _docHistoryService.CreateAsync(doc, barcode);
+            await _docProductHistoryService.CreateAsync(doc, barcode);
+
+            return docDto;
+        }
+
+        public async Task<DocIn> CreateAsync(DocIn doc)
+        {   
+            if (Exists(doc.Id)) 
+                await DeleteAsync(doc.Id);
 
             _context.DocsIn.Add(doc);
             await _context.SaveChangesAsync();
@@ -60,7 +145,7 @@ namespace Pie.Data.Services.In
             return doc;
         }
 
-        public async Task UpdateDocAsync(Guid id, DocIn doc)
+        public async Task UpdateAsync(DocIn doc)
         {
             _context.Entry(doc).State = EntityState.Modified;
 
@@ -70,9 +155,9 @@ namespace Pie.Data.Services.In
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!DocExists(id))
+                if (!Exists(doc.Id))
                 {
-                    throw new ApplicationException($"DocInService UpdateDocAsync NotFount {id}", ex);
+                    throw new ApplicationException($"DocInService UpdateDocAsync NotFount {doc.Id}", ex);
                 }
                 else
                 {
@@ -81,17 +166,34 @@ namespace Pie.Data.Services.In
             }
         }
 
-        public async Task DeleteDocAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             var doc = await _context.DocsIn.FindAsync(id)
                 ?? throw new ApplicationException($"DocInService DeleteDocAsync NotFount {id}");
+
             _context.DocsIn.Remove(doc);
+            
             await _context.SaveChangesAsync();
         }
 
-        public bool DocExists(Guid id)
+        public bool Exists(Guid id)
         {
             return _context.DocsIn.Any(e => e.Id == id);
+        }
+
+        protected virtual void OnDocCreated(Guid id)
+        {
+            DocCreated?.Invoke(this, id);
+        }
+
+        public async Task SendTo1cAsync(DocIn doc, string? barcode = null)
+        {
+            DocInDto docDto = DocInDto.MapFromDocIn(doc);
+
+            DocInDto? result = await _service1c.SendInAsync(docDto);
+
+            if (result != null)
+                _ = await CreateAsync(result, barcode);
         }
     }
 }

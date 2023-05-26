@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using Pie.Data.Models.In;
 using Pie.Data.Models.Out;
 using System.Net.Http.Headers;
 using System.Net.Mime;
@@ -36,8 +37,28 @@ namespace Pie.Connectors.Connector1c
             _logger = logger;
         }
 
-        public async Task<string> SendOutAsync(string request)
+        public async Task<string> SendInAsync(string request)
         {            
+            StringContent stringContent = new(request, Encoding.UTF8, MediaTypeNames.Application.Json);
+
+            string? requestUri = $"{_client1cConfig.HttpService}/{nameof(DocIn)}";
+
+            HttpResponseMessage httpResponseMessage = await _httpClient1c.PostAsync(requestUri, stringContent);
+
+            string response = await httpResponseMessage.Content.ReadAsStringAsync();
+
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                _logger.LogError("HttpService1c SendInAsync - {ResponseStatusCode} {@RequestMessage} {@ResponseContent}", 
+                    httpResponseMessage.StatusCode, httpResponseMessage.RequestMessage, response);
+                throw new ApplicationException($"Ошибка запроса к 1С ({httpResponseMessage.StatusCode})");
+            }
+            
+            return response;
+        }
+
+        public async Task<string> SendOutAsync(string request)
+        {
             StringContent stringContent = new(request, Encoding.UTF8, MediaTypeNames.Application.Json);
 
             string? requestUri = $"{_client1cConfig.HttpService}/{nameof(DocOut)}";
@@ -48,11 +69,11 @@ namespace Pie.Connectors.Connector1c
 
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
-                _logger.LogError("HttpService1c SendOutAsync - {ResponseStatusCode} {@RequestMessage} {@ResponseContent}", 
+                _logger.LogError("HttpService1c SendOutAsync - {ResponseStatusCode} {@RequestMessage} {@ResponseContent}",
                     httpResponseMessage.StatusCode, httpResponseMessage.RequestMessage, response);
                 throw new ApplicationException($"Ошибка запроса к 1С ({httpResponseMessage.StatusCode})");
             }
-            
+
             return response;
         }
     }

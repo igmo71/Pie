@@ -19,7 +19,7 @@ namespace Pie.Controllers.In
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DocIn>>> GetDocs()
         {
-            var doc = await _docService.GetDocsAsync();
+            var doc = await _docService.GetListAsync();
             return Ok(doc);
         }
 
@@ -27,7 +27,7 @@ namespace Pie.Controllers.In
         [HttpGet("{id}")]
         public async Task<ActionResult<DocIn>> GetDoc(Guid id)
         {
-            var doc = await _docService.GetDocAsync(id);
+            var doc = await _docService.GetAsync(id);
 
             if (doc == null)
                 return NotFound();

@@ -45,7 +45,7 @@ namespace Pie.Controllers.In
             if (id != status.Id)
                 return BadRequest();
 
-            await _statusService.UpdateStatusAsync(id, status);
+            await _statusService.UpdateAsync(id, status);
 
             return NoContent();
         }

@@ -35,6 +35,26 @@ namespace Pie.Proxy
             _logger = logger;
         }
 
+        public async Task<string> SendInAsync(string request)
+        {
+            StringContent stringContent = new(request, Encoding.UTF8, MediaTypeNames.Application.Json);
+
+            string? requestUri = $"{_client1cConfig.HttpService}/DocIn";
+
+            HttpResponseMessage httpResponseMessage = await _httpClient1c.PostAsync(requestUri, stringContent);
+
+            string response = await httpResponseMessage.Content.ReadAsStringAsync();
+
+            if (!httpResponseMessage.IsSuccessStatusCode)
+            {
+                _logger.LogError("HttpService1c SendInAsync - {ResponseStatusCode} {@RequestMessage} {@ResponseContent}",
+                    httpResponseMessage.StatusCode, httpResponseMessage.RequestMessage, response);
+                throw new ApplicationException($"Ошибка запроса к 1С ({httpResponseMessage.StatusCode})");
+            }
+
+            return response;
+        }
+
         public async Task<string> SendOutAsync(string request)
         {
             StringContent stringContent = new(request, Encoding.UTF8, MediaTypeNames.Application.Json);

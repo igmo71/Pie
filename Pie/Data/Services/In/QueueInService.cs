@@ -10,39 +10,54 @@ namespace Pie.Data.Services.In
 
         public QueueInService(ApplicationDbContext context, ILogger<QueueInService> logger)
         {
-
             _context = context;
             _logger = logger;
         }
 
-        public async Task<List<QueueIn>> GetQueuesAsync()
+        public async Task<List<QueueIn>> GetListAsync()
         {
-            var queues = await _context.QueuesIn.AsNoTracking()
-                .OrderBy(q => q.Key)
-                .ToListAsync();
+            var queues = await _context.QueuesIn.AsNoTracking().OrderBy(q => q.Key).ToListAsync();
+
             return queues;
         }
 
-        public async Task<QueueIn?> GetQueueAsync(Guid id)
+        public async Task<List<QueueIn>> GetListActiveAsync()
         {
-            var queue = await _context.QueuesIn.FindAsync(id);
+            var queues = await _context.QueuesIn.AsNoTracking().Where(e => e.Active).OrderBy(q => q.Key).ToListAsync();
+
+            return queues;
+        }
+
+        public async Task<QueueIn?> GetAsync(Guid id)
+        {
+            var queue = await _context.QueuesIn.FindAsync(id);  
+
             return queue;
         }
-        public async Task<QueueIn> CreateQueueAsync(QueueIn queue)
+
+        public async Task<QueueIn?> GetAsync(int key)
         {
-            if (QueueExists(queue.Id))
+            var queue = await _context.QueuesIn.FirstOrDefaultAsync(q => q.Key == key);
+
+            return queue;
+        }
+
+        public async Task<QueueIn> CreateAsync(QueueIn queue)
+        {
+            if (Exists(queue.Id))
             {
-                await UpdateQueueAsync(queue.Id, queue);
+                await UpdateAsync( queue);
             }
             else
             {
                 _context.QueuesIn.Add(queue);
                 await _context.SaveChangesAsync();
             }
+
             return queue;
         }
 
-        public async Task UpdateQueueAsync(Guid id, QueueIn queue)
+        public async Task UpdateAsync(QueueIn queue)
         {
             _context.Entry(queue).State = EntityState.Modified;
 
@@ -52,9 +67,9 @@ namespace Pie.Data.Services.In
             }
             catch (DbUpdateConcurrencyException ex)
             {
-                if (!QueueExists(id))
+                if (!Exists(queue.Id))
                 {
-                    throw new ApplicationException($"QueueInService UpdateQueueAsync NotFount {id}", ex);
+                    throw new ApplicationException($"QueueInService UpdateQueueAsync NotFount {queue.Id}", ex);
                 }
                 else
                 {
@@ -63,7 +78,7 @@ namespace Pie.Data.Services.In
             }
         }
 
-        public async Task DeleteQueueAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             var queue = await _context.QueuesIn.FindAsync(id)
                 ?? throw new ApplicationException($"QueueInService DeleteQueueAsync NotFount {id}");
@@ -71,7 +86,7 @@ namespace Pie.Data.Services.In
             await _context.SaveChangesAsync();
         }
 
-        public bool QueueExists(Guid id)
+        public bool Exists(Guid id)
         {
             return _context.QueuesIn.Any(e => e.Id == id);
         }

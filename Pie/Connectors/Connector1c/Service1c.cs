@@ -35,6 +35,35 @@ namespace Pie.Connectors.Connector1c
             _httpClientFactory = httpClientFactory;
         }
 
+        public async Task<DocInDto> SendInAsync(DocInDto docDto)
+        {
+            _logger.LogDebug("Service1c SendInAsync - Start {DocInDto.Id} {DocInDto.Name}", docDto.Id, docDto.Name);
+
+            var httpClient = _httpClientFactory.CreateClient();
+
+            string request = JsonSerializer.Serialize(docDto);
+            string response;
+
+            var useProxy = _configuration.GetValue<bool>("Connectors:UseProxy");
+            if (useProxy)
+            {
+                response = await _hubService1c.SendInAsync(request);
+            }
+            else
+            {
+                response = await _httpService1c.SendInAsync(request);
+            }
+
+            DocInDto? result = JsonSerializer.Deserialize<DocInDto?>(response, _jsonSerializerOptions);
+            if (result == null)
+            {
+                _logger.LogError("HttpService1c SendInAsync - 1C returned empty result {@DocInDto}", docDto);
+                throw new ApplicationException($"1С вернула пустой результат");
+            }
+            _logger.LogDebug("HttpService1c SendInAsync - Ok {DocInDto.Id} {DocInDto.Name}", docDto.Id, docDto.Name);
+            return result;
+        }
+
         public async Task<DocOutDto> SendOutAsync(DocOutDto docDto)
         {
             _logger.LogDebug("Service1c SendOutAsync - Start {DocOutDto.Id} {DocOutDto.Name}", docDto.Id, docDto.Name);

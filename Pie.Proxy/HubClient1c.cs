@@ -27,6 +27,15 @@ namespace Pie.Proxy
             };
 
             _hubConnection.On(
+                methodName: "PostDocInDto",
+                parameterTypes: new[] { typeof(string) },
+                handler: async (input) =>
+                {
+                    string? result = await OnPostDocInDto(input);
+                    return result;
+                });
+
+            _hubConnection.On(
                 methodName: "PostDocOutDto",
                 parameterTypes: new[] { typeof(string) },
                 handler: async (input) =>
@@ -64,13 +73,22 @@ namespace Pie.Proxy
             }
         }
 
+        private async Task<string?> OnPostDocInDto(object?[] input)
+        {
+            string request = input[0] as string ?? throw new ApplicationException("HubClient OnPostDocInDto - Request is Empty");
+
+                string response = await _httpService1c.SendInAsync(request);
+
+                return response;
+        }
+
         private async Task<string?> OnPostDocOutDto(object?[] input)
         {
             string request = input[0] as string ?? throw new ApplicationException("HubClient OnPostDocOutDto - Request is Empty");
 
-                string response = await _httpService1c.SendOutAsync(request);
+            string response = await _httpService1c.SendOutAsync(request);
 
-                return response;
+            return response;
         }
     }
 }

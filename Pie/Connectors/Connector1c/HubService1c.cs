@@ -19,6 +19,13 @@ namespace Pie.Connectors.Connector1c
             _logger.LogInformation($"HubService1c MessageReceivedHandle: {message}");
         }
 
+        public async Task<string> SendInAsync(string request)
+        {
+            string response = await _hubContext.Clients.Client(Hub1c.ConnectionId)
+                .InvokeAsync<string>(method: "PostDocInDto", arg1: request, CancellationToken.None);
+            return response;
+        }
+
         public async Task<string> SendOutAsync(string request)
         {
             string response = await _hubContext.Clients.Client(Hub1c.ConnectionId)
