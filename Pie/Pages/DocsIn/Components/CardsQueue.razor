@@ -1,13 +1,15 @@
 ﻿@using Pie.Data.Models.In;
 
-<h4>CardsQueue</h4>
-
 @if (Docs is not null)
 {
-    @foreach (var doc in Docs)
-    {
-        <Card Doc="@doc"></Card>
-    }
+    <div style="overflow-y: scroll; max-height: 800px;">
+        @foreach (var doc in Docs)
+        {
+            <div class="me-2">
+                <Card Doc="@doc"></Card>
+            </div>
+        }
+    </div>
 }
 
 @code {

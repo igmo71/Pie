@@ -1,14 +1,13 @@
 ﻿@page "/DocsIn/List"
 
+@using Pie.Pages.Components
 @using Pie.Pages.DocsIn.Components
 
-<h3>List</h3>
+<SearchForm Warehouses="@warehouses" OnSubmit="SearchHandle"></SearchForm>
+
+<SearchByStatusTabs Statuses="@statuses" CountByStatus="@countByStatus" OnClick="SearchHandle"></SearchByStatusTabs>
 
 @if (docs is not null && docs.Any())
 {
     <CardsQueues Docs="@docs" Queues="@queues"></CardsQueues>
-}
-
-@code {
-
 }

@@ -1,0 +1,57 @@
+﻿@page "/DocsIn/Item/{id}"
+
+@using Pie.Common;
+@using Pie.Data.Models;
+@using Pie.Data.Models.In;
+@using Pie.Pages.Components
+@using Pie.Pages.DocsIn.Components
+
+<ScanBarcode OnScannedBarcode="ScannedBarcodeAsync"></ScanBarcode>
+<Notification @ref="@notification" />
+
+<div class="row d-print-none">
+    <div class="col-auto">
+        <a class="btn btn-outline-primary" href="DocsIn/List" title="Назад"><i class="bi bi-reply"></i> Назад</a>
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-outline-primary" @onclick="@(() => SendDocAsync())" title="Переключить статус"><i class="bi bi-send"></i> Отправить</button>
+    </div>
+    <div class="col-auto">
+        <a class="btn btn-outline-primary" href="/History/DocsIn?docId=@docVm?.Value?.Id" title="История"><i class="bi bi-info-lg"></i> История</a>
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-outline-primary" @onclick="@PrintAsync" title="Печать"><i class="bi bi-printer"></i> Печать</button>
+    </div>
+</div>
+
+<div class="row d-flex justify-content-between">
+    <div class="col-2 px-1"><h3></h3></div>
+    <div class="col-6 px-1"><h4>@docVm?.Value?.Name</h4></div>
+    <div class="col-4 p-0 d-flex justify-content-end d-none d-print-inline">
+        <img src=@($"data:image/jpeg;base64,{docVm?.Barcode}") width="256" height="62" alt="штрих код" />
+    </div>
+</div>
+
+<div>@pageMessage</div>
+
+<ItemHeaderTable DocVm="@docVm"></ItemHeaderTable>
+
+<ItemBodyTable DocVm="@docVm" ChangeReasons="@changeReasons"></ItemBodyTable>
+
+@code {
+    string? nameFilter;
+    IQueryable<DocInProduct>? FilteredProducts
+    {
+        get
+        {
+            var result = docVm?.Value?.Products?.AsQueryable();
+
+            if (!string.IsNullOrEmpty(nameFilter))
+            {
+                result = result?.Where(p => p.Product.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
+            }
+
+            return result;
+        }
+    }
+}

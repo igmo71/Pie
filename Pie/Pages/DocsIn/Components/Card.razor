@@ -1,41 +1,77 @@
 ﻿@using Pie.Data.Models.In;
+@inject NavigationManager NavigationManager
 
-<h4>Card</h4>
-
-<div class="card mb-2">
-    <div class="card-header">
-        <div class="row card-title">
-            <div class="col-9">
-                <h6><a href="/DocsIn/Item/@Doc?.Id">@Doc?.Name</a></h6>
+@if (Doc != null)
+{
+    <div class="card border-@cardColor shadow rounded mb-2">
+        <a href="#" style="text-decoration:none">
+            <div class="card-header bg-@cardColor bg-opacity-75 text-white p-2" @onclick="@(() => OnClick(Doc!.Id))">
+                <div class="row">
+                    <div class="col-1 d-flex justify-content-center">
+                        <i class="bi bi-layout-text-window-reverse"></i>
+                    </div>
+                    <div class="col-8 d-flex justify-content-center">
+                        <div>
+                            <span>№ </span><span>@Doc?.Number</span>
+                        </div>
+                    </div>
+                    <div class="col-3 d-flex justify-content-center h5">
+                        <div></div>
+                    </div>
+                </div>
             </div>
-            <div class="col-3">
-                <h6>@*@Doc?.QueueNumber*@</h6>
+        </a>
+        <div class="card-body p-2">
+            <div>
+                <i class="bi bi-calendar"></i><span class="small"> Дата: </span><span>@Doc?.DateTime</span>
+            </div>
+            <div>
+                <i class="bi bi-calendar-event"></i><span class="small"> </span><span></span>
+            </div>
+            <div>
+                <i class="bi bi-building"></i><span class="small"> Склад: </span><span>@Doc?.Warehouse?.Name</span>
+            </div>
+            <div>
+                <i class="bi bi-clipboard-check"></i><span class="small"> Статус: </span><span>@Doc?.Status?.Name</span>
+            </div>
+            <div>
+                <i class="bi bi-people"></i><span class="small"> Очередь: </span><span>@Doc?.Queue?.Name</span>
+            </div>
+            <div>
+                @if (@Doc?.Comment != null && !string.IsNullOrEmpty(@Doc?.Comment))
+                {
+                    <i class="bi bi-chat-left-text"></i>
+
+                    <span> @Doc?.Comment</span>
+                }
             </div>
         </div>
-
-    </div>
-    <div class="card-body">
-        <div>
-            Склад: @Doc?.Warehouse?.Name
-        </div>
-        <div>
-            Статус: @Doc?.Status?.Name
-        </div>
-        <div>
-            Очередь: @Doc?.Queue?.Name
-        </div>
-        <div>
-            @*Дата отгрузки: @Doc?.ShipDateTime*@
+        <div class="card-footer">
+            <div class="row">
+                <div class="col">
+                    <i class="bi bi-minecart-loaded"></i><span class="small"> Вес: </span><span>@Doc?.Weight</span>
+                </div>
+                <div class="col">
+                    <i class="bi bi-list-ol"></i><span class="small"> Кол строк: </span><span>@Doc?.Products.Count</span>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="card-footer">
-        <div>
-            @Doc?.Comment
-        </div>
-    </div>
-</div>
+}
 
 @code {
     [Parameter] public DocIn? Doc { get; set; }
 
+    private string? cardColor = "success";
+
+    protected override void OnParametersSet()
+    {
+        if (Doc == null)
+            return;
+    }
+
+    private void OnClick(Guid id)
+    {
+        NavigationManager.NavigateTo($"DocsIn/Item/{id}");
+    }
 }

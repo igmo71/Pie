@@ -14,14 +14,12 @@ namespace Pie.Pages.DocsOut
         [Inject] public required WarehouseService WarehouseService { get; set; }
         [Inject] public required SearchOutParameters SearchParameters { get; set; }
         [Inject] public required NavigationManager NavigationManager { get; set; }
-        //[Inject] public required EventDispatcher EventDispatcher { get; set; }
 
         private Dictionary<int, List<DocOut>> docs = new();
         private List<QueueOut> queues = new();
         private List<StatusOut> statuses = new();
         private Dictionary<int, int>? countByStatus = new();
         private List<Warehouse> warehouses = new();
-        private string pageMessage = "Hello!";
 
         protected async override Task OnInitializedAsync()
         {

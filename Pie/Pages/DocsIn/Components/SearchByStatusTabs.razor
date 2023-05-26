@@ -1,0 +1,73 @@
+﻿@using Pie.Data.Models.In;
+@using Pie.Data.Services.In;
+
+@implements IDisposable
+
+@inject SearchInParameters SearchParameters    
+
+<ul class="nav nav-tabs mb-2">
+    @*nav-fill*@
+    @if (Statuses is not null)
+    {
+        <li class="nav-item">
+            <button class="btn btn-link nav-link @(SearchParameters.StatusKey == null ? "active" : string.Empty)"
+            @onclick="(() => OnClickHandle())" id="@Guid.Empty">
+                <h5>
+                    <span>
+                        Все
+                    </span>
+                    <span class="badge bg-secondary">
+                        @(CountByStatus != null ? CountByStatus.Sum(c => c.Value) : 0)
+                    </span>
+                </h5>
+            </button>
+        </li>
+        @foreach (var status in Statuses)
+        {
+            <li class="nav-item">
+                <button class="btn btn-link nav-link @(status.Key == SearchParameters.StatusKey ? "active" : string.Empty)"
+                @onclick="(() => OnClickHandle(status.Key))" id="@status.Key">
+                    <h5>
+                        <span>
+                            @status.Name
+                        </span>
+                        <span class="badge bg-secondary">
+                            @if (status.Key != null)
+                            {
+                                @((CountByStatus != null && CountByStatus.ContainsKey((int)status.Key)) ? CountByStatus[(int)status.Key] : 0)
+                            }
+                        </span>
+                    </h5>
+                </button>
+            </li>
+        }
+    }
+</ul>
+
+@code {
+    [Parameter] public List<StatusIn>? Statuses { get; set; }
+    [Parameter] public Dictionary<int, int>? CountByStatus { get; set; }
+    [Parameter] public EventCallback OnClick { get; set; }
+
+    protected override void OnInitialized()
+    {
+        SearchParameters.OnChange += SearchParametersChangedHandle;
+    }
+
+    private async Task OnClickHandle(int? statusKey = null)
+    {
+        SearchParameters.SetSearchByStatus(statusKey);
+
+        await OnClick.InvokeAsync();
+    }
+
+    private void SearchParametersChangedHandle()
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        SearchParameters.OnChange -= SearchParametersChangedHandle;
+    }
+}

@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using Pie.Data.Models.Out;
+using Pie.Data.Models.In;
 using Pie.Data.Services.Identity;
-using Pie.Data.Services.Out;
+using Pie.Data.Services.In;
 using Pie.Pages.Components;
 
-namespace Pie.Pages.DocsOut
+namespace Pie.Pages.DocsIn
 {
     public partial class Item
     {
-        [Inject] public required DocOutService DocService { get; set; }
-        [Inject] public required ChangeReasonOutService ChangeReasonService { get; set; }
+        [Inject] public required DocInService DocService { get; set; }
+        [Inject] public required ChangeReasonInService ChangeReasonService { get; set; }
         [Inject] public required AppUserService AppUserService { get; set; }
         [Inject] public required NavigationManager NavigationManager { get; set; }
         [Inject] public IJSRuntime? JSRuntime { get; set; }
@@ -18,8 +18,8 @@ namespace Pie.Pages.DocsOut
 
         [Parameter] public string? Id { get; set; }
 
-        private DocOutVm? docVm;
-        private List<ChangeReasonOut>? changeReasons;
+        private DocInVm? docVm;
+        private List<ChangeReasonIn>? changeReasons;
         private Notification notification = new();
         private string pageMessage = string.Empty;
 
@@ -59,14 +59,14 @@ namespace Pie.Pages.DocsOut
             }
             catch (Exception ex)
             {
-                Logger?.LogError(ex, "DocOut.Item SendDocAsync {Message}", ex.Message);
+                Logger?.LogError(ex, "DocIn.Item SendDocAsync {Message}", ex.Message);
                 await notification.SetMessageAndHideAsync(ex.Message, 2);
                 return;
             }
 
             await notification.SetMessageAndHideAsync($"Запрос изменения статуса - OK", 2);
 
-            NavigationManager.NavigateTo($"DocsOut/List");
+            NavigationManager.NavigateTo($"DocsIn/List");
         }
 
         private async Task PrintAsync()
