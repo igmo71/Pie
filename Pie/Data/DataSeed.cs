@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Pie.Connectors.Connector1c;
 using Pie.Data.Models.Identity;
+using Pie.Data.Models.In;
 using Pie.Data.Models.Out;
 
 namespace Pie.Data
@@ -10,11 +11,25 @@ namespace Pie.Data
     {
         public static void Initialize(ModelBuilder builder)
         {
+            builder.Entity<QueueIn>().HasData(
+                new QueueIn { Id = Guid.Parse("a3136307-3871-43c8-8eae-1ac5bb948237"), Key = 10, Active = true, Name = "Под клиента" },
+                new QueueIn { Id = Guid.Parse("5b7c2f6b-630c-4e69-9da9-097e46b0e2d1"), Key = 20, Active = true, Name = "Срочно в продажу" },
+                new QueueIn { Id = Guid.Parse("ddf72e17-8ced-44dd-aff9-3d82e17ec525"), Key = 30, Active = true, Name = "Просрочено" },
+                new QueueIn { Id = Guid.Parse("0c99088a-59ca-458b-be5f-be36c3a21643"), Key = 40, Active = true, Name = "Очередность не указана" }
+                );
+
             builder.Entity<QueueOut>().HasData(
                 new QueueOut { Id = Guid.Parse("7E83260A-316F-4A1F-BE9A-BF353B118536"), Key = 10, Active = true, Name = "Живая очередь" },
                 new QueueOut { Id = Guid.Parse("3558D2BA-FFB6-4F08-9891-F7F1E8853C83"), Key = 20, Active = true, Name = "Собрать к дате" },
                 new QueueOut { Id = Guid.Parse("D964FCAD-D71D-480A-BDEB-0B2C045FCD90"), Key = 30, Active = true, Name = "Собственная доставка" },
                 new QueueOut { Id = Guid.Parse("8BDC656E-8A2C-4AEF-9422-E0A419608190"), Key = 40, Active = true, Name = "Очередность не указана" }
+                );
+
+            builder.Entity<StatusIn>().HasData(
+                new StatusIn { Id = Guid.Parse("b2cbc819-151b-489d-9b09-649aa16b2a8b"), Key = 0, Active = true, Name = "КПоступлению" },
+                new StatusIn { Id = Guid.Parse("ba575f5d-1c8d-4616-a707-1b4157746aa3"), Key = 1, Active = true, Name = "ВРаботе" },
+                new StatusIn { Id = Guid.Parse("f1cff011-6ecb-49f1-9898-2bf4a69b7b13"), Key = 2, Active = false, Name = "ТребуетсяОбработка" },
+                new StatusIn { Id = Guid.Parse("7f8bf9f1-92e3-4f45-84ea-461b9f82aa20"), Key = 3, Active = false, Name = "Принят" }
                 );
 
             builder.Entity<StatusOut>().HasData(
