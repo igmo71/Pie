@@ -1,4 +1,6 @@
-﻿namespace Pie.Data.Models.In
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Pie.Data.Models.In
 {
     public class DocInHistory : DocHistory
     {
@@ -12,9 +14,13 @@
         }
 
         public Guid DocId { get; set; }
+
+        [Display(Name = "Документ")]
         public DocIn? Doc { get; set; }
 
         public int? StatusKey { get; set; }
+
+        [Display(Name = "Статус")]
         public StatusIn? Status { get; set; }
     }
 }

@@ -18,10 +18,12 @@ namespace Pie.Data.Models.Out
         }
 
         public Guid DocId { get; set; }
+
         [Display(Name = "Документ")]
         public DocOut? Doc { get; set; }
 
         public Guid? ChangeReasonId { get; set; }
+
         [Display(Name = "Причина")]
         public ChangeReasonOut? ChangeReason { get; set; }
     }

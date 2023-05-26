@@ -1,4 +1,6 @@
-﻿namespace Pie.Data.Models.In
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Pie.Data.Models.In
 {
     public class DocIn : Doc
     {
@@ -10,5 +12,8 @@
 
         public int? QueueKey { get; set; }
         public QueueIn? Queue { get; set; }
+
+        [NotMapped]
+        public float Weight => Products.Sum(x => x.Weight);
     }
 }
