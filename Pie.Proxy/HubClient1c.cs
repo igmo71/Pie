@@ -58,8 +58,10 @@ namespace Pie.Proxy
 
         public async Task SendMessageAsync(string message)
         {
+            if(_hubConnection.State == HubConnectionState.Connected) { 
             var result = await _hubConnection.InvokeAsync<string>("GetMessage", message);
             _logger.LogInformation(result);
+            }
         }
 
         private async Task<string?> OnPostDocOutDto(object?[] input)
