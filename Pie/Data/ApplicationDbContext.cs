@@ -18,7 +18,7 @@ namespace Pie.Data
             Database.Migrate();
         }
 
-        public DbSet<BaseDoc> BaseDocs { get; set; }
+        public DbSet<BaseDoc> BaseDocs => Set<BaseDoc>();
         public DbSet<ChangeReason> ChangeReasons { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Warehouse> Warehouses { get; set; }
