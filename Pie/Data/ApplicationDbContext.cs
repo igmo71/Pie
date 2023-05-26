@@ -19,30 +19,30 @@ namespace Pie.Data
         }
 
         public DbSet<BaseDoc> BaseDocs => Set<BaseDoc>();
-        public DbSet<ChangeReason> ChangeReasons { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Warehouse> Warehouses { get; set; }
+        public DbSet<ChangeReason> ChangeReasons => Set<ChangeReason>();
+        public DbSet<Product> Products => Set<Product>();
+        public DbSet<Warehouse> Warehouses => Set<Warehouse>();
 
         // In
-        public DbSet<ChangeReasonIn> ChangeReasonsIn { get; set; }
-        public DbSet<DocIn> DocsIn { get; set; }
-        public DbSet<DocInBaseDoc> DocInBaseDocs { get; set; }
-        public DbSet<DocInHistory> DocsInHistory { get; set; }
-        public DbSet<DocInProduct> DocInProducts { get; set; }
-        public DbSet<DocInProductHistory> DocInProductsHistory { get; set; }
-        public DbSet<QueueIn> QueuesIn { get; set; }
-        public DbSet<StatusIn> StatusesIn { get; set; }
+        public DbSet<ChangeReasonIn> ChangeReasonsIn => Set<ChangeReasonIn>();
+        public DbSet<DocIn> DocsIn => Set<DocIn>();
+        public DbSet<DocInBaseDoc> DocInBaseDocs => Set<DocInBaseDoc>();
+        public DbSet<DocInHistory> DocsInHistory => Set<DocInHistory>();
+        public DbSet<DocInProduct> DocInProducts => Set<DocInProduct>();
+        public DbSet<DocInProductHistory> DocInProductsHistory => Set<DocInProductHistory>();
+        public DbSet<QueueIn> QueuesIn => Set<QueueIn>();
+        public DbSet<StatusIn> StatusesIn => Set<StatusIn>();
 
         // Out
-        public DbSet<ChangeReasonOut> ChangeReasonsOut { get; set; }
-        public DbSet<DocOut> DocsOut { get; set; }
-        public DbSet<DocOutBaseDoc> DocOutBaseDocs { get; set; }
-        public DbSet<DocOutHistory> DocsOutHistory { get; set; }
-        public DbSet<DocOutProduct> DocOutProducts { get; set; }
-        public DbSet<DocOutProductHistory> DocOutProductsHistory { get; set; }
-        public DbSet<QueueOut> QueuesOut { get; set; }
-        public DbSet<StatusOut> StatusesOut { get; set; }
-        public DbSet<QueueNumber> QueueNumber { get; set; }
+        public DbSet<ChangeReasonOut> ChangeReasonsOut => Set<ChangeReasonOut>();
+        public DbSet<DocOut> DocsOut => Set<DocOut>();
+        public DbSet<DocOutBaseDoc> DocOutBaseDocs => Set<DocOutBaseDoc>();
+        public DbSet<DocOutHistory> DocsOutHistory => Set<DocOutHistory>();
+        public DbSet<DocOutProduct> DocOutProducts => Set<DocOutProduct>();
+        public DbSet<DocOutProductHistory> DocOutProductsHistory => Set<DocOutProductHistory>();
+        public DbSet<QueueOut> QueuesOut => Set<QueueOut>();
+        public DbSet<StatusOut> StatusesOut => Set<StatusOut>();
+        public DbSet<QueueNumber> QueueNumber => Set<QueueNumber>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
