@@ -3,10 +3,10 @@ namespace Pie.Proxy
     public class HealthChecker : BackgroundService
     {
         private readonly ILogger<HealthChecker> _logger;
-        private readonly HubClient _hubClient;
+        private readonly HubClient1c _hubClient;
         private int _healthCheck;
 
-        public HealthChecker(IConfiguration configuration, ILogger<HealthChecker> logger, HubClient hubClient)
+        public HealthChecker(IConfiguration configuration, ILogger<HealthChecker> logger, HubClient1c hubClient)
         {
             _healthCheck = configuration.GetValue<int>("HealthCheck");
             _logger = logger;

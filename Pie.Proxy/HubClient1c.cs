@@ -1,22 +1,18 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Extensions.Options;
-using System.Net.Http.Headers;
-using System.Net.Mime;
-using System.Text;
 
 namespace Pie.Proxy
 {
-    public class HubClient
+    public class HubClient1c
     {
         private readonly HubConnection _hubConnection;
         private readonly HttpService1c _httpService1c;
-        private readonly ILogger<HubClient> _logger;
+        private readonly ILogger<HubClient1c> _logger;
 
-        public HubClient(IConfiguration configuration, HttpService1c httpService1c, ILogger<HubClient> logger)
+        public HubClient1c(IConfiguration configuration, HttpService1c httpService1c, ILogger<HubClient1c> logger)
         {
             _logger = logger;
 
-            string hubUrl = configuration.GetValue<string>("HubUri") ?? throw new ApplicationException("Fail to get configuration");
+            string hubUrl = configuration.GetValue<string>("HubUri") ?? throw new ApplicationException("HubClient - Fail to get configuration");
             _hubConnection = new HubConnectionBuilder()
                 .WithUrl(hubUrl)
                 .WithAutomaticReconnect()
@@ -26,7 +22,7 @@ namespace Pie.Proxy
 
             _hubConnection.Closed += async (ex) =>
             {
-                _logger.LogError(ex, "Disconnected");
+                _logger.LogError(ex, "HubClient - Disconnected");
                 await StartConnection();
             };
 
@@ -44,15 +40,15 @@ namespace Pie.Proxy
 
         private async Task StartConnection()
         {
-            _logger.LogInformation("Trying to connect");
+            _logger.LogInformation("HubClient - Trying to connect");
             try
             {
                 await _hubConnection.StartAsync();
-                _logger.LogInformation("Connected");
+                _logger.LogInformation("HubClient - Connected");
             }
             catch (Exception ex)
             {
-                _logger.LogWarning(ex.Message);
+                _logger.LogWarning("HubClient - {Message}", ex.Message);
                 await Task.Delay(10000);
                 await StartConnection();
             }
@@ -68,7 +64,7 @@ namespace Pie.Proxy
 
         private async Task<string?> OnPostDocOutDto(object?[] input)
         {
-            string request = input[0] as string ?? throw new ApplicationException("Request is Empty");
+            string request = input[0] as string ?? throw new ApplicationException("HubClient OnPostDocOutDto - Request is Empty");
 
                 string response = await _httpService1c.SendOutAsync(request);
 

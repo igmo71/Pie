@@ -21,9 +21,9 @@ namespace Pie.Connectors.Connector1c
 
         public async Task<string> SendOutAsync(string request)
         {
-            string result = await _hubContext.Clients.Client(Hub1c.ConnectionId)
+            string response = await _hubContext.Clients.Client(Hub1c.ConnectionId)
                 .InvokeAsync<string>(method: "PostDocOutDto", arg1: request, CancellationToken.None);
-            return result;
+            return response;
         }
 
         public void Dispose()

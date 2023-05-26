@@ -11,7 +11,7 @@ namespace Pie.Proxy
             IConfigurationSection client1cConfig = builder.Configuration.GetSection(nameof(Client1cConfig));
             builder.Services.Configure<Client1cConfig>(client1cConfig);
 
-            builder.Services.AddSingleton<HubClient>();
+            builder.Services.AddSingleton<HubClient1c>();
 
             builder.Services.AddHttpClient<HttpService1c>();
 
