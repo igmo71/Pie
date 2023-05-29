@@ -14,5 +14,7 @@ namespace Pie.Data.Models
 
         [Required]
         public int? Key { get; set; }
+
+        public bool CanChange { get; set; }
     }
 }

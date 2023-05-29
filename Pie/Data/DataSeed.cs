@@ -50,8 +50,8 @@ namespace Pie.Data
                 new AppUser
                 {
                     Id = "22919707-7d2c-450d-92e7-19f36935bcdb",
-                    FirstName = "Админ",
-                    LastName = null,
+                    FirstName = "Игорь",
+                    LastName = "Могильницкий",
                     UserName = "igmo@dobroga.ru",
                     NormalizedUserName = "IGMO@DOBROGA.RU",
                     Email = "igmo@dobroga.ru",
@@ -59,7 +59,7 @@ namespace Pie.Data
                     EmailConfirmed = true,
                     PasswordHash = "AQAAAAIAAYagAAAAEDgydLmvi4/0kDXZB6+ShJFMNIK8Xzgaawytbvp8IMJquSZ/4hO8sPu9mlXC5uS9IQ==",
                     SecurityStamp = "HCJOWYFSM63CJOZM5AZAGXSHEI257BCI",
-                    ConcurrencyStamp = "2b68aa3c-d884-475f-8a7a-f72d5666f9ae",
+                    ConcurrencyStamp = "18c24c93-8d87-4450-9500-32f059f6398a",
                     PhoneNumber = null,
                     PhoneNumberConfirmed = false,
                     TwoFactorEnabled = false,
@@ -68,6 +68,28 @@ namespace Pie.Data
                     AccessFailedCount = 0,
                     WarehouseId = null
                 },
+                new AppUser
+                {
+                    Id = "de3f6ced-85ca-4feb-8d98-395dc8ee71cb",
+                    FirstName = "Админ",
+                    LastName = null,
+                    UserName = "admin@www",
+                    NormalizedUserName = "ADMIN@WWW",
+                    Email = "admin@www",
+                    NormalizedEmail = "ADMIN@WWW",
+                    EmailConfirmed = true,
+                    //Password: Password#0
+                    PasswordHash = "AQAAAAIAAYagAAAAELfYeQJOlhGQE7zLxj69o4waFM3ISF424TUMU9/DMkWPr03XyfD7EJO3XUlOkKOd0A==",
+                    SecurityStamp = "I5VGBC5NXRMCMKKBSXQIJNJC6UFZUTMF",
+                    ConcurrencyStamp = "3bd6e424-97b8-4f30-9f50-44e9368ae7c5",
+                    PhoneNumber = null,
+                    PhoneNumberConfirmed = false,
+                    TwoFactorEnabled = false,
+                    LockoutEnabled = true,
+                    LockoutEnd = null,
+                    AccessFailedCount = 0,
+                    WarehouseId = null
+                }
                 new AppUser
                 {
                     Id = "d90e31c9-e19f-4ee7-9580-d856daba6d02",
@@ -94,7 +116,7 @@ namespace Pie.Data
 
             builder.Entity<IdentityRole>().HasData(
                 new IdentityRole { Id = "d6bfb7c2-9a45-45e5-b27a-3b7cba85527f", Name = "Admin", NormalizedName = "ADMIN", ConcurrencyStamp = null },
-                new IdentityRole { Id = "9423e7b8-b496-41e8-b9c9-416b74823db9", Name = "User", NormalizedName = "USER", ConcurrencyStamp = null },
+                new IdentityRole { Id = "9423e7b8-b496-41e8-b9c9-416b74823db9", Name = "Manager", NormalizedName = "USER", ConcurrencyStamp = null },
                 new IdentityRole { Id = "049c2135-b769-4ea5-986a-a5231330fe46", Name = nameof(Service1c), NormalizedName = nameof(Service1c).ToUpper(), ConcurrencyStamp = null }
                 );
 

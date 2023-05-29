@@ -22,9 +22,12 @@
                 @context.CountFact @detail
             </div>
         </TemplateColumn>
-        <TemplateColumn Title="Изменить" Class="d-print-none">
-            <button class="btn btn-outline-primary" @onclick="@(() => EditDoc(context))"><i class="bi bi-pencil-square"></i></button>
-        </TemplateColumn>
+        @if (DocVm?.Value?.Status?.CanChange ?? false)
+        {
+            <TemplateColumn Title="Изменить" Class="d-print-none">
+                <button class="btn btn-outline-primary" @onclick="@(() => EditDoc(context))"><i class="bi bi-pencil-square"></i></button>
+            </TemplateColumn>
+        }        
     </QuickGrid>
 </div>
 
@@ -33,7 +36,8 @@
 @code {
     [Parameter] public DocOutVm? DocVm { get; set; }
     [Parameter] public List<ChangeReasonOut>? ChangeReasons { get; set; }
-    private EditDialog? EditDialog { get; set; }    
+    private EditDialog? EditDialog { get; set; }
+    private bool? canChange;
 
     string? nameFilter;
     IQueryable<DocOutProduct>? FilteredProducts
