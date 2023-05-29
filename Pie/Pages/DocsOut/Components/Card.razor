@@ -40,7 +40,9 @@
             <div>
                 @if (@Doc?.Comment != null && !string.IsNullOrEmpty(@Doc?.Comment))
                 {
-                    <i class="bi bi-chat-left-text"></i><span> @Doc?.Comment</span>
+                    <i class="bi bi-chat-left-text"></i>
+
+                    <span> @Doc?.Comment</span>
                 }
             </div>
         </div>
@@ -69,6 +71,8 @@
 
         if (Doc.ShipDateTime != new DateTime() && Doc.ShipDateTime < DateTime.Now)
             cardColor = "danger";
+        else
+            cardColor = "success";
     }
 
     private void OnClick(Guid id)
