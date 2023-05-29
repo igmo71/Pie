@@ -20,10 +20,10 @@
                 @Html.DisplayNameFor(model => model.Statuses[0].Key)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Statuses[0].CanChange)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Statuses[0].Active)
+            </th>
+            <th title="Разрешает изменение фактического количества в документе">
+                @Html.DisplayNameFor(model => model.Statuses[0].CanChange)
             </th>
             <th></th>
         </tr>
@@ -39,10 +39,10 @@
                     @Html.DisplayFor(modelItem => item.Key)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CanChange)
+                    @Html.DisplayFor(modelItem => item.Active)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Active)
+                    @Html.DisplayFor(modelItem => item.CanChange)
                 </td>
                 <td>
                     <a asp-page="./Edit" asp-route-id="@item.Id">Изменить</a> |

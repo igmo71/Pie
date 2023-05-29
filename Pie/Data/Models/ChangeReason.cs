@@ -8,8 +8,10 @@ namespace Pie.Data.Models
 
         [Required]
         [MaxLength(100)]
+        [Display(Name = "Наименование")]
         public string? Name { get; set; }
 
+        [Display(Name = "Активен")]
         public bool Active { get; set; }
     }
 }

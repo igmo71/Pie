@@ -1,8 +1,12 @@
-﻿<ul class="navbar-nav">
+﻿@using Pie.Data.Services.Identity;
+@inject AppUserService AppUserService
+
+<ul class="navbar-nav">
     <AuthorizeView>
         <Authorized>
             <li class="nav-item">
                 <a class="nav-link text-dark" href="Identity/Account/Manage" title="Manage">Привет @context.User.Identity?.Name!</a>
+               @* <a class="nav-link text-dark" href="Identity/Account/Manage" title="Manage">Привет @fullUserName!</a> *@
             </li>
             <li class="nav-item">
                 <form class="form-inline" action="Identity/Account/Logout" method="post">
@@ -38,3 +42,11 @@
         </NotAuthorized>
     </AuthorizeView>
 </ul>
+
+@* @code{
+    private string? fullUserName;
+    protected override async Task OnInitializedAsync()
+    {
+        fullUserName = await AppUserService.GetCurrentUserNameAsync();
+    }
+} *@

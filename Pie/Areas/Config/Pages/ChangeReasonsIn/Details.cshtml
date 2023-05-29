@@ -2,13 +2,13 @@
 @model Pie.Areas.Config.Pages.ChangeReasonsIn.DetailsModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Детали";
 }
 
-<h1>Details</h1>
+<h1>Детали</h1>
 
 <div>
-    <h4>ChangeReasonIn</h4>
+    <h4>Причины изменения приходника</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -26,6 +26,6 @@
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.ChangeReason.Id">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Edit" asp-route-id="@Model.ChangeReason.Id">Изменить</a> |
+    <a asp-page="./Index">Назад к списку</a>
 </div>
