@@ -2,12 +2,12 @@
 @model Pie.Areas.Config.Pages.StatusesOut.EditModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Изменить";
 }
 
-<h1>Edit</h1>
+<h1>Изменить</h1>
 
-<h4>StatusOut</h4>
+<h4>Статус расходника</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -26,18 +26,23 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Status.CanChange" /> @Html.DisplayNameFor(model => model.Status.CanChange)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
                     <input class="form-check-input" asp-for="Status.Active" /> @Html.DisplayNameFor(model => model.Status.Active)
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Index">Назад к списку</a>
 </div>
 
 @section Scripts {
