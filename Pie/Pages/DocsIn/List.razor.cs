@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Pie.Data.Models;
+using Pie.Data.Models.Identity;
 using Pie.Data.Models.In;
 using Pie.Data.Services;
+using Pie.Data.Services.Identity;
 using Pie.Data.Services.In;
 
 namespace Pie.Pages.DocsIn
@@ -14,21 +16,37 @@ namespace Pie.Pages.DocsIn
         [Inject] public required WarehouseService WarehouseService { get; set; }
         [Inject] public required SearchInParameters SearchParameters { get; set; }
         [Inject] public required NavigationManager NavigationManager { get; set; }
+        [Inject] public required AppUserService AppUserService { get; set; }
 
         private Dictionary<int, List<DocIn>> docs = new();
         private List<QueueIn> queues = new();
         private List<StatusIn> statuses = new();
         private Dictionary<int, int>? countByStatus = new();
         private List<Warehouse> warehouses = new();
+        private AppUser? currentUser;
 
         protected async override Task OnInitializedAsync()
         {
+            await GetCurrentUserAsync();
             await GetStatusesAsync();
             await GetQueuesAsync();
             await GetWarehousesAsync();
+            SetSearchParameters();
             await GetCountByStatusAsync();
             await GetDocsAsync();
             await base.OnInitializedAsync();
+        }
+
+        private void SetSearchParameters()
+        {
+            if (currentUser?.WarehouseId != null)
+                SearchParameters.WarehouseId = currentUser.WarehouseId;
+            SearchParameters.StatusKey = statuses.Min(s => s.Key);
+        }
+
+        private async Task GetCurrentUserAsync()
+        {
+            currentUser = await AppUserService.GetCurrentUserAsync();
         }
 
         private async Task GetStatusesAsync()

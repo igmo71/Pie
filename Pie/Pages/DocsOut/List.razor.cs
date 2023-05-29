@@ -4,7 +4,6 @@ using Pie.Data.Models.Identity;
 using Pie.Data.Models.Out;
 using Pie.Data.Services;
 using Pie.Data.Services.Identity;
-using Pie.Data.Services.In;
 using Pie.Data.Services.Out;
 
 namespace Pie.Pages.DocsOut
@@ -29,10 +28,10 @@ namespace Pie.Pages.DocsOut
         protected async override Task OnInitializedAsync()
         {
             await GetCurrentUserAsync();
-            SetSearchParameters();
             await GetStatusesAsync();
             await GetQueuesAsync();
             await GetWarehousesAsync();
+            SetSearchParameters();
             await GetCountByStatusAsync();
             await GetDocsAsync();
             await base.OnInitializedAsync();
@@ -42,6 +41,7 @@ namespace Pie.Pages.DocsOut
         {
             if (currentUser?.WarehouseId != null)
                 SearchParameters.WarehouseId = currentUser.WarehouseId;
+            SearchParameters.StatusKey = statuses.Min(s => s.Key);
         }
 
         private async Task GetCurrentUserAsync()
