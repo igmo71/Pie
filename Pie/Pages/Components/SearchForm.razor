@@ -13,7 +13,7 @@
     @if (SearchParameters.IsForm)
     {
         <div class="row">
-            <div class="col">
+            <div class="col-auto">
                 <div class="input-group">
                     <InputText class="form-control" @bind-Value="@SearchParameters.SearchTerm" placeholder="строка поиска" />
                     <button class="btn btn-outline-secondary" type="button" @onclick="ClearSearchByTermAndSubmit" title="Очистить">
@@ -21,7 +21,7 @@
                     </button>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-auto">
                 <div class="input-group">
                     @if (Warehouses != null)
                     {
@@ -38,14 +38,14 @@
                     </button>
                 </div>
             </div>
-            <div class="col">
+            <div class="col-auto">
                 <button class="btn btn-primary" type="button" @onclick="SearcHandle" title="Поиск">
                     <span><i class="bi bi-search"></i></span><span> Поиск</span>
                 </button>
             </div>
-            <div class="col">
+            <div class="col-auto">
                 <button class="btn btn-primary" type="button" @onclick="ClearFormAndSubmit" title="Очистить все">
-                    <span><i class="bi bi-backspace"></i></span><span> Очистить поиск</span>
+                    <span><i class="bi bi-backspace"></i></span><span> Сбросить поиск</span>
                 </button>
             </div>
         </div>

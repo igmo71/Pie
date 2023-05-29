@@ -61,6 +61,31 @@ namespace Pie.Data.Services.Identity
             return name;
         }
 
+        public async Task<Guid?> GetCurrentUserWarehouseIdAsync()
+        {
+            var user = await GetCurrentUserAsync();
+            var result = user?.WarehouseId;
+            return result;
+        }
+
+        public async Task<bool> IsAdmin(AppUser user)
+        {
+            var result = await _userManager.IsInRoleAsync(user, "Admin");
+            return result;
+        }
+
+        public async Task<bool> IsManager(AppUser user)
+        {
+            var result = await _userManager.IsInRoleAsync(user, "Manager");
+            return result;
+        }
+
+        public async Task<bool> IsAdminOrManager(AppUser user)
+        {
+            var result = await IsAdmin(user) || await IsManager(user);
+            return result;
+        }
+
         public async Task<AppUser?> GetUserAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);

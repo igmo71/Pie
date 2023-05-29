@@ -6,11 +6,16 @@ namespace Pie.Data.Services.In
     public class QueueInService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
         private readonly ILogger<QueueInService> _logger;
 
-        public QueueInService(ApplicationDbContext context, ILogger<QueueInService> logger)
+        public QueueInService(
+            ApplicationDbContext context,
+            IDbContextFactory<ApplicationDbContext> contextFactory, 
+            ILogger<QueueInService> logger)
         {
             _context = context;
+            _contextFactory = contextFactory;
             _logger = logger;
         }
 
@@ -23,7 +28,9 @@ namespace Pie.Data.Services.In
 
         public async Task<List<QueueIn>> GetListActiveAsync()
         {
-            var queues = await _context.QueuesIn.AsNoTracking().Where(e => e.Active).OrderBy(q => q.Key).ToListAsync();
+            using var context = _contextFactory.CreateDbContext();
+
+            var queues = await context.QueuesIn.AsNoTracking().Where(e => e.Active).OrderBy(q => q.Key).ToListAsync();
 
             return queues;
         }

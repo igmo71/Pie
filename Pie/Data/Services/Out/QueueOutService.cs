@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Pie.Data.Models.Out;
 
 namespace Pie.Data.Services.Out
@@ -6,11 +7,16 @@ namespace Pie.Data.Services.Out
     public class QueueOutService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
         private readonly ILogger<QueueOutService> _logger;
 
-        public QueueOutService(ApplicationDbContext context, ILogger<QueueOutService> logger)
+        public QueueOutService(
+            ApplicationDbContext context,
+            IDbContextFactory<ApplicationDbContext> contextFactory, 
+            ILogger<QueueOutService> logger)
         {
             _context = context;
+            _contextFactory = contextFactory;
             _logger = logger;
         }
 
@@ -23,7 +29,9 @@ namespace Pie.Data.Services.Out
 
         public async Task<List<QueueOut>> GetListActiveAsync()
         {
-            var queues = await _context.QueuesOut.AsNoTracking().Where(e => e.Active).OrderBy(q => q.Key).ToListAsync();
+            using var context = _contextFactory.CreateDbContext();
+
+            var queues = await context.QueuesOut.AsNoTracking().Where(e => e.Active).OrderBy(q => q.Key).ToListAsync();
 
             return queues;
         }

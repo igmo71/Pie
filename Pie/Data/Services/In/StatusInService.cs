@@ -6,11 +6,16 @@ namespace Pie.Data.Services.In
     public class StatusInService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;   
         private readonly ILogger<StatusInService> _logger;
 
-        public StatusInService(ApplicationDbContext context, ILogger<StatusInService> logger)
+        public StatusInService(
+            ApplicationDbContext context,
+            IDbContextFactory<ApplicationDbContext> contextFactory, 
+            ILogger<StatusInService> logger)
         {
             _context = context;
+            _contextFactory = contextFactory;
             _logger = logger;
         }
 
@@ -23,7 +28,9 @@ namespace Pie.Data.Services.In
 
         public async Task<List<StatusIn>> GetListActiveAsync()
         {
-            var statuses = await _context.StatusesIn.AsNoTracking().Where(e => e.Active).OrderBy(s => s.Key).ToListAsync();
+            using var context = _contextFactory.CreateDbContext();
+
+            var statuses = await context.StatusesIn.AsNoTracking().Where(e => e.Active).OrderBy(s => s.Key).ToListAsync();
 
             return statuses;
         }

@@ -6,11 +6,16 @@ namespace Pie.Data.Services.Out
     public class StatusOutService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
         private readonly ILogger<StatusOutService> _logger;
 
-        public StatusOutService(ApplicationDbContext context, ILogger<StatusOutService> logger)
+        public StatusOutService(
+            ApplicationDbContext context,
+            IDbContextFactory<ApplicationDbContext> contextFactory, 
+            ILogger<StatusOutService> logger)
         {
             _context = context;
+            _contextFactory = contextFactory;
             _logger = logger;
         }
 
@@ -23,7 +28,9 @@ namespace Pie.Data.Services.Out
 
         public async Task<List<StatusOut>> GetListActiveAsync()
         {
-            var statuses = await _context.StatusesOut.AsNoTracking().Where(e => e.Active).OrderBy(s => s.Key).ToListAsync();
+            using var context = _contextFactory.CreateDbContext();
+
+            var statuses = await context.StatusesOut.AsNoTracking().Where(e => e.Active).OrderBy(s => s.Key).ToListAsync();
 
             return statuses;
         }
