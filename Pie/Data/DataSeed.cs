@@ -89,7 +89,7 @@ namespace Pie.Data
                     LockoutEnd = null,
                     AccessFailedCount = 0,
                     WarehouseId = null
-                }
+                },
                 new AppUser
                 {
                     Id = "d90e31c9-e19f-4ee7-9580-d856daba6d02",

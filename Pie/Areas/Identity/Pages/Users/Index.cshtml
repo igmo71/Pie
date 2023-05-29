@@ -6,10 +6,24 @@
 }
 
 <h2>Пользователи</h2>
-
-<p>
+<form>
+    <div class="form-group mb-2">
+        <div class="row">
+            <div class="col-auto">
+                <select asp-for="WarehouseId" class="form-control"
+                        asp-items="@Model.WarehouseSL">
+                    <option value="@Guid.Empty">- Все -</option>
+                    <option value="">- Склад не указан -</option>
+                </select>
+            </div>
+            <div class="col-auto"><input class="btn btn-primary" type="submit" value="Поиск" /></div>
+            <div class="col-auto"><a class="btn btn-primary" asp-page="/Users/Register">Создать</a></div>
+        </div>        
+    </div>
+</form>
+@* <p>
     <a asp-page="/Users/Register">Создать</a>
-</p>
+</p> *@
 <table class="table">
     <thead>
         <tr>
@@ -55,7 +69,8 @@
                 </td>
                 <td>
                     @*@Html.DisplayFor(modelItem => item.Roles)*@
-                    @if (item.Roles != null){
+                    @if (item.Roles != null)
+                    {
                         @foreach (var role in item.Roles)
                         {
                             <span> @role </span>

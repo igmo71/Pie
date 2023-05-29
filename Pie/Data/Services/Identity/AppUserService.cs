@@ -132,6 +132,7 @@ namespace Pie.Data.Services.Identity
             {
                 AppUserDto userDto = AppUserDto.MapFromAppUser(user);
                 userDto.Warehouse = (await _warehouseService.GetAsync(user.WarehouseId))?.Name;
+                userDto.WarehouseId = user.WarehouseId;
                 userDto.Roles = (await GetUserRolesAsync(user.Id))?.Value?.ToList();
                 userDtos.Add(userDto);
             }

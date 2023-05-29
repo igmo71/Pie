@@ -17,6 +17,7 @@ namespace Pie.Data.Models.Identity
 
         [Display(Name = "Склад")]
         public string? Warehouse { get; set; }
+        public Guid? WarehouseId { get; set; }
 
         [Display(Name = "Активен")]
         public bool Active { get; set; }
@@ -33,7 +34,7 @@ namespace Pie.Data.Models.Identity
             {
                 Id = user.Id,
                 FirstName = user.FirstName ?? string.Empty,
-                LastName = user.LastName,
+                LastName = user.LastName ?? string.Empty,
                 Email = user.Email ?? string.Empty,
                 Active = user.LockoutEnd == null
             };
