@@ -41,7 +41,8 @@ namespace Pie.Pages.DocsIn
         {
             if (currentUser?.WarehouseId != null)
                 SearchParameters.WarehouseId = currentUser.WarehouseId;
-            SearchParameters.StatusKey = statuses.Min(s => s.Key);
+            if (SearchParameters.StatusKey == null)
+                SearchParameters.StatusKey = statuses.Min(s => s.Key);
         }
 
         private async Task GetCurrentUserAsync()

@@ -4,6 +4,7 @@ using Pie.Data.Models.Identity;
 using Pie.Data.Models.Out;
 using Pie.Data.Services;
 using Pie.Data.Services.Identity;
+using Pie.Data.Services.In;
 using Pie.Data.Services.Out;
 
 namespace Pie.Pages.DocsOut
@@ -41,7 +42,8 @@ namespace Pie.Pages.DocsOut
         {
             if (currentUser?.WarehouseId != null)
                 SearchParameters.WarehouseId = currentUser.WarehouseId;
-            SearchParameters.StatusKey = statuses.Min(s => s.Key);
+            if (SearchParameters.StatusKey == null)
+                SearchParameters.StatusKey = statuses.Min(s => s.Key);
         }
 
         private async Task GetCurrentUserAsync()
@@ -70,7 +72,7 @@ namespace Pie.Pages.DocsOut
         }
 
         private async Task GetDocsAsync()
-        {            
+        {
             docs = await DocService.GetDictionaryByQueueAsync(SearchParameters);
         }
 
