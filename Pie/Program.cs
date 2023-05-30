@@ -135,7 +135,18 @@ namespace Pie
                 });
             });
 
-            builder.Services.AddRazorPages()
+            builder.Services.AddRazorPages(options =>
+            {
+                options.Conventions.AuthorizeAreaFolder("Config", "/ChangeReasonsIn");
+                options.Conventions.AuthorizeAreaFolder("Config", "/ChangeReasonsOut");
+                options.Conventions.AuthorizeAreaFolder("Config", "/QueuesIn");
+                options.Conventions.AuthorizeAreaFolder("Config", "/QueuesOut");
+                options.Conventions.AuthorizeAreaFolder("Config", "/StatusesIn");
+                options.Conventions.AuthorizeAreaFolder("Config", "/StatusesOut");
+
+                options.Conventions.AuthorizeAreaFolder("History", "/DocsIn");
+                options.Conventions.AuthorizeAreaFolder("History", "/DocsOut");
+            })
                 .AddRazorRuntimeCompilation();
 
             builder.Services.AddServerSideBlazor();

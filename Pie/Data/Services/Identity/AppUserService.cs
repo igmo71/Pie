@@ -117,7 +117,7 @@ namespace Pie.Data.Services.Identity
         public async Task<string?> GetUserIdByBarcodeOrCurrentAsync(string? barcode)
         {
             var result = await GetUserIdByBarcodeAsync(barcode);
-            return result ?? CurrentUserId 
+            return result ?? CurrentUserId
                 ?? "d90e31c9-e19f-4ee7-9580-d856daba6d02"; // TODO: Remove for Release!!!
         }
 
@@ -233,11 +233,9 @@ namespace Pie.Data.Services.Identity
                 await BlockAsync(updateUserDto.Id);
             else
                 await UnblockAsync(updateUserDto.Id);
-            if (updateUserDto.Roles != null && updateUserDto.Roles.Count > 0)
-            {
-                List<string> roles = updateUserDto.Roles.Where(kvp => kvp.Value).Select(kvp => kvp.Key).ToList();
-                await AddRolesAsync(user.Id, roles);
-            }
+
+            List<string> roles = updateUserDto.Roles == null ? new List<string>() : updateUserDto.Roles.Where(kvp => kvp.Value).Select(kvp => kvp.Key).ToList();
+            await AddRolesAsync(user.Id, roles);
 
             IdentityResult identityResult = await _userManager.UpdateAsync(user);
 
