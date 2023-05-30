@@ -33,7 +33,7 @@ namespace Pie.Controllers.Identity
         public async Task<IActionResult> CreateRole(string name)
         {
             ServiceResult result = await _userService.CreateRoleAsync(name);
-            if(!result.IsSuccess)
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(name);

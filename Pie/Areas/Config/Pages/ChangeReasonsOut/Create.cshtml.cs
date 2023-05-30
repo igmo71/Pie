@@ -22,7 +22,7 @@ namespace Pie.Areas.Config.Pages.ChangeReasonsOut
         [BindProperty]
         public ChangeReasonOut ChangeReason { get; set; } = default!;
 
-        
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

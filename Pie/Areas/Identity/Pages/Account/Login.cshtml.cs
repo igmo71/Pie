@@ -6,11 +6,8 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NetBarcode;
 using Pie.Common;
 using Pie.Data.Models.Identity;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Pie.Areas.Identity.Pages.Account

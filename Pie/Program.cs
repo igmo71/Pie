@@ -83,7 +83,7 @@ namespace Pie
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
                         ValidAudience = builder.Configuration["JWT:ValidAudience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:IssuerSigningKey"] 
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:IssuerSigningKey"]
                             ?? throw new ApplicationException("Issuer Signing Key not found."))),
                         ValidateLifetime = true
                     };
@@ -99,7 +99,7 @@ namespace Pie
                 options.Encoder = JavaScriptEncoder.Create(new TextEncoderSettings(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic));
             });
 
-            builder.Services.AddControllers()                
+            builder.Services.AddControllers()
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;

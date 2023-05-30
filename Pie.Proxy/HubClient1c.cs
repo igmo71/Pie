@@ -67,9 +67,10 @@ namespace Pie.Proxy
 
         public async Task SendMessageAsync(string message)
         {
-            if(_hubConnection.State == HubConnectionState.Connected) { 
-            var result = await _hubConnection.InvokeAsync<string>("GetMessage", message);
-            _logger.LogInformation(result);
+            if (_hubConnection.State == HubConnectionState.Connected)
+            {
+                var result = await _hubConnection.InvokeAsync<string>("GetMessage", message);
+                _logger.LogInformation(result);
             }
         }
 
@@ -77,9 +78,9 @@ namespace Pie.Proxy
         {
             string request = input[0] as string ?? throw new ApplicationException("HubClient OnPostDocInDto - Request is Empty");
 
-                string response = await _httpService1c.SendInAsync(request);
+            string response = await _httpService1c.SendInAsync(request);
 
-                return response;
+            return response;
         }
 
         private async Task<string?> OnPostDocOutDto(object?[] input)

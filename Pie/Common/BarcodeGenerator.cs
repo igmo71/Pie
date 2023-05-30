@@ -1,6 +1,4 @@
-﻿using NetBarcode;
-
-namespace Pie.Common
+﻿namespace Pie.Common
 {
     public class BarcodeGenerator
     {

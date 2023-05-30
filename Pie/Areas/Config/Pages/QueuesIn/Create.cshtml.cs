@@ -21,7 +21,7 @@ namespace Pie.Areas.Config.Pages.QueuesIn
         {
             return Page();
         }
-        
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using NuGet.Packaging.Signing;
 using Pie.Common;
 using Pie.Data.Models.Identity;
 using System.IdentityModel.Tokens.Jwt;

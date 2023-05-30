@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Pie.Connectors.Connector1c;
 using Pie.Data;
 using Pie.Data.Models.Out;
-using System.Data;
 
 namespace Pie.Controllers.Out
 {

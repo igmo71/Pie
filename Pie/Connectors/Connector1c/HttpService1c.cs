@@ -38,7 +38,7 @@ namespace Pie.Connectors.Connector1c
         }
 
         public async Task<string> SendInAsync(string request)
-        {            
+        {
             StringContent stringContent = new(request, Encoding.UTF8, MediaTypeNames.Application.Json);
 
             string? requestUri = $"{_client1cConfig.HttpService}/{nameof(DocIn)}";
@@ -49,11 +49,11 @@ namespace Pie.Connectors.Connector1c
 
             if (!httpResponseMessage.IsSuccessStatusCode)
             {
-                _logger.LogError("HttpService1c SendInAsync - {ResponseStatusCode} {@RequestMessage} {@ResponseContent}", 
+                _logger.LogError("HttpService1c SendInAsync - {ResponseStatusCode} {@RequestMessage} {@ResponseContent}",
                     httpResponseMessage.StatusCode, httpResponseMessage.RequestMessage, response);
                 throw new ApplicationException($"Ошибка запроса к 1С ({httpResponseMessage.StatusCode})");
             }
-            
+
             return response;
         }
 

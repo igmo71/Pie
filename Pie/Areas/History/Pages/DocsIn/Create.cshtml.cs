@@ -26,7 +26,7 @@ namespace Pie.Areas.History.Pages.DocsIn
         [BindProperty]
         public DocInHistory DocHistory { get; set; } = default!;
 
-        
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

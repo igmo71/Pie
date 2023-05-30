@@ -28,7 +28,7 @@ namespace Pie.Controllers.Identity
         public async Task<IActionResult> GetUserDtoAsync(string id)
         {
             AppUserDto? userDto = await _userService.GetUserDtoAsync(id);
-            if(userDto == null)
+            if (userDto == null)
                 return NotFound();
 
             return Ok(userDto);

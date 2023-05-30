@@ -18,7 +18,7 @@ namespace Pie.Areas.History.Pages.DocsIn
         public Guid? DocId { get; set; }
         public Guid? Id { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(Guid? docId, Guid? id )
+        public async Task<IActionResult> OnGetAsync(Guid? docId, Guid? id)
         {
             if (docId == null || id == null)
             {

@@ -25,7 +25,7 @@ namespace Pie.Areas.Config.Pages.StatusesOut
             var status = await _statusService.GetAsync((Guid)id);
 
             if (status == null)
-                return NotFound();            
+                return NotFound();
             else
                 Status = status;
 

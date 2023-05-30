@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Pie.Data.Models.In;
 using Pie.Data.Models.Out;
-using Pie.Data.Services;
-using System.Net.Http;
 using System.Text.Json;
 
 namespace Pie.Connectors.Connector1c
@@ -18,9 +16,9 @@ namespace Pie.Connectors.Connector1c
         private readonly IHttpClientFactory _httpClientFactory;
 
         public Service1c(
-            HttpService1c httpService1c, 
-            HubService1c hubService1c, 
-            IConfiguration configuration, 
+            HttpService1c httpService1c,
+            HubService1c hubService1c,
+            IConfiguration configuration,
             ILogger<Service1c> logger,
             IOptions<JsonSerializerOptions> jsonSerializerOptions
             ,

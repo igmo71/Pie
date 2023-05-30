@@ -11,7 +11,7 @@ namespace Pie.Data.Services
             services.AddSingleton<WeatherForecastService>();
 
             services.AddScoped<AppUserService>();
-            
+
             services.AddScoped<BaseDocService>();
             services.AddScoped<ProductService>();
             services.AddScoped<WarehouseService>();

@@ -1,7 +1,4 @@
-﻿using NetBarcode;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace Pie.Common
 {
@@ -50,7 +47,7 @@ namespace Pie.Common
         {
             if (!BigInteger.TryParse(numericString, out BigInteger bigInt))
                 throw new ApplicationException($"BigInteger. Failure to parse ({numericString}) ");
-            
+
             string result = "";
 
             while (bigInt > 0)
@@ -65,7 +62,7 @@ namespace Pie.Common
 
             if (!Guid.TryParse(result, out Guid guid))
                 throw new ApplicationException($"Guid. Failure to parse ({result}) ");
-           
+
             return guid;
         }
 

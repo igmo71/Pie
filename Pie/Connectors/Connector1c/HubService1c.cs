@@ -2,7 +2,7 @@
 
 namespace Pie.Connectors.Connector1c
 {
-    public class HubService1c: IDisposable
+    public class HubService1c : IDisposable
     {
         private readonly IHubContext<Hub1c> _hubContext;
         private readonly ILogger<HubService1c> _logger;

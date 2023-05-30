@@ -135,8 +135,8 @@ namespace Pie.Data.Services.In
         }
 
         public async Task<DocIn> CreateAsync(DocIn doc)
-        {   
-            if (Exists(doc.Id)) 
+        {
+            if (Exists(doc.Id))
                 await DeleteAsync(doc.Id);
 
             _context.DocsIn.Add(doc);
@@ -172,7 +172,7 @@ namespace Pie.Data.Services.In
                 ?? throw new ApplicationException($"DocInService DeleteDocAsync NotFount {id}");
 
             _context.DocsIn.Remove(doc);
-            
+
             await _context.SaveChangesAsync();
         }
 

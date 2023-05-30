@@ -33,5 +33,5 @@ namespace Pie.Data.Models.Identity
     }
 
     public class CreateUserResult : ServiceResult
-    {}
+    { }
 }

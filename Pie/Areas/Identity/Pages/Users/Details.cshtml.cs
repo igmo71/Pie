@@ -24,8 +24,8 @@ namespace Pie.Areas.Identity.Pages.Users
             var user = await _userService.GetUserDtoAsync(id);
             if (user == null)
                 return NotFound();
-                
-                AppUserDto = user;
+
+            AppUserDto = user;
             return Page();
         }
     }

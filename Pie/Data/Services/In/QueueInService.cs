@@ -11,7 +11,7 @@ namespace Pie.Data.Services.In
 
         public QueueInService(
             ApplicationDbContext context,
-            IDbContextFactory<ApplicationDbContext> contextFactory, 
+            IDbContextFactory<ApplicationDbContext> contextFactory,
             ILogger<QueueInService> logger)
         {
             _context = context;
@@ -37,7 +37,7 @@ namespace Pie.Data.Services.In
 
         public async Task<QueueIn?> GetAsync(Guid id)
         {
-            var queue = await _context.QueuesIn.FindAsync(id);  
+            var queue = await _context.QueuesIn.FindAsync(id);
 
             return queue;
         }
@@ -53,7 +53,7 @@ namespace Pie.Data.Services.In
         {
             if (Exists(queue.Id))
             {
-                await UpdateAsync( queue);
+                await UpdateAsync(queue);
             }
             else
             {

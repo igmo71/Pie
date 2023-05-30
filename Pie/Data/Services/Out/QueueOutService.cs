@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Pie.Data.Models.Out;
 
 namespace Pie.Data.Services.Out
@@ -12,7 +11,7 @@ namespace Pie.Data.Services.Out
 
         public QueueOutService(
             ApplicationDbContext context,
-            IDbContextFactory<ApplicationDbContext> contextFactory, 
+            IDbContextFactory<ApplicationDbContext> contextFactory,
             ILogger<QueueOutService> logger)
         {
             _context = context;

@@ -61,7 +61,7 @@ namespace Pie.Data.Services.Out
         public async Task<string?> GetAtWorkUserNameAsync(Guid docId)
         {
             var userId = await GetAtWorkUserIdAsync(docId);
-            if(userId == null) return null;
+            if (userId == null) return null;
             string? userName = await _userService.GetUserNameAsync(userId);
             return userName;
         }

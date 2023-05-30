@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Pie.Connectors.Connector1c;
 using Pie.Data.Models.In;
 using Pie.Data.Services.In;
-using System.Data;
 
 namespace Pie.Controllers.In
 {

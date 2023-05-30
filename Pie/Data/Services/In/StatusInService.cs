@@ -6,12 +6,12 @@ namespace Pie.Data.Services.In
     public class StatusInService
     {
         private readonly ApplicationDbContext _context;
-        private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;   
+        private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
         private readonly ILogger<StatusInService> _logger;
 
         public StatusInService(
             ApplicationDbContext context,
-            IDbContextFactory<ApplicationDbContext> contextFactory, 
+            IDbContextFactory<ApplicationDbContext> contextFactory,
             ILogger<StatusInService> logger)
         {
             _context = context;

@@ -31,7 +31,7 @@ namespace Pie.Areas.Identity.Pages.Users
 
             List<Warehouse> warehouses = await _warehouseService.GetListActiveAsync();
             WarehouseSL = new SelectList(warehouses, nameof(Warehouse.Id), nameof(Warehouse.Name));
-            
+
             var userDto = await _userService.GetUpdateUserDtoAsync(id);
             if (userDto == null)
             {
