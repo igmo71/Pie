@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Pie.Data.Models.Identity;
-using Pie.Data.Models.Out;
+using Pie.Data.Models.In;
 
-namespace Pie.Areas.History.Pages.DocsOut
+namespace Pie.Areas.History.Pages.DocsIn
 {
     public class CreateModel : PageModel
     {
@@ -17,14 +17,14 @@ namespace Pie.Areas.History.Pages.DocsOut
 
         public IActionResult OnGet()
         {
-            ViewData["DocId"] = new SelectList(_context.DocsOut, "Id", "Name");
-            ViewData["StatusKey"] = new SelectList(_context.StatusesOut, "Key", "Name");
+            ViewData["DocId"] = new SelectList(_context.DocsIn, "Id", "Name");
+            ViewData["StatusKey"] = new SelectList(_context.StatusesIn, "Key", "Name");
             ViewData["UserId"] = new SelectList(_context.Users, "Id", $"{nameof(AppUser.FullName)}");
             return Page();
         }
 
         [BindProperty]
-        public DocOutHistory DocHistory { get; set; } = default!;
+        public DocInHistory DocHistory { get; set; } = default!;
 
         
         public async Task<IActionResult> OnPostAsync()
@@ -34,7 +34,7 @@ namespace Pie.Areas.History.Pages.DocsOut
                 return Page();
             }
 
-            _context.DocsOutHistory.Add(DocHistory);
+            _context.DocsInHistory.Add(DocHistory);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

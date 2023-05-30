@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Pie.Connectors.Connector1c;
 using Pie.Data.Models.Out;
 using Pie.Data.Services.Out;
+using System.Data;
 
 namespace Pie.Controllers.Out
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(Service1c))]
     [Route("api/[controller]")]
     [ApiController]
     public class QueuesOutController : ControllerBase

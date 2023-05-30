@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Pie.Data.Models.Out;
+using Pie.Data.Models.In;
 
-namespace Pie.Areas.History.Pages.DocsOut
+namespace Pie.Areas.History.Pages.DocsIn
 {
     public class DeleteModel : PageModel
     {
@@ -15,7 +15,7 @@ namespace Pie.Areas.History.Pages.DocsOut
         }
 
         [BindProperty]
-        public DocOutHistory DocHistory { get; set; } = default!;
+        public DocInHistory DocHistory { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -24,7 +24,7 @@ namespace Pie.Areas.History.Pages.DocsOut
                 return NotFound();
             }
 
-            var docHistory = await _context.DocsOutHistory.FirstOrDefaultAsync(m => m.Id == id);
+            var docHistory = await _context.DocsInHistory.FirstOrDefaultAsync(m => m.Id == id);
 
             if (docHistory == null)
             {
@@ -44,11 +44,11 @@ namespace Pie.Areas.History.Pages.DocsOut
                 return NotFound();
             }
 
-            var docHistory = await _context.DocsOutHistory.FindAsync(id);
+            var docHistory = await _context.DocsInHistory.FindAsync(id);
             if (docHistory != null)
             {
                 DocHistory = docHistory;
-                _context.DocsOutHistory.Remove(DocHistory);
+                _context.DocsInHistory.Remove(DocHistory);
                 await _context.SaveChangesAsync();
             }
 

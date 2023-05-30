@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Pie.Data.Models.Out;
+using Pie.Data.Models.In;
 
-namespace Pie.Areas.History.Pages.DocsOut
+namespace Pie.Areas.History.Pages.DocsIn
 {
     public class DetailsModel : PageModel
     {
@@ -14,7 +14,7 @@ namespace Pie.Areas.History.Pages.DocsOut
             _context = context;
         }
 
-        public DocOutHistory DocHistory { get; set; } = default!;
+        public DocInHistory DocHistory { get; set; } = default!;
         public Guid? DocId { get; set; }
         public Guid? Id { get; set; }
 
@@ -28,7 +28,7 @@ namespace Pie.Areas.History.Pages.DocsOut
             DocId = docId;
             Id = id;
 
-            var docHistory = await _context.DocsOutHistory.AsNoTracking()
+            var docHistory = await _context.DocsInHistory.AsNoTracking()
                 .Include(d => d.Status)
                 .Include(d => d.User)
                 .FirstOrDefaultAsync(m => m.Id == id);

@@ -1,22 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
-using Pie.Data.Models.Out;
-using Pie.Data.Services.Out;
+using Pie.Data.Models.In;
+using Pie.Data.Services.In;
 
-namespace Pie.Areas.History.Pages.DocsOut
+namespace Pie.Areas.History.Pages.DocsIn
 {
     public class IndexModel : PageModel
     {
-        private readonly DocOutHistoryService _docHistoryService;
-        private readonly DocOutProductHistoryService _docProductHistoryService;
+        private readonly DocInHistoryService _docHistoryService;
+        private readonly DocInProductHistoryService _docProductHistoryService;
 
-        public IndexModel(DocOutHistoryService docHistoryService, DocOutProductHistoryService docProductHistoryService)
+        public IndexModel(DocInHistoryService docHistoryService, DocInProductHistoryService docProductHistoryService)
         {
             _docHistoryService = docHistoryService;
             _docProductHistoryService = docProductHistoryService;
         }
 
-        public IList<DocOutHistory> DocHistory { get; set; } = default!;
-        public IList<DocOutProductHistory> DocProductHistory { get; set; } = default!;
+        public IList<DocInHistory> DocHistory { get; set; } = default!;
+        public IList<DocInProductHistory> DocProductHistory { get; set; } = default!;
         public string? CurrentFilter { get; set; }
         public Guid? DocId { get; set; }
 

@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Pie.Data.Models.Out;
+using Pie.Data.Models.In;
 
-namespace Pie.Areas.History.Pages.DocsOut
+namespace Pie.Areas.History.Pages.DocsIn
 {
     public class EditModel : PageModel
     {
@@ -16,7 +16,7 @@ namespace Pie.Areas.History.Pages.DocsOut
         }
 
         [BindProperty]
-        public DocOutHistory DocHistory { get; set; } = default!;
+        public DocInHistory DocHistory { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -25,14 +25,14 @@ namespace Pie.Areas.History.Pages.DocsOut
                 return NotFound();
             }
 
-            var docHistory = await _context.DocsOutHistory.FirstOrDefaultAsync(m => m.Id == id);
+            var docHistory = await _context.DocsInHistory.FirstOrDefaultAsync(m => m.Id == id);
             if (docHistory == null)
             {
                 return NotFound();
             }
             DocHistory = docHistory;
-            ViewData["DocId"] = new SelectList(_context.DocsOut, "Id", "Name");
-            ViewData["StatusKey"] = new SelectList(_context.StatusesOut, "Key", "Name");
+            ViewData["DocId"] = new SelectList(_context.DocsIn, "Id", "Name");
+            ViewData["StatusKey"] = new SelectList(_context.StatusesIn, "Key", "Name");
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return Page();
         }
@@ -54,7 +54,7 @@ namespace Pie.Areas.History.Pages.DocsOut
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!DocOutHistoryExists(DocHistory.Id))
+                if (!DocInHistoryExists(DocHistory.Id))
                 {
                     return NotFound();
                 }
@@ -67,9 +67,9 @@ namespace Pie.Areas.History.Pages.DocsOut
             return RedirectToPage("./Index");
         }
 
-        private bool DocOutHistoryExists(Guid id)
+        private bool DocInHistoryExists(Guid id)
         {
-            return _context.DocsOutHistory.Any(e => e.Id == id);
+            return _context.DocsInHistory.Any(e => e.Id == id);
         }
     }
 }

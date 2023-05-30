@@ -1,5 +1,5 @@
 ﻿@page
-@model Pie.Areas.History.Pages.DocsOut.DetailsModel
+@model Pie.Areas.History.Pages.DocsIn.DetailsModel
 
 @{
     ViewData["Title"] = "Подробно";
@@ -8,14 +8,14 @@
 <h1>Подробно</h1>
 
 <div>
-    <h4>История расходника</h4>
+    <h4>История приходника</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DocHistory.DocName)
         </dt>
         <dd class="col-sm-10">
-            <a href="/DocsOut/Item/@Model.DocId" title="К документу">
+            <a href="/DocsIn/Item/@Model.DocId" title="К документу">
                 @Html.DisplayFor(model => model.DocHistory.DocName)
             </a>
         </dd>
@@ -40,7 +40,7 @@
     </dl>
 </div>
 <div>
-    @*<a asp-page="./Edit" asp-route-id="@Model.DocOutHistory.Id">Edit</a> |*@
+    @*<a asp-page="./Edit" asp-route-id="@Model.DocInHistory.Id">Edit</a> |*@
     <a asp-page="./Index" asp-route-docId="@Model.DocId" title="Назад к списку историй">Назад к списку</a> |
-    <a href="/DocsOut/Item/@Model.DocId" title="К документу">К документу</a>
+    <a href="/DocsIn/Item/@Model.DocId" title="К документу">К документу</a>
 </div>

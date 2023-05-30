@@ -14,25 +14,25 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="DocOutHistory.DocId" class="control-label"></label>
-                <select asp-for="DocOutHistory.DocId" class="form-control" asp-items="ViewBag.DocId"></select>
-                <span asp-validation-for="DocOutHistory.DocId" class="text-danger"></span>
+                <label asp-for="DocHistory.DocId" class="control-label"></label>
+                <select asp-for="DocHistory.DocId" class="form-control" asp-items="ViewBag.DocId"></select>
+                <span asp-validation-for="DocHistory.DocId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DocOutHistory.StatusKey" class="control-label"></label>
-                <select asp-for="DocOutHistory.StatusKey" class="form-control" asp-items="ViewBag.StatusKey"></select>
-                <span asp-validation-for="DocOutHistory.StatusKey" class="text-danger"></span>
+                <label asp-for="DocHistory.StatusKey" class="control-label"></label>
+                <select asp-for="DocHistory.StatusKey" class="form-control" asp-items="ViewBag.StatusKey"></select>
+                <span asp-validation-for="DocHistory.StatusKey" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="DocOutHistory.Id" />
+            <input type="hidden" asp-for="DocHistory.Id" />
             <div class="form-group">
-                <label asp-for="DocOutHistory.DateTime" class="control-label"></label>
-                <input asp-for="DocOutHistory.DateTime" class="form-control" />
-                <span asp-validation-for="DocOutHistory.DateTime" class="text-danger"></span>
+                <label asp-for="DocHistory.DateTime" class="control-label"></label>
+                <input asp-for="DocHistory.DateTime" class="form-control" />
+                <span asp-validation-for="DocHistory.DateTime" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DocOutHistory.UserId" class="control-label"></label>
-                <select asp-for="DocOutHistory.UserId" class="form-control" asp-items="ViewBag.UserId"></select>
-                <span asp-validation-for="DocOutHistory.UserId" class="text-danger"></span>
+                <label asp-for="DocHistory.UserId" class="control-label"></label>
+                <select asp-for="DocHistory.UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                <span asp-validation-for="DocHistory.UserId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
