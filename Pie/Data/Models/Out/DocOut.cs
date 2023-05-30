@@ -8,6 +8,9 @@ namespace Pie.Data.Models.Out
         public List<DocOutProduct> Products { get; set; } = new();
         public List<DocOutBaseDoc> BaseDocs { get; set; } = new();
 
+        public Guid? PartnerId { get; set; }
+        public Partner? Partner { get; set; }
+
         public int? StatusKey { get; set; }
         public StatusOut? Status { get; set; }
 
