@@ -16,14 +16,19 @@
         <a class="btn btn-outline-primary" href="DocsIn/List" title="Назад"><i class="bi bi-reply"></i> Назад</a>
     </div>
     <div class="col-auto">
-        <button class="btn btn-outline-primary" @onclick="@(() => SendDocAsync())" title="Переключить статус"><i class="bi bi-send"></i> Отправить</button>
+        <button class="btn btn-outline-primary" @onclick="@PrintAsync" title="Печать"><i class="bi bi-printer"></i> Печать</button>
     </div>
     <div class="col-auto">
         <a class="btn btn-outline-primary" href="/History/DocsIn?docId=@docVm?.Value?.Id" title="История"><i class="bi bi-info-lg"></i> История</a>
     </div>
-    <div class="col-auto">
-        <button class="btn btn-outline-primary" @onclick="@PrintAsync" title="Печать"><i class="bi bi-printer"></i> Печать</button>
-    </div>
+    <AuthorizeView Roles="Admin, Manager">
+        <div class="col-auto">
+            <button class="btn btn-outline-success" @onclick="@(() => SendDocAsync())" title="Переключить статус"><i class="bi bi-send"></i> Отправить</button>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-outline-danger" @onclick="@(() => DeleteDocAsync())" title="Удалить документ"><i class="bi bi-x-circle"></i> Удалить</button>
+        </div>
+    </AuthorizeView>
 </div>
 
 <div class="row d-flex justify-content-between">
