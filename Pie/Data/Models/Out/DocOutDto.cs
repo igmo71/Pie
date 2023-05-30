@@ -15,6 +15,7 @@
         public DateTime ShipDateTime { get; set; }
         public List<ProductOutDto>? Products { get; set; }
         public List<BaseDocOutDto>? BaseDocs { get; set; }
+        public PartnerDto? Partner { get; set; }
 
         public static DocOut MapToDocOut(DocOutDto dto)
         {
@@ -30,7 +31,8 @@
                 QueueKey = dto.QueueKey,
                 QueueNumber = dto.QueueNumber,
                 Comment = dto.Comment,
-                ShipDateTime = dto.ShipDateTime
+                ShipDateTime = dto.ShipDateTime,
+                PartnerId = dto.Partner?.PartnerId
             };
 
             if (dto.Products != null && dto.Products.Count > 0)
@@ -80,7 +82,8 @@
                 QueueKey = doc.QueueKey,
                 QueueNumber = doc.QueueNumber,
                 Comment = doc.Comment,
-                ShipDateTime = doc.ShipDateTime
+                ShipDateTime = doc.ShipDateTime,
+
             };
 
             if (doc.Products != null && doc.Products.Count > 0)
@@ -112,6 +115,16 @@
                     };
                     dto.BaseDocs.Add(baseDoc);
                 }
+            }
+
+            if (doc.Partner != null)
+            {
+                dto.Partner = new PartnerDto
+                {
+                    PartnerId = doc.PartnerId,
+                    Name = doc.Partner.Name
+
+                };
             }
 
             return dto;
@@ -153,6 +166,26 @@
             }
 
             return list;
+        }
+    }
+
+    public class PartnerDto
+    {
+        public Guid? PartnerId { get; set; }
+        public string? Name { get; set; }
+
+        public static Partner? MapToPartner(PartnerDto dto)
+        {
+            if (dto.PartnerId == null) 
+                return default;
+
+            Partner partner = new()
+            {
+                Id = (Guid)dto.PartnerId,
+                Name = dto.Name
+            };
+
+            return partner;
         }
     }
 }

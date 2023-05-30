@@ -13,6 +13,7 @@ namespace Pie.Data.Services.Out
         private readonly ApplicationDbContext _context;
         private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
         private readonly BaseDocService _baseDocService;
+        private readonly PartnerService _partnerService;
         private readonly QueueOutService _queueService;
         private readonly Service1c _service1c;
         private readonly DocOutHistoryService _docHistoryService;
@@ -26,6 +27,7 @@ namespace Pie.Data.Services.Out
             ApplicationDbContext context,
             IDbContextFactory<ApplicationDbContext> contextFactory,
             BaseDocService baseDocService,
+            PartnerService partnerService,
             QueueOutService queueService,
             Service1c service1c,
             DocOutHistoryService docHistoryService,
@@ -36,6 +38,7 @@ namespace Pie.Data.Services.Out
             _context = context;
             _contextFactory = contextFactory;
             _baseDocService = baseDocService;
+            _partnerService = partnerService;
             _queueService = queueService;
             _service1c = service1c;
             _docHistoryService = docHistoryService;
@@ -43,6 +46,7 @@ namespace Pie.Data.Services.Out
             _logger = logger;
             _jsonOptions = jsonOptions.Value;
         }
+
         public async Task<List<DocOut>> GetListAsync()
         {
             var docs = await _context.DocsOut.AsNoTracking()
@@ -62,6 +66,7 @@ namespace Pie.Data.Services.Out
                 .Include(d => d.Warehouse)
                 .Include(d => d.Products.OrderBy(p => p.LineNumber)).ThenInclude(p => p.Product)
                 .Include(d => d.BaseDocs).ThenInclude(b => b.BaseDoc)
+                .Include(d => d.Partner)
                 .FirstOrDefaultAsync(d => d.Id == id);
             return doc;
         }
@@ -86,6 +91,7 @@ namespace Pie.Data.Services.Out
                 .Include(d => d.Queue)
                 .Include(d => d.Warehouse)
                 .Include(d => d.Products)
+                .Include(d => d.Partner)
                 .OrderBy(d => d.StatusKey.GetValueOrDefault())
                     .ThenBy(d => d.QueueKey.GetValueOrDefault())
                     .ThenByDescending(d => d.ShipDateTime)
@@ -117,11 +123,8 @@ namespace Pie.Data.Services.Out
 
         public async Task<DocOutDto> CreateAsync(DocOutDto docDto, string? barcode = null)
         {
-            if (docDto.BaseDocs != null)
-            {
-                List<BaseDoc>? baseDocs = BaseDocOutDto.MapToBaseDocList(docDto.BaseDocs);
-                await _baseDocService.CreateRangeAsync(baseDocs);
-            }
+            await CreateBaseDocs(docDto);
+            await CreatePartner(docDto);
 
             DocOut doc = DocOutDto.MapToDocOut(docDto);
 
@@ -133,6 +136,27 @@ namespace Pie.Data.Services.Out
             await _docProductHistoryService.CreateAsync(doc, barcode);
 
             return docDto;
+        }
+
+        private async Task CreateBaseDocs(DocOutDto docDto)
+        {
+            if (docDto.BaseDocs != null)
+            {
+                List<BaseDoc>? baseDocs = BaseDocOutDto.MapToBaseDocList(docDto.BaseDocs);
+                await _baseDocService.CreateRangeAsync(baseDocs);
+            }
+        }
+
+        private async Task CreatePartner(DocOutDto docDto)
+        {
+            if (docDto.Partner != null)
+            {
+                Partner? partner = PartnerDto.MapToPartner(docDto.Partner);
+                if (partner != null)
+                {
+                    await _partnerService.CreateAsync(partner);
+                }
+            }
         }
 
         public async Task<DocOut> CreateAsync(DocOut doc)
