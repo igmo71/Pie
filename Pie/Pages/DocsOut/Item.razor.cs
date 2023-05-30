@@ -69,6 +69,18 @@ namespace Pie.Pages.DocsOut
             NavigationManager.NavigateTo($"DocsOut/List");
         }
 
+        private async Task DeleteDocAsync()
+        {
+            if (docVm == null || docVm.Value == null) return;
+            notification.Show("Удаление документа ...");
+
+            await DocService.DeleteAsync(docVm.Value.Id);
+
+            await notification.SetMessageAndHideAsync($"Документ удален!", 2);
+
+            NavigationManager.NavigateTo($"DocsOut/List");
+        }
+
         private async Task PrintAsync()
         {
             if (JSRuntime == null) return;
