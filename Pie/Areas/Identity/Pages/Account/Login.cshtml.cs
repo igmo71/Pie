@@ -6,7 +6,11 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NetBarcode;
+using Pie.Common;
 using Pie.Data.Models.Identity;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Pie.Areas.Identity.Pages.Account
@@ -28,6 +32,9 @@ namespace Pie.Areas.Identity.Pages.Account
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
+
+        [BindProperty]
+        public string Barcode { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -68,13 +75,14 @@ namespace Pie.Areas.Identity.Pages.Account
             /// </summary>
             [Required]
             [DataType(DataType.Password)]
+            [Display(Name = "Пароль")]
             public string Password { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Запомнить меня?")]
             public bool RememberMe { get; set; }
         }
 
@@ -129,6 +137,36 @@ namespace Pie.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostByBarcodeAsync(string returnUrl = null)
+        {
+            returnUrl ??= Url.Content("~/");
+
+            if (Barcode == null)
+            {
+                ModelState.AddModelError(string.Empty, "Неправильный штрихкод.");
+                return Page();
+            }
+
+            string userId = GuidBarcodeConvert.GuidStringFromNumericString(Barcode);
+            AppUser appUser = await _signInManager.UserManager.FindByIdAsync(userId);
+            if (appUser == null)
+            {
+                ModelState.AddModelError(string.Empty, "Пользователь не найден.");
+                return Page();
+            }
+            if (appUser.LockoutEnd != null)
+            {
+                ModelState.AddModelError(string.Empty, "Пользователь заблокирован.");
+                return RedirectToPage("./Lockout");
+            }
+
+            await _signInManager.SignInAsync(appUser, true);
+            _logger.LogInformation("User logged in by barcode.");
+            return LocalRedirect(returnUrl);
+
+            //return Page();
         }
     }
 }
