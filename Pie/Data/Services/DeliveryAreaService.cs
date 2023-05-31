@@ -18,6 +18,20 @@ namespace Pie.Data.Services
             _deliveryAreaService1c = deliveryAreaService1c;
         }
 
+        public async Task<ServiceResult<List<DeliveryAreaDto>>> LoadAsync()
+        {
+            ServiceResult<List<DeliveryAreaDto>> result = new();
+            var list = await _deliveryAreaService1c.GetAsync();
+            if (list == null || list.Count == 0)
+            {
+                result.Message = "DeliveryAreaDto List is Empty";
+                return result;
+            }
+            await AddRangeAsync(list);
+
+            return result;
+        }
+
         public async Task AddRangeAsync(List<DeliveryAreaDto> deliveryAreaDtos)
         {
             foreach (var delivery in deliveryAreaDtos)

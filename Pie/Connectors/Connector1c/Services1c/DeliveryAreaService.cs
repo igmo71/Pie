@@ -22,13 +22,13 @@ namespace Pie.Connectors.Connector1c.Services1c
             _jsonSerializerOptions = jsonSerializerOptions.Value;
         }
 
-        public async Task<RootObject<DeliveryAreaDto>?> GetAsync()
+        public async Task<List<DeliveryAreaDto>?> GetAsync()
         {           
                 var response = await _oDataService.GetAsync(RESOURCE_URL);
                 
                 RootObject<DeliveryAreaDto>? rootObject = JsonSerializer.Deserialize<RootObject<DeliveryAreaDto>>(response);
 
-                return rootObject;
+                return rootObject?.Value;
         }
     }
 }
