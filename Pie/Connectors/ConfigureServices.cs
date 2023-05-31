@@ -1,4 +1,5 @@
 ﻿using Pie.Connectors.Connector1c;
+using Pie.Connectors.Connector1c.Services1c;
 
 namespace Pie.Connectors
 {
@@ -10,8 +11,11 @@ namespace Pie.Connectors
             services.Configure<Client1cConfig>(client1cConfig);
 
             services.AddHttpClient<HttpService1c>();
+            services.AddHttpClient<ODataService>();
             services.AddScoped<HubService1c>();
             services.AddScoped<Service1c>();
+
+            services.AddScoped<DeliveryAreaService>();
 
             return services;
         }

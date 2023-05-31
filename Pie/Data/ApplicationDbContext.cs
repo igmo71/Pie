@@ -20,6 +20,7 @@ namespace Pie.Data
 
         public DbSet<BaseDoc> BaseDocs => Set<BaseDoc>();
         public DbSet<ChangeReason> ChangeReasons => Set<ChangeReason>();
+        public DbSet<DeliveryArea> DeliveryAreas => Set<DeliveryArea>();
         public DbSet<Partner> Partners { get; set; }
         public DbSet<Product> Products => Set<Product>();
         public DbSet<Warehouse> Warehouses => Set<Warehouse>();
@@ -51,6 +52,7 @@ namespace Pie.Data
 
             builder.Entity<BaseDoc>().HasKey(e => e.Id);
             builder.Entity<ChangeReason>().HasKey(c => c.Id);
+            builder.Entity<DeliveryArea>().HasKey(c => c.Id);
             builder.Entity<Product>().HasKey(p => p.Id);
             builder.Entity<Partner>().HasKey(p => p.Id);
             builder.Entity<Warehouse>().HasKey(w => w.Id);

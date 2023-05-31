@@ -12,7 +12,7 @@ namespace Pie.Connectors.Connector1c
     {
         private readonly HttpClient _httpClient1c;
         private readonly Client1cConfig _client1cConfig;
-        private readonly JsonSerializerOptions _jsonSerializerOptions;
+        //private readonly JsonSerializerOptions _jsonSerializerOptions;
         private readonly ILogger<HttpService1c> _logger;
 
         public HttpService1c(
@@ -33,7 +33,7 @@ namespace Pie.Connectors.Connector1c
             _httpClient1c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
                             "Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_client1cConfig.UserName}:{_client1cConfig.Password}")));
 
-            _jsonSerializerOptions = jsonSerializerOptions.Value;
+            //_jsonSerializerOptions = jsonSerializerOptions.Value;
             _logger = logger;
         }
 

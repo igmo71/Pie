@@ -22,5 +22,13 @@ namespace Pie.Data.Models
 
         [MaxLength(250)]
         public string? Comment { get; set; }
+
+        public Guid? PartnerId { get; set; }
+        public Partner? Partner { get; set; }
+
+        public bool IsTransfer { get; set; }
+
+        public Guid? TransferWarehouseId { get; set; }
+        public Warehouse? TransferWarehouse { get; set; }
     }
 }
