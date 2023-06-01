@@ -38,38 +38,6 @@
             return rootNode;
         }
 
-        //public static void GetFlatDictionary1<N>(List<N> nodes, Dictionary<Guid, string> result, string prefix = "")
-        //    where N : class, ITreeNode, new()
-        //{
-        //    foreach (var item in nodes)
-        //    {
-        //        result.Add(item.Id, $"{prefix}{item.Name}");
-
-        //        if (item.Children != null && item.Children.Any())
-        //        {
-        //            List<N> children = item.Children.Select(c => new N() { Id = c.Id, Name = c.Name, Children = c.Children }).ToList();
-
-        //            GetFlatDictionary1(children, result, $"{prefix}{item.Name}/");
-        //        }
-        //    }
-        //}
-
-        //public static void GetFlatDictionary2<N>(List<N> nodes, Dictionary<Guid, string> result, string prefix = "")
-        //    where N : class, ITreeNode, new()
-        //{
-        //    foreach (var item in nodes)
-        //    {
-        //        result.Add(item.Id, $"{prefix}{item.Name}");
-
-        //        if (item.Children != null && item.Children.Any())
-        //        {
-        //            List<N> children = item.Children.Select(c => new N() { Id = c.Id, Name = c.Name, Children = c.Children }).ToList();
-
-        //            GetFlatDictionary2(children, result, $"{prefix}-");
-        //        }
-        //    }
-        //}
-
         public static void GetFlatDictionary<N>(List<N> nodes, Dictionary<Guid, string> result, bool includeParent = false, string prefix = "")
             where N : class, ITreeNode, new()
         {
