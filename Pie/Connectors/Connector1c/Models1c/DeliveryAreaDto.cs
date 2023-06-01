@@ -23,7 +23,7 @@ namespace Pie.Connectors.Connector1c.Models1c
                 Name = dto.Description,
                 Active = !dto.DeletionMark,
                 IsFolder = dto.IsFolder,
-                ParentId = string.IsNullOrEmpty(dto.Parent_Key) ? null : Guid.Parse(dto.Parent_Key)
+                ParentId = dto.Parent_Key == Guid.Empty.ToString() ? null : Guid.Parse(dto.Parent_Key)
             };
             return deliveryArea;
         }

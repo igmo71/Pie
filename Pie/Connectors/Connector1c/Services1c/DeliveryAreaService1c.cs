@@ -4,18 +4,18 @@ using System.Text.Json;
 
 namespace Pie.Connectors.Connector1c.Services1c
 {
-    public class DeliveryAreaService
+    public class DeliveryAreaService1c
     {
         private readonly string RESOURCE_URL = "Catalog_ЗоныДоставки";
 
         private readonly ODataService _oDataService;
-        private readonly ILogger<DeliveryAreaService> _logger;
+        private readonly ILogger<DeliveryAreaService1c> _logger;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
 
-        public DeliveryAreaService(
+        public DeliveryAreaService1c(
             ODataService oDataService, 
             IOptions<JsonSerializerOptions> jsonSerializerOptions, 
-            ILogger<DeliveryAreaService> logger)
+            ILogger<DeliveryAreaService1c> logger)
         {
             _oDataService = oDataService;
             _logger = logger;

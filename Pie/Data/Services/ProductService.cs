@@ -54,7 +54,7 @@ namespace Pie.Data.Services
             {
                 if (!Exists(product.Id))
                 {
-                    throw new ApplicationException($"ProductsService UpdateProductAsync NotFount {product.Id}", ex);
+                    throw new ApplicationException($"ProductService UpdateAsync NotFount {product.Id}", ex);
                 }
                 else
                 {
@@ -66,7 +66,7 @@ namespace Pie.Data.Services
         public async Task DeleteAsync(Guid id)
         {
             var product = await _context.Products.FindAsync(id)
-                ?? throw new ApplicationException($"ProductsService DeleteProductAsync NotFount {id}");
+                ?? throw new ApplicationException($"ProductService DeleteAsync NotFount {id}");
 
             _context.Products.Remove(product);
 

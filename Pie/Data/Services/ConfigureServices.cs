@@ -13,6 +13,7 @@ namespace Pie.Data.Services
             services.AddScoped<AppUserService>();
 
             services.AddScoped<BaseDocService>();
+            services.AddScoped<DeliveryAreaService>();
             services.AddScoped<PartnerService>();
             services.AddScoped<ProductService>();
             services.AddScoped<WarehouseService>();

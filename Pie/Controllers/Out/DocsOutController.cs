@@ -55,7 +55,7 @@ namespace Pie.Controllers.Out
         // POST: api/DocsOut
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<DocOut>> Post(DocOutDto docDto)
+        public async Task<ActionResult<DocOut>> PostDoc(DocOutDto docDto)
         {
             var result = await _docService.CreateAsync(docDto);
 
