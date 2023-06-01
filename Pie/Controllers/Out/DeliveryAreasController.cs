@@ -101,9 +101,9 @@ namespace Pie.Controllers.Out
         }
 
         [HttpGet("flat")]
-        public async Task<IActionResult> GetFlat()
+        public async Task<IActionResult> GetFlat(bool includeParent)
         {
-            var result = await _deliveryAreaService.GetFlatList();
+            var result = await _deliveryAreaService.GetFlatList(includeParent);
             return Ok(result);
         }
     }

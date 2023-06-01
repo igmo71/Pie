@@ -128,12 +128,12 @@ namespace Pie.Data.Services
             return result;
         }
 
-        public async  Task<Dictionary<Guid, string>> GetFlatList()
+        public async  Task<Dictionary<Guid, string>> GetFlatList(bool includeParent = false)
         {
             List<DeliveryAreaTreeNode> nodes = await GetTree();
             Dictionary<Guid, string> result = new();
 
-            TreeUtils.GetFlatDictionary(nodes, result);
+            TreeUtils.GetFlatDictionary(nodes, result, includeParent);
 
             return result;
         }

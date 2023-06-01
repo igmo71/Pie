@@ -38,19 +38,57 @@
             return rootNode;
         }
 
-        public static void GetFlatDictionary<N>(List<N> nodes, Dictionary<Guid, string> result, string prefix = "")
+        //public static void GetFlatDictionary1<N>(List<N> nodes, Dictionary<Guid, string> result, string prefix = "")
+        //    where N : class, ITreeNode, new()
+        //{
+        //    foreach (var item in nodes)
+        //    {
+        //        result.Add(item.Id, $"{prefix}{item.Name}");
+
+        //        if (item.Children != null && item.Children.Any())
+        //        {
+        //            List<N> children = item.Children.Select(c => new N() { Id = c.Id, Name = c.Name, Children = c.Children }).ToList();
+
+        //            GetFlatDictionary1(children, result, $"{prefix}{item.Name}/");
+        //        }
+        //    }
+        //}
+
+        //public static void GetFlatDictionary2<N>(List<N> nodes, Dictionary<Guid, string> result, string prefix = "")
+        //    where N : class, ITreeNode, new()
+        //{
+        //    foreach (var item in nodes)
+        //    {
+        //        result.Add(item.Id, $"{prefix}{item.Name}");
+
+        //        if (item.Children != null && item.Children.Any())
+        //        {
+        //            List<N> children = item.Children.Select(c => new N() { Id = c.Id, Name = c.Name, Children = c.Children }).ToList();
+
+        //            GetFlatDictionary2(children, result, $"{prefix}-");
+        //        }
+        //    }
+        //}
+
+        public static void GetFlatDictionary<N>(List<N> nodes, Dictionary<Guid, string> result, bool includeParent = false, string prefix = "")
             where N : class, ITreeNode, new()
         {
             foreach (var item in nodes)
             {
-                string value = $"{prefix}{item.Name}";
-                result.Add(item.Id, value);
+                result.Add(item.Id, $"{prefix}{item.Name}");
 
                 if (item.Children != null && item.Children.Any())
                 {
                     List<N> children = item.Children.Select(c => new N() { Id = c.Id, Name = c.Name, Children = c.Children }).ToList();
 
-                    GetFlatDictionary(children, result, $"{value}/");
+                    string newPrefix = "";
+
+                    if (includeParent)
+                        newPrefix = $"{prefix}{item.Name}/";
+                    else
+                        newPrefix = $"{prefix}-";
+
+                    GetFlatDictionary(children, result, includeParent, newPrefix);
                 }
             }
         }
