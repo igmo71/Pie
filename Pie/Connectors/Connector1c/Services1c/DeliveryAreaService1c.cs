@@ -8,23 +8,23 @@ namespace Pie.Connectors.Connector1c.Services1c
     {
         private readonly string RESOURCE_URL = "Catalog_ЗоныДоставки";
 
-        private readonly ODataService _oDataService;
+        private readonly ODataService1c _oDataService1c;
         private readonly ILogger<DeliveryAreaService1c> _logger;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
 
         public DeliveryAreaService1c(
-            ODataService oDataService, 
+            ODataService1c oDataService1c, 
             IOptions<JsonSerializerOptions> jsonSerializerOptions, 
             ILogger<DeliveryAreaService1c> logger)
         {
-            _oDataService = oDataService;
+            _oDataService1c = oDataService1c;
             _logger = logger;
             _jsonSerializerOptions = jsonSerializerOptions.Value;
         }
 
         public async Task<List<DeliveryAreaDto>?> GetAsync()
         {           
-                var response = await _oDataService.GetAsync(RESOURCE_URL);
+                var response = await _oDataService1c.GetAsync(RESOURCE_URL);
                 
                 RootObject<DeliveryAreaDto>? rootObject = JsonSerializer.Deserialize<RootObject<DeliveryAreaDto>>(response);
 

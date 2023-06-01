@@ -13,7 +13,8 @@ namespace Pie.Data.Services.In
         private readonly ApplicationDbContext _context;
         private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
         private readonly BaseDocService _baseDocService;
-        private readonly QueueInService _queueService;
+        private readonly PartnerService _partnerService;
+        //private readonly QueueInService _queueService;
         private readonly Service1c _service1c;
         private readonly DocInHistoryService _docHistoryService;
         private readonly DocInProductHistoryService _docProductHistoryService;
@@ -26,7 +27,8 @@ namespace Pie.Data.Services.In
             ApplicationDbContext context,
             IDbContextFactory<ApplicationDbContext> contextFactory,
             BaseDocService baseDocService,
-            QueueInService queueService,
+            PartnerService partnerService,
+            //QueueInService queueService,
             Service1c service1c,
             DocInHistoryService docHistoryService,
             DocInProductHistoryService docProductHistoryService,
@@ -36,7 +38,8 @@ namespace Pie.Data.Services.In
             _context = context;
             _contextFactory = contextFactory;
             _baseDocService = baseDocService;
-            _queueService = queueService;
+            _partnerService = partnerService;
+            //_queueService = queueService;
             _service1c = service1c;
             _docHistoryService = docHistoryService;
             _docProductHistoryService = docProductHistoryService;
@@ -50,6 +53,8 @@ namespace Pie.Data.Services.In
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
                 .Include(d => d.Warehouse)
+                .Include(d => d.Partner)
+                .Include(d => d.TransferWarehouse)
                 .Take(100)
                 .ToListAsync();
             return docs;
@@ -63,6 +68,8 @@ namespace Pie.Data.Services.In
                 .Include(d => d.Warehouse)
                 .Include(d => d.Products.OrderBy(p => p.LineNumber)).ThenInclude(p => p.Product)
                 .Include(d => d.BaseDocs).ThenInclude(b => b.BaseDoc)
+                .Include(d => d.Partner)
+                .Include(d => d.TransferWarehouse)
                 .FirstOrDefaultAsync(d => d.Id == id);
             return doc;
         }
@@ -87,6 +94,7 @@ namespace Pie.Data.Services.In
                 .Include(d => d.Queue)
                 .Include(d => d.Warehouse)
                 .Include(d => d.Products)
+                .Include(d => d.Partner)
                 .OrderBy(d => d.StatusKey.GetValueOrDefault())
                     .ThenBy(d => d.QueueKey.GetValueOrDefault())
                 .Take(100)
@@ -114,13 +122,11 @@ namespace Pie.Data.Services.In
 
             return result;
         }
+
         public async Task<DocInDto> CreateAsync(DocInDto docDto, string? barcode = null)
         {
-            if (docDto.BaseDocs != null)
-            {
-                List<BaseDoc>? baseDocs = BaseDocInDto.MapToBaseDocList(docDto.BaseDocs);
-                await _baseDocService.CreateRangeAsync(baseDocs);
-            }
+            await CreateBaseDocs(docDto);
+            await CreatePartner(docDto);
 
             DocIn doc = DocInDto.MapToDocIn(docDto);
 
@@ -132,6 +138,27 @@ namespace Pie.Data.Services.In
             await _docProductHistoryService.CreateAsync(doc, barcode);
 
             return docDto;
+        }
+
+        private async Task CreateBaseDocs(DocInDto docDto)
+        {
+            if (docDto.BaseDocs != null)
+            {
+                List<BaseDoc>? baseDocs = BaseDocInDto.MapToBaseDocList(docDto.BaseDocs);
+                await _baseDocService.CreateRangeAsync(baseDocs);
+            }
+        }
+
+        private async Task CreatePartner(DocInDto docDto)
+        {
+            if (docDto.Partner != null)
+            {
+                Partner? partner = PartnerDto.MapToPartner(docDto.Partner);
+                if (partner != null)
+                {
+                    await _partnerService.CreateAsync(partner);
+                }
+            }
         }
 
         public async Task<DocIn> CreateAsync(DocIn doc)

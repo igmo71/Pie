@@ -1,4 +1,4 @@
-﻿namespace Pie.Data.Models.Out
+﻿namespace Pie.Data.Models
 {
     public class QueueNumber
     {

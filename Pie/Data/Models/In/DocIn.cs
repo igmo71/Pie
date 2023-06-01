@@ -7,9 +7,6 @@ namespace Pie.Data.Models.In
         public List<DocInProduct> Products { get; set; } = new();
         public List<DocInBaseDoc> BaseDocs { get; set; } = new();
 
-        public Guid? PartnerId { get; set; }
-        public Partner? Partner { get; set; }
-
         public int? StatusKey { get; set; }
         public StatusIn? Status { get; set; }
 

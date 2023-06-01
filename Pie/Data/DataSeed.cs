@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Pie.Connectors.Connector1c;
+using Pie.Data.Models;
 using Pie.Data.Models.Identity;
 using Pie.Data.Models.In;
 using Pie.Data.Models.Out;

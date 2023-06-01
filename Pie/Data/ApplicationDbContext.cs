@@ -21,7 +21,7 @@ namespace Pie.Data
         public DbSet<BaseDoc> BaseDocs => Set<BaseDoc>();
         public DbSet<ChangeReason> ChangeReasons => Set<ChangeReason>();
         public DbSet<DeliveryArea> DeliveryAreas => Set<DeliveryArea>();
-        public DbSet<Partner> Partners { get; set; }
+        public DbSet<Partner> Partners => Set<Partner>();
         public DbSet<Product> Products => Set<Product>();
         public DbSet<Warehouse> Warehouses => Set<Warehouse>();
 

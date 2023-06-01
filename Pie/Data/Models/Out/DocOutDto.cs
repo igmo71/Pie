@@ -8,14 +8,16 @@
         public DateTime DateTime { get; set; }
         public bool Active { get; set; }
         public Guid? WarehouseId { get; set; }
+        public string? Comment { get; set; }
+        public PartnerDto? Partner { get; set; }
+        public bool IsTransfer { get; set; }
+        public Guid? TransferWarehouseId { get; set; }
         public int? StatusKey { get; set; }
         public int? QueueKey { get; set; }
         public string? QueueNumber { get; set; }
-        public string? Comment { get; set; }
         public DateTime ShipDateTime { get; set; }
         public List<ProductOutDto>? Products { get; set; }
         public List<BaseDocOutDto>? BaseDocs { get; set; }
-        public PartnerDto? Partner { get; set; }
 
         public static DocOut MapToDocOut(DocOutDto dto)
         {
@@ -27,12 +29,14 @@
                 DateTime = dto.DateTime,
                 Active = dto.Active,
                 WarehouseId = dto.WarehouseId,
+                Comment = dto.Comment,
+                PartnerId = dto.Partner?.PartnerId,
+                IsTransfer = dto.IsTransfer,
+                TransferWarehouseId = dto.TransferWarehouseId,
                 StatusKey = dto.StatusKey,
                 QueueKey = dto.QueueKey,
                 QueueNumber = dto.QueueNumber,
-                Comment = dto.Comment,
-                ShipDateTime = dto.ShipDateTime,
-                PartnerId = dto.Partner?.PartnerId
+                ShipDateTime = dto.ShipDateTime
             };
 
             if (dto.Products != null && dto.Products.Count > 0)
@@ -78,10 +82,12 @@
                 DateTime = doc.DateTime,
                 Active = doc.Active,
                 WarehouseId = doc.WarehouseId,
+                Comment = doc.Comment,
+                IsTransfer = doc.IsTransfer,
+                TransferWarehouseId = doc.TransferWarehouseId,
                 StatusKey = doc.StatusKey,
                 QueueKey = doc.QueueKey,
                 QueueNumber = doc.QueueNumber,
-                Comment = doc.Comment,
                 ShipDateTime = doc.ShipDateTime,
 
             };
@@ -123,7 +129,6 @@
                 {
                     PartnerId = doc.PartnerId,
                     Name = doc.Partner.Name
-
                 };
             }
 
@@ -166,26 +171,6 @@
             }
 
             return list;
-        }
-    }
-
-    public class PartnerDto
-    {
-        public Guid? PartnerId { get; set; }
-        public string? Name { get; set; }
-
-        public static Partner? MapToPartner(PartnerDto dto)
-        {
-            if (dto.PartnerId == null) 
-                return default;
-
-            Partner partner = new()
-            {
-                Id = (Guid)dto.PartnerId,
-                Name = dto.Name
-            };
-
-            return partner;
         }
     }
 }

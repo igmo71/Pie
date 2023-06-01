@@ -8,9 +8,12 @@
         public DateTime DateTime { get; set; }
         public bool Active { get; set; }
         public Guid? WarehouseId { get; set; }
+        public string? Comment { get; set; }
+        public PartnerDto? Partner { get; set; }
+        public bool IsTransfer { get; set; }
+        public Guid? TransferWarehouseId { get; set; }
         public int? StatusKey { get; set; }
         public int? QueueKey { get; set; }
-        public string? Comment { get; set; }
         public List<ProductInDto>? Products { get; set; }
         public List<BaseDocInDto>? BaseDocs { get; set; }
 
@@ -24,9 +27,12 @@
                 DateTime = dto.DateTime,
                 Active = dto.Active,
                 WarehouseId = dto.WarehouseId,
+                Comment = dto.Comment,
+                PartnerId = dto.Partner?.PartnerId,
+                IsTransfer = dto.IsTransfer,
+                TransferWarehouseId = dto.TransferWarehouseId,
                 StatusKey = dto.StatusKey,
-                QueueKey = dto.QueueKey,
-                Comment = dto.Comment
+                QueueKey = dto.QueueKey
             };
 
             if (dto.Products != null && dto.Products.Count > 0)
@@ -72,9 +78,11 @@
                 DateTime = doc.DateTime,
                 Active = doc.Active,
                 WarehouseId = doc.WarehouseId,
+                Comment = doc.Comment,
+                IsTransfer = doc.IsTransfer,
+                TransferWarehouseId = doc.TransferWarehouseId,
                 StatusKey = doc.StatusKey,
-                QueueKey = doc.QueueKey,
-                Comment = doc.Comment
+                QueueKey = doc.QueueKey
             };
 
             if (doc.Products != null && doc.Products.Count > 0)
@@ -106,6 +114,15 @@
                     };
                     dto.BaseDocs.Add(baseDoc);
                 }
+            }
+
+            if (doc.Partner != null)
+            {
+                dto.Partner = new PartnerDto
+                {
+                    PartnerId = doc.PartnerId,
+                    Name = doc.Partner.Name
+                };
             }
 
             return dto;

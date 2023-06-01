@@ -5,16 +5,16 @@ using System.Text;
 
 namespace Pie.Connectors.Connector1c
 {
-    public class ODataService
+    public class ODataService1c
     {
         private readonly HttpClient _httpClient1c;
         private readonly Client1cConfig _client1cConfig;
-        private readonly ILogger<ODataService> _logger;
+        private readonly ILogger<ODataService1c> _logger;
 
-        public ODataService(
+        public ODataService1c(
             HttpClient httpClient,
             IOptions<Client1cConfig> client1cOptions,
-            ILogger<ODataService> logger)
+            ILogger<ODataService1c> logger)
         {
             _client1cConfig = client1cOptions.Value;
 

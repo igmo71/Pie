@@ -3,7 +3,7 @@ using Pie.Data.Models;
 using Pie.Data.Services;
 using System.Collections.Generic;
 
-namespace Pie.Controllers.Out
+namespace Pie.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

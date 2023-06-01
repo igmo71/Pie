@@ -11,7 +11,7 @@ namespace Pie.Connectors
             services.Configure<Client1cConfig>(client1cConfig);
 
             services.AddHttpClient<HttpService1c>();
-            services.AddHttpClient<ODataService>();
+            services.AddHttpClient<ODataService1c>();
             services.AddScoped<HubService1c>();
             services.AddScoped<Service1c>();
 

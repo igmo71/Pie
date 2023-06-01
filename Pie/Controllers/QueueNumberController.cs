@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pie.Connectors.Connector1c;
 using Pie.Data;
-using Pie.Data.Models.Out;
+using Pie.Data.Models;
 
-namespace Pie.Controllers.Out
+namespace Pie.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(Service1c))]
     [Route("api/[controller]")]
