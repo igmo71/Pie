@@ -7,7 +7,7 @@ using Pie.Data.Services.Out;
 
 namespace Pie.Controllers.Out
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(Service1c))]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(Service1c))]
     [Route("api/[controller]")]
     [ApiController]
     public class DocsOutController : ControllerBase

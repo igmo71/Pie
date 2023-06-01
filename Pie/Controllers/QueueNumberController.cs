@@ -8,7 +8,7 @@ using Pie.Data.Models;
 
 namespace Pie.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(Service1c))]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(Service1c))]
     [Route("api/[controller]")]
     [ApiController]
     public class QueueNumberController : ControllerBase

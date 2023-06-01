@@ -42,8 +42,18 @@ namespace Pie.Connectors.Connector1c
             StringContent stringContent = new(request, Encoding.UTF8, MediaTypeNames.Application.Json);
 
             string? requestUri = $"{_client1cConfig.HttpService}/{nameof(DocIn)}";
+            HttpResponseMessage? httpResponseMessage = null;
+            try
+            {
+                httpResponseMessage = await _httpClient1c.PostAsync(requestUri, stringContent);
+            }
+            catch (Exception ex)
+            {
 
-            HttpResponseMessage httpResponseMessage = await _httpClient1c.PostAsync(requestUri, stringContent);
+                _logger.LogError(ex, "HttpService1c SendInAsync - {ResponseStatusCode} {@RequestMessage}",
+                    httpResponseMessage?.StatusCode, httpResponseMessage?.RequestMessage);
+                throw;
+            }
 
             string response = await httpResponseMessage.Content.ReadAsStringAsync();
 
@@ -62,8 +72,17 @@ namespace Pie.Connectors.Connector1c
             StringContent stringContent = new(request, Encoding.UTF8, MediaTypeNames.Application.Json);
 
             string? requestUri = $"{_client1cConfig.HttpService}/{nameof(DocOut)}";
-
-            HttpResponseMessage httpResponseMessage = await _httpClient1c.PostAsync(requestUri, stringContent);
+            HttpResponseMessage? httpResponseMessage = null;
+            try
+            {
+                httpResponseMessage = await _httpClient1c.PostAsync(requestUri, stringContent);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "HttpService1c SendOutAsync - {ResponseStatusCode} {@RequestMessage}",
+                    httpResponseMessage?.StatusCode, httpResponseMessage?.RequestMessage);
+                throw;
+            }
 
             string response = await httpResponseMessage.Content.ReadAsStringAsync();
 
