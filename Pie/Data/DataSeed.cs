@@ -116,7 +116,7 @@ namespace Pie.Data
 
             builder.Entity<IdentityRole>().HasData(
                 new IdentityRole { Id = "d6bfb7c2-9a45-45e5-b27a-3b7cba85527f", Name = "Admin", NormalizedName = "ADMIN", ConcurrencyStamp = null },
-                new IdentityRole { Id = "9423e7b8-b496-41e8-b9c9-416b74823db9", Name = "Manager", NormalizedName = "USER", ConcurrencyStamp = null },
+                new IdentityRole { Id = "9423e7b8-b496-41e8-b9c9-416b74823db9", Name = "Manager", NormalizedName = "MANAGER", ConcurrencyStamp = null },
                 new IdentityRole { Id = "049c2135-b769-4ea5-986a-a5231330fe46", Name = nameof(Service1c), NormalizedName = nameof(Service1c).ToUpper(), ConcurrencyStamp = null }
                 );
 
