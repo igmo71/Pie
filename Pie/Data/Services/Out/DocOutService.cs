@@ -13,6 +13,8 @@ namespace Pie.Data.Services.Out
         private readonly ApplicationDbContext _context;
         private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
         private readonly BaseDocService _baseDocService;
+        private readonly ManagerService _managerService;
+        private readonly PartnerService _partnerService;
         private readonly QueueOutService _queueService;
         private readonly Service1c _service1c;
         private readonly DocOutHistoryService _docHistoryService;
@@ -26,6 +28,8 @@ namespace Pie.Data.Services.Out
             ApplicationDbContext context,
             IDbContextFactory<ApplicationDbContext> contextFactory,
             BaseDocService baseDocService,
+            ManagerService managerService,
+            PartnerService partnerService,
             QueueOutService queueService,
             Service1c service1c,
             DocOutHistoryService docHistoryService,
@@ -36,6 +40,8 @@ namespace Pie.Data.Services.Out
             _context = context;
             _contextFactory = contextFactory;
             _baseDocService = baseDocService;
+            _managerService = managerService;
+            _partnerService = partnerService;
             _queueService = queueService;
             _service1c = service1c;
             _docHistoryService = docHistoryService;
@@ -43,12 +49,16 @@ namespace Pie.Data.Services.Out
             _logger = logger;
             _jsonOptions = jsonOptions.Value;
         }
+
         public async Task<List<DocOut>> GetListAsync()
         {
             var docs = await _context.DocsOut.AsNoTracking()
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
+                .Include(d => d.Manager)
+                .Include(d => d.Partner)
                 .Include(d => d.Warehouse)
+                .Include(d => d.DeliveryArea)
                 .Take(100)
                 .ToListAsync();
             return docs;
@@ -59,9 +69,12 @@ namespace Pie.Data.Services.Out
             var doc = await _context.DocsOut.AsNoTracking()
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
+                .Include(d => d.Manager)
+                .Include(d => d.Partner)
                 .Include(d => d.Warehouse)
                 .Include(d => d.Products.OrderBy(p => p.LineNumber)).ThenInclude(p => p.Product)
                 .Include(d => d.BaseDocs).ThenInclude(b => b.BaseDoc)
+                .Include(d => d.DeliveryArea)
                 .FirstOrDefaultAsync(d => d.Id == id);
             return doc;
         }
@@ -84,11 +97,13 @@ namespace Pie.Data.Services.Out
                 .Search(searchParameters)
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
+                .Include(d => d.Manager)
+                .Include(d => d.Partner)
                 .Include(d => d.Warehouse)
                 .Include(d => d.Products)
                 .OrderBy(d => d.StatusKey.GetValueOrDefault())
                     .ThenBy(d => d.QueueKey.GetValueOrDefault())
-                    .ThenByDescending(d => d.ShipDateTime)
+                        .ThenBy(d => d.ShipDateTime)
                 .Take(100)
                 .GroupBy(e => e.QueueKey.GetValueOrDefault())
                 .ToDictionaryAsync(g => g.Key, g => g.ToList());
@@ -117,11 +132,9 @@ namespace Pie.Data.Services.Out
 
         public async Task<DocOutDto> CreateAsync(DocOutDto docDto, string? barcode = null)
         {
-            if (docDto.BaseDocs != null)
-            {
-                List<BaseDoc>? baseDocs = BaseDocOutDto.MapToBaseDocList(docDto.BaseDocs);
-                await _baseDocService.CreateRangeAsync(baseDocs);
-            }
+            await CreateBaseDocs(docDto);
+            await CreateManager(docDto);
+            await CreatePartner(docDto);
 
             DocOut doc = DocOutDto.MapToDocOut(docDto);
 
@@ -133,6 +146,40 @@ namespace Pie.Data.Services.Out
             await _docProductHistoryService.CreateAsync(doc, barcode);
 
             return docDto;
+        }
+
+        private async Task CreateBaseDocs(DocOutDto docDto)
+        {
+            if (docDto.BaseDocs != null)
+            {
+                List<BaseDoc>? baseDocs = BaseDocOutDto.MapToBaseDocList(docDto.BaseDocs);
+                await _baseDocService.CreateRangeAsync(baseDocs);
+            }
+        }
+
+        private async Task CreateManager(DocOutDto docDto)
+        {
+
+            if (docDto.Manager != null)
+            {
+                Manager? manager = ManagerDto.MapToManager(docDto.Manager);
+                if (manager != null)
+                {
+                    await _managerService.CreateAsync(manager);
+                }
+            }
+        }
+
+        private async Task CreatePartner(DocOutDto docDto)
+        {
+            if (docDto.Partner != null)
+            {
+                Partner? partner = PartnerDto.MapToPartner(docDto.Partner);
+                if (partner != null)
+                {
+                    await _partnerService.CreateAsync(partner);
+                }
+            }
         }
 
         public async Task<DocOut> CreateAsync(DocOut doc)

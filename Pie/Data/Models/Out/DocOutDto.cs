@@ -8,10 +8,13 @@
         public DateTime DateTime { get; set; }
         public bool Active { get; set; }
         public Guid? WarehouseId { get; set; }
+        public string? Comment { get; set; }
+        public ManagerDto? Manager { get; set; }
+        public PartnerDto? Partner { get; set; }
+        public bool IsTransfer { get; set; }
         public int? StatusKey { get; set; }
         public int? QueueKey { get; set; }
         public string? QueueNumber { get; set; }
-        public string? Comment { get; set; }
         public DateTime ShipDateTime { get; set; }
         public List<ProductOutDto>? Products { get; set; }
         public List<BaseDocOutDto>? BaseDocs { get; set; }
@@ -26,10 +29,13 @@
                 DateTime = dto.DateTime,
                 Active = dto.Active,
                 WarehouseId = dto.WarehouseId,
+                Comment = dto.Comment,
+                ManagerId = dto.Manager?.ManagerId,
+                PartnerId = dto.Partner?.PartnerId,
+                IsTransfer = dto.IsTransfer,
                 StatusKey = dto.StatusKey,
                 QueueKey = dto.QueueKey,
                 QueueNumber = dto.QueueNumber,
-                Comment = dto.Comment,
                 ShipDateTime = dto.ShipDateTime
             };
 
@@ -76,11 +82,13 @@
                 DateTime = doc.DateTime,
                 Active = doc.Active,
                 WarehouseId = doc.WarehouseId,
+                Comment = doc.Comment,
+                IsTransfer = doc.IsTransfer,
                 StatusKey = doc.StatusKey,
                 QueueKey = doc.QueueKey,
                 QueueNumber = doc.QueueNumber,
-                Comment = doc.Comment,
-                ShipDateTime = doc.ShipDateTime
+                ShipDateTime = doc.ShipDateTime,
+
             };
 
             if (doc.Products != null && doc.Products.Count > 0)
@@ -112,6 +120,24 @@
                     };
                     dto.BaseDocs.Add(baseDoc);
                 }
+            }
+
+            if (doc.Manager != null)
+            {
+                dto.Manager = new ManagerDto
+                {
+                    ManagerId = doc.ManagerId,
+                    Name = doc.Manager.Name
+                };
+            }
+
+            if (doc.Partner != null)
+            {
+                dto.Partner = new PartnerDto
+                {
+                    PartnerId = doc.PartnerId,
+                    Name = doc.Partner.Name
+                };
             }
 
             return dto;

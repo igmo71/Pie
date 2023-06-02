@@ -7,7 +7,7 @@ using Pie.Data.Services.In;
 
 namespace Pie.Controllers.In
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(Service1c))]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(Service1c))]
     [Route("api/[controller]")]
     [ApiController]
     public class DocsInController : ControllerBase
@@ -55,7 +55,7 @@ namespace Pie.Controllers.In
         // POST: api/DocsIn
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<DocIn>> Post(DocInDto docDto)
+        public async Task<ActionResult<DocIn>> PostDoc(DocInDto docDto)
         {
             var result = await _docService.CreateAsync(docDto);
 

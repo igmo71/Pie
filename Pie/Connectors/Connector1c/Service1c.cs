@@ -13,7 +13,7 @@ namespace Pie.Connectors.Connector1c
         private readonly ILogger<Service1c> _logger;
         private readonly JsonSerializerOptions _jsonSerializerOptions;
 
-        private readonly IHttpClientFactory _httpClientFactory;
+        //private readonly IHttpClientFactory _httpClientFactory;
 
         public Service1c(
             HttpService1c httpService1c,
@@ -21,8 +21,7 @@ namespace Pie.Connectors.Connector1c
             IConfiguration configuration,
             ILogger<Service1c> logger,
             IOptions<JsonSerializerOptions> jsonSerializerOptions
-            ,
-            IHttpClientFactory httpClientFactory)
+            /*IHttpClientFactory httpClientFactory*/)
         {
             _httpService1c = httpService1c;
             _hubService1c = hubService1c;
@@ -30,14 +29,14 @@ namespace Pie.Connectors.Connector1c
             _logger = logger;
             _jsonSerializerOptions = jsonSerializerOptions.Value;
 
-            _httpClientFactory = httpClientFactory;
+            //_httpClientFactory = httpClientFactory;
         }
 
         public async Task<DocInDto> SendInAsync(DocInDto docDto)
         {
             _logger.LogDebug("Service1c SendInAsync - Start {DocInDto.Id} {DocInDto.Name}", docDto.Id, docDto.Name);
 
-            var httpClient = _httpClientFactory.CreateClient();
+            //var httpClient = _httpClientFactory.CreateClient();
 
             string request = JsonSerializer.Serialize(docDto);
             string response;
@@ -66,7 +65,7 @@ namespace Pie.Connectors.Connector1c
         {
             _logger.LogDebug("Service1c SendOutAsync - Start {DocOutDto.Id} {DocOutDto.Name}", docDto.Id, docDto.Name);
 
-            var httpClient = _httpClientFactory.CreateClient();
+            //var httpClient = _httpClientFactory.CreateClient();
 
             string request = JsonSerializer.Serialize(docDto);
             string response;
