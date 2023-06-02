@@ -231,7 +231,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BaseDocs", (string)null);
+                    b.ToTable("BaseDocs");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.ChangeReason", b =>
@@ -255,7 +255,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ChangeReasons", (string)null);
+                    b.ToTable("ChangeReasons");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("ChangeReason");
 
@@ -282,7 +282,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DeliveryAreas", (string)null);
+                    b.ToTable("DeliveryAreas");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.Identity.AppUser", b =>
@@ -435,6 +435,9 @@ namespace Pie.Data.Migrations
                     b.Property<bool>("IsTransfer")
                         .HasColumnType("boolean");
 
+                    b.Property<Guid?>("ManagerId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -453,13 +456,12 @@ namespace Pie.Data.Migrations
                     b.Property<int?>("StatusKey")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("TransferWarehouseId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid?>("WarehouseId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ManagerId");
 
                     b.HasIndex("PartnerId");
 
@@ -467,11 +469,9 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("StatusKey");
 
-                    b.HasIndex("TransferWarehouseId");
-
                     b.HasIndex("WarehouseId");
 
-                    b.ToTable("DocsIn", (string)null);
+                    b.ToTable("DocsIn");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.In.DocInBaseDoc", b =>
@@ -492,7 +492,7 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("DocId");
 
-                    b.ToTable("DocInBaseDocs", (string)null);
+                    b.ToTable("DocInBaseDocs");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.In.DocInHistory", b =>
@@ -523,7 +523,7 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("DocsInHistory", (string)null);
+                    b.ToTable("DocsInHistory");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.In.DocInProduct", b =>
@@ -556,7 +556,7 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("DocInProducts", (string)null);
+                    b.ToTable("DocInProducts");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.In.DocInProductHistory", b =>
@@ -601,7 +601,7 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("DocInProductsHistory", (string)null);
+                    b.ToTable("DocInProductsHistory");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.In.QueueIn", b =>
@@ -624,7 +624,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("QueuesIn", (string)null);
+                    b.ToTable("QueuesIn");
 
                     b.HasData(
                         new
@@ -680,7 +680,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StatusesIn", (string)null);
+                    b.ToTable("StatusesIn");
 
                     b.HasData(
                         new
@@ -761,6 +761,9 @@ namespace Pie.Data.Migrations
                     b.Property<bool>("IsTransfer")
                         .HasColumnType("boolean");
 
+                    b.Property<Guid?>("ManagerId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -786,9 +789,6 @@ namespace Pie.Data.Migrations
                     b.Property<int?>("StatusKey")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("TransferWarehouseId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid?>("WarehouseId")
                         .HasColumnType("uuid");
 
@@ -796,17 +796,17 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("DeliveryAreaId");
 
+                    b.HasIndex("ManagerId");
+
                     b.HasIndex("PartnerId");
 
                     b.HasIndex("QueueKey");
 
                     b.HasIndex("StatusKey");
 
-                    b.HasIndex("TransferWarehouseId");
-
                     b.HasIndex("WarehouseId");
 
-                    b.ToTable("DocsOut", (string)null);
+                    b.ToTable("DocsOut");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.Out.DocOutBaseDoc", b =>
@@ -827,7 +827,7 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("DocId");
 
-                    b.ToTable("DocOutBaseDocs", (string)null);
+                    b.ToTable("DocOutBaseDocs");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.Out.DocOutHistory", b =>
@@ -858,7 +858,7 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("DocsOutHistory", (string)null);
+                    b.ToTable("DocsOutHistory");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.Out.DocOutProduct", b =>
@@ -891,7 +891,7 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("DocOutProducts", (string)null);
+                    b.ToTable("DocOutProducts");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.Out.DocOutProductHistory", b =>
@@ -936,31 +936,7 @@ namespace Pie.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("DocOutProductsHistory", (string)null);
-                });
-
-            modelBuilder.Entity("Pie.Data.Models.Out.QueueNumber", b =>
-                {
-                    b.Property<string>("Value")
-                        .HasColumnType("text");
-
-                    b.Property<int>("CharValue")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("NumValue")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Value");
-
-                    b.ToTable("QueueNumber", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Value = "A000",
-                            CharValue = 0,
-                            NumValue = 0
-                        });
+                    b.ToTable("DocOutProductsHistory");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.Out.QueueOut", b =>
@@ -995,7 +971,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("QueuesOut", (string)null);
+                    b.ToTable("QueuesOut");
 
                     b.HasData(
                         new
@@ -1067,7 +1043,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StatusesOut", (string)null);
+                    b.ToTable("StatusesOut");
 
                     b.HasData(
                         new
@@ -1144,7 +1120,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Partners", (string)null);
+                    b.ToTable("Partners");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.Partner", b =>
@@ -1182,7 +1158,31 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Pie.Data.Models.QueueNumber", b =>
+                {
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
+
+                    b.Property<int>("CharValue")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("NumValue")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Value");
+
+                    b.ToTable("QueueNumber");
+
+                    b.HasData(
+                        new
+                        {
+                            Value = "A000",
+                            CharValue = 0,
+                            NumValue = 0
+                        });
                 });
 
             modelBuilder.Entity("Pie.Data.Models.Warehouse", b =>
@@ -1201,7 +1201,7 @@ namespace Pie.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Warehouses", (string)null);
+                    b.ToTable("Warehouses");
                 });
 
             modelBuilder.Entity("Pie.Data.Models.In.ChangeReasonIn", b =>
@@ -1280,6 +1280,11 @@ namespace Pie.Data.Migrations
 
             modelBuilder.Entity("Pie.Data.Models.In.DocIn", b =>
                 {
+                    b.HasOne("Pie.Data.Models.Manager", "Manager")
+                        .WithMany()
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("Pie.Data.Models.Partner", "Partner")
                         .WithMany()
                         .HasForeignKey("PartnerId")
@@ -1297,22 +1302,18 @@ namespace Pie.Data.Migrations
                         .HasPrincipalKey("Key")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("Pie.Data.Models.Warehouse", "TransferWarehouse")
-                        .WithMany()
-                        .HasForeignKey("TransferWarehouseId");
-
                     b.HasOne("Pie.Data.Models.Warehouse", "Warehouse")
                         .WithMany()
                         .HasForeignKey("WarehouseId")
                         .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Manager");
 
                     b.Navigation("Partner");
 
                     b.Navigation("Queue");
 
                     b.Navigation("Status");
-
-                    b.Navigation("TransferWarehouse");
 
                     b.Navigation("Warehouse");
                 });
@@ -1404,6 +1405,11 @@ namespace Pie.Data.Migrations
                         .WithMany()
                         .HasForeignKey("DeliveryAreaId");
 
+                    b.HasOne("Pie.Data.Models.Manager", "Manager")
+                        .WithMany()
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("Pie.Data.Models.Partner", "Partner")
                         .WithMany()
                         .HasForeignKey("PartnerId")
@@ -1421,10 +1427,6 @@ namespace Pie.Data.Migrations
                         .HasPrincipalKey("Key")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("Pie.Data.Models.Warehouse", "TransferWarehouse")
-                        .WithMany()
-                        .HasForeignKey("TransferWarehouseId");
-
                     b.HasOne("Pie.Data.Models.Warehouse", "Warehouse")
                         .WithMany()
                         .HasForeignKey("WarehouseId")
@@ -1432,13 +1434,13 @@ namespace Pie.Data.Migrations
 
                     b.Navigation("DeliveryArea");
 
+                    b.Navigation("Manager");
+
                     b.Navigation("Partner");
 
                     b.Navigation("Queue");
 
                     b.Navigation("Status");
-
-                    b.Navigation("TransferWarehouse");
 
                     b.Navigation("Warehouse");
                 });
