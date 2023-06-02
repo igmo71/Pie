@@ -4,18 +4,26 @@
 @if (Doc != null)
 {
     <div class="card border-@cardColor shadow rounded mb-2">
-        <a href="#" style="text-decoration:none">
-            <div class="card-header bg-@cardColor bg-opacity-75 text-white p-2" @onclick="@(() => OnClick(Doc!.Id))">
+        <a href="#" style="text-decoration:none" title="Открыть документ">
+            <div class="card-header bg-@cardColor bg-opacity-75 text-white px-2 py-1" @onclick="@(() => OnClick(Doc!.Id))">
                 <div class="row">
-                    <div class="col-1 d-flex justify-content-center">
-                        <i class="bi bi-layout-text-window-reverse"></i>
+                    <div class="col-2 p-0 fs-4 d-flex justify-content-center align-items-center">
+                        @* <i class="bi bi-layout-text-window-reverse"></i> *@
+                        @if (Doc.IsTransfer)
+                        {
+                            <i class="bi bi-repeat" title="Это перемещение"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-cart-check" title="Это реализация"></i>
+                        }
                     </div>
-                    <div class="col-8 d-flex justify-content-center">
+                    <div class="col-7 p-0 fs-5 d-flex justify-content-center align-items-center">
                         <div>
                             <span>№ </span><span>@Doc?.Number</span>
                         </div>
                     </div>
-                    <div class="col-3 d-flex justify-content-center h5">
+                    <div class="col-3 p-0 fs-4 d-flex justify-content-center align-items-center">
                         <div>@Doc?.QueueNumber</div>
                     </div>
                 </div>
