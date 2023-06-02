@@ -13,7 +13,8 @@
             Partner partner = new()
             {
                 Id = (Guid)dto.PartnerId,
-                Name = dto.Name
+                Name = dto.Name,
+                Active = true
             };
 
             return partner;

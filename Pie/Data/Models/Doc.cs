@@ -17,18 +17,18 @@ namespace Pie.Data.Models
 
         public DateTime DateTime { get; set; }
 
-        public Guid? WarehouseId { get; set; }
-        public Warehouse? Warehouse { get; set; }
-
-        [MaxLength(250)]
-        public string? Comment { get; set; }
+        public Guid? ManagerId { get; set; }
+        public Manager? Manager { get; set; }
 
         public Guid? PartnerId { get; set; }
         public Partner? Partner { get; set; }
 
+        public Guid? WarehouseId { get; set; }
+        public Warehouse? Warehouse { get; set; }
+
         public bool IsTransfer { get; set; }
 
-        public Guid? TransferWarehouseId { get; set; }
-        public Warehouse? TransferWarehouse { get; set; }
+        [MaxLength(250)]
+        public string? Comment { get; set; }
     }
 }

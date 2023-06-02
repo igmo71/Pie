@@ -16,16 +16,16 @@ namespace Pie.Data.Services
 
         public async Task<IEnumerable<Partner>> GetListAsync()
         {
-            var Partners = await _context.Partners.AsNoTracking().ToListAsync();
+            var partners = await _context.Partners.AsNoTracking().ToListAsync();
 
-            return Partners;
+            return partners;
         }
 
         public async Task<Partner?> GetAsync(Guid id)
         {
-            var Partner = await _context.Partners.FindAsync(id);
+            var partner = await _context.Partners.FindAsync(id);
 
-            return Partner;
+            return partner;
         }
 
         public async Task<Partner> CreateAsync(Partner partner)
@@ -54,7 +54,7 @@ namespace Pie.Data.Services
             {
                 if (!Exists(partner.Id))
                 {
-                    throw new ApplicationException($"PartnersService UpdatePartnerAsync NotFount {partner.Id}", ex);
+                    throw new ApplicationException($"PartnerService UpdatePartnerAsync NotFount {partner.Id}", ex);
                 }
                 else
                 {
@@ -66,7 +66,7 @@ namespace Pie.Data.Services
         public async Task DeleteAsync(Guid id)
         {
             var partner = await _context.Partners.FindAsync(id)
-                ?? throw new ApplicationException($"PartnersService DeletePartnerAsync NotFount {id}");
+                ?? throw new ApplicationException($"PartnerService DeletePartnerAsync NotFount {id}");
 
             _context.Partners.Remove(partner);
 

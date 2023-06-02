@@ -13,6 +13,7 @@ namespace Pie.Data.Services.Out
         private readonly ApplicationDbContext _context;
         private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
         private readonly BaseDocService _baseDocService;
+        private readonly ManagerService _managerService;
         private readonly PartnerService _partnerService;
         private readonly QueueOutService _queueService;
         private readonly Service1c _service1c;
@@ -27,6 +28,7 @@ namespace Pie.Data.Services.Out
             ApplicationDbContext context,
             IDbContextFactory<ApplicationDbContext> contextFactory,
             BaseDocService baseDocService,
+            ManagerService managerService,
             PartnerService partnerService,
             QueueOutService queueService,
             Service1c service1c,
@@ -38,6 +40,7 @@ namespace Pie.Data.Services.Out
             _context = context;
             _contextFactory = contextFactory;
             _baseDocService = baseDocService;
+            _managerService = managerService;
             _partnerService = partnerService;
             _queueService = queueService;
             _service1c = service1c;
@@ -52,9 +55,9 @@ namespace Pie.Data.Services.Out
             var docs = await _context.DocsOut.AsNoTracking()
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
-                .Include(d => d.Warehouse)
+                .Include(d => d.Manager)
                 .Include(d => d.Partner)
-                .Include(d => d.TransferWarehouse)
+                .Include(d => d.Warehouse)
                 .Include(d => d.DeliveryArea)
                 .Take(100)
                 .ToListAsync();
@@ -66,11 +69,11 @@ namespace Pie.Data.Services.Out
             var doc = await _context.DocsOut.AsNoTracking()
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
+                .Include(d => d.Manager)
+                .Include(d => d.Partner)
                 .Include(d => d.Warehouse)
                 .Include(d => d.Products.OrderBy(p => p.LineNumber)).ThenInclude(p => p.Product)
                 .Include(d => d.BaseDocs).ThenInclude(b => b.BaseDoc)
-                .Include(d => d.Partner)
-                .Include(d => d.TransferWarehouse)
                 .Include(d => d.DeliveryArea)
                 .FirstOrDefaultAsync(d => d.Id == id);
             return doc;
@@ -94,13 +97,13 @@ namespace Pie.Data.Services.Out
                 .Search(searchParameters)
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
+                .Include(d => d.Manager)
+                .Include(d => d.Partner)
                 .Include(d => d.Warehouse)
                 .Include(d => d.Products)
-                .Include(d => d.Partner)
-                .Include(d => d.TransferWarehouse)
                 .OrderBy(d => d.StatusKey.GetValueOrDefault())
                     .ThenBy(d => d.QueueKey.GetValueOrDefault())
-                    .ThenByDescending(d => d.ShipDateTime)
+                        .ThenBy(d => d.ShipDateTime)
                 .Take(100)
                 .GroupBy(e => e.QueueKey.GetValueOrDefault())
                 .ToDictionaryAsync(g => g.Key, g => g.ToList());
@@ -130,6 +133,7 @@ namespace Pie.Data.Services.Out
         public async Task<DocOutDto> CreateAsync(DocOutDto docDto, string? barcode = null)
         {
             await CreateBaseDocs(docDto);
+            await CreateManager(docDto);
             await CreatePartner(docDto);
 
             DocOut doc = DocOutDto.MapToDocOut(docDto);
@@ -150,6 +154,19 @@ namespace Pie.Data.Services.Out
             {
                 List<BaseDoc>? baseDocs = BaseDocOutDto.MapToBaseDocList(docDto.BaseDocs);
                 await _baseDocService.CreateRangeAsync(baseDocs);
+            }
+        }
+
+        private async Task CreateManager(DocOutDto docDto)
+        {
+
+            if (docDto.Manager != null)
+            {
+                Manager? manager = ManagerDto.MapToManager(docDto.Manager);
+                if (manager != null)
+                {
+                    await _managerService.CreateAsync(manager);
+                }
             }
         }
 

@@ -3,8 +3,8 @@
 {
     <table class="table table-sm table-borderless">
         <tr>
-            <th>Склад:</th>
-            <td>@DocVm?.Value?.Warehouse?.Name</td>
+            <th>Отправитель:</th>
+            <td>@DocVm?.Value?.Partner?.Name</td>
             <th>Документы основания:</th>
             <td>
                 @if (DocVm != null && DocVm.Value != null && DocVm?.Value?.BaseDocs != null)
@@ -15,6 +15,12 @@
                     }
                 }
             </td>
+        </tr>
+        <tr>
+            <th>Склад:</th>
+            <td>@DocVm?.Value?.Warehouse?.Name</td>
+            <th>Ответственный:</th>
+            <td>@DocVm?.Value?.Manager?.Name</td>
         </tr>
         <tr>
             <th>Статус:</th>

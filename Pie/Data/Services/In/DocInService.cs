@@ -13,6 +13,7 @@ namespace Pie.Data.Services.In
         private readonly ApplicationDbContext _context;
         private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
         private readonly BaseDocService _baseDocService;
+        private readonly ManagerService _managerService;
         private readonly PartnerService _partnerService;
         //private readonly QueueInService _queueService;
         private readonly Service1c _service1c;
@@ -27,6 +28,7 @@ namespace Pie.Data.Services.In
             ApplicationDbContext context,
             IDbContextFactory<ApplicationDbContext> contextFactory,
             BaseDocService baseDocService,
+            ManagerService managerService,
             PartnerService partnerService,
             //QueueInService queueService,
             Service1c service1c,
@@ -38,6 +40,7 @@ namespace Pie.Data.Services.In
             _context = context;
             _contextFactory = contextFactory;
             _baseDocService = baseDocService;
+            _managerService = managerService;
             _partnerService = partnerService;
             //_queueService = queueService;
             _service1c = service1c;
@@ -52,9 +55,9 @@ namespace Pie.Data.Services.In
             var docs = await _context.DocsIn.AsNoTracking()
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
-                .Include(d => d.Warehouse)
+                .Include(d => d.Manager)
                 .Include(d => d.Partner)
-                .Include(d => d.TransferWarehouse)
+                .Include(d => d.Warehouse)
                 .Take(100)
                 .ToListAsync();
             return docs;
@@ -65,11 +68,11 @@ namespace Pie.Data.Services.In
             var doc = await _context.DocsIn.AsNoTracking()
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
+                .Include(d => d.Manager)
+                .Include(d => d.Partner)
                 .Include(d => d.Warehouse)
                 .Include(d => d.Products.OrderBy(p => p.LineNumber)).ThenInclude(p => p.Product)
                 .Include(d => d.BaseDocs).ThenInclude(b => b.BaseDoc)
-                .Include(d => d.Partner)
-                .Include(d => d.TransferWarehouse)
                 .FirstOrDefaultAsync(d => d.Id == id);
             return doc;
         }
@@ -88,13 +91,14 @@ namespace Pie.Data.Services.In
         {
             using var context = _contextFactory.CreateDbContext();
 
-            var result = await _context.DocsIn.AsNoTracking()
+            var result = await context.DocsIn.AsNoTracking()
                 .Search(searchParameters)
                 .Include(d => d.Status)
                 .Include(d => d.Queue)
+                .Include(d => d.Manager)
+                .Include(d => d.Partner)
                 .Include(d => d.Warehouse)
                 .Include(d => d.Products)
-                .Include(d => d.Partner)
                 .OrderBy(d => d.StatusKey.GetValueOrDefault())
                     .ThenBy(d => d.QueueKey.GetValueOrDefault())
                 .Take(100)
@@ -126,6 +130,7 @@ namespace Pie.Data.Services.In
         public async Task<DocInDto> CreateAsync(DocInDto docDto, string? barcode = null)
         {
             await CreateBaseDocs(docDto);
+            await CreateManager(docDto);
             await CreatePartner(docDto);
 
             DocIn doc = DocInDto.MapToDocIn(docDto);
@@ -146,6 +151,19 @@ namespace Pie.Data.Services.In
             {
                 List<BaseDoc>? baseDocs = BaseDocInDto.MapToBaseDocList(docDto.BaseDocs);
                 await _baseDocService.CreateRangeAsync(baseDocs);
+            }
+        }
+
+        private async Task CreateManager(DocInDto docDto)
+        {
+
+            if (docDto.Manager != null)
+            {
+                Manager? manager = ManagerDto.MapToManager(docDto.Manager);
+                if (manager != null)
+                {
+                    await _managerService.CreateAsync(manager);
+                }
             }
         }
 
