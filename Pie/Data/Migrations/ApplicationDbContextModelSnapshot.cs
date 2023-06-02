@@ -736,6 +736,25 @@ namespace Pie.Data.Migrations
                     b.ToTable("Managers");
                 });
 
+            modelBuilder.Entity("Pie.Data.Models.Manager", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Managers");
+                });
+
             modelBuilder.Entity("Pie.Data.Models.Out.DocOut", b =>
                 {
                     b.Property<Guid>("Id")
