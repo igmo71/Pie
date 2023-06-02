@@ -50,6 +50,7 @@
                         LineNumber = item.LineNumber,
                         CountPlan = item.CountPlan,
                         CountFact = item.CountFact,
+                        Unit = item.Unit,
                         Weight = item.Weight
                     };
                     doc.Products.Add(product);
@@ -102,6 +103,7 @@
                         LineNumber = item.LineNumber,
                         CountPlan = item.CountPlan,
                         CountFact = item.CountFact,
+                        Unit = item.Unit,
                         Weight = item.Weight
                     };
                     dto.Products.Add(product);
@@ -150,6 +152,7 @@
         public int LineNumber { get; set; }
         public float CountPlan { get; set; }
         public float CountFact { get; set; }
+        public string? Unit { get; set; }
         public float Weight { get; set; }
     }
 
