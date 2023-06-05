@@ -1,0 +1,40 @@
+﻿@page
+@model Pie.Areas.Config.Pages.Catalogs.IndexModel
+
+@if (Model.LoadResult != null)
+{
+    if (!Model.LoadResult.IsSuccess)
+    {
+        <div class="alert alert-danger p-2">@Model.LoadResult.Message</div>
+    }
+    else
+    {
+        <div class="alert alert-success p-2">@Model.LoadResult.Message</div>
+    }
+}
+<table class="table1">
+    <tr>
+        <td class="pe-3"><h4>Товары</h4></td>
+        <td>
+            <form asp-page-handler="LoadProducts" method="post">
+                <button class="btn btn-success" type="submit" value="Загрузить"><i class="bi bi-download"></i> Загрузить</button>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td class="pe-3"><h4>Склады</h4></td>
+        <td>
+            <form asp-page-handler="LoadWarehouses" method="post">
+                <button class="btn btn-success" type="submit" value="Загрузить"><i class="bi bi-download"></i> Загрузить</button>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td class="pe-3"><h4>Зоны Доставки</h4></td>
+        <td>
+            <form asp-page-handler="LoadDeliveryAreas" method="post">
+                <button class="btn btn-success" type="submit" value="Загрузить"><i class="bi bi-download"></i> Загрузить</button>
+            </form>
+        </td>
+    </tr>
+</table>

@@ -16,6 +16,8 @@ namespace Pie.Connectors
             services.AddScoped<Service1c>();
 
             services.AddScoped<DeliveryAreaService1c>();
+            services.AddScoped<ProductService1c>();
+            services.AddScoped<WarehouseService1c>();
 
             return services;
         }

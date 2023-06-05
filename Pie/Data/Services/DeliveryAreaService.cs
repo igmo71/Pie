@@ -48,21 +48,12 @@ namespace Pie.Data.Services
             return deliveryArea;
         }
 
-        public async Task<DeliveryArea> CreateAsync(DeliveryAreaDto deliveryAreaDto)
-        {
-            DeliveryArea deliveryArea = DeliveryAreaDto.MapToDeliveryArea(deliveryAreaDto);
-
-            await CreateAsync(deliveryArea);
-
-            return deliveryArea;
-        }
-
-        public async Task<List<DeliveryArea>> CreateRangeAsync(List<DeliveryAreaDto> deliveryAreaDtos)
+        public async Task<List<DeliveryArea>> CreateRangeAsync(List<DeliveryArea> deliveryAreas)
         {
             List<DeliveryArea> result = new();
-            foreach (var delivery in deliveryAreaDtos)
+            foreach (var deliveryArea in deliveryAreas)
             {
-                result.Add(await CreateAsync(delivery));
+                result.Add(await CreateAsync(deliveryArea));
             }
 
             return result;
@@ -71,10 +62,11 @@ namespace Pie.Data.Services
         public async Task<ServiceResult<List<DeliveryArea>>> LoadAsync()
         {
             ServiceResult<List<DeliveryArea>> result = new();
-            var list = await _deliveryAreaService1c.GetAsync();
+
+            List<DeliveryArea>? list = await _deliveryAreaService1c.GetListAsync();
             if (list == null || list.Count == 0)
             {
-                result.Message = "DeliveryAreaDto List is Empty";
+                result.Message = "DeliveryArea List is Empty";
                 return result;
             }
             result.Value = await CreateRangeAsync(list);
