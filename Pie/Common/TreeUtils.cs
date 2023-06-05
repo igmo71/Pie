@@ -8,7 +8,7 @@
         {
             var nodes = new List<N>();
             var firstLevelEntities = entities.Where(e => e.ParentId == null).ToList();
-            foreach (var entity in firstLevelEntities)
+            foreach (var entity in firstLevelEntities.OrderBy(e => e.Name))
             {
                 N node = GetNode<S, N>(entity, entities);
                 nodes.Add(node);
@@ -29,7 +29,7 @@
             if (children != null && children.Count != 0)
             {
                 rootNode.Children = new();
-                foreach (var child in children)
+                foreach (var child in children.OrderBy(c => c.Name))
                 {
                     N node = GetNode<S, N>(child, entities);
                     rootNode.Children.Add(node);
@@ -41,7 +41,7 @@
         public static void GetFlatDictionary<N>(List<N> nodes, Dictionary<Guid, string> result, bool includeParent = false, string prefix = "")
             where N : class, ITreeNode, new()
         {
-            foreach (var item in nodes)
+            foreach (var item in nodes.OrderBy(n => n.Name))
             {
                 result.Add(item.Id, $"{prefix}{item.Name}");
 
