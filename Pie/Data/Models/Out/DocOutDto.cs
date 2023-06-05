@@ -16,6 +16,8 @@
         public int? QueueKey { get; set; }
         public string? QueueNumber { get; set; }
         public DateTime ShipDateTime { get; set; }
+        public Guid? DeliveryAreaId { get; set; }
+        public string? DeliveryAddress { get; set; }
         public List<ProductOutDto>? Products { get; set; }
         public List<BaseDocOutDto>? BaseDocs { get; set; }
 
@@ -36,7 +38,9 @@
                 StatusKey = dto.StatusKey,
                 QueueKey = dto.QueueKey,
                 QueueNumber = dto.QueueNumber,
-                ShipDateTime = dto.ShipDateTime
+                ShipDateTime = dto.ShipDateTime,
+                DeliveryAreaId = dto.DeliveryAreaId,
+                DeliveryAddress = dto.DeliveryAddress,
             };
 
             if (dto.Products != null && dto.Products.Count > 0)
@@ -89,7 +93,8 @@
                 QueueKey = doc.QueueKey,
                 QueueNumber = doc.QueueNumber,
                 ShipDateTime = doc.ShipDateTime,
-
+                DeliveryAreaId = doc.DeliveryAreaId,
+                DeliveryAddress = doc.DeliveryAddress
             };
 
             if (doc.Products != null && doc.Products.Count > 0)

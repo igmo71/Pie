@@ -40,6 +40,12 @@
             <td>Вес: </td>
             <th>@DocVm?.Weight</th>
         </tr>
+        <tr>
+            <td>Направление:</td>
+            <th>@DocVm?.Value?.DeliveryArea?.Name</th>
+            <td>Адрес: </td>
+            <th>@DocVm?.Value?.DeliveryAddress</th>
+        </tr>
     </table>
 }
 
