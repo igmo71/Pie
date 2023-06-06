@@ -32,10 +32,27 @@
                                 <option value="@item.Id">@item.Name</option>
                             }
                         </InputSelect>
+                        <button class="btn btn-outline-secondary" type="button" @onclick="ClearWarehouseAndSubmit" title="Очистить">
+                            <i class="bi bi-x"></i>
+                        </button>
                     }
-                    <button class="btn btn-outline-secondary" type="button" @onclick="ClearWarehouseAndSubmit" title="Очистить">
-                        <i class="bi bi-x"></i>
-                    </button>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="input-group">
+                    @if (DeliveryAreas != null)
+                    {
+                        <InputSelect class="form-control" @bind-Value="SearchParameters.DeliveryAreaId" data-live-search="true">
+                            <option value="@(Guid.Empty)">Все</option>
+                            @foreach (var item in DeliveryAreas)
+                            {
+                                <option value="@item.Key">@item.Value</option>
+                            }
+                        </InputSelect>
+                        <button class="btn btn-outline-secondary" type="button" @onclick="ClearDeliveryAreaAndSubmit" title="Очистить">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    }
                 </div>
             </div>
             <div class="col-auto">
@@ -54,6 +71,7 @@
 
 @code {
     [Parameter] public List<Warehouse>? Warehouses { get; set; }
+    [Parameter] public Dictionary<Guid, string>? DeliveryAreas { get; set; }
     [Parameter] public EventCallback OnSubmit { get; set; }
 
     protected override void OnInitialized()
@@ -88,6 +106,13 @@
         SearchParameters.ClearSearchByWarehouse();
         await SubmitHandle();
     }
+
+    private async Task ClearDeliveryAreaAndSubmit()
+    {
+        SearchParameters.ClearSearchByDeliveryArea();
+        await SubmitHandle();
+    }
+
     private async Task ClearFormAndSubmit()
     {
         SearchParameters.ClearSearchByForm();

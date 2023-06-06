@@ -23,6 +23,9 @@ namespace Pie.Data.Services.Out
 
                 if (parameters.WarehouseId != null && parameters.WarehouseId != Guid.Empty)
                     query = query.Where(e => e.WarehouseId == parameters.WarehouseId);
+
+                if (parameters.DeliveryAreaId != null && parameters.DeliveryAreaId != Guid.Empty)
+                    query = query.Where(e => e.DeliveryAreaId == parameters.DeliveryAreaId);
             }
 
             if (parameters.IsStatus && parameters.StatusKey != null)

@@ -19,6 +19,7 @@
         // Form
         public string? SearchTerm { get; set; }
         public Guid? WarehouseId { get; set; }
+        public Guid? DeliveryAreaId { get; set; }
 
         // Status
         public int? StatusKey { get; set; }
@@ -63,6 +64,7 @@
         {
             SearchTerm = null;
             WarehouseId = Guid.Empty;
+            DeliveryAreaId = Guid.Empty;
             NotifyStateChanged();
         }
 
@@ -75,6 +77,12 @@
         public void ClearSearchByWarehouse()
         {
             WarehouseId = Guid.Empty;
+            NotifyStateChanged();
+        }
+
+        public void ClearSearchByDeliveryArea()
+        {
+            DeliveryAreaId = Guid.Empty;
             NotifyStateChanged();
         }
 
@@ -106,6 +114,7 @@
                 SearchBarcode = searchParameters.SearchBarcode,
                 SearchTerm = searchParameters.SearchTerm,
                 WarehouseId = searchParameters.WarehouseId,
+                DeliveryAreaId = searchParameters.DeliveryAreaId,
             };
             return parameters;
         }

@@ -96,14 +96,14 @@ namespace Pie.Controllers
         [HttpGet("tree")]
         public async Task<IActionResult> GetTree()
         {
-            var result = await _deliveryAreaService.GetTree();
+            List<DeliveryAreaTreeNode> result = await _deliveryAreaService.GetTree();
             return Ok(result);
         }
 
         [HttpGet("flat")]
         public async Task<IActionResult> GetFlat(bool includeParent)
         {
-            var result = await _deliveryAreaService.GetFlatList(includeParent);
+            Dictionary<Guid, string> result = await _deliveryAreaService.GetFlatList(includeParent);
             return Ok(result);
         }
     }
