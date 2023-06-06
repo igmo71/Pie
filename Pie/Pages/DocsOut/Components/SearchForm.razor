@@ -49,7 +49,7 @@
                                 <option value="@item.Key">@item.Value</option>
                                 }
                             </InputSelect> *@
-                        <input type="text" class="form-control" @bind="@deliveryAreaName" list="deliveryList" />
+                        <input type="text" class="form-control" @bind="@deliveryAreaSelected" list="deliveryList" />
                         <datalist id="deliveryList">
                             @foreach (var item in DeliveryAreas)
                             {
@@ -81,7 +81,7 @@
     [Parameter] public Dictionary<Guid, string>? DeliveryAreas { get; set; }
     [Parameter] public EventCallback OnSubmit { get; set; }
 
-    private string? deliveryAreaName;
+    private string? deliveryAreaSelected;
 
     protected override void OnInitialized()
     {
@@ -100,8 +100,8 @@
 
     private async Task SearcHandle()
     {
-        if (DeliveryAreas != null && !string.IsNullOrEmpty(deliveryAreaName))
-            SearchParameters.DeliveryAreaId = DeliveryAreas.FirstOrDefault(e => e.Value == deliveryAreaName).Key;
+        if (DeliveryAreas != null && !string.IsNullOrEmpty(deliveryAreaSelected))
+            SearchParameters.DeliveryAreaId = DeliveryAreas.FirstOrDefault(e => e.Value == deliveryAreaSelected).Key;
 
         SearchParameters.SetSearchByForm();
         await SubmitHandle();
@@ -121,7 +121,7 @@
 
     private async Task ClearDeliveryAreaAndSubmit()
     {
-        deliveryAreaName = null;
+        deliveryAreaSelected = null;
         SearchParameters.ClearSearchByDeliveryArea();
         await SubmitHandle();
     }
