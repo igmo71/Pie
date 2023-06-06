@@ -4,7 +4,8 @@ namespace Pie.Connectors.Connector1c.Models1c
 {
     public class ProductDto1c
     {
-        public string Ref_Key { get; set; } = null!;
+        public required string Ref_Key { get; set; }
+        public string? Code { get; set; }
         public string? Description { get; set; }
         public bool DeletionMark { get; set; }
 
@@ -13,6 +14,7 @@ namespace Pie.Connectors.Connector1c.Models1c
             Product product = new()
             {
                 Id = Guid.Parse(dto.Ref_Key),
+                Code = dto.Code,
                 Name = dto.Description,
                 Active = !dto.DeletionMark
             };

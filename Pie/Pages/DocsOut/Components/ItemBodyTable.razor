@@ -1,7 +1,7 @@
 ﻿@using Pie.Data.Models.Out;
 <div>
     @*<QuickGrid Items="@(doc?.Products?.AsQueryable<DocOutProduct>())" Class="table table-bordered table-hover">*@
-    <QuickGrid Items="@FilteredProducts" Class="table table-sm table-bordered table-hover">
+    <QuickGrid Items="@FilteredProducts" Class="table table-sm table-bordered border-2 table-hover" Theme="corporate">
         <PropertyColumn Property="@(p => p.LineNumber)" Title="№" Sortable="true"></PropertyColumn>
         <PropertyColumn Property="@(p => p.Product != null ? p.Product.Name : string.Empty)" Title="Товар" Sortable="true">
             <ColumnOptions>
@@ -34,6 +34,40 @@
         }
     </QuickGrid>
 </div>
+@if (DocVm != null && DocVm.Value != null && DocVm.Value.Products != null)
+{
+    <table class="table table-sm table-striped table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center">№</th>
+                <th class="text-center">Артикул</th>
+                <th class="text-center">Товар</th>
+                <th class="text-center">Кол</th>
+                @if (DocVm?.Value?.Status?.CanChange ?? false)
+                {
+                    <th class="text-center">Кол факт</th>
+                }
+                <th class="text-center">Упак</th>
+                <th class="text-center">Вес</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in DocVm.Value.Products)
+            {
+                <tr>
+                    <td>@item.LineNumber</td>
+                    <td>@item.Product?.Code</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
 
 <EditDialog @ref="EditDialog" ChangeReasons="@ChangeReasons" OnSaveChanges="@UpdateDoc"></EditDialog>
 

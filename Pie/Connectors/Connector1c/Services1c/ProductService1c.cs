@@ -7,7 +7,7 @@ namespace Pie.Connectors.Connector1c.Services1c
     public class ProductService1c
     {
         private readonly string SUBJECT = "Catalog_Номенклатура";
-        private readonly string SELECT = "Ref_Key,Description,DeletionMark";
+        private readonly string SELECT = "Ref_Key,Code,Description,DeletionMark";
         private readonly string FILTER = "IsFolder eq false and DeletionMark eq false";
         private readonly string ORDERBY = "Ref_Key";
 
