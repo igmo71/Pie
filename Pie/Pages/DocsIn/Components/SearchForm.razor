@@ -1,10 +1,10 @@
 ﻿@using Pie.Data.Models;
-@using Pie.Data.Models.Out;
-@using Pie.Data.Services.Out;
+@using Pie.Data.Services.In;
+@using Pie.Pages.Components;
 
 @implements IDisposable
 
-@inject SearchOutParameters SearchParameters
+@inject SearchInParameters SearchParameters
 
 <EditForm Model="@SearchParameters" OnSubmit="SearcHandle" class="mb-2">
 
