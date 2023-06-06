@@ -16,7 +16,9 @@ namespace Pie.Data.Services.In
             if (parameters.IsForm)
             {
                 if (!string.IsNullOrWhiteSpace(parameters.SearchTerm))
-                    query = query.Where(e => !string.IsNullOrEmpty(e.Name) && e.Name.ToLower().Contains(parameters.SearchTerm.Trim().ToLower()));
+                    query = query.Where(e =>
+                        (!string.IsNullOrEmpty(e.Name) && e.Name.ToLower().Contains(parameters.SearchTerm.Trim().ToLower()))
+                    );
 
                 if (parameters.WarehouseId != null && parameters.WarehouseId != Guid.Empty)
                     query = query.Where(e => e.WarehouseId == parameters.WarehouseId);
