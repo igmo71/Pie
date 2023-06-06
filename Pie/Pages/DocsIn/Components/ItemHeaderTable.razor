@@ -3,6 +3,33 @@
 {
     <table class="table table-sm table-borderless">
         <tr>
+            <td>Получатель:</td>
+            <th>@DocVm?.Value?.Partner?.Name</th>
+            <td>В работе:</td>
+            <th>@DocVm?.AtWorkUserName</th>
+        </tr>
+        <tr class="d-print-none">
+            <td>Склад:</td>
+            <th>@DocVm?.Value?.Warehouse?.Name</th>
+            <td>Статус:</td>
+            <th>@DocVm?.Value?.Status?.Name</th>
+        </tr>
+        <tr class="d-print-none">
+            <td>Ответственный:</td>
+            <th>@DocVm?.Value?.Manager?.Name</th>
+            <td>Очередь:</td>
+            <th>@DocVm?.Value?.Queue?.Name</th>
+        </tr>
+        <tr>
+            <td>Вес: </td>
+            <th>@DocVm?.Weight</th>
+            <td>Комментарий:</td>
+            <th>@DocVm?.Value?.Comment</th>
+        </tr>
+    </table>
+
+    @* <table class="table table-sm table-borderless">
+        <tr>
             <td>Отправитель:</td>
             <th>@DocVm?.Value?.Partner?.Name</th>
             <td>Документы основания:</td>
@@ -40,7 +67,7 @@
             <td>Вес: </td>
             <th>@DocVm?.Weight</th>
         </tr>
-    </table>
+    </table> *@
 }
 
 @code {
