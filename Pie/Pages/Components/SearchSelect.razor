@@ -6,8 +6,11 @@
         <option value="@option.Display">@option.Display</option>
     }
 </datalist>
+<button class="btn btn-outline-secondary" type="button" @onclick="ClearAndSubmit" title="Очистить">
+    <i class="bi bi-x"></i>
+</button>
 
-<div>@searchModel.SelectedOptionId</div>
+<div>SelectedOptionId: @searchModel.SelectedOptionId</div>
 
 @code {
     private string filterText;
@@ -49,5 +52,10 @@
     {
         public int Id { get; set; }
         public string Display { get; set; }
+    }
+
+    private void ClearAndSubmit()
+    {
+        filterText = string.Empty;
     }
 }
