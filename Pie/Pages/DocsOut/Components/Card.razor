@@ -1,4 +1,5 @@
 ﻿@using Pie.Data.Models.Out;
+@using Pie.Data.Services.Out;
 @inject NavigationManager NavigationManager
 
 @if (Doc != null)
@@ -33,27 +34,46 @@
             <div>
                 <i class="bi bi-person"></i><span class="small"> Получатель: </span><span>@Doc?.Partner?.Name</span>
             </div>
+            @if (Doc?.DeliveryArea != null)
+            {
+                <div>
+                    <i class="bi bi-signpost"></i><span class="small"> Направление: </span><span>@Doc?.DeliveryArea?.Name</span>
+                </div>
+            }
+
+            @*  <div>
+        <i class="bi bi-geo"></i><span class="small"> Адрес: </span><span>@Doc?.DeliveryAddress</span>
+        </div> *@
+
             <div>
-                <i class="bi bi-calendar"></i><span class="small"> Дата: </span><span>@Doc?.DateTime</span>
+                <i class="bi bi-calendar"></i><span class="small"> Дата док: </span><span>@Doc?.DateTime</span>
             </div>
             <div>
-                <i class="bi bi-calendar-event"></i><span class="small"> Дата отгрузки: </span><span>@Doc?.ShipDateTime</span>
+                <i class="bi bi-calendar-event"></i><span class="small"> Дата отгр: </span><span>@Doc?.ShipDateTime</span>
             </div>
-            <div>
-                <i class="bi bi-building"></i><span class="small"> Склад: </span><span>@Doc?.Warehouse?.Name</span>
-            </div>
-            <div>
-                <i class="bi bi-clipboard-check"></i><span class="small"> Статус: </span><span>@Doc?.Status?.Name</span>
-            </div>
-            <div>
-                <i class="bi bi-people"></i><span class="small"> Очередь: </span><span>@Doc?.Queue?.Name</span>
-            </div>
+
+            @if (SearchParameters?.WarehouseId == null || SearchParameters?.WarehouseId == Guid.Empty)
+            {
+                <div>
+                    <i class="bi bi-building"></i><span class="small"> Склад: </span><span>@Doc?.Warehouse?.Name</span>
+                </div>
+            }
+
+            @if (SearchParameters?.StatusKey == null)
+            {
+                <div>
+                    <i class="bi bi-clipboard-check"></i><span class="small"> Статус: </span><span>@Doc?.Status?.Name</span>
+                </div>
+            }
+
+            @*  <div>
+        <i class="bi bi-people"></i><span class="small"> Очередь: </span><span>@Doc?.Queue?.Name</span>
+        </div> *@
+
             <div>
                 @if (@Doc?.Comment != null && !string.IsNullOrEmpty(@Doc?.Comment))
                 {
-                    <i class="bi bi-chat-left-text"></i>
-
-                    <span> @Doc?.Comment</span>
+                    <i class="bi bi-chat-left-text"></i> <span>@Doc?.Comment</span>
                 }
             </div>
         </div>
@@ -72,6 +92,7 @@
 
 @code {
     [Parameter] public DocOut? Doc { get; set; }
+    [CascadingParameter] public SearchOutParameters? SearchParameters { get; set; }
 
     private string? cardColor = "success";
 

@@ -10,5 +10,7 @@
 
 @if (docs is not null && docs.Any())
 {
-    <CardsQueues Docs="@docs" Queues="@queues"></CardsQueues>
+    <CascadingValue Value="@SearchParameters">
+        <CardsQueues Docs="@docs" Queues="@queues"></CardsQueues>
+    </CascadingValue>
 }
