@@ -2,22 +2,29 @@
 {
     public class PartnerDto
     {
-        public Guid? PartnerId { get; set; }
+        public Guid PartnerId { get; set; }
         public string? Name { get; set; }
 
-        public static Partner? MapToPartner(PartnerDto dto)
+        public static Partner MapToPartner(PartnerDto dto)
         {
-            if (dto.PartnerId == null)
-                return default;
-
             Partner partner = new()
             {
-                Id = (Guid)dto.PartnerId,
-                Name = dto.Name,
-                Active = true
+                Id = dto.PartnerId,
+                Name = dto.Name
             };
 
             return partner;
+        }
+
+        public static PartnerDto MapFromPartner(Partner partner)
+        {
+            PartnerDto dto = new()
+            {
+                PartnerId = partner.Id,
+                Name = partner.Name
+            };
+
+            return dto;
         }
     }
 }

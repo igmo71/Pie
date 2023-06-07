@@ -4,6 +4,7 @@ using Pie.Common;
 using Pie.Connectors.Connector1c;
 using Pie.Data.Models;
 using Pie.Data.Models.In;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace Pie.Data.Services.In
@@ -107,13 +108,6 @@ namespace Pie.Data.Services.In
             return result;
         }
 
-        public async Task<DocInDictionaryByQueueVm> GetDictionaryByQueueVmAsync(SearchInParameters searchParameters)
-        {
-            DocInDictionaryByQueueVm vm = new();
-            vm.Value = await GetDictionaryByQueueAsync(searchParameters);
-            return vm;
-        }
-
         public async Task<Dictionary<int, int>?> GetCountByStatusAsync(SearchInParameters searchParameters)
         {
             using var context = _contextFactory.CreateDbContext();
@@ -129,54 +123,29 @@ namespace Pie.Data.Services.In
 
         public async Task<DocInDto> CreateAsync(DocInDto docDto, string? barcode = null)
         {
-            await CreateBaseDocs(docDto);
-            await CreateManager(docDto);
-            await CreatePartner(docDto);
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            if (docDto.BaseDocs != null)
+                await _baseDocService.CreateOrUpdateRangeAsync(docDto.BaseDocs);
+
+            if (docDto.Manager != null)
+                await _managerService.CreateOrUpdateAsync(docDto.Manager);
+
+            if (docDto.Partner != null)
+                await _partnerService.CreateOrUpdateAsync(docDto.Partner);
 
             DocIn doc = DocInDto.MapToDocIn(docDto);
-
             doc = await CreateAsync(doc);
-
-            OnDocCreated(doc.Id);
 
             await _docHistoryService.CreateAsync(doc, barcode);
             await _docProductHistoryService.CreateAsync(doc, barcode);
 
+            OnDocCreated(doc.Id);
+
+            stopwatch.Stop();
+            _logger.LogDebug("DocOutService CreateAsync - Ok in {ElapsedMilliseconds} {@DocInDto}", stopwatch.ElapsedMilliseconds, docDto);
+
             return docDto;
-        }
-
-        private async Task CreateBaseDocs(DocInDto docDto)
-        {
-            if (docDto.BaseDocs != null)
-            {
-                List<BaseDoc>? baseDocs = BaseDocInDto.MapToBaseDocList(docDto.BaseDocs);
-                await _baseDocService.CreateRangeAsync(baseDocs);
-            }
-        }
-
-        private async Task CreateManager(DocInDto docDto)
-        {
-
-            if (docDto.Manager != null)
-            {
-                Manager? manager = ManagerDto.MapToManager(docDto.Manager);
-                if (manager != null)
-                {
-                    await _managerService.CreateAsync(manager);
-                }
-            }
-        }
-
-        private async Task CreatePartner(DocInDto docDto)
-        {
-            if (docDto.Partner != null)
-            {
-                Partner? partner = PartnerDto.MapToPartner(docDto.Partner);
-                if (partner != null)
-                {
-                    await _partnerService.CreateAsync(partner);
-                }
-            }
         }
 
         public async Task<DocIn> CreateAsync(DocIn doc)

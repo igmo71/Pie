@@ -30,21 +30,19 @@ namespace Pie.Data.Services
 
         public async Task<Manager> CreateAsync(Manager manager)
         {
-            if (Exists(manager.Id))
-            {
-                await UpdateAsync(manager);
-            }
-            else
-            {
-                _context.Managers.Add(manager);
-                await _context.SaveChangesAsync();
-            }
+            _context.Managers.Add(manager);
+            
+            await _context.SaveChangesAsync();
+
             return manager;
         }
 
         public async Task UpdateAsync(Manager manager)
         {
-            _context.Entry(manager).State = EntityState.Modified;
+            Manager? entity = _context.Managers.Find(manager.Id);
+            if (entity == null) return;
+
+            entity.Name = manager.Name;
 
             try
             {
@@ -61,6 +59,25 @@ namespace Pie.Data.Services
                     throw;
                 }
             }
+        }
+
+        public async Task CreateOrUpdateAsync(Manager manager)
+        {
+            if (Exists(manager.Id))
+            {
+                await UpdateAsync(manager);
+            }
+            else
+            {
+                await CreateAsync(manager);
+            }
+        }
+
+        public async Task CreateOrUpdateAsync(ManagerDto dto)
+        {
+            Manager manager = ManagerDto.MapToManager(dto);
+
+            await CreateOrUpdateAsync(manager);
         }
 
         public async Task DeleteAsync(Guid id)

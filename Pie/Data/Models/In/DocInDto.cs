@@ -14,8 +14,8 @@
         public bool IsTransfer { get; set; }
         public int? StatusKey { get; set; }
         public int? QueueKey { get; set; }
-        public List<ProductInDto>? Products { get; set; }
-        public List<BaseDocInDto>? BaseDocs { get; set; }
+        public List<DocInProductDto>? Products { get; set; }
+        public List<DocInBaseDocDto>? BaseDocs { get; set; }
 
         public static DocIn MapToDocIn(DocInDto dto)
         {
@@ -36,35 +36,10 @@
             };
 
             if (dto.Products != null && dto.Products.Count > 0)
-            {
-                foreach (var item in dto.Products)
-                {
-                    DocInProduct product = new()
-                    {
-                        DocId = dto.Id,
-                        ProductId = item.ProductId,
-                        LineNumber = item.LineNumber,
-                        CountPlan = item.CountPlan,
-                        CountFact = item.CountFact,
-                        Unit = item.Unit,
-                        Weight = item.Weight
-                    };
-                    doc.Products.Add(product);
-                }
-            }
+                doc.Products = DocInProductDto.MapToDocInProductList(dto.Id, dto.Products);
 
             if (dto.BaseDocs != null && dto.BaseDocs.Count > 0)
-            {
-                foreach (var item in dto.BaseDocs)
-                {
-                    DocInBaseDoc baseDoc = new()
-                    {
-                        DocId = dto.Id,
-                        BaseDocId = item.BaseDocId
-                    };
-                    doc.BaseDocs.Add(baseDoc);
-                }
-            }
+                doc.BaseDocs = DocInBaseDocDto.MapToDocInBaseDocList(dto.Id, dto.BaseDocs);            
 
             return doc;
         }
@@ -86,95 +61,18 @@
             };
 
             if (doc.Products != null && doc.Products.Count > 0)
-            {
-                dto.Products = new List<ProductInDto>();
-                foreach (var item in doc.Products)
-                {
-                    ProductInDto product = new()
-                    {
-                        ProductId = item.ProductId,
-                        LineNumber = item.LineNumber,
-                        CountPlan = item.CountPlan,
-                        CountFact = item.CountFact,
-                        Unit = item.Unit,
-                        Weight = item.Weight
-                    };
-                    dto.Products.Add(product);
-                }
-            }
+                dto.Products = DocInProductDto.MapFromDocInProductList(doc.Products);
 
             if (doc.BaseDocs != null && doc.BaseDocs.Count > 0)
-            {
-                dto.BaseDocs = new List<BaseDocInDto>();
-                foreach (var item in doc.BaseDocs)
-                {
-                    BaseDocInDto baseDoc = new()
-                    {
-                        BaseDocId = item.BaseDocId,
-                        Name = item.BaseDoc?.Name
-                    };
-                    dto.BaseDocs.Add(baseDoc);
-                }
-            }
+                dto.BaseDocs = DocInBaseDocDto.MapFromDocInBaseDocList(doc.BaseDocs);
 
             if (doc.Manager != null)
-            {
-                dto.Manager = new ManagerDto
-                {
-                    ManagerId = doc.ManagerId,
-                    Name = doc.Manager.Name
-                };
-            }
+                dto.Manager = ManagerDto.MapFromManager(doc.Manager);
 
             if (doc.Partner != null)
-            {
-                dto.Partner = new PartnerDto
-                {
-                    PartnerId = doc.PartnerId,
-                    Name = doc.Partner.Name
-                };
-            }
+                dto.Partner = PartnerDto.MapFromPartner(doc.Partner);
 
             return dto;
-        }
-    }
-
-    public class ProductInDto
-    {
-        public Guid ProductId { get; set; }
-        public int LineNumber { get; set; }
-        public float CountPlan { get; set; }
-        public float CountFact { get; set; }
-        public string? Unit { get; set; }
-        public float Weight { get; set; }
-    }
-
-    public class BaseDocInDto
-    {
-        public Guid BaseDocId { get; set; }
-        public string? Name { get; set; }
-
-        public static BaseDoc MapToBaseDoc(BaseDocInDto dto)
-        {
-            BaseDoc baseDoc = new()
-            {
-                Id = dto.BaseDocId,
-                Name = dto.Name,
-                Active = true
-            };
-
-            return baseDoc;
-        }
-
-        public static List<BaseDoc> MapToBaseDocList(List<BaseDocInDto> dtos)
-        {
-            List<BaseDoc> list = new();
-            foreach (var dto in dtos)
-            {
-                list.Add(MapToBaseDoc(dto));
-            }
-
-            return list;
         }
     }
 }

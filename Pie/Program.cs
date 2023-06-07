@@ -57,14 +57,14 @@ namespace Pie
                 options.LogTo(s => System.Diagnostics.Debug.WriteLine(s));
             });
 
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                //options.UseSqlServer(connectionString);
-                options.UseNpgsql(connectionString);
-                options.EnableDetailedErrors();
-                options.EnableSensitiveDataLogging();
-                options.LogTo(s => System.Diagnostics.Debug.WriteLine(s));
-            });
+            //builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            //{
+            //    //options.UseSqlServer(connectionString);
+            //    options.UseNpgsql(connectionString);
+            //    options.EnableDetailedErrors();
+            //    options.EnableSensitiveDataLogging();
+            //    options.LogTo(s => System.Diagnostics.Debug.WriteLine(s));
+            //});
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

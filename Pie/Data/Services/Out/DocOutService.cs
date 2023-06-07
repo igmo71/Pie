@@ -2,8 +2,8 @@
 using Microsoft.Extensions.Options;
 using Pie.Common;
 using Pie.Connectors.Connector1c;
-using Pie.Data.Models;
 using Pie.Data.Models.Out;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace Pie.Data.Services.Out
@@ -100,8 +100,8 @@ namespace Pie.Data.Services.Out
                 .Include(d => d.Manager)
                 .Include(d => d.Partner)
                 .Include(d => d.Warehouse)
-                .Include(d => d.DeliveryArea)
                 .Include(d => d.Products)
+                .Include(d => d.DeliveryArea)
                 .OrderBy(d => d.StatusKey.GetValueOrDefault())
                     .ThenBy(d => d.QueueKey.GetValueOrDefault())
                         .ThenBy(d => d.ShipDateTime)
@@ -109,13 +109,6 @@ namespace Pie.Data.Services.Out
                 .GroupBy(e => e.QueueKey.GetValueOrDefault())
                 .ToDictionaryAsync(g => g.Key, g => g.ToList());
             return result;
-        }
-
-        public async Task<DocOutDictionaryByQueueVm> GetDictionaryByQueueVmAsync(SearchOutParameters searchParameters)
-        {
-            DocOutDictionaryByQueueVm vm = new();
-            vm.Value = await GetDictionaryByQueueAsync(searchParameters);
-            return vm;
         }
 
         public async Task<Dictionary<int, int>?> GetCountByStatusAsync(SearchOutParameters searchParameters)
@@ -133,54 +126,29 @@ namespace Pie.Data.Services.Out
 
         public async Task<DocOutDto> CreateAsync(DocOutDto docDto, string? barcode = null)
         {
-            await CreateBaseDocs(docDto);
-            await CreateManager(docDto);
-            await CreatePartner(docDto);
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            if (docDto.BaseDocs != null)
+                await _baseDocService.CreateOrUpdateRangeAsync(docDto.BaseDocs);
+
+            if (docDto.Manager != null)
+                await _managerService.CreateOrUpdateAsync(docDto.Manager);
+
+            if (docDto.Partner != null)
+                await _partnerService.CreateOrUpdateAsync(docDto.Partner);
 
             DocOut doc = DocOutDto.MapToDocOut(docDto);
-
             doc = await CreateAsync(doc);
-
-            OnDocCreated(doc.Id);
 
             await _docHistoryService.CreateAsync(doc, barcode);
             await _docProductHistoryService.CreateAsync(doc, barcode);
 
+            OnDocCreated(doc.Id);
+
+            stopwatch.Stop();
+            _logger.LogDebug("DocOutService CreateAsync - Ok in {ElapsedMilliseconds} {@DocOutDto}", stopwatch.ElapsedMilliseconds, docDto);
+
             return docDto;
-        }
-
-        private async Task CreateBaseDocs(DocOutDto docDto)
-        {
-            if (docDto.BaseDocs != null)
-            {
-                List<BaseDoc>? baseDocs = BaseDocOutDto.MapToBaseDocList(docDto.BaseDocs);
-                await _baseDocService.CreateRangeAsync(baseDocs);
-            }
-        }
-
-        private async Task CreateManager(DocOutDto docDto)
-        {
-
-            if (docDto.Manager != null)
-            {
-                Manager? manager = ManagerDto.MapToManager(docDto.Manager);
-                if (manager != null)
-                {
-                    await _managerService.CreateAsync(manager);
-                }
-            }
-        }
-
-        private async Task CreatePartner(DocOutDto docDto)
-        {
-            if (docDto.Partner != null)
-            {
-                Partner? partner = PartnerDto.MapToPartner(docDto.Partner);
-                if (partner != null)
-                {
-                    await _partnerService.CreateAsync(partner);
-                }
-            }
         }
 
         public async Task<DocOut> CreateAsync(DocOut doc)
@@ -208,7 +176,7 @@ namespace Pie.Data.Services.Out
             {
                 if (!Exists(doc.Id))
                 {
-                    throw new ApplicationException($"DocOutService UpdateDocAsync NotFount {doc.Id}", ex);
+                    throw new ApplicationException($"DocOutService UpdateAsync NotFount {doc.Id}", ex);
                 }
                 else
                 {
@@ -220,7 +188,7 @@ namespace Pie.Data.Services.Out
         public async Task DeleteAsync(Guid id)
         {
             var doc = await _context.DocsOut.FindAsync(id)
-                ?? throw new ApplicationException($"DocOutService DeleteDocAsync NotFount {id}");
+                ?? throw new ApplicationException($"DocOutService DeleteAsync NotFount {id}");
 
             _context.DocsOut.Remove(doc);
 

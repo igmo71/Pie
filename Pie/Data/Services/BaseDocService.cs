@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models;
+using Pie.Data.Models.In;
+using Pie.Data.Models.Out;
 
 namespace Pie.Data.Services
 {
@@ -8,7 +10,9 @@ namespace Pie.Data.Services
         private readonly ApplicationDbContext _context;
         private readonly ILogger<BaseDocService> _logger;
 
-        public BaseDocService(ApplicationDbContext context, ILogger<BaseDocService> logger)
+        public BaseDocService(
+            ApplicationDbContext context,
+            ILogger<BaseDocService> logger)
         {
             _context = context;
             _logger = logger;
@@ -30,31 +34,19 @@ namespace Pie.Data.Services
 
         public async Task<BaseDoc> CreateAsync(BaseDoc baseDoc)
         {
-            if (Exists(baseDoc.Id))
-            {
-                await UpdateAsync(baseDoc);
-            }
-            else
-            {
-                _context.BaseDocs.Add(baseDoc);
-                await _context.SaveChangesAsync();
-            }
+            _context.BaseDocs.Add(baseDoc);
+
+            await _context.SaveChangesAsync();
+
             return baseDoc;
-        }
-
-        public async Task CreateRangeAsync(List<BaseDoc>? baseDocs)
-        {
-            if (baseDocs == null || baseDocs.Count == 0) return;
-
-            foreach (BaseDoc baseDoc in baseDocs)
-            {
-                await CreateAsync(baseDoc);
-            }
         }
 
         public async Task UpdateAsync(BaseDoc baseDoc)
         {
-            _context.Entry(baseDoc).State = EntityState.Modified;
+            BaseDoc? entity = _context.BaseDocs.FirstOrDefault(e => e.Id == baseDoc.Id);
+            if (entity == null) return;
+
+            entity.Name = baseDoc.Name;
 
             try
             {
@@ -71,6 +63,43 @@ namespace Pie.Data.Services
                     throw;
                 }
             }
+            //catch(Exception ex)
+            //{
+            //    throw;
+            //}
+        }
+
+        public async Task CreateOrUpdateAsync(BaseDoc baseDoc)
+        {
+            if (Exists(baseDoc.Id))
+            {
+                await UpdateAsync(baseDoc);
+            }
+            else
+            {
+                await CreateAsync(baseDoc);
+            }
+        }
+
+        public async Task CreateOrUpdateRangeAsync(List<BaseDoc> baseDocs)
+        {
+            foreach (BaseDoc baseDoc in baseDocs)
+            {
+                await CreateOrUpdateAsync(baseDoc);
+            }
+        }
+
+        internal async Task CreateOrUpdateRangeAsync(List<DocInBaseDocDto> dtoList)
+        {
+            List<BaseDoc> baseDocs = DocInBaseDocDto.MapToBaseDocList(dtoList);
+
+            await CreateOrUpdateRangeAsync(baseDocs);
+        }
+        internal async Task CreateOrUpdateRangeAsync(List<DocOutBaseDocDto> dtoList)
+        {
+            List<BaseDoc> baseDocs = DocOutBaseDocDto.MapToBaseDocList(dtoList);
+
+            await CreateOrUpdateRangeAsync(baseDocs);
         }
 
         public async Task DeleteAsync(Guid id)

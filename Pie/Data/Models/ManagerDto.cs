@@ -2,22 +2,29 @@
 {
     public class ManagerDto
     {
-        public Guid? ManagerId { get; set; }
+        public Guid ManagerId { get; set; }
         public string? Name { get; set; }
 
-        public static Manager? MapToManager(ManagerDto dto)
+        public static Manager MapToManager(ManagerDto dto)
         {
-            if (dto.ManagerId == null)
-                return default;
-
             Manager manager = new()
             {
-                Id = (Guid)dto.ManagerId,
-                Name = dto.Name,
-                Active = true
+                Id = dto.ManagerId,
+                Name = dto.Name
             };
 
             return manager;
+        }
+
+        public static ManagerDto MapFromManager(Manager manager)
+        {
+            ManagerDto dto = new()
+            {
+                ManagerId = manager.Id,
+                Name = manager.Name
+            };
+
+            return dto;
         }
     }
 }

@@ -30,21 +30,19 @@ namespace Pie.Data.Services
 
         public async Task<Partner> CreateAsync(Partner partner)
         {
-            if (Exists(partner.Id))
-            {
-                await UpdateAsync(partner);
-            }
-            else
-            {
-                _context.Partners.Add(partner);
-                await _context.SaveChangesAsync();
-            }
+            _context.Partners.Add(partner);
+
+            await _context.SaveChangesAsync();
+            
             return partner;
         }
 
         public async Task UpdateAsync(Partner partner)
         {
-            _context.Entry(partner).State = EntityState.Modified;
+            Partner? entity = _context.Partners.Find(partner.Id);
+            if (entity == null) return;
+
+            entity.Name = partner.Name;
 
             try
             {
@@ -54,7 +52,7 @@ namespace Pie.Data.Services
             {
                 if (!Exists(partner.Id))
                 {
-                    throw new ApplicationException($"PartnerService UpdatePartnerAsync NotFount {partner.Id}", ex);
+                    throw new ApplicationException($"PartnerService UpdateAsync NotFount {partner.Id}", ex);
                 }
                 else
                 {
@@ -63,10 +61,29 @@ namespace Pie.Data.Services
             }
         }
 
+        public async Task CreateOrUpdateAsync(Partner partner)
+        {
+            if (Exists(partner.Id))
+            {
+                await UpdateAsync(partner);
+            }
+            else
+            {
+                await CreateAsync(partner);
+            }
+        }
+
+        public async Task CreateOrUpdateAsync(PartnerDto dto)
+        {
+            Partner partner = PartnerDto.MapToPartner(dto);
+
+            await CreateOrUpdateAsync(partner);
+        }
+
         public async Task DeleteAsync(Guid id)
         {
             var partner = await _context.Partners.FindAsync(id)
-                ?? throw new ApplicationException($"PartnerService DeletePartnerAsync NotFount {id}");
+                ?? throw new ApplicationException($"PartnerService DeleteAsync NotFount {id}");
 
             _context.Partners.Remove(partner);
 

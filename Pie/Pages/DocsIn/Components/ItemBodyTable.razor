@@ -1,39 +1,57 @@
 ﻿@using Pie.Data.Models.In;
-<div>
-    @*<QuickGrid Items="@(doc?.Products?.AsQueryable<DocInProduct>())" Class="table table-bordered table-hover">*@
-    <QuickGrid Items="@FilteredProducts" Class="table table-sm table-bordered border-1 table-hover">
-        <PropertyColumn Property="@(p => p.LineNumber)" Title="№" Sortable="true"></PropertyColumn>
-        <PropertyColumn Property="@(p => p.Product != null ? p.Product.Name : string.Empty)" Title="Товар" Sortable="true">
-            <ColumnOptions>
-                <div class="search-box">
-                    <input type="search" autofocus @bind="nameFilter" @bind:event="oninput" placeholder="Название..." />
-                </div>
-            </ColumnOptions>
-        </PropertyColumn>
-        <PropertyColumn Property="@(p => p.CountPlan)" Title="Кол" Sortable="true"></PropertyColumn>
-        @if (DocVm?.Value?.Status?.CanChange ?? false)
-        {
-            @*<PropertyColumn Property="@(p => p.CountFact)" Title="Кол-во факт" Sortable="true"></PropertyColumn>*@
-            <TemplateColumn Title="Кол факт" Class="p-0 m-0">
-                <div class="@(context.CountPlan == context.CountFact ? string.Empty : "alert  alert-warning") m-0 p-2">
-                    @{
-                        string? changeReason = ChangeReasons?.FirstOrDefault(c => c.Id == context.ChangeReasonId)?.Name;
-                        changeReason = string.IsNullOrEmpty(changeReason) ? string.Empty : $@" ( {changeReason} ) ";
+
+@if (DocVm != null && DocVm.Value != null && DocVm.Value.Products != null)
+{
+    <table class="table table-sm table-bordered border-dark table-hover">
+        <thead>
+            <tr>
+                <th class="text-center">№</th>
+                <th class="text-center">Артикул</th>
+                <th class="text-center">Товар</th>
+                <th class="text-center">Кол</th>
+                @if (DocVm?.Value?.Status?.CanChange ?? false)
+                {
+                    <th class="text-center">Кол факт</th>
+                }
+                <th class="text-center">Упак</th>
+                <th class="text-center">Вес</th>
+                @if (DocVm?.Value?.Status?.CanChange ?? false)
+                {
+                    <th class="d-print-none text-center"><i class="bi bi-pencil-square"></i></th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in DocVm.Value.Products)
+            {
+                <tr class="fs-6">
+                    <td>@item.LineNumber</td>
+                    <td>@item.Product?.Code</td>
+                    <td>@item.Product?.Name</td>
+                    <td>@item.CountPlan</td>
+                    @if (DocVm?.Value?.Status?.CanChange ?? false)
+                    {
+                        <td class="@(item.CountFact == item.CountPlan ? string.Empty : "bg-warning bg-gradient  bg-opacity-50 text-dark")">
+                            <div>
+                                <span>@item.CountFact</span>
+                                <span>@(item.ChangeReasonId == null ? string.Empty : $"( {ChangeReasons?.FirstOrDefault(r => r.Id == item.ChangeReasonId)?.Name} )")</span>
+                            </div>
+                        </td>
                     }
-                    @context.CountFact @changeReason
-                </div>
-            </TemplateColumn>
-        }
-        <PropertyColumn Property="@(p => p.Unit)" Title="Упак" Sortable="true" />
-        <PropertyColumn Property="@(p => p.Weight)" Title="Вес" Sortable="true" />
-        @if (DocVm?.Value?.Status?.CanChange ?? false)
-        {
-            <TemplateColumn Title="Изменить" Class="d-print-none">
-                <button class="btn btn-outline-primary" @onclick="@(() => EditDoc(context))"><i class="bi bi-pencil-square"></i></button>
-            </TemplateColumn>
-        }
-    </QuickGrid>
-</div>
+                    <td>@item.Unit</td>
+                    <td>@item.Weight</td>
+                    @if (DocVm?.Value?.Status?.CanChange ?? false)
+                    {
+                        <td class="d-print-none text-center">
+                            <button class="btn btn-sm btn-outline-primary" @onclick="@(() => EditDoc(item))"><i class="bi bi-pencil-square"></i></button>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
 
 <EditDialog @ref="EditDialog" ChangeReasons="@ChangeReasons" OnSaveChanges="@UpdateDoc"></EditDialog>
 
