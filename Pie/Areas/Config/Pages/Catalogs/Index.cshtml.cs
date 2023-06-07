@@ -42,7 +42,7 @@ namespace Pie.Areas.Config.Pages.Catalogs
                 _logger.LogError(ex, "Config.Pages.Catalogs OnPostLoadProducts {Message}", ex.Message);
             }
 
-            LoadResult.Message = $"Справочник Номенклатуры загружен успешно)";
+            LoadResult.Message = $"РЎРїСЂР°РІРѕС‡РЅРёРє РќРѕРјРµРЅРєР»Р°С‚СѓСЂС‹ Р·Р°РіСЂСѓР¶РµРЅ СѓСЃРїРµС€РЅРѕ)";
             return Page();
         }
 
@@ -59,7 +59,7 @@ namespace Pie.Areas.Config.Pages.Catalogs
                 _logger.LogError(ex, "Config.Pages.Catalogs OnPostLoadWarehouses {Message}", ex.Message);
             }
 
-            LoadResult.Message = $"Справочник Складов загружен успешно)";
+            LoadResult.Message = $"РЎРїСЂР°РІРѕС‡РЅРёРє РЎРєР»Р°РґРѕРІ Р·Р°РіСЂСѓР¶РµРЅ СѓСЃРїРµС€РЅРѕ)";
             return Page();
         }
 
@@ -76,7 +76,7 @@ namespace Pie.Areas.Config.Pages.Catalogs
                 _logger.LogError(ex, "Config.Pages.Catalogs OnPostLoadDeliveryAreas {Message}", ex.Message);
             }
 
-            LoadResult.Message = $"Справочник Зон доставки загружен успешно)";
+            LoadResult.Message = $"РЎРїСЂР°РІРѕС‡РЅРёРє Р—РѕРЅ РґРѕСЃС‚Р°РІРєРё Р·Р°РіСЂСѓР¶РµРЅ СѓСЃРїРµС€РЅРѕ)";
             return Page();
         }
     }
