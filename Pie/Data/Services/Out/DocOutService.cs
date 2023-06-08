@@ -209,10 +209,10 @@ namespace Pie.Data.Services.Out
         {
             DocOutDto docDto = DocOutDto.MapFromDocOut(doc);
 
-            DocOutDto? result = await _service1c.SendOutAsync(docDto);
+            DocOutDto? responseDoc = await _service1c.SendOutAsync(docDto);
 
-            if (result != null)
-                _ = await CreateAsync(result, barcode);
+            if (responseDoc != null)
+                _ = await CreateAsync(responseDoc, barcode);
         }
 
         private async Task SetShipDateTime(DocOut doc)
