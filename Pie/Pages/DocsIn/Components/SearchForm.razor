@@ -1,0 +1,106 @@
+﻿@using Pie.Data.Models;
+@using Pie.Data.Services.In;
+@using Pie.Pages.Components;
+
+@implements IDisposable
+
+@inject SearchInParameters SearchParameters
+
+<EditForm Model="@SearchParameters" OnSubmit="SearcHandle" class="mb-2">
+
+    <SearchByBarcode OnScannedBarcode="ScannedBarcodeHandle"></SearchByBarcode>
+
+    @if (SearchParameters.IsForm)
+    {
+        <div class="row">
+            <div class="col-auto">
+                <div class="input-group">
+                    <InputText class="form-control" @bind-Value="@SearchParameters.SearchTerm" placeholder="строка поиска" />
+                    <button class="btn btn-outline-secondary" type="button" @onclick="ClearSearchByTermAndSubmit" title="Очистить">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-auto">
+                <div class="input-group">
+                    @if (Warehouses != null)
+                    {
+                        <InputSelect class="form-control" @bind-Value="SearchParameters.WarehouseId">
+                            <option value="@(Guid.Empty)">Все</option>
+                            @foreach (var item in Warehouses)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </InputSelect>
+                    }
+                    <button class="btn btn-outline-secondary" type="button" @onclick="ClearWarehouseAndSubmit" title="Очистить">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-primary" type="button" @onclick="SearcHandle" title="Поиск">
+                    <span><i class="bi bi-search"></i></span><span> Поиск</span>
+                </button>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-primary" type="button" @onclick="ClearFormAndSubmit" title="Очистить все">
+                    <span><i class="bi bi-backspace"></i></span><span> Сбросить поиск</span>
+                </button>
+            </div>
+        </div>
+    }
+</EditForm>
+
+@code {
+    [Parameter] public List<Warehouse>? Warehouses { get; set; }
+    [Parameter] public EventCallback OnSubmit { get; set; }
+
+    protected override void OnInitialized()
+    {
+        SearchParameters.OnChange += SearchParametersChangedHandle;
+    }
+
+    private async Task SubmitHandle()
+    {
+        await OnSubmit.InvokeAsync();
+    }
+
+    private async Task ScannedBarcodeHandle()
+    {
+        await SubmitHandle();
+    }
+
+    private async Task SearcHandle()
+    {
+        SearchParameters.SetSearchByForm();
+        await SubmitHandle();
+    }
+
+    private async Task ClearSearchByTermAndSubmit()
+    {
+        SearchParameters.ClearSearchByTerm();
+        await SubmitHandle();
+    }
+
+    private async Task ClearWarehouseAndSubmit()
+    {
+        SearchParameters.ClearSearchByWarehouse();
+        await SubmitHandle();
+    }
+    private async Task ClearFormAndSubmit()
+    {
+        SearchParameters.ClearSearchByForm();
+        await SubmitHandle();
+    }
+
+    private void SearchParametersChangedHandle()
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        SearchParameters.OnChange -= SearchParametersChangedHandle;
+    }
+}

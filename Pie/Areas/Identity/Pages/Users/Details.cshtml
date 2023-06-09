@@ -1,0 +1,72 @@
+﻿@page
+@model Pie.Areas.Identity.Pages.Users.DetailsModel
+
+@{
+    ViewData["Title"] = "Детали";
+}
+
+<h2>Пользователь</h2>
+
+<div>
+    <h4>Подробности</h4>
+    <hr />
+    <dl class="row">        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AppUserDto.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AppUserDto.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AppUserDto.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AppUserDto.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AppUserDto.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AppUserDto.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AppUserDto.Warehouse)
+        </dt>
+        <dd class ="col-sm-10">
+            @Html.DisplayFor(model => model.AppUserDto.Warehouse)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AppUserDto.Active)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AppUserDto.Active)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AppUserDto.Roles)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.AppUserDto.Roles != null)
+            {
+                @foreach (var role in Model.AppUserDto.Roles)
+                {
+                    <span> @role </span>
+                }
+            }
+        </dd>
+    </dl>
+</div>
+<div class="card" style="width: 118mm; height: 75mm">
+    <div class="card-header ">
+        <h4><span>@Model?.AppUserDto.FirstName </span> <span> @Model?.AppUserDto.LastName </span></h4>
+    </div>
+    <div class="card-body d-flex justify-content-center align-items-center">
+        <img src=@($"data:image/jpeg;base64,{@Model?.AppUserDto.Barcode}") width="350" height="100" alt="штрих код" />
+    </div>
+    <div class="card-footer">
+        <span>Склад: </span> <span> @Model?.AppUserDto.Warehouse</span>
+    </div>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model?.AppUserDto.Id">Изменить</a> |
+    <a asp-page="./Index">Назад к списку</a>
+</div>

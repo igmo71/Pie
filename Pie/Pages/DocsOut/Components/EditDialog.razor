@@ -1,0 +1,95 @@
+﻿@using Pie.Data.Models.Out;
+@using Pie.Data.Services;
+
+<div class="modal @ModalClass" tabindex="-1" role="dialog" style="display:@ModalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @if (Product != null)
+            {
+                <EditForm Model="@Product" OnValidSubmit="SaveChanges">
+                    <DataAnnotationsValidator />
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Изменить товар</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div><ValidationSummary /></div>
+                        <div class="mb-1">@Product.Product?.Name</div>
+                        <div class="row g-2 mb-1">
+                            <div class="col-auto">
+                                <label class="col-form-label" for="count">Количество факт</label>
+                            </div>
+                            <div class="col-auto">
+                                <InputNumber class="form-control" id="count" @bind-Value="@Product.CountFact" />
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            @if (ChangeReasons != null)
+                            {
+                                <div class="col-auto">
+                                    <label class="col-form-label" for="changeReason">Причина изменения</label>
+                                </div>
+                                <div class="col-auto">
+                                    <InputSelect class="form-select" id="changeReason" @bind-Value="Product.ChangeReasonId">
+                                        <option value=""></option>
+                                        @foreach (var item in ChangeReasons)
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    </InputSelect>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Ok</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="() => Close()">Закрыть</button>
+                    </div>
+                </EditForm>
+            }
+        </div>
+    </div>
+</div>
+
+@if (ShowBackdrop)
+{
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    [Parameter] public List<ChangeReasonOut>? ChangeReasons { get; set; }
+    [Parameter] public EventCallback<DocOutProduct> OnSaveChanges { get; set; }
+
+    public Guid Guid = Guid.NewGuid();
+    public string ModalDisplay = "none;";
+    public string ModalClass = "";
+    public bool ShowBackdrop = false;
+
+    public DocOutProduct Product = new();
+
+    public void Open(DocOutProduct product)
+    {
+        Product = product;
+
+        ModalDisplay = "block;";
+        ModalClass = "show";
+        ShowBackdrop = true;
+        StateHasChanged();
+    }
+
+    public void Close()
+    {
+        ModalDisplay = "none";
+        ModalClass = "";
+        ShowBackdrop = false;
+        StateHasChanged();
+    }
+
+    private async Task SaveChanges()
+    {
+        await OnSaveChanges.InvokeAsync(Product);
+    }
+}

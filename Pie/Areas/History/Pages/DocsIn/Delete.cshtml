@@ -1,0 +1,46 @@
+﻿@page
+@model Pie.Areas.History.Pages.DocsIn.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>DocOutHistory</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DocHistory.DocName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DocHistory.DocName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DocHistory.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DocHistory.Status.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DocHistory.DateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DocHistory.DateTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DocHistory.User)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DocHistory.User.Id)
+        </dd>
+    </dl>
+    
+    <form method="post">
+        <input type="hidden" asp-for="DocHistory.Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

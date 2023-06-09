@@ -1,0 +1,59 @@
+﻿@page
+@model Pie.Areas.Identity.Pages.Users.RegisterModel
+
+@{
+    ViewData["Title"] = "Регистрация";  
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <form id="registerForm" method="post">
+            <h4>Создать нового пользователя.</h4>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="CreateUserDto.FirstName" class="form-control" autocomplete="firstName" aria-required="true" placeholder="Имя" />
+                <label asp-for="CreateUserDto.FirstName">Имя</label>
+                <span asp-validation-for="CreateUserDto.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="CreateUserDto.LastName" class="form-control" autocomplete="lastName" aria-required="true" placeholder="Фамилия" />
+                <label asp-for="CreateUserDto.LastName">Фамилия</label>
+                <span asp-validation-for="CreateUserDto.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="CreateUserDto.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="CreateUserDto.Email">Email</label>
+                <span asp-validation-for="CreateUserDto.Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="CreateUserDto.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <label asp-for="CreateUserDto.Password">Пароль</label>
+                <span asp-validation-for="CreateUserDto.Password" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="CreateUserDto.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <label asp-for="CreateUserDto.ConfirmPassword">Подтвердить пароль</label>
+                <span asp-validation-for="CreateUserDto.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label asp-for="CreateUserDto.WarehouseId" class="control-label"></label>
+                <select asp-for="CreateUserDto.WarehouseId" class="form-control"
+                        asp-items="@Model.WarehouseSL">
+                    <option value="">- Выберите склад -</option>
+                </select>
+                <span asp-validation-for="CreateUserDto.WarehouseId" class="text-danger" />
+            </div>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Регистрация</button>
+        </form>
+    </div>
+    <div class="col-md-6 col-md-offset-2">
+        
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

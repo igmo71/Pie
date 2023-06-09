@@ -1,0 +1,88 @@
+﻿@using Pie.Data.Models.Out;
+
+@if (DocVm != null && DocVm.Value != null && DocVm.Value.Products != null)
+{
+    <table class="table table-sm table-bordered border-dark table-hover">
+        <thead>
+            <tr>
+                <th class="text-center">№</th>
+                <th class="text-center">Артикул</th>
+                <th class="text-center">Товар</th>
+                <th class="text-center">Кол</th>
+                @if (DocVm?.Value?.Status?.CanChange ?? false)
+                {
+                    <th class="text-center">Кол факт</th>
+                }
+                <th class="text-center">Упак</th>
+                <th class="text-center">Вес</th>
+                @if (DocVm?.Value?.Status?.CanChange ?? false)
+                {
+                    <th class="d-print-none text-center"><i class="bi bi-pencil-square"></i></th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in DocVm.Value.Products)
+            {
+                <tr class="fs-6">
+                    <td>@item.LineNumber</td>
+                    <td>@item.Product?.Code</td>
+                    <td>@item.Product?.Name</td>
+                    <td>@item.CountPlan</td>
+                    @if (DocVm?.Value?.Status?.CanChange ?? false)
+                    {
+                        <td class="@(item.CountFact == item.CountPlan ? string.Empty : "bg-warning bg-gradient  bg-opacity-50 text-dark")">
+                            <div>
+                                <span>@item.CountFact</span>
+                                <span>@(item.ChangeReasonId == null ? string.Empty : $"( {ChangeReasons?.FirstOrDefault(r => r.Id == item.ChangeReasonId)?.Name} )")</span>
+                            </div>
+                        </td>
+                    }
+                    <td>@item.Unit</td>
+                    <td>@item.Weight</td>
+                    @if (DocVm?.Value?.Status?.CanChange ?? false)
+                    {
+                        <td class="d-print-none text-center">
+                            <button class="btn btn-sm btn-outline-primary" @onclick="@(() => EditDoc(item))"><i class="bi bi-pencil-square"></i></button>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+
+<EditDialog @ref="EditDialog" ChangeReasons="@ChangeReasons" OnSaveChanges="@UpdateDoc"></EditDialog>
+
+@code {
+    [Parameter] public DocOutVm? DocVm { get; set; }
+    [Parameter] public List<ChangeReasonOut>? ChangeReasons { get; set; }
+    private EditDialog? EditDialog { get; set; }
+
+    string? nameFilter;
+    IQueryable<DocOutProduct>? FilteredProducts
+    {
+        get
+        {
+            var result = DocVm?.Value?.Products?.AsQueryable();
+
+            if (!string.IsNullOrEmpty(nameFilter))
+            {
+                result = result?.Where(p =>
+                    p.Product != null && p.Product.Name != null && p.Product.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
+            }
+            return result;
+        }
+    }
+
+    private void EditDoc(DocOutProduct product)
+    {
+        EditDialog?.Open(product);
+    }
+
+    private void UpdateDoc()
+    {
+        EditDialog?.Close();
+    }
+}

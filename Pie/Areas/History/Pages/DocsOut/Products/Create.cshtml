@@ -1,0 +1,65 @@
+﻿@page
+@model Pie.Areas.History.Pages.DocsOut.Products.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>DocOutProductHistory</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DocOutProductHistory.DocId" class="control-label"></label>
+                <select asp-for="DocOutProductHistory.DocId" class ="form-control" asp-items="ViewBag.DocId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="DocOutProductHistory.ChangeReasonId" class="control-label"></label>
+                <select asp-for="DocOutProductHistory.ChangeReasonId" class ="form-control" asp-items="ViewBag.ChangeReasonId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="DocOutProductHistory.DateTime" class="control-label"></label>
+                <input asp-for="DocOutProductHistory.DateTime" class="form-control" />
+                <span asp-validation-for="DocOutProductHistory.DateTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DocOutProductHistory.UserId" class="control-label"></label>
+                <select asp-for="DocOutProductHistory.UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="DocOutProductHistory.LineNumber" class="control-label"></label>
+                <input asp-for="DocOutProductHistory.LineNumber" class="form-control" />
+                <span asp-validation-for="DocOutProductHistory.LineNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DocOutProductHistory.ProductId" class="control-label"></label>
+                <select asp-for="DocOutProductHistory.ProductId" class ="form-control" asp-items="ViewBag.ProductId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="DocOutProductHistory.CountPlan" class="control-label"></label>
+                <input asp-for="DocOutProductHistory.CountPlan" class="form-control" />
+                <span asp-validation-for="DocOutProductHistory.CountPlan" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DocOutProductHistory.CountFact" class="control-label"></label>
+                <input asp-for="DocOutProductHistory.CountFact" class="form-control" />
+                <span asp-validation-for="DocOutProductHistory.CountFact" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

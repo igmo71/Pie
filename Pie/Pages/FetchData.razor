@@ -1,5 +1,6 @@
 ﻿@page "/fetchdata"
-@using Pie.Data
+@using Pie.Data.Models
+@using Pie.Data.Services
 @inject WeatherForecastService ForecastService
 
 <PageTitle>Weather forecast</PageTitle>
@@ -7,7 +8,7 @@
 <h1>Weather forecast</h1>
 
 <p>This component demonstrates fetching data from a service.</p>
-
+<AuthorizeView Roles="User">
 @if (forecasts == null)
 {
     <p><em>Loading...</em></p>
@@ -36,6 +37,7 @@ else
         </tbody>
     </table>
 }
+</AuthorizeView>
 
 @code {
     private WeatherForecast[]? forecasts;

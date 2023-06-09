@@ -1,0 +1,95 @@
+﻿@page
+@using Pie.Areas.Config.Pages;
+@model IndexModel
+@{
+    ViewData["Title"] = "Настройки";
+}
+
+<h1>Настройки</h1>
+<div class="row row-cols-2 row-cols-md-2 g-2">
+    <div class="col">
+        <div class="card mb-2" style="width: 18rem;">
+            <div class="card-header">
+                <h5>Пользователи</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div>
+                        <a href="/Identity/Users">Пользователи</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card mb-2" style="width: 18rem;">
+            <div class="card-header">
+                <h5>Справочники</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div>
+                        <a href="/Config/Catalogs">Загрузка справочников</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card mb-2" style="width: 18rem;">
+            <div class="card-header">
+                <h5>Статусы</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div>
+                        <a href="/Config/StatusesIn">Статусы приходников</a>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div>
+                        <a href="/Config/StatusesOut">Статусы расходников</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card mb-2" style="width: 18rem;">
+            <div class="card-header">
+                <h5>Очереди</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div>
+                        <a href="/Config/QueuesIn">Очереди приходников</a>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div>
+                        <a href="/Config/QueuesOut">Очереди расходников</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card mb-2" style="width: 18rem;">
+            <div class="card-header">
+                <h5>Причины изменения</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <div>
+                        <a href="/Config/ChangeReasonsIn">Для приходников</a>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div>
+                        <a href="/Config/ChangeReasonsOut">Для расходников</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

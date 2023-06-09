@@ -1,0 +1,16 @@
+﻿@page "/DocsOut/List"
+
+@attribute [Authorize]
+
+@using Pie.Pages.DocsOut.Components
+
+<SearchForm Warehouses="@warehouses" OnSubmit="SearchHandle" DeliveryAreas="@deliveryAreas"></SearchForm>
+
+<SearchByStatusTabs Statuses="@statuses" CountByStatus="@countByStatus" OnClick="SearchHandle"></SearchByStatusTabs>
+
+@if (docs is not null && docs.Any())
+{
+    <CascadingValue Value="@SearchParameters">
+        <CardsQueues Docs="@docs" Queues="@queues"></CardsQueues>
+    </CascadingValue>
+}

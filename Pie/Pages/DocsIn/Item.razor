@@ -1,0 +1,72 @@
+﻿@page "/DocsIn/Item/{id}"
+
+@attribute [Authorize]
+
+@using Pie.Common;
+@using Pie.Data.Models;
+@using Pie.Data.Models.In;
+@using Pie.Pages.Components
+@using Pie.Pages.DocsIn.Components
+
+<ScanBarcode OnScannedBarcode="ScannedBarcodeAsync"></ScanBarcode>
+<Notification @ref="@notification" />
+
+<div class="row mb-2 ">
+    <div class="col-2 px-2 d-flex justify-content-center align-items-center h2"></div>
+    <div class="col-6 px-2 d-flex justify-content-center align-items-center h4">@docVm?.Value?.Name</div>
+    <div class="col-4 px-2 d-flex justify-content-center align-items-center d-print-inline d-none"><img src=@($"data:image/jpeg;base64,{docVm?.Barcode}") width="256" height="56" alt="штрих код" /></div>
+    <div class="col-4 px-2 d-flex justify-content-center align-items-center d-print-none">
+        <div class="row">
+            <div class="col-auto">
+                <a class="btn btn-outline-primary" href="DocsOut/List" title="Назад к карточкам"><i class="bi bi-reply"></i></a>
+            </div>
+            <div class="col-auto">
+                <button class="btn btn-outline-primary" @onclick="@PrintAsync" title="Печать"><i class="bi bi-printer"></i></button>
+            </div>
+            <div class="col-auto">
+                <a class="btn btn-outline-primary" href="/History/DocsOut?docId=@docVm?.Value?.Id" title="История"><i class="bi bi-info-lg"></i></a>
+            </div>
+            <AuthorizeView Roles="Admin, Manager">
+                <div class="col-auto">
+                    <button class="btn btn-outline-success" @onclick="@(() => SendDocAsync())" title="Переключить статус"><i class="bi bi-send"></i></button>
+                </div>
+                <div class="col-auto">
+                    @* <button class="btn btn-outline-danger" @onclick="@(() => DeleteDocAsync())" title="Удалить документ"><i class="bi bi-trash3"></i></button> *@
+                    <button class="btn btn-outline-danger" @onclick="@(() => ConfirmDialog?.Open())" title="Удалить документ"><i class="bi bi-trash3"></i></button>
+                    <ConfirmDialog @ref="ConfirmDialog" OnConfirm="DeleteDocAsync" Title="Удалить документ" Button="Удалить" Color="danger">
+                        <h5>Вы уверены, что хотите удалить?</h5>
+                    </ConfirmDialog>
+                </div>
+            </AuthorizeView>
+        </div>
+    </div>
+</div>
+
+<div>@pageMessage</div>
+
+<ItemHeaderTable DocVm="@docVm"></ItemHeaderTable>
+
+<ItemBodyTable DocVm="@docVm" ChangeReasons="@changeReasons"></ItemBodyTable>
+
+@code {
+    private ConfirmDialog? ConfirmDialog { get; set; }
+
+    string? nameFilter;
+    IQueryable<DocInProduct>? FilteredProducts
+    {
+        get
+        {
+            var result = docVm?.Value?.Products?.AsQueryable();
+
+            if (!string.IsNullOrEmpty(nameFilter))
+            {
+                result = result?.Where(p =>
+                    p.Product != null &&
+                    p.Product.Name != null &&
+                    p.Product.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
+            }
+
+            return result;
+        }
+    }
+}

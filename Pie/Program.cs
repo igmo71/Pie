@@ -1,11 +1,21 @@
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Pie.Areas.Identity;
+using Pie.Connectors;
+using Pie.Connectors.Connector1c;
 using Pie.Data;
+using Pie.Data.Models.Identity;
+using Pie.Data.Services;
+using Pie.Data.Services.EventBus;
+using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Text.Unicode;
 
 namespace Pie
 {
@@ -16,16 +26,136 @@ namespace Pie
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            builder.Services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.AddSeq(builder.Configuration.GetSection("Seq"));
+            });
+
+            builder.Services.AddHttpLogging(logging =>
+            {
+                //logging.LoggingFields = HttpLoggingFields.All;
+                logging.LoggingFields =
+                    HttpLoggingFields.RequestPath |
+                    HttpLoggingFields.RequestQuery |
+                    HttpLoggingFields.RequestBody |
+                    HttpLoggingFields.ResponseBody;
+                logging.MediaTypeOptions.AddText("application/json");
+                logging.RequestBodyLogLimit = 4096;
+                logging.ResponseBodyLogLimit = 4096;
+            });
+
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+
+            builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
+            {
+                //options.UseSqlServer(connectionString);
+                options.UseNpgsql(connectionString);
+                options.EnableDetailedErrors();
+                options.EnableSensitiveDataLogging();
+                options.LogTo(s => System.Diagnostics.Debug.WriteLine(s));
+            });
+
+            //builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            //{
+            //    //options.UseSqlServer(connectionString);
+            //    options.UseNpgsql(connectionString);
+            //    options.EnableDetailedErrors();
+            //    options.EnableSensitiveDataLogging();
+            //    options.LogTo(s => System.Diagnostics.Debug.WriteLine(s));
+            //});
+
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+
+            builder.Services
+                .AddDefaultIdentity<AppUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            builder.Services.AddRazorPages();
+
+            builder.Services.AddAuthentication()
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+                        ValidAudience = builder.Configuration["JWT:ValidAudience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:IssuerSigningKey"]
+                            ?? throw new ApplicationException("Issuer Signing Key not found."))),
+                        ValidateLifetime = true
+                    };
+                });
+
+            builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<AppUser>>();
+
+            builder.Services.Configure<JsonSerializerOptions>(options =>
+            {
+                options.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                options.PropertyNameCaseInsensitive = true;
+                options.WriteIndented = true;
+                options.Encoder = JavaScriptEncoder.Create(new TextEncoderSettings(UnicodeRanges.BasicLatin, UnicodeRanges.Cyrillic));
+            });
+
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                    options.JsonSerializerOptions.WriteIndented = true;
+                });
+
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT token",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    BearerFormat = "JWT",
+                    Scheme = "Bearer"
+                });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            },
+                        },
+                        new List<string>()
+                    }
+                });
+            });
+
+            builder.Services.AddRazorPages(options =>
+            {
+                options.Conventions.AuthorizeAreaFolder("Config", "/ChangeReasonsIn");
+                options.Conventions.AuthorizeAreaFolder("Config", "/ChangeReasonsOut");
+                options.Conventions.AuthorizeAreaFolder("Config", "/QueuesIn");
+                options.Conventions.AuthorizeAreaFolder("Config", "/QueuesOut");
+                options.Conventions.AuthorizeAreaFolder("Config", "/StatusesIn");
+                options.Conventions.AuthorizeAreaFolder("Config", "/StatusesOut");
+
+                options.Conventions.AuthorizeAreaFolder("History", "/DocsIn");
+                options.Conventions.AuthorizeAreaFolder("History", "/DocsOut");
+            })
+                .AddRazorRuntimeCompilation();
+
             builder.Services.AddServerSideBlazor();
-            builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
-            builder.Services.AddSingleton<WeatherForecastService>();
+
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddApplicationServices();
+            builder.Services.AddApplicationEventBus();
+            builder.Services.AddConnectors(builder.Configuration);
 
             var app = builder.Build();
 
@@ -33,6 +163,9 @@ namespace Pie
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
+
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
             else
             {
@@ -45,13 +178,17 @@ namespace Pie
 
             app.UseStaticFiles();
 
+            app.UseHttpLogging();
+
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
             app.MapBlazorHub();
             app.MapFallbackToPage("/_Host");
+            app.MapHub<Hub1c>("/Hub1c");
 
             app.Run();
         }

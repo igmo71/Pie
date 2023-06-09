@@ -1,0 +1,114 @@
+﻿@using Pie.Data.Models.Out;
+@using Pie.Data.Services.Out;
+@inject NavigationManager NavigationManager
+
+@if (Doc != null)
+{
+    <div class="card border-@cardColor shadow rounded mb-2">
+        <a href="#" style="text-decoration:none" title="Открыть документ">
+            <div class="card-header bg-@cardColor bg-opacity-75 text-white px-2 py-1" @onclick="@(() => OnClick(Doc!.Id))">
+                <div class="row">
+                    <div class="col-2 p-0 fs-4 d-flex justify-content-center align-items-center">
+                        @* <i class="bi bi-layout-text-window-reverse"></i> *@
+                        @if (Doc.IsTransfer)
+                        {
+                            <i class="bi bi-repeat" title="Это перемещение"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-cart-check" title="Это реализация"></i>
+                        }
+                    </div>
+                    <div class="col-7 p-0 fs-5 d-flex justify-content-center align-items-center">
+                        <div>
+                            <span>№ </span><span>@Doc?.Number</span>
+                        </div>
+                    </div>
+                    <div class="col-3 p-0 fs-4 d-flex justify-content-center align-items-center">
+                        <div>@Doc?.QueueNumber</div>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <div class="card-body p-2">
+            <div>
+                <i class="bi bi-person"></i><span class="small"> Получатель: </span><span>@Doc?.Partner?.Name</span>
+            </div>
+            @if (Doc?.DeliveryArea != null)
+            {
+                <div>
+                    <i class="bi bi-signpost"></i><span class="small"> Направление: </span><span>@Doc?.DeliveryArea?.Name</span>
+                </div>
+            }
+
+            @*  <div>
+        <i class="bi bi-geo"></i><span class="small"> Адрес: </span><span>@Doc?.DeliveryAddress</span>
+        </div> *@
+
+            <div>
+                <i class="bi bi-calendar"></i><span class="small"> Дата док: </span><span>@Doc?.DateTime</span>
+            </div>
+            <div>
+                <i class="bi bi-calendar-event"></i><span class="small"> Дата отгр: </span><span>@Doc?.ShipDateTime</span>
+            </div>
+
+            @if (SearchParameters?.WarehouseId == null || SearchParameters?.WarehouseId == Guid.Empty)
+            {
+                <div>
+                    <i class="bi bi-building"></i><span class="small"> Склад: </span><span>@Doc?.Warehouse?.Name</span>
+                </div>
+            }
+
+            @if (SearchParameters?.StatusKey == null)
+            {
+                <div>
+                    <i class="bi bi-clipboard-check"></i><span class="small"> Статус: </span><span>@Doc?.Status?.Name</span>
+                </div>
+            }
+
+            @*  <div>
+        <i class="bi bi-people"></i><span class="small"> Очередь: </span><span>@Doc?.Queue?.Name</span>
+        </div> *@
+
+            <div>
+                @if (@Doc?.Comment != null && !string.IsNullOrEmpty(@Doc?.Comment))
+                {
+                    <i class="bi bi-chat-left-text"></i> <span>@Doc?.Comment</span>
+                }
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="row">
+                <div class="col">
+                    <i class="bi bi-minecart-loaded"></i><span class="small"> Вес: </span><span>@Doc?.Weight</span>
+                </div>
+                <div class="col">
+                    <i class="bi bi-list-ol"></i><span class="small"> Кол строк: </span><span>@Doc?.Products.Count</span>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public DocOut? Doc { get; set; }
+    [CascadingParameter] public SearchOutParameters? SearchParameters { get; set; }
+
+    private string? cardColor = "success";
+
+    protected override void OnParametersSet()
+    {
+        if (Doc == null)
+            return;
+
+        if (Doc.ShipDateTime != new DateTime() && Doc.ShipDateTime < DateTime.Now)
+            cardColor = "danger";
+        else
+            cardColor = "success";
+    }
+
+    private void OnClick(Guid id)
+    {
+        NavigationManager.NavigateTo($"DocsOut/Item/{id}");
+    }
+}

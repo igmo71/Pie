@@ -1,12 +1,52 @@
-﻿<AuthorizeView>
-    <Authorized>
-        <a href="Identity/Account/Manage">Hello, @context.User.Identity?.Name!</a>
-        <form method="post" action="Identity/Account/Logout">
-            <button type="submit" class="nav-link btn btn-link">Log out</button>
-        </form>
-    </Authorized>
-    <NotAuthorized>
-        <a href="Identity/Account/Register">Register</a>
-        <a href="Identity/Account/Login">Log in</a>
-    </NotAuthorized>
-</AuthorizeView>
+﻿@using Pie.Data.Services.Identity;
+@inject AppUserService AppUserService
+
+<ul class="navbar-nav">
+    <AuthorizeView>
+        <Authorized>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="Identity/Account/Manage" title="Manage">Привет @context.User.Identity?.Name!</a>
+               @* <a class="nav-link text-dark" href="Identity/Account/Manage" title="Manage">Привет @fullUserName!</a> *@
+            </li>
+            <li class="nav-item">
+                <form class="form-inline" action="Identity/Account/Logout" method="post">
+                    <button type="submit" class="nav-link btn btn-link text-dark">Выход</button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <AuthorizeView Roles="Admin" Context="Admin">
+                    <a class="nav-link text-dark" href="Config/Index" title="Config"><i class="bi bi-tools"></i><span> Настройки</span></a>
+                </AuthorizeView>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-binoculars"></i><span> История</span></a>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/History/DocsIn">Приходников</a></li>
+                    <li><a class="dropdown-item" href="/History/DocsIn/Products">Их товаров</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/History/DocsOut">Расходников</a></li>
+                    <li><a class="dropdown-item" href="/History/DocsOut/Products">Их товаров</a></li>
+                </ul>
+            </li>
+        </Authorized>
+        <NotAuthorized>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="Identity/Account/Register">Регистрация</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="Identity/Account/Login">Вход</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" href="https://pickiteasy.ru/" title="Config">О программе</a>
+            </li>
+        </NotAuthorized>
+    </AuthorizeView>
+</ul>
+
+@* @code{
+    private string? fullUserName;
+    protected override async Task OnInitializedAsync()
+    {
+        fullUserName = await AppUserService.GetCurrentUserNameAsync();
+    }
+} *@

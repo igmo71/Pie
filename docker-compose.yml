@@ -1,0 +1,55 @@
+version: '3.4'
+
+services:
+  pie:
+    image: ${DOCKER_REGISTRY-}pie
+    container_name: pie_container
+    ports:
+        - "44301:443"
+        - "8001:80"
+    build:
+      context: .
+      dockerfile: Pie/Dockerfile
+
+  postgres:
+    image: postgres
+    container_name: postgres_container
+    ports:
+      - "5432:5432"
+    volumes:
+      - pie-pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: "PieDb"
+      POSTGRES_USER: "PieUser"
+      POSTGRES_PASSWORD: "Pwd4Pie"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_container
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "igmo@dobroga.ru"
+      PGADMIN_DEFAULT_PASSWORD: "Pwd4Pie"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+
+  seq:
+    image: datalust/seq:latest 
+    container_name: seq_container
+    ports:
+      - '5341:5341'
+      - '8002:80' 
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+      - BASE_URI=
+      - DATA_DIR=/data
+
+volumes:
+  pie-pgdata:
+    name: pie-pgdata
+    driver: local
