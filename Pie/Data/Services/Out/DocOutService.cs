@@ -3,8 +3,10 @@ using Microsoft.Extensions.Options;
 using Pie.Common;
 using Pie.Connectors.Connector1c;
 using Pie.Data.Models.Out;
+using Pie.Data.Services.EventBus;
 using System.Diagnostics;
 using System.Text.Json;
+using ZXing;
 
 namespace Pie.Data.Services.Out
 {
@@ -21,6 +23,8 @@ namespace Pie.Data.Services.Out
         private readonly DocOutProductHistoryService _docProductHistoryService;
         private readonly ILogger<DocOutService> _logger;
         private readonly JsonSerializerOptions _jsonOptions;
+        private readonly AppEventDispatcher _eventDispatcher;
+
 
         public static event EventHandler<Guid>? DocCreated;
 
@@ -35,7 +39,8 @@ namespace Pie.Data.Services.Out
             DocOutHistoryService docHistoryService,
             DocOutProductHistoryService docProductHistoryService,
             ILogger<DocOutService> logger,
-            IOptions<JsonSerializerOptions> jsonOptions)
+            IOptions<JsonSerializerOptions> jsonOptions,
+            AppEventDispatcher eventDispatcher)
         {
             _context = context;
             _contextFactory = contextFactory;
@@ -48,6 +53,7 @@ namespace Pie.Data.Services.Out
             _docProductHistoryService = docProductHistoryService;
             _logger = logger;
             _jsonOptions = jsonOptions.Value;
+            _eventDispatcher = eventDispatcher;
         }
 
         public async Task<List<DocOut>> GetListAsync()
@@ -160,6 +166,8 @@ namespace Pie.Data.Services.Out
 
             _context.DocsOut.Add(doc);
             await _context.SaveChangesAsync();
+
+            await _eventDispatcher.PublishAsync(new DocOutCreatedEvent { Value = doc });
 
             return doc;
         }

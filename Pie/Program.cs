@@ -10,6 +10,7 @@ using Pie.Connectors.Connector1c;
 using Pie.Data;
 using Pie.Data.Models.Identity;
 using Pie.Data.Services;
+using Pie.Data.Services.EventBus;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -153,6 +154,7 @@ namespace Pie
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddApplicationServices();
+            builder.Services.AddApplicationEventBus();
             builder.Services.AddConnectors(builder.Configuration);
 
             var app = builder.Build();

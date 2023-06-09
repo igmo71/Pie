@@ -35,8 +35,6 @@ namespace Pie.Data.Services
             services.AddScoped<SearchOutParameters>();
             services.AddScoped<StatusOutService>();
 
-            services.AddSingleton<EventDispatcher>();
-
             return services;
         }
     }

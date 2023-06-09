@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Pie.Connectors.Connector1c;
 using Pie.Data.Models.Out;
+using Pie.Data.Services.EventBus;
 using Pie.Data.Services.Out;
 
 namespace Pie.Controllers.Out
@@ -13,10 +14,12 @@ namespace Pie.Controllers.Out
     public class DocsOutController : ControllerBase
     {
         private readonly DocOutService _docService;
+        private readonly AppEventDispatcher _eventDispatcher;
 
-        public DocsOutController(DocOutService docService)
+        public DocsOutController(DocOutService docService, AppEventDispatcher eventDispatcher)
         {
             _docService = docService;
+            _eventDispatcher = eventDispatcher;
         }
 
         // GET: api/DocsOut
@@ -55,9 +58,11 @@ namespace Pie.Controllers.Out
         // POST: api/DocsOut
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<DocOut>> PostDoc(DocOutDto docDto)
-        {
-            var result = await _docService.CreateAsync(docDto);
+        public async Task<IActionResult> PostDoc(DocOutDto docDto)
+        {            
+            await _eventDispatcher.PublishAsync(new DocOutDtoReceivedEvent { Value = docDto });
+
+            var result = await _docService.CreateAsync(docDto);            
 
             return CreatedAtAction("GetDoc", new { id = result.Id }, result);
         }
