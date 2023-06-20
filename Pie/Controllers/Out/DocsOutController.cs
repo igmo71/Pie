@@ -42,6 +42,18 @@ namespace Pie.Controllers.Out
             return Ok(doc);
         }
 
+        // GET: api/DocsOut/GetDocByBarcode/5
+        [HttpGet("GetDocByBarcode/{barcode}")]
+        public async Task<ActionResult<DocOut>> GetDocByBarcode(string barcode)
+        {
+            var doc = await _docService.GetAsync(barcode);
+
+            if (doc == null)
+                return NotFound();
+
+            return Ok(doc);
+        }
+
         // PUT: api/DocsOut/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

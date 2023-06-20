@@ -85,6 +85,13 @@ namespace Pie.Data.Services.Out
             return doc;
         }
 
+        public async Task<DocOut?> GetAsync(string barcode)
+        {
+            Guid id = GuidBarcodeConvert.GuidFromNumericString(barcode);
+            var result = await GetAsync(id);
+            return result;
+        }
+
         public async Task<DocOutVm?> GetVmAsync(Guid id)
         {
             DocOutVm? vm = new();
@@ -93,7 +100,7 @@ namespace Pie.Data.Services.Out
             vm.Barcode = BarcodeGenerator.GetBarCode128(id);
 
             return vm;
-        }
+        }        
 
         public async Task<Dictionary<int, List<DocOut>>> GetDictionaryByQueueAsync(SearchOutParameters searchParameters)
         {
