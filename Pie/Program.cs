@@ -25,6 +25,8 @@ namespace Pie
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            //builder.Configuration.AddEnvironmentVariables();
+
             // Add services to the container.
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
@@ -47,7 +49,12 @@ namespace Pie
             });
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            Console.WriteLine($"connectionString: {connectionString}");            
 
+            var envConnectionString = builder.Configuration["CONNECTION_STRING"];
+            Console.WriteLine($"envConnectionString: {envConnectionString}");
+            if(!string.IsNullOrEmpty(envConnectionString))
+                connectionString = envConnectionString;
 
             builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
             {
