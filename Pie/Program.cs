@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.HttpLogging;
+//using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -11,6 +11,7 @@ using Pie.Data;
 using Pie.Data.Models.Identity;
 using Pie.Data.Services;
 using Pie.Data.Services.EventBus;
+using Serilog;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
@@ -25,36 +26,46 @@ namespace Pie
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            var appConfig = AppConfig.Configure(builder);
+
+            //builder.Services.AddLogging(loggingBuilder =>
+            //{
+            //    loggingBuilder.AddSeq(builder.Configuration.GetSection("Seq"));
+            //});
+
+            //builder.Services.AddHttpLogging(logging =>
+            //{
+            //    //logging.LoggingFields = HttpLoggingFields.All;
+            //    logging.LoggingFields =
+            //        HttpLoggingFields.RequestPath |
+            //        HttpLoggingFields.RequestQuery |
+            //        HttpLoggingFields.RequestBody |
+            //        HttpLoggingFields.ResponseBody;
+            //    logging.MediaTypeOptions.AddText("application/json");
+            //    logging.RequestBodyLogLimit = 4096;
+            //    logging.ResponseBodyLogLimit = 4096;
+            //});
+                        
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .Enrich.WithEnvironmentName()
+                .Enrich.WithEnvironmentUserName()
+                .Enrich.WithProperty("Application", "Pie")
+                .Enrich.WithProperty("Tenant", appConfig.Tenant)
+                .WriteTo.Console()
+                .WriteTo.Seq($"http://{appConfig.SeqHost ?? "seq_container"}:5341")
+                .CreateLogger();
+
+            builder.Host.UseSerilog(Log.Logger);
+
+
             //builder.Configuration.AddEnvironmentVariables();
 
             // Add services to the container.
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            builder.Services.AddLogging(loggingBuilder =>
-            {
-                loggingBuilder.AddSeq(builder.Configuration.GetSection("Seq"));
-            });
-
-            builder.Services.AddHttpLogging(logging =>
-            {
-                //logging.LoggingFields = HttpLoggingFields.All;
-                logging.LoggingFields =
-                    HttpLoggingFields.RequestPath |
-                    HttpLoggingFields.RequestQuery |
-                    HttpLoggingFields.RequestBody |
-                    HttpLoggingFields.ResponseBody;
-                logging.MediaTypeOptions.AddText("application/json");
-                logging.RequestBodyLogLimit = 4096;
-                logging.ResponseBodyLogLimit = 4096;
-            });
-
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-            Console.WriteLine($"connectionString: {connectionString}");            
-
-            var envConnectionString = builder.Configuration["CONNECTION_STRING"];
-            Console.WriteLine($"envConnectionString: {envConnectionString}");
-            if(!string.IsNullOrEmpty(envConnectionString))
-                connectionString = envConnectionString;
+            //var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            var connectionString = appConfig.DbConnectionString;
 
             builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
             {
@@ -184,8 +195,9 @@ namespace Pie
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
-
-            app.UseHttpLogging();
+                        
+            //app.UseHttpLogging();
+            app.UseSerilogRequestLogging();
 
             app.UseRouting();
 
