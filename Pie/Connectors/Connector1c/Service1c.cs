@@ -9,23 +9,26 @@ namespace Pie.Connectors.Connector1c
     {
         private readonly HttpService1c _httpService1c;
         private readonly HubService1c _hubService1c;
-        private readonly IConfiguration _configuration;
+        //private readonly IConfiguration _configuration;
+        private readonly AppConfig _appConfig;
         private readonly ILogger<Service1c> _logger;
-        private readonly JsonSerializerOptions _jsonSerializerOptions;
+        private readonly JsonSerializerOptions _jsonSerializerOptions; 
 
         //private readonly IHttpClientFactory _httpClientFactory;
 
         public Service1c(
             HttpService1c httpService1c,
             HubService1c hubService1c,
-            IConfiguration configuration,
+            //IConfiguration configuration,
+            AppConfig appConfig,
             ILogger<Service1c> logger,
             IOptions<JsonSerializerOptions> jsonSerializerOptions
             /*IHttpClientFactory httpClientFactory*/)
         {
             _httpService1c = httpService1c;
             _hubService1c = hubService1c;
-            _configuration = configuration;
+            //_configuration = configuration;
+            _appConfig = appConfig;
             _logger = logger;
             _jsonSerializerOptions = jsonSerializerOptions.Value;
 
@@ -41,8 +44,8 @@ namespace Pie.Connectors.Connector1c
             string request = JsonSerializer.Serialize(docDto);
             string response;
 
-            var useProxy = _configuration.GetValue<bool>("Connectors:UseProxy");
-            if (useProxy)
+            //var useProxy = _configuration.GetValue<bool>("Connectors:UseProxy");
+            if (_appConfig.Tenant != null)
             {
                 response = await _hubService1c.SendInAsync(request);
             }
@@ -70,8 +73,8 @@ namespace Pie.Connectors.Connector1c
             string request = JsonSerializer.Serialize(docDto);
             string response;
 
-            var useProxy = _configuration.GetValue<bool>("Connectors:UseProxy");
-            if (useProxy)
+            //var useProxy = _configuration.GetValue<bool>("Connectors:UseProxy");
+            if (_appConfig.Tenant != null)
             {
                 response = await _hubService1c.SendOutAsync(request);
             }
