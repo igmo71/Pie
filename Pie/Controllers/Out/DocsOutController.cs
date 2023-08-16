@@ -5,10 +5,11 @@ using Pie.Connectors.Connector1c;
 using Pie.Data.Models.Out;
 using Pie.Data.Services.EventBus;
 using Pie.Data.Services.Out;
+using System.Text.Json;
 
 namespace Pie.Controllers.Out
 {
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(Service1c))]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(Service1c))] // TODO: У Макса Basic Авторизация!
     [Route("api/[controller]")]
     [ApiController]
     public class DocsOutController : ControllerBase
@@ -72,6 +73,8 @@ namespace Pie.Controllers.Out
         [HttpPost]
         public async Task<IActionResult> PostDoc(DocOutDto docDto)
         {            
+            //var jsonString = JsonSerializer.Serialize(docDto);
+
             await _eventDispatcher.PublishAsync(new DocOutDtoReceivedEvent { Value = docDto });
 
             var result = await _docService.CreateAsync(docDto);            

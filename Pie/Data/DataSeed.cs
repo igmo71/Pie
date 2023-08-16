@@ -30,7 +30,7 @@ namespace Pie.Data
                 new StatusIn { Id = Guid.Parse("b2cbc819-151b-489d-9b09-649aa16b2a8b"), Key = 0, Active = true, Name = "КПоступлению" },
                 new StatusIn { Id = Guid.Parse("ba575f5d-1c8d-4616-a707-1b4157746aa3"), Key = 1, Active = true, Name = "ВРаботе" },
                 new StatusIn { Id = Guid.Parse("f1cff011-6ecb-49f1-9898-2bf4a69b7b13"), Key = 2, Active = false, Name = "ТребуетсяОбработка" },
-                new StatusIn { Id = Guid.Parse("7f8bf9f1-92e3-4f45-84ea-461b9f82aa20"), Key = 3, Active = false, Name = "Принят" }
+                new StatusIn { Id = Guid.Parse("7f8bf9f1-92e3-4f45-84ea-461b9f82aa20"), Key = 3, Active = true, Name = "Принят" }
                 );
 
             builder.Entity<StatusOut>().HasData(
@@ -101,7 +101,7 @@ namespace Pie.Data
                     Email = $"{nameof(Service1c)}@www",
                     NormalizedEmail = $"{nameof(Service1c).ToUpper()}@WWW",
                     EmailConfirmed = true,
-                    //Password: Sevice1c#
+                    //Password: Service1c#
                     PasswordHash = "AQAAAAIAAYagAAAAEAP/xtaltm7cuB/Bk/sRF/GDtCtQf9B1ghEEbr6eprNlsKYsaGt5ncmcR/utO76tWw==",
                     SecurityStamp = "6WMMOSBLWGF45HZLH5OJIQADMFB6YJGQ",
                     ConcurrencyStamp = "c9023eae-8542-460f-af6c-fb2361ae2be0",

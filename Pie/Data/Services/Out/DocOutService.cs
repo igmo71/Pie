@@ -64,7 +64,7 @@ namespace Pie.Data.Services.Out
                 .Include(d => d.Manager)
                 .Include(d => d.Partner)
                 .Include(d => d.Warehouse)
-                .Include(d => d.DeliveryArea)
+                //.Include(d => d.DeliveryArea)
                 .Take(100)
                 .ToListAsync();
             return docs;
@@ -78,7 +78,7 @@ namespace Pie.Data.Services.Out
                 .Include(d => d.Manager)
                 .Include(d => d.Partner)
                 .Include(d => d.Warehouse)
-                .Include(d => d.DeliveryArea)
+                //.Include(d => d.DeliveryArea)
                 .Include(d => d.Products.OrderBy(p => p.LineNumber)).ThenInclude(p => p.Product)
                 .Include(d => d.BaseDocs).ThenInclude(b => b.BaseDoc)
                 .FirstOrDefaultAsync(d => d.Id == id);
@@ -114,7 +114,7 @@ namespace Pie.Data.Services.Out
                 .Include(d => d.Partner)
                 .Include(d => d.Warehouse)
                 .Include(d => d.Products)
-                .Include(d => d.DeliveryArea)
+                //.Include(d => d.DeliveryArea)
                 .OrderBy(d => d.StatusKey.GetValueOrDefault())
                     .ThenBy(d => d.QueueKey.GetValueOrDefault())
                         .ThenBy(d => d.ShipDateTime)

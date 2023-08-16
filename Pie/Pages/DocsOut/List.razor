@@ -4,7 +4,8 @@
 
 @using Pie.Pages.DocsOut.Components
 
-<SearchForm Warehouses="@warehouses" OnSubmit="SearchHandle" DeliveryAreas="@deliveryAreas"></SearchForm>
+@* <SearchForm Warehouses="@warehouses" OnSubmit="SearchHandle" DeliveryAreas="@deliveryAreas"></SearchForm> *@
+<SearchForm Warehouses="@warehouses" OnSubmit="SearchHandle"></SearchForm>
 
 <SearchByStatusTabs Statuses="@statuses" CountByStatus="@countByStatus" OnClick="SearchHandle"></SearchByStatusTabs>
 

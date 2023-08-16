@@ -38,17 +38,10 @@
                     }
                 </div>
             </div>
-            <div class="col-auto">
+           @*  <div class="col-auto">
                 <div class="input-group">
                     @if (DeliveryAreas != null)
-                    {
-                        @*  <InputSelect class="form-control" @bind-Value="SearchParameters.DeliveryAreaId" data-live-search="true">
-                                <option value="@(Guid.Empty)">Все</option>
-                                @foreach (var item in DeliveryAreas)
-                                {
-                                <option value="@item.Key">@item.Value</option>
-                                }
-                            </InputSelect> *@
+                    {                        
                         <input type="text" class="form-control" @bind="@deliveryAreaSelected" list="deliveryList" />
                         <datalist id="deliveryList">
                             @foreach (var item in DeliveryAreas)
@@ -61,7 +54,7 @@
                         </button>
                     }
                 </div>
-            </div>
+            </div> *@
             <div class="col-auto">
                 <button class="btn btn-primary" type="button" @onclick="SearcHandle" title="Поиск">
                     <span><i class="bi bi-search"></i></span><span> Поиск</span>
@@ -78,7 +71,7 @@
 
 @code {
     [Parameter] public List<Warehouse>? Warehouses { get; set; }
-    [Parameter] public Dictionary<Guid, string>? DeliveryAreas { get; set; }
+    //[Parameter] public Dictionary<Guid, string>? DeliveryAreas { get; set; }
     [Parameter] public EventCallback OnSubmit { get; set; }
 
     private string? deliveryAreaSelected;
@@ -100,8 +93,8 @@
 
     private async Task SearcHandle()
     {
-        if (DeliveryAreas != null && !string.IsNullOrEmpty(deliveryAreaSelected))
-            SearchParameters.DeliveryAreaId = DeliveryAreas.FirstOrDefault(e => e.Value == deliveryAreaSelected).Key;
+        // if (DeliveryAreas != null && !string.IsNullOrEmpty(deliveryAreaSelected))
+        //     SearchParameters.DeliveryAreaId = DeliveryAreas.FirstOrDefault(e => e.Value == deliveryAreaSelected).Key;
 
         SearchParameters.SetSearchByForm();
         await SubmitHandle();
