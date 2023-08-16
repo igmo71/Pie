@@ -28,7 +28,7 @@ namespace Pie
 
             var appConfig = AppConfig.Configure(builder);
 
-            //builder.Services.AddLogging(loggingBuilder =>
+            //builder.Services.AddLogging(loggingBuilder => 
             //{
             //    loggingBuilder.AddSeq(builder.Configuration.GetSection("Seq"));
             //});
