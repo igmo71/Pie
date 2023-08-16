@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -32,8 +33,7 @@ namespace Pie.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Active = table.Column<bool>(type: "boolean", nullable: false)
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -47,11 +47,50 @@ namespace Pie.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Active = table.Column<bool>(type: "boolean", nullable: false),
-                    Discriminator = table.Column<string>(type: "character varying(21)", maxLength: 21, nullable: false)
+                    Discriminator = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ChangeReasons", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DeliveryAreas",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ParentId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Active = table.Column<bool>(type: "boolean", nullable: false),
+                    IsFolder = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeliveryAreas", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Managers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Managers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Partners",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Partners", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -60,6 +99,7 @@ namespace Pie.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Code = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     Active = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
@@ -121,7 +161,8 @@ namespace Pie.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Active = table.Column<bool>(type: "boolean", nullable: false),
-                    Key = table.Column<int>(type: "integer", nullable: false)
+                    Key = table.Column<int>(type: "integer", nullable: false),
+                    CanChange = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -136,7 +177,8 @@ namespace Pie.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Active = table.Column<bool>(type: "boolean", nullable: false),
-                    Key = table.Column<int>(type: "integer", nullable: false)
+                    Key = table.Column<int>(type: "integer", nullable: false),
+                    CanChange = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -222,12 +264,27 @@ namespace Pie.Data.Migrations
                     Active = table.Column<bool>(type: "boolean", nullable: false),
                     Number = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                     DateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ManagerId = table.Column<Guid>(type: "uuid", nullable: true),
+                    PartnerId = table.Column<Guid>(type: "uuid", nullable: true),
                     WarehouseId = table.Column<Guid>(type: "uuid", nullable: true),
+                    IsTransfer = table.Column<bool>(type: "boolean", nullable: false),
                     Comment = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DocsIn", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DocsIn_Managers_ManagerId",
+                        column: x => x.ManagerId,
+                        principalTable: "Managers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_DocsIn_Partners_PartnerId",
+                        column: x => x.PartnerId,
+                        principalTable: "Partners",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_DocsIn_QueuesIn_QueueKey",
                         column: x => x.QueueKey,
@@ -257,16 +314,38 @@ namespace Pie.Data.Migrations
                     QueueKey = table.Column<int>(type: "integer", nullable: true),
                     QueueNumber = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: true),
                     ShipDateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    DeliveryAreaId = table.Column<Guid>(type: "uuid", nullable: true),
+                    DeliveryAddress = table.Column<string>(type: "text", nullable: true),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Active = table.Column<bool>(type: "boolean", nullable: false),
                     Number = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                     DateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ManagerId = table.Column<Guid>(type: "uuid", nullable: true),
+                    PartnerId = table.Column<Guid>(type: "uuid", nullable: true),
                     WarehouseId = table.Column<Guid>(type: "uuid", nullable: true),
+                    IsTransfer = table.Column<bool>(type: "boolean", nullable: false),
                     Comment = table.Column<string>(type: "character varying(250)", maxLength: 250, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DocsOut", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DocsOut_DeliveryAreas_DeliveryAreaId",
+                        column: x => x.DeliveryAreaId,
+                        principalTable: "DeliveryAreas",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_DocsOut_Managers_ManagerId",
+                        column: x => x.ManagerId,
+                        principalTable: "Managers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                    table.ForeignKey(
+                        name: "FK_DocsOut_Partners_PartnerId",
+                        column: x => x.PartnerId,
+                        principalTable: "Partners",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_DocsOut_QueuesOut_QueueKey",
                         column: x => x.QueueKey,
@@ -539,6 +618,7 @@ namespace Pie.Data.Migrations
                     LineNumber = table.Column<int>(type: "integer", nullable: false),
                     CountPlan = table.Column<float>(type: "real", nullable: false),
                     CountFact = table.Column<float>(type: "real", nullable: false),
+                    Unit = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                     Weight = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
@@ -593,6 +673,7 @@ namespace Pie.Data.Migrations
                     LineNumber = table.Column<int>(type: "integer", nullable: false),
                     CountPlan = table.Column<float>(type: "real", nullable: false),
                     CountFact = table.Column<float>(type: "real", nullable: false),
+                    Unit = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                     Weight = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
@@ -618,7 +699,7 @@ namespace Pie.Data.Migrations
                 values: new object[,]
                 {
                     { "049c2135-b769-4ea5-986a-a5231330fe46", null, "Service1c", "SERVICE1C" },
-                    { "9423e7b8-b496-41e8-b9c9-416b74823db9", null, "User", "USER" },
+                    { "9423e7b8-b496-41e8-b9c9-416b74823db9", null, "Manager", "MANAGER" },
                     { "d6bfb7c2-9a45-45e5-b27a-3b7cba85527f", null, "Admin", "ADMIN" }
                 });
 
@@ -627,8 +708,9 @@ namespace Pie.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName", "WarehouseId" },
                 values: new object[,]
                 {
-                    { "22919707-7d2c-450d-92e7-19f36935bcdb", 0, "2b68aa3c-d884-475f-8a7a-f72d5666f9ae", "igmo@dobroga.ru", true, "Админ", null, true, null, "IGMO@DOBROGA.RU", "IGMO@DOBROGA.RU", "AQAAAAIAAYagAAAAEDgydLmvi4/0kDXZB6+ShJFMNIK8Xzgaawytbvp8IMJquSZ/4hO8sPu9mlXC5uS9IQ==", null, false, "HCJOWYFSM63CJOZM5AZAGXSHEI257BCI", false, "igmo@dobroga.ru", null },
-                    { "d90e31c9-e19f-4ee7-9580-d856daba6d02", 0, "c9023eae-8542-460f-af6c-fb2361ae2be0", "Service1c@www", true, "Service1c", null, true, null, "SERVICE1C@WWW", "SERVICE1C@WWW", "AQAAAAIAAYagAAAAEAP/xtaltm7cuB/Bk/sRF/GDtCtQf9B1ghEEbr6eprNlsKYsaGt5ncmcR/utO76tWw==", null, false, "6WMMOSBLWGF45HZLH5OJIQADMFB6YJGQ", false, "Service1c@www", null }
+                    { "22919707-7d2c-450d-92e7-19f36935bcdb", 0, "18c24c93-8d87-4450-9500-32f059f6398a", "igmo@dobroga.ru", true, "Игорь", "Могильницкий", true, null, "IGMO@DOBROGA.RU", "IGMO@DOBROGA.RU", "AQAAAAIAAYagAAAAEDgydLmvi4/0kDXZB6+ShJFMNIK8Xzgaawytbvp8IMJquSZ/4hO8sPu9mlXC5uS9IQ==", null, false, "HCJOWYFSM63CJOZM5AZAGXSHEI257BCI", false, "igmo@dobroga.ru", null },
+                    { "d90e31c9-e19f-4ee7-9580-d856daba6d02", 0, "c9023eae-8542-460f-af6c-fb2361ae2be0", "Service1c@www", true, "Service1c", null, true, null, "SERVICE1C@WWW", "SERVICE1C@WWW", "AQAAAAIAAYagAAAAEAP/xtaltm7cuB/Bk/sRF/GDtCtQf9B1ghEEbr6eprNlsKYsaGt5ncmcR/utO76tWw==", null, false, "6WMMOSBLWGF45HZLH5OJIQADMFB6YJGQ", false, "Service1c@www", null },
+                    { "de3f6ced-85ca-4feb-8d98-395dc8ee71cb", 0, "3bd6e424-97b8-4f30-9f50-44e9368ae7c5", "admin@www", true, "Админ", null, true, null, "ADMIN@WWW", "ADMIN@WWW", "AQAAAAIAAYagAAAAELfYeQJOlhGQE7zLxj69o4waFM3ISF424TUMU9/DMkWPr03XyfD7EJO3XUlOkKOd0A==", null, false, "I5VGBC5NXRMCMKKBSXQIJNJC6UFZUTMF", false, "admin@www", null }
                 });
 
             migrationBuilder.InsertData(
@@ -660,27 +742,27 @@ namespace Pie.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "StatusesIn",
-                columns: new[] { "Id", "Active", "Key", "Name" },
+                columns: new[] { "Id", "Active", "CanChange", "Key", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("7f8bf9f1-92e3-4f45-84ea-461b9f82aa20"), false, 3, "Принят" },
-                    { new Guid("b2cbc819-151b-489d-9b09-649aa16b2a8b"), true, 0, "КПоступлению" },
-                    { new Guid("ba575f5d-1c8d-4616-a707-1b4157746aa3"), true, 1, "ВРаботе" },
-                    { new Guid("f1cff011-6ecb-49f1-9898-2bf4a69b7b13"), false, 2, "ТребуетсяОбработка" }
+                    { new Guid("7f8bf9f1-92e3-4f45-84ea-461b9f82aa20"), false, false, 3, "Принят" },
+                    { new Guid("b2cbc819-151b-489d-9b09-649aa16b2a8b"), true, false, 0, "КПоступлению" },
+                    { new Guid("ba575f5d-1c8d-4616-a707-1b4157746aa3"), true, false, 1, "ВРаботе" },
+                    { new Guid("f1cff011-6ecb-49f1-9898-2bf4a69b7b13"), false, false, 2, "ТребуетсяОбработка" }
                 });
 
             migrationBuilder.InsertData(
                 table: "StatusesOut",
-                columns: new[] { "Id", "Active", "Key", "Name" },
+                columns: new[] { "Id", "Active", "CanChange", "Key", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("17cee206-e06f-47d8-824d-14eeceaf394a"), false, 3, "ВПроцессеПроверки" },
-                    { new Guid("7c2bd6be-cf81-4b1a-9acf-d4ebf416f4d3"), true, 5, "КОтгрузке" },
-                    { new Guid("9eba20ce-9245-4109-92cb-a9875801fbb4"), true, 6, "Отгружен" },
-                    { new Guid("bd1ae241-d787-4a6d-b920-029bc6577364"), false, 2, "КПроверке" },
-                    { new Guid("c2c5935d-b332-4d84-b1fd-309ad8a65356"), true, 0, "Подготовлено" },
-                    { new Guid("e1a4c395-f7a3-40af-82ab-ad545e51eca7"), true, 1, "КОтбору" },
-                    { new Guid("e911589b-613c-42ad-ad56-7083c481c4b4"), false, 4, "Проверен" }
+                    { new Guid("17cee206-e06f-47d8-824d-14eeceaf394a"), false, false, 3, "ВПроцессеПроверки" },
+                    { new Guid("7c2bd6be-cf81-4b1a-9acf-d4ebf416f4d3"), true, false, 5, "КОтгрузке" },
+                    { new Guid("9eba20ce-9245-4109-92cb-a9875801fbb4"), true, false, 6, "Отгружен" },
+                    { new Guid("bd1ae241-d787-4a6d-b920-029bc6577364"), false, false, 2, "КПроверке" },
+                    { new Guid("c2c5935d-b332-4d84-b1fd-309ad8a65356"), true, false, 0, "Подготовлено" },
+                    { new Guid("e1a4c395-f7a3-40af-82ab-ad545e51eca7"), true, false, 1, "КОтбору" },
+                    { new Guid("e911589b-613c-42ad-ad56-7083c481c4b4"), false, false, 4, "Проверен" }
                 });
 
             migrationBuilder.InsertData(
@@ -691,7 +773,10 @@ namespace Pie.Data.Migrations
                     { "049c2135-b769-4ea5-986a-a5231330fe46", "22919707-7d2c-450d-92e7-19f36935bcdb" },
                     { "9423e7b8-b496-41e8-b9c9-416b74823db9", "22919707-7d2c-450d-92e7-19f36935bcdb" },
                     { "d6bfb7c2-9a45-45e5-b27a-3b7cba85527f", "22919707-7d2c-450d-92e7-19f36935bcdb" },
-                    { "049c2135-b769-4ea5-986a-a5231330fe46", "d90e31c9-e19f-4ee7-9580-d856daba6d02" }
+                    { "049c2135-b769-4ea5-986a-a5231330fe46", "d90e31c9-e19f-4ee7-9580-d856daba6d02" },
+                    { "049c2135-b769-4ea5-986a-a5231330fe46", "de3f6ced-85ca-4feb-8d98-395dc8ee71cb" },
+                    { "9423e7b8-b496-41e8-b9c9-416b74823db9", "de3f6ced-85ca-4feb-8d98-395dc8ee71cb" },
+                    { "d6bfb7c2-9a45-45e5-b27a-3b7cba85527f", "de3f6ced-85ca-4feb-8d98-395dc8ee71cb" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -807,6 +892,16 @@ namespace Pie.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DocsIn_ManagerId",
+                table: "DocsIn",
+                column: "ManagerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocsIn_PartnerId",
+                table: "DocsIn",
+                column: "PartnerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DocsIn_QueueKey",
                 table: "DocsIn",
                 column: "QueueKey");
@@ -830,6 +925,21 @@ namespace Pie.Data.Migrations
                 name: "IX_DocsInHistory_UserId",
                 table: "DocsInHistory",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocsOut_DeliveryAreaId",
+                table: "DocsOut",
+                column: "DeliveryAreaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocsOut_ManagerId",
+                table: "DocsOut",
+                column: "ManagerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DocsOut_PartnerId",
+                table: "DocsOut",
+                column: "PartnerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DocsOut_QueueKey",
@@ -928,6 +1038,15 @@ namespace Pie.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "StatusesIn");
+
+            migrationBuilder.DropTable(
+                name: "DeliveryAreas");
+
+            migrationBuilder.DropTable(
+                name: "Managers");
+
+            migrationBuilder.DropTable(
+                name: "Partners");
 
             migrationBuilder.DropTable(
                 name: "QueuesOut");
