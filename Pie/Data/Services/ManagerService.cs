@@ -73,13 +73,6 @@ namespace Pie.Data.Services
             }
         }
 
-        public async Task CreateOrUpdateAsync(ManagerDto dto)
-        {
-            Manager manager = ManagerDto.MapToManager(dto);
-
-            await CreateOrUpdateAsync(manager);
-        }
-
         public async Task DeleteAsync(Guid id)
         {
             var manager = await _context.Managers.FindAsync(id)

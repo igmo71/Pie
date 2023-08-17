@@ -12,12 +12,12 @@
         public Guid? ManagerId { get; set; }
         public Guid? PartnerId { get; set; }
         public bool IsTransfer { get; set; }
+        public List<DocOutProductDto>? Products { get; set; }
+        public List<DocOutBaseDocDto>? BaseDocs { get; set; }
         public int? StatusKey { get; set; }
         public int? QueueKey { get; set; }
         public string? QueueNumber { get; set; }
         public DateTime ShipDateTime { get; set; }
-        public List<DocOutProductDto>? Products { get; set; }
-        public List<DocOutBaseDocDto>? BaseDocs { get; set; }
 
         //public Guid? DeliveryAreaId { get; set; }
         //public string? DeliveryAddress { get; set; }

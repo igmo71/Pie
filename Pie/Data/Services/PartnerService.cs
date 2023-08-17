@@ -73,13 +73,6 @@ namespace Pie.Data.Services
             }
         }
 
-        public async Task CreateOrUpdateAsync(PartnerDto dto)
-        {
-            Partner partner = PartnerDto.MapToPartner(dto);
-
-            await CreateOrUpdateAsync(partner);
-        }
-
         public async Task DeleteAsync(Guid id)
         {
             var partner = await _context.Partners.FindAsync(id)

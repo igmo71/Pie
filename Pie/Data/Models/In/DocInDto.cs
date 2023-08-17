@@ -7,15 +7,15 @@
         public string? Number { get; set; }
         public DateTime DateTime { get; set; }
         public bool Active { get; set; }
-        public Guid? WarehouseId { get; set; }
         public string? Comment { get; set; }
-        public ManagerDto? Manager { get; set; }
-        public PartnerDto? Partner { get; set; }
+        public Guid? WarehouseId { get; set; }
+        public Guid? ManagerId { get; set; }
+        public Guid? PartnerId { get; set; }
         public bool IsTransfer { get; set; }
-        public int? StatusKey { get; set; }
-        public int? QueueKey { get; set; }
         public List<DocInProductDto>? Products { get; set; }
         public List<DocInBaseDocDto>? BaseDocs { get; set; }
+        public int? StatusKey { get; set; }
+        public int? QueueKey { get; set; }
 
         public static DocIn MapToDocIn(DocInDto dto)
         {
@@ -26,10 +26,10 @@
                 Number = dto.Number,
                 DateTime = dto.DateTime,
                 Active = dto.Active,
-                WarehouseId = dto.WarehouseId,
                 Comment = dto.Comment,
-                ManagerId = dto.Manager?.ManagerId,
-                PartnerId = dto.Partner?.PartnerId,
+                WarehouseId = dto.WarehouseId,
+                ManagerId = dto.ManagerId,
+                PartnerId = dto.PartnerId,
                 IsTransfer = dto.IsTransfer,
                 StatusKey = dto.StatusKey,
                 QueueKey = dto.QueueKey
@@ -53,8 +53,10 @@
                 Number = doc.Number,
                 DateTime = doc.DateTime,
                 Active = doc.Active,
-                WarehouseId = doc.WarehouseId,
                 Comment = doc.Comment,
+                WarehouseId = doc.WarehouseId,
+                ManagerId = doc.ManagerId,
+                PartnerId = doc.PartnerId,
                 IsTransfer = doc.IsTransfer,
                 StatusKey = doc.StatusKey,
                 QueueKey = doc.QueueKey
@@ -65,12 +67,6 @@
 
             if (doc.BaseDocs != null && doc.BaseDocs.Count > 0)
                 dto.BaseDocs = DocInBaseDocDto.MapFromDocInBaseDocList(doc.BaseDocs);
-
-            if (doc.Manager != null)
-                dto.Manager = ManagerDto.MapFromManager(doc.Manager);
-
-            if (doc.Partner != null)
-                dto.Partner = PartnerDto.MapFromPartner(doc.Partner);
 
             return dto;
         }
