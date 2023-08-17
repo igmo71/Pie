@@ -10,14 +10,14 @@ namespace Pie.Data.Services
     public class DeliveryAreaService
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<DeliveryAreaService> _logger;
-        private readonly DeliveryAreaService1c _deliveryAreaService1c;
+        //private readonly ILogger<DeliveryAreaService> _logger;
+        //private readonly DeliveryAreaService1c _deliveryAreaService1c;
 
-        public DeliveryAreaService(ApplicationDbContext context, ILogger<DeliveryAreaService> logger, DeliveryAreaService1c deliveryAreaService1c)
+        public DeliveryAreaService(ApplicationDbContext context/*, ILogger<DeliveryAreaService> logger, DeliveryAreaService1c deliveryAreaService1c*/)
         {
             _context = context;
-            _logger = logger;
-            _deliveryAreaService1c = deliveryAreaService1c;
+            //_logger = logger;
+            //_deliveryAreaService1c = deliveryAreaService1c;
         }
 
         public async Task<List<DeliveryArea>> GetListAsync()
@@ -48,31 +48,31 @@ namespace Pie.Data.Services
             return deliveryArea;
         }
 
-        public async Task<List<DeliveryArea>> CreateRangeAsync(List<DeliveryArea> deliveryAreas)
-        {
-            List<DeliveryArea> result = new();
-            foreach (var deliveryArea in deliveryAreas)
-            {
-                result.Add(await CreateAsync(deliveryArea));
-            }
+        //public async Task<List<DeliveryArea>> CreateRangeAsync(List<DeliveryArea> deliveryAreas)
+        //{
+        //    List<DeliveryArea> result = new();
+        //    foreach (var deliveryArea in deliveryAreas)
+        //    {
+        //        result.Add(await CreateAsync(deliveryArea));
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public async Task<ServiceResult<List<DeliveryArea>>> LoadAsync()
-        {
-            ServiceResult<List<DeliveryArea>> result = new();
+        //public async Task<ServiceResult<List<DeliveryArea>>> LoadAsync()
+        //{
+        //    ServiceResult<List<DeliveryArea>> result = new();
 
-            List<DeliveryArea>? list = await _deliveryAreaService1c.GetListAsync();
-            if (list == null || list.Count == 0)
-            {
-                result.Message = "DeliveryArea List is Empty";
-                return result;
-            }
-            result.Value = await CreateRangeAsync(list);
-            result.IsSuccess = true;
-            return result;
-        }
+        //    List<DeliveryArea>? list = await _deliveryAreaService1c.GetListAsync();
+        //    if (list == null || list.Count == 0)
+        //    {
+        //        result.Message = "DeliveryArea List is Empty";
+        //        return result;
+        //    }
+        //    result.Value = await CreateRangeAsync(list);
+        //    result.IsSuccess = true;
+        //    return result;
+        //}
 
         public async Task UpdateAsync(DeliveryArea deliveryArea)
         {

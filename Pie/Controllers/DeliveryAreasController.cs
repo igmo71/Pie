@@ -73,25 +73,25 @@ namespace Pie.Controllers
             return NoContent();
         }
 
-        [HttpGet("load")]
-        public async Task<IActionResult> LoadAsync()
-        {
-            ServiceResult<List<DeliveryArea>> result = new();
-            try
-            {
-                result = await _deliveryAreaService.LoadAsync();
-                if (!result.IsSuccess)
-                    return Problem(result.Message);
+        //[HttpGet("load")]
+        //public async Task<IActionResult> LoadAsync()
+        //{
+        //    ServiceResult<List<DeliveryArea>> result = new();
+        //    try
+        //    {
+        //        result = await _deliveryAreaService.LoadAsync();
+        //        if (!result.IsSuccess)
+        //            return Problem(result.Message);
 
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "DeliveryAreasController LoadAsync {Message}", ex.Message);
-                return Problem(ex.Message);
-            }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, "DeliveryAreasController LoadAsync {Message}", ex.Message);
+        //        return Problem(ex.Message);
+        //    }
 
-            return Ok(result.Value);
-        }
+        //    return Ok(result.Value);
+        //}
 
         [HttpGet("tree")]
         public async Task<IActionResult> GetTree()

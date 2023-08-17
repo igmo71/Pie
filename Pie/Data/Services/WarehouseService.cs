@@ -7,14 +7,14 @@ namespace Pie.Data.Services
     public class WarehouseService
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<WarehouseService> _logger;
-        private readonly WarehouseService1c _warehouseService1c;
+        //private readonly ILogger<WarehouseService> _logger;
+        //private readonly WarehouseService1c _warehouseService1c;
 
-        public WarehouseService(ApplicationDbContext context, ILogger<WarehouseService> logger, WarehouseService1c warehouseService1c)
+        public WarehouseService(ApplicationDbContext context/*, ILogger<WarehouseService> logger, WarehouseService1c warehouseService1c*/)
         {
             _context = context;
-            _logger = logger;
-            _warehouseService1c = warehouseService1c;
+            //_logger = logger;
+            //_warehouseService1c = warehouseService1c;
         }
 
         public async Task<List<Warehouse>> GetListAsync()
@@ -52,30 +52,30 @@ namespace Pie.Data.Services
             return warehouse;
         }
 
-        public async Task<List<Warehouse>> CreateRangeAsync(List<Warehouse> warehouses)
-        {
-            List<Warehouse> result = new();
-            foreach (var warehouse in warehouses)
-            {
-                result.Add(await CreateAsync(warehouse));
-            }
+        //public async Task<List<Warehouse>> CreateRangeAsync(List<Warehouse> warehouses)
+        //{
+        //    List<Warehouse> result = new();
+        //    foreach (var warehouse in warehouses)
+        //    {
+        //        result.Add(await CreateAsync(warehouse));
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public async Task<ServiceResult<List<Warehouse>>> LoadAsync()
-        {
-            ServiceResult<List<Warehouse>> result = new();
-            List<Warehouse>? list = await _warehouseService1c.GetListAsync();
-            if (list == null || list.Count == 0)
-            {
-                result.Message = "Warehouse List is Empty";
-                return result;
-            }
-            result.Value = await CreateRangeAsync(list);
-            result.IsSuccess = true;
-            return result;
-        }
+        //public async Task<ServiceResult<List<Warehouse>>> LoadAsync()
+        //{
+        //    ServiceResult<List<Warehouse>> result = new();
+        //    List<Warehouse>? list = await _warehouseService1c.GetListAsync();
+        //    if (list == null || list.Count == 0)
+        //    {
+        //        result.Message = "Warehouse List is Empty";
+        //        return result;
+        //    }
+        //    result.Value = await CreateRangeAsync(list);
+        //    result.IsSuccess = true;
+        //    return result;
+        //}
 
         public async Task UpdateAsync(Warehouse warehouse)
         {

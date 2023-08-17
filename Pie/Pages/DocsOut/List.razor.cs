@@ -14,7 +14,7 @@ namespace Pie.Pages.DocsOut
         [Inject] public required QueueOutService QueueService { get; set; }
         [Inject] public required StatusOutService StatusService { get; set; }
         [Inject] public required WarehouseService WarehouseService { get; set; }
-        [Inject] public required DeliveryAreaService DeliveryAreaService { get; set; }
+        //[Inject] public required DeliveryAreaService DeliveryAreaService { get; set; }
         [Inject] public required SearchOutParameters SearchParameters { get; set; }
         [Inject] public required NavigationManager NavigationManager { get; set; }
         [Inject] public required AppUserService AppUserService { get; set; }
@@ -24,7 +24,7 @@ namespace Pie.Pages.DocsOut
         private List<StatusOut> statuses = new();
         private Dictionary<int, int>? countByStatus = new();
         private List<Warehouse> warehouses = new();
-        private Dictionary<Guid, string>? deliveryAreas = new();
+        //private Dictionary<Guid, string>? deliveryAreas = new();
         private AppUser? currentUser;
 
         protected async override Task OnInitializedAsync()
@@ -33,7 +33,7 @@ namespace Pie.Pages.DocsOut
             await GetStatusesAsync();
             await GetQueuesAsync();
             await GetWarehousesAsync();
-            await GetDeliveryAreas();
+            //await GetDeliveryAreas();
             SetSearchParameters();
             await GetCountByStatusAsync();
             await GetDocsAsync();
@@ -68,10 +68,10 @@ namespace Pie.Pages.DocsOut
             warehouses = await WarehouseService.GetListActiveAsync();
         }
 
-        private async Task GetDeliveryAreas()
-        {
-            deliveryAreas = await DeliveryAreaService.GetFlatList();
-        }
+        //private async Task GetDeliveryAreas()
+        //{
+        //    deliveryAreas = await DeliveryAreaService.GetFlatList();
+        //}
 
         private async Task GetCountByStatusAsync()
         {

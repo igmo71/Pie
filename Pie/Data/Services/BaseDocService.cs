@@ -8,14 +8,10 @@ namespace Pie.Data.Services
     public class BaseDocService
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<BaseDocService> _logger;
 
-        public BaseDocService(
-            ApplicationDbContext context,
-            ILogger<BaseDocService> logger)
+        public BaseDocService(ApplicationDbContext context)
         {
             _context = context;
-            _logger = logger;
         }
 
         public async Task<IEnumerable<BaseDoc>> GetListAsync()

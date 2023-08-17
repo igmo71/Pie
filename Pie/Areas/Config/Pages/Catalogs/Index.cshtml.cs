@@ -33,7 +33,7 @@ namespace Pie.Areas.Config.Pages.Catalogs
         {
             try
             {
-                LoadResult = await _productService.LoadAsync();
+                //LoadResult = await _productService.LoadAsync();
             }
             catch (Exception ex)
             {
@@ -50,7 +50,7 @@ namespace Pie.Areas.Config.Pages.Catalogs
         {
             try
             {
-                LoadResult = await _warehouseService.LoadAsync();
+                //LoadResult = await _warehouseService.LoadAsync();
             }
             catch (Exception ex)
             {
@@ -67,7 +67,7 @@ namespace Pie.Areas.Config.Pages.Catalogs
         {
             try
             {
-                LoadResult = await _deliveryAreaService.LoadAsync();
+                //LoadResult = await _deliveryAreaService.LoadAsync();
             }
             catch (Exception ex)
             {
