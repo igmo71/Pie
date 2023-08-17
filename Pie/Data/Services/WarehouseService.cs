@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Pie.Connectors.Connector1c.Services1c;
 using Pie.Data.Models;
 
 namespace Pie.Data.Services

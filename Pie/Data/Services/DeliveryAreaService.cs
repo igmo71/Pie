@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pie.Common;
-using Pie.Connectors.Connector1c.Models1c;
-using Pie.Connectors.Connector1c.Services1c;
 using Pie.Data.Models;
 using System.Collections.Generic;
 
