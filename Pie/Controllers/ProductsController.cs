@@ -12,18 +12,18 @@ namespace Pie.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly ProductService _productsService;
+        private readonly ProductService _productService;
 
-        public ProductsController(ProductService productsService)
+        public ProductsController(ProductService productService)
         {
-            _productsService = productsService;
+            _productService = productService;
         }
 
         // GET: api/Products
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
-            var products = await _productsService.GetListAsync();
+            var products = await _productService.GetListAsync();
 
             return Ok(products);
         }
@@ -32,12 +32,22 @@ namespace Pie.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(Guid id)
         {
-            var product = await _productsService.GetAsync(id);
+            var product = await _productService.GetAsync(id);
 
             if (product == null)
                 return NotFound();
 
             return Ok(product);
+        }
+
+        // POST: api/Products
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Product>> PostProduct(Product product)
+        {
+            var result = await _productService.CreateAsync(product);
+
+            return CreatedAtAction(nameof(GetProduct), new { id = result.Id }, result);
         }
 
         // PUT: api/Products/5
@@ -48,26 +58,16 @@ namespace Pie.Controllers
             if (id != product.Id)
                 return BadRequest();
 
-            await _productsService.UpdateAsync(product);
+            await _productService.UpdateAsync(product);
 
             return NoContent();
-        }
-
-        // POST: api/Products
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
-        {
-            var result = await _productsService.CreateAsync(product);
-
-            return CreatedAtAction("GetProduct", new { id = result.Id }, result);
         }
 
         // DELETE: api/Products/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(Guid id)
         {
-            await _productsService.DeleteAsync(id);
+            await _productService.DeleteAsync(id);
 
             return NoContent();
         }
