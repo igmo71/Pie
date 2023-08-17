@@ -12,9 +12,9 @@ namespace Pie.Data.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Manager>> GetListAsync()
+        public async Task<IEnumerable<Manager>> GetListAsync(int skip = AppConfig.SKIP, int take = AppConfig.TAKE)
         {
-            var managers = await _context.Managers.AsNoTracking().ToListAsync();
+            var managers = await _context.Managers.AsNoTracking().Skip(skip).Take(take).ToListAsync();
 
             return managers;
         }

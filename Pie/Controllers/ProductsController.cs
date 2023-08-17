@@ -21,9 +21,9 @@ namespace Pie.Controllers
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<Product>>> GetProducts(int skip = AppConfig.SKIP, int take = AppConfig.TAKE)
         {
-            var products = await _productService.GetListAsync();
+            var products = await _productService.GetListAsync(skip, take);
 
             return Ok(products);
         }
@@ -45,9 +45,9 @@ namespace Pie.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
-            var result = await _productService.CreateAsync(product);
+            await _productService.CreateOrUpdateAsync(product);
 
-            return CreatedAtAction(nameof(GetProduct), new { id = result.Id }, result);
+            return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
         }
 
         // PUT: api/Products/5

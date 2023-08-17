@@ -18,9 +18,9 @@ namespace Pie.Controllers
         }
         // GET: api/<PartnersController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Partner>>> GetPartners()
+        public async Task<ActionResult<IEnumerable<Partner>>> GetPartners(int skip = AppConfig.SKIP, int take = AppConfig.TAKE)
         {
-            var partners = await _partnerService.GetListAsync();
+            var partners = await _partnerService.GetListAsync(skip, take);
 
             return Ok(partners);
         }

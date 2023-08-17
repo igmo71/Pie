@@ -12,9 +12,9 @@ namespace Pie.Data.Services
             _context = context;
         }
 
-        public async Task<List<Warehouse>> GetListAsync()
+        public async Task<List<Warehouse>> GetListAsync(int skip = AppConfig.SKIP, int take = AppConfig.TAKE)
         {
-            var warehouses = await _context.Warehouses.AsNoTracking().ToListAsync();
+            var warehouses = await _context.Warehouses.AsNoTracking().Skip(skip).Take(take).ToListAsync();
 
             return warehouses;
         }
@@ -35,15 +35,10 @@ namespace Pie.Data.Services
 
         public async Task<Warehouse> CreateAsync(Warehouse warehouse)
         {
-            if (Exists(warehouse.Id))
-            {
-                await UpdateAsync(warehouse);
-            }
-            else
-            {
-                _context.Warehouses.Add(warehouse);
-                await _context.SaveChangesAsync();
-            }
+            _context.Warehouses.Add(warehouse);
+
+            await _context.SaveChangesAsync();
+            
             return warehouse;
         }
 
@@ -65,6 +60,18 @@ namespace Pie.Data.Services
                 {
                     throw;
                 }
+            }
+        }
+
+        public async Task CreateOrUpdateAsync(Warehouse warehouse)
+        {
+            if (Exists(warehouse.Id))
+            {
+                await UpdateAsync(warehouse);
+            }
+            else
+            {
+                await CreateAsync(warehouse);
             }
         }
 

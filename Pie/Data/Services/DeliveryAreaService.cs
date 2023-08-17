@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pie.Common;
 using Pie.Data.Models;
-using System.Collections.Generic;
 
 namespace Pie.Data.Services
 {
@@ -14,9 +13,9 @@ namespace Pie.Data.Services
             _context = context;
         }
 
-        public async Task<List<DeliveryArea>> GetListAsync()
+        public async Task<List<DeliveryArea>> GetListAsync(int skip = 0, int take = 100)
         {
-            var deliveryArea = await _context.DeliveryAreas.AsNoTracking().ToListAsync();
+            var deliveryArea = await _context.DeliveryAreas.AsNoTracking().Skip(skip).Take(take).ToListAsync();
 
             return deliveryArea;
         }
@@ -30,21 +29,15 @@ namespace Pie.Data.Services
 
         public async Task<DeliveryArea> CreateAsync(DeliveryArea deliveryArea)
         {
-            if (Exists(deliveryArea.Id))
-            {
-                await UpdateAsync(deliveryArea);
-            }
-            else
-            {
-                _context.DeliveryAreas.Add(deliveryArea);
-                await _context.SaveChangesAsync();
-            }
+            _context.DeliveryAreas.Add(deliveryArea);
+
+            await _context.SaveChangesAsync();
+
             return deliveryArea;
         }
 
         public async Task UpdateAsync(DeliveryArea deliveryArea)
         {
-
             _context.Entry(deliveryArea).State = EntityState.Modified;
 
             try
@@ -64,6 +57,18 @@ namespace Pie.Data.Services
             }
         }
 
+        public async Task CreateOrUpdateAsync(DeliveryArea deliveryArea)
+        {
+            if (Exists(deliveryArea.Id))
+            {
+                await UpdateAsync(deliveryArea);
+            }
+            else
+            {
+                await CreateAsync(deliveryArea);
+            }
+        }
+
         public async Task DeleteAsync(Guid id)
         {
             var deliveryArea = await _context.DeliveryAreas.FindAsync(id)
@@ -74,7 +79,7 @@ namespace Pie.Data.Services
             await _context.SaveChangesAsync();
         }
 
-        private bool Exists(Guid id)
+        public bool Exists(Guid id)
         {
             var result = _context.DeliveryAreas.Any(e => e.Id == id);
 
@@ -88,7 +93,7 @@ namespace Pie.Data.Services
             return result;
         }
 
-        public async  Task<Dictionary<Guid, string>> GetFlatList(bool includeParent = false)
+        public async Task<Dictionary<Guid, string>> GetFlatList(bool includeParent = false)
         {
             List<DeliveryAreaTreeNode> nodes = await GetTree();
             Dictionary<Guid, string> result = new();

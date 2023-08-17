@@ -13,9 +13,9 @@ namespace Pie.Data.Services
             _context = context;
         }
 
-        public async Task<IEnumerable<Product>> GetListAsync()
+        public async Task<IEnumerable<Product>> GetListAsync(int skip = AppConfig.SKIP, int take = AppConfig.TAKE)
         {
-            var products = await _context.Products.AsNoTracking().ToListAsync();
+            var products = await _context.Products.AsNoTracking().Skip(skip).Take(take).ToListAsync();
 
             return products;
         }
@@ -29,15 +29,10 @@ namespace Pie.Data.Services
 
         public async Task<Product> CreateAsync(Product product)
         {
-            if (Exists(product.Id))
-            {
-                await UpdateAsync(product);
-            }
-            else
-            {
-                _context.Products.Add(product);
-                await _context.SaveChangesAsync();
-            }
+            _context.Products.Add(product);
+
+            await _context.SaveChangesAsync();
+            
             return product;
         }
 
@@ -59,6 +54,18 @@ namespace Pie.Data.Services
                 {
                     throw;
                 }
+            }
+        }
+
+        public async Task CreateOrUpdateAsync(Product product)
+        {
+            if (Exists(product.Id))
+            {
+                await UpdateAsync(product);
+            }
+            else
+            {
+                await CreateAsync(product);
             }
         }
 

@@ -10,20 +10,18 @@ namespace Pie.Controllers
     public class DeliveryAreasController : ControllerBase
     {
         private readonly DeliveryAreaService _deliveryAreaService;
-        private readonly ILogger<DeliveryAreasController> _logger;
 
-        public DeliveryAreasController(DeliveryAreaService deliveryAreaService, ILogger<DeliveryAreasController> logger)
+        public DeliveryAreasController(DeliveryAreaService deliveryAreaService)
         {
             _deliveryAreaService = deliveryAreaService;
-            _logger = logger;
 
         }
 
         // GET: api/DeliveryAreas
         [HttpGet]
-        public async Task<ActionResult<List<DeliveryArea>>> GetDeliveryAreas()
+        public async Task<ActionResult<List<DeliveryArea>>> GetDeliveryAreas(int skip = AppConfig.SKIP, int take = AppConfig.TAKE)
         {
-            List<DeliveryArea> deliveryAreas = await _deliveryAreaService.GetListAsync();
+            List<DeliveryArea> deliveryAreas = await _deliveryAreaService.GetListAsync(skip, take);
 
             return Ok(deliveryAreas);
         }
@@ -59,9 +57,9 @@ namespace Pie.Controllers
         [HttpPost]
         public async Task<ActionResult<Product>> PostDeliveryArea(DeliveryArea deliveryArea)
         {
-            var result = await _deliveryAreaService.CreateAsync(deliveryArea);
+            await _deliveryAreaService.CreateOrUpdateAsync(deliveryArea);
 
-            return CreatedAtAction("GetDeliveryArea", new { id = result.Id }, result);
+            return CreatedAtAction("GetDeliveryArea", new { id = deliveryArea.Id }, deliveryArea);
         }
 
         // DELETE: api/DeliveryAreas/5

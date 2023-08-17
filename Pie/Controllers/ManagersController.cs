@@ -21,9 +21,9 @@ namespace Pie.Controllers
 
         // GET: api/<ManagersController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Manager>>> GetManagers()
+        public async Task<ActionResult<IEnumerable<Manager>>> GetManagers(int skip = AppConfig.SKIP, int take = AppConfig.TAKE)
         {
-            var managers = await _managerService.GetListAsync();
+            var managers = await _managerService.GetListAsync(skip, take);
 
             return Ok(managers);
         }

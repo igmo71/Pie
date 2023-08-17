@@ -21,9 +21,9 @@ namespace Pie.Controllers
 
         // GET: api/Warehouses
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Warehouse>>> GetWarehouses()
+        public async Task<ActionResult<IEnumerable<Warehouse>>> GetWarehouses(int skip = AppConfig.SKIP, int take = AppConfig.TAKE)
         {
-            var warehouses = await _warehouseService.GetListAsync();
+            var warehouses = await _warehouseService.GetListAsync(skip, take);
 
             return Ok(warehouses);
         }
@@ -45,9 +45,9 @@ namespace Pie.Controllers
         [HttpPost]
         public async Task<ActionResult<Warehouse>> PostWarehouse(Warehouse warehouse)
         {
-            var result = await _warehouseService.CreateAsync(warehouse);
+            await _warehouseService.CreateOrUpdateAsync(warehouse);
 
-            return CreatedAtAction(nameof(GetWarehouse), new { id = result.Id }, result);
+            return CreatedAtAction(nameof(GetWarehouse), new { id = warehouse.Id }, warehouse);
         }
 
         // PUT: api/Warehouses/5

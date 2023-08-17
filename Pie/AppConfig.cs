@@ -4,6 +4,9 @@ namespace Pie
 {
     public class AppConfig
     {
+        public const int SKIP = 0;
+        public const int TAKE = 100;
+
         public string? Tenant { get; private set; }
         public string? DbHost { get; private set; }
         public string? SeqHost { get; private set; }
