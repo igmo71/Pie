@@ -43,10 +43,7 @@ namespace Pie.Data.Services
 
         public async Task UpdateAsync(BaseDoc baseDoc)
         {
-            BaseDoc? entity = _context.BaseDocs.FirstOrDefault(e => e.Id == baseDoc.Id);
-            if (entity == null) return;
-
-            entity.Name = baseDoc.Name;
+            _context.Entry(baseDoc).State = EntityState.Modified;
 
             try
             {
@@ -63,10 +60,6 @@ namespace Pie.Data.Services
                     throw;
                 }
             }
-            //catch(Exception ex)
-            //{
-            //    throw;
-            //}
         }
 
         public async Task CreateOrUpdateAsync(BaseDoc baseDoc)
