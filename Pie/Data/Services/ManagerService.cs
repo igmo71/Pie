@@ -6,12 +6,10 @@ namespace Pie.Data.Services
     public class ManagerService
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<ManagerService> _logger;
 
-        public ManagerService(ApplicationDbContext context, ILogger<ManagerService> logger)
+        public ManagerService(ApplicationDbContext context)
         {
             _context = context;
-            _logger = logger;
         }
 
         public async Task<IEnumerable<Manager>> GetListAsync()
@@ -39,10 +37,7 @@ namespace Pie.Data.Services
 
         public async Task UpdateAsync(Manager manager)
         {
-            Manager? entity = _context.Managers.Find(manager.Id);
-            if (entity == null) return;
-
-            entity.Name = manager.Name;
+            _context.Entry(manager).State = EntityState.Modified;
 
             try
             {

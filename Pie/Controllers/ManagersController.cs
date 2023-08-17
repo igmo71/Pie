@@ -44,9 +44,9 @@ namespace Pie.Controllers
         [HttpPost]
         public async Task<ActionResult<Manager>> PostManager([FromBody] Manager manager)
         {
-            var result = await _managerService.CreateAsync(manager);
+            await _managerService.CreateOrUpdateAsync(manager);
 
-            return CreatedAtAction(nameof(GetManager), new { id = result.Id }, result);
+            return CreatedAtAction(nameof(GetManager), new { id = manager.Id }, manager);
         }
 
         // PUT api/<ManagersController>/5

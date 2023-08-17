@@ -38,9 +38,9 @@ namespace Pie.Controllers
         [HttpPost]
         public async Task<ActionResult<Partner>> PostPartner([FromBody] Partner partner)
         {
-            var result = await _partnerService.CreateAsync(partner);
+            await _partnerService.CreateOrUpdateAsync(partner);
 
-            return CreatedAtAction(nameof(GetPartner), new { id = result.Id }, result);
+            return CreatedAtAction(nameof(GetPartner), new { id = partner.Id }, partner);
         }
 
         // PUT api/<PartnersController>/5

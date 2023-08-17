@@ -128,12 +128,6 @@ namespace Pie.Data.Services.In
             if (docDto.BaseDocs != null)
                 await _baseDocService.CreateOrUpdateRangeAsync(docDto.BaseDocs);
 
-            if (docDto.Manager != null)
-                await _managerService.CreateOrUpdateAsync(docDto.Manager);
-
-            if (docDto.Partner != null)
-                await _partnerService.CreateOrUpdateAsync(docDto.Partner);
-
             DocIn doc = DocInDto.MapToDocIn(docDto);
             doc = await CreateAsync(doc);
 

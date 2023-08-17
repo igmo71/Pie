@@ -6,12 +6,10 @@ namespace Pie.Data.Services
     public class PartnerService
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<PartnerService> _logger;
 
-        public PartnerService(ApplicationDbContext context, ILogger<PartnerService> logger)
+        public PartnerService(ApplicationDbContext context)
         {
             _context = context;
-            _logger = logger;
         }
 
         public async Task<IEnumerable<Partner>> GetListAsync()
@@ -39,10 +37,7 @@ namespace Pie.Data.Services
 
         public async Task UpdateAsync(Partner partner)
         {
-            Partner? entity = _context.Partners.Find(partner.Id);
-            if (entity == null) return;
-
-            entity.Name = partner.Name;
+            _context.Entry(partner).State = EntityState.Modified;
 
             try
             {
