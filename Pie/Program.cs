@@ -45,7 +45,7 @@ namespace Pie
             //    logging.RequestBodyLogLimit = 4096;
             //    logging.ResponseBodyLogLimit = 4096;
             //});
-                        
+
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .Enrich.WithEnvironmentName()
@@ -196,7 +196,7 @@ namespace Pie
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
-                        
+
             //app.UseHttpLogging();
             app.UseSerilogRequestLogging();
 

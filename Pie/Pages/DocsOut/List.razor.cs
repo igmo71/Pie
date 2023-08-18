@@ -3,7 +3,6 @@ using Pie.Data.Models;
 using Pie.Data.Models.Identity;
 using Pie.Data.Models.Out;
 using Pie.Data.Services;
-using Pie.Data.Services.EventBus;
 using Pie.Data.Services.Identity;
 using Pie.Data.Services.Out;
 

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models;
-using System.Diagnostics;
 
 namespace Pie.Data.Services
 {
@@ -32,7 +31,7 @@ namespace Pie.Data.Services
             _context.Products.Add(product);
 
             await _context.SaveChangesAsync();
-            
+
             return product;
         }
 

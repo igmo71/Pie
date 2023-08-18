@@ -38,7 +38,7 @@ namespace Pie.Data.Services
             _context.Warehouses.Add(warehouse);
 
             await _context.SaveChangesAsync();
-            
+
             return warehouse;
         }
 

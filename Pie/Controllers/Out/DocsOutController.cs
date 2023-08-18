@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Pie.Connectors.Connector1c;
+﻿using Microsoft.AspNetCore.Mvc;
 using Pie.Data.Models.Out;
 using Pie.Data.Services.EventBus;
 using Pie.Data.Services.Out;
-using System.Text.Json;
 
 namespace Pie.Controllers.Out
 {
@@ -72,12 +68,12 @@ namespace Pie.Controllers.Out
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<IActionResult> PostDoc(DocOutDto docDto)
-        {            
+        {
             //var jsonString = JsonSerializer.Serialize(docDto);
 
             await _eventDispatcher.PublishAsync(new DocOutDtoReceivedEvent { Value = docDto });
 
-            var result = await _docService.CreateAsync(docDto);            
+            var result = await _docService.CreateAsync(docDto);
 
             return CreatedAtAction("GetDoc", new { id = result.Id }, result);
         }

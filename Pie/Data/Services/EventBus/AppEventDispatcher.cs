@@ -12,7 +12,8 @@
         {
             using var scope = _serviceProvider.CreateScope();
             var handlers = scope.ServiceProvider.GetServices<IAppEventHandler<TEvent>>();
-            foreach (var handler in handlers) {
+            foreach (var handler in handlers)
+            {
                 await handler.HandleAsync(appEvent);
             }
         }

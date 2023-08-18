@@ -31,7 +31,7 @@ namespace Pie.Data.Services
             _context.Partners.Add(partner);
 
             await _context.SaveChangesAsync();
-            
+
             return partner;
         }
 

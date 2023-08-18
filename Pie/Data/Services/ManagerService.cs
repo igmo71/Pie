@@ -29,7 +29,7 @@ namespace Pie.Data.Services
         public async Task<Manager> CreateAsync(Manager manager)
         {
             _context.Managers.Add(manager);
-            
+
             await _context.SaveChangesAsync();
 
             return manager;

@@ -65,7 +65,7 @@ namespace Pie.Data
             builder.Entity<DocIn>().HasOne(d => d.Queue).WithMany().HasForeignKey(d => d.QueueKey).HasPrincipalKey(q => q.Key).OnDelete(DeleteBehavior.SetNull);
             builder.Entity<DocIn>().HasOne(d => d.Warehouse).WithMany().HasForeignKey(d => d.WarehouseId).HasPrincipalKey(w => w.Id).OnDelete(DeleteBehavior.SetNull);
             builder.Entity<DocIn>().HasOne(d => d.Manager).WithMany().HasForeignKey(d => d.ManagerId).HasPrincipalKey(m => m.Id).OnDelete(DeleteBehavior.SetNull);
-            builder.Entity<DocIn>().HasOne(d => d.Partner).WithMany().HasForeignKey(d => d.PartnerId).HasPrincipalKey(p => p.Id).OnDelete(DeleteBehavior.SetNull);            
+            builder.Entity<DocIn>().HasOne(d => d.Partner).WithMany().HasForeignKey(d => d.PartnerId).HasPrincipalKey(p => p.Id).OnDelete(DeleteBehavior.SetNull);
             //builder.Entity<DocIn>().HasQueryFilter(d => d.Active && d.StatusKey != null && d.QueueKey != null);
 
             builder.Entity<DocInBaseDoc>().HasKey(b => b.Id);

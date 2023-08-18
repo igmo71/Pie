@@ -1,4 +1,4 @@
-﻿    using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Pie.Data.Models.Out;
 using Pie.Data.Services.Identity;
@@ -72,7 +72,7 @@ namespace Pie.Pages.DocsOut
         private async Task DeleteDocAsync()
         {
             if (docVm == null || docVm.Value == null) return;
-            
+
             //notification.Show("Удаление документа ...");
 
             await DocService.DeleteAsync(docVm.Value.Id);

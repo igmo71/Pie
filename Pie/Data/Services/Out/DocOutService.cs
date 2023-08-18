@@ -6,7 +6,6 @@ using Pie.Data.Models.Out;
 using Pie.Data.Services.EventBus;
 using System.Diagnostics;
 using System.Text.Json;
-using ZXing;
 
 namespace Pie.Data.Services.Out
 {
@@ -100,7 +99,7 @@ namespace Pie.Data.Services.Out
             vm.Barcode = BarcodeGenerator.GetBarCode128(id);
 
             return vm;
-        }        
+        }
 
         public async Task<Dictionary<int, List<DocOut>>> GetDictionaryByQueueAsync(SearchOutParameters searchParameters)
         {

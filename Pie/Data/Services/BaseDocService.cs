@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pie.Data.Models;
-using Pie.Data.Models.In;
-using Pie.Data.Models.Out;
 
 namespace Pie.Data.Services
 {

@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Pie.Connectors.Connector1c;
+﻿using Microsoft.AspNetCore.Mvc;
 using Pie.Data.Models;
 using Pie.Data.Services;
 
@@ -49,7 +46,7 @@ namespace Pie.Controllers
         {
             await _warehouseService.CreateOrUpdateAsync(warehouse);
 
-            await _partnerService.CreateOrUpdateAsync(new Partner { Id = warehouse.Id, Name = warehouse.Name});
+            await _partnerService.CreateOrUpdateAsync(new Partner { Id = warehouse.Id, Name = warehouse.Name });
 
             return CreatedAtAction(nameof(GetWarehouse), new { id = warehouse.Id }, warehouse);
         }

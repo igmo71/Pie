@@ -45,7 +45,7 @@
                 {
                     doc.BaseDocs.Add(new DocInBaseDoc { DocId = doc.Id, BaseDocId = item.Id });
                 }
-            }        
+            }
 
             return doc;
         }

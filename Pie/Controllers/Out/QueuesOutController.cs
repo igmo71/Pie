@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Pie.Connectors.Connector1c;
+﻿using Microsoft.AspNetCore.Mvc;
 using Pie.Data.Models.Out;
 using Pie.Data.Services.Out;
 

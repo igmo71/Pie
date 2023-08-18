@@ -12,7 +12,7 @@ namespace Pie.Connectors.Connector1c
         //private readonly IConfiguration _configuration;
         private readonly AppConfig _appConfig;
         private readonly ILogger<Service1c> _logger;
-        private readonly JsonSerializerOptions _jsonSerializerOptions; 
+        private readonly JsonSerializerOptions _jsonSerializerOptions;
 
         //private readonly IHttpClientFactory _httpClientFactory;
 

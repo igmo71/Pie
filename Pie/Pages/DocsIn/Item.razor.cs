@@ -72,7 +72,7 @@ namespace Pie.Pages.DocsIn
         private async Task DeleteDocAsync()
         {
             if (docVm == null || docVm.Value == null) return;
-            
+
             //notification.Show("Удаление документа ...");
 
             await DocService.DeleteAsync(docVm.Value.Id);
