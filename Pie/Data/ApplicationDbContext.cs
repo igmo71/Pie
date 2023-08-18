@@ -77,7 +77,7 @@ namespace Pie.Data
             builder.Entity<DocInHistory>().HasOne(h => h.Status).WithMany().HasForeignKey(h => h.StatusKey).HasPrincipalKey(s => s.Key).OnDelete(DeleteBehavior.SetNull);
             builder.Entity<DocInHistory>().HasOne(h => h.User).WithMany().HasForeignKey(h => h.UserId).HasPrincipalKey(u => u.Id).OnDelete(DeleteBehavior.SetNull);
 
-            builder.Entity<DocInProduct>().HasKey(p => p.Id);
+            builder.Entity<DocInProduct>().ToTable(nameof(DocInProducts)).HasKey(p => p.Id);
             builder.Entity<DocInProduct>().HasOne(p => p.Doc).WithMany(d => d.Products).HasForeignKey(p => p.DocId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<DocInProduct>().HasOne(p => p.Product).WithMany().HasForeignKey(p => p.ProductId).HasPrincipalKey(p => p.Id).OnDelete(DeleteBehavior.Cascade);
 
@@ -108,7 +108,7 @@ namespace Pie.Data
             builder.Entity<DocOutHistory>().HasOne(h => h.Status).WithMany().HasForeignKey(h => h.StatusKey).HasPrincipalKey(s => s.Key).OnDelete(DeleteBehavior.SetNull);
             builder.Entity<DocOutHistory>().HasOne(h => h.User).WithMany().HasForeignKey(h => h.UserId).HasPrincipalKey(u => u.Id).OnDelete(DeleteBehavior.SetNull);
 
-            builder.Entity<DocOutProduct>().HasKey(p => p.Id);
+            builder.Entity<DocOutProduct>().ToTable(nameof(DocOutProducts)).HasKey(p => p.Id);
             builder.Entity<DocOutProduct>().HasOne(p => p.Doc).WithMany(d => d.Products).HasForeignKey(p => p.DocId).HasPrincipalKey(d => d.Id).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<DocOutProduct>().HasOne(p => p.Product).WithMany().HasForeignKey(p => p.ProductId).HasPrincipalKey(p => p.Id).OnDelete(DeleteBehavior.Cascade);
 

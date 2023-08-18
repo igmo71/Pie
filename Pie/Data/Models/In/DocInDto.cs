@@ -1,4 +1,6 @@
-﻿namespace Pie.Data.Models.In
+﻿using Pie.Data.Models.Out;
+
+namespace Pie.Data.Models.In
 {
     public class DocInDto
     {
@@ -12,7 +14,7 @@
         public Guid? ManagerId { get; set; }
         public Guid? PartnerId { get; set; }
         public bool IsTransfer { get; set; }
-        public List<DocInProductDto>? Products { get; set; }
+        public List<DocProduct>? Products { get; set; }
         public List<BaseDoc>? BaseDocs { get; set; }
         public int? StatusKey { get; set; }
         public int? QueueKey { get; set; }
@@ -36,8 +38,21 @@
             };
 
             if (dto.Products != null && dto.Products.Count > 0)
-                doc.Products = DocInProductDto.MapToDocInProductList(dto.Id, dto.Products);
-
+            {
+                foreach (var item in dto.Products)
+                {
+                    doc.Products.Add(new DocInProduct()
+                    {
+                        DocId = doc.Id,
+                        ProductId = item.ProductId,
+                        LineNumber = item.LineNumber,
+                        CountPlan = item.CountPlan,
+                        CountFact = item.CountFact,
+                        Unit = item.Unit,
+                        Weight = item.Weight
+                    });
+                }
+            }
 
             if (dto.BaseDocs != null && dto.BaseDocs.Count > 0)
             {
@@ -69,7 +84,19 @@
             };
 
             if (doc.Products != null && doc.Products.Count > 0)
-                dto.Products = DocInProductDto.MapFromDocInProductList(doc.Products);
+            {
+                dto.Products = new List<DocProduct>();
+                foreach (var item in doc.Products)
+                    dto.Products.Add(new DocProduct
+                    {
+                        ProductId = item.ProductId,
+                        LineNumber = item.LineNumber,
+                        CountPlan = item.CountPlan,
+                        CountFact = item.CountFact,
+                        Unit = item.Unit,
+                        Weight = item.Weight
+                    });
+            }
 
             if (doc.BaseDocs != null && doc.BaseDocs.Count > 0)
             {

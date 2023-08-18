@@ -12,7 +12,7 @@
         public Guid? ManagerId { get; set; }
         public Guid? PartnerId { get; set; }
         public bool IsTransfer { get; set; }
-        public List<DocOutProductDto>? Products { get; set; }
+        public List<DocProduct>? Products { get; set; }
         public List<BaseDoc>? BaseDocs { get; set; }
         public int? StatusKey { get; set; }
         public int? QueueKey { get; set; }
@@ -39,19 +39,38 @@
                 StatusKey = dto.StatusKey,
                 QueueKey = dto.QueueKey,
                 QueueNumber = dto.QueueNumber,
-                ShipDateTime = dto.ShipDateTime,
+                ShipDateTime = dto.ShipDateTime
+
                 //DeliveryAreaId = dto.DeliveryAreaId,
                 //DeliveryAddress = dto.DeliveryAddress,
             };
 
             if (dto.Products != null && dto.Products.Count > 0)
-                doc.Products = DocOutProductDto.MapToDocOutProductList(dto.Id, dto.Products);
+            {
+                foreach (var item in dto.Products)
+                {
+                    doc.Products.Add(new DocOutProduct()
+                    {
+                        DocId = doc.Id,
+                        ProductId = item.ProductId,
+                        LineNumber = item.LineNumber,
+                        CountPlan = item.CountPlan,
+                        CountFact = item.CountFact,
+                        Unit = item.Unit,
+                        Weight = item.Weight
+                    });
+                }
+            }
 
             if (dto.BaseDocs != null && dto.BaseDocs.Count > 0)
             {
                 foreach (var item in dto.BaseDocs)
                 {
-                    doc.BaseDocs.Add(new DocOutBaseDoc { DocId = doc.Id, BaseDocId = item.Id });
+                    doc.BaseDocs.Add(new DocOutBaseDoc
+                    {
+                        DocId = doc.Id,
+                        BaseDocId = item.Id
+                    });
                 }
             }
 
@@ -75,13 +94,24 @@
                 StatusKey = doc.StatusKey,
                 QueueKey = doc.QueueKey,
                 QueueNumber = doc.QueueNumber,
-                ShipDateTime = doc.ShipDateTime,
+                ShipDateTime = doc.ShipDateTime
                 //DeliveryAreaId = doc.DeliveryAreaId,
                 //DeliveryAddress = doc.DeliveryAddress
             };
 
             if (doc.Products != null && doc.Products.Count > 0)
-                dto.Products = DocOutProductDto.MapFromDocOutProductList(doc.Products);
+            {
+                dto.Products = new List<DocProduct>();
+                foreach (var item in doc.Products)
+                    dto.Products.Add(new DocProduct {
+                        ProductId = item.ProductId,
+                        LineNumber = item.LineNumber,
+                        CountPlan = item.CountPlan,
+                        CountFact = item.CountFact,
+                        Unit = item.Unit,
+                        Weight = item.Weight
+                    });
+            }
 
             if (doc.BaseDocs != null && doc.BaseDocs.Count > 0)
             {

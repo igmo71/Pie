@@ -2,7 +2,7 @@
 
 namespace Pie.Data.Models
 {
-    public abstract class DocProduct
+    public class DocProduct
     {
         public Guid Id { get; set; }
 
