@@ -13,7 +13,7 @@
         public Guid? PartnerId { get; set; }
         public bool IsTransfer { get; set; }
         public List<DocOutProductDto>? Products { get; set; }
-        public List<DocOutBaseDocDto>? BaseDocs { get; set; }
+        public List<BaseDoc>? BaseDocs { get; set; }
         public int? StatusKey { get; set; }
         public int? QueueKey { get; set; }
         public string? QueueNumber { get; set; }
@@ -48,7 +48,12 @@
                 doc.Products = DocOutProductDto.MapToDocOutProductList(dto.Id, dto.Products);
 
             if (dto.BaseDocs != null && dto.BaseDocs.Count > 0)
-                doc.BaseDocs = DocOutBaseDocDto.MapToDocOutBaseDocList(dto.Id, dto.BaseDocs);
+            {
+                foreach (var item in dto.BaseDocs)
+                {
+                    doc.BaseDocs.Add(new DocOutBaseDoc { DocId = doc.Id, BaseDocId = item.Id });
+                }
+            }
 
             return doc;
         }
@@ -79,7 +84,11 @@
                 dto.Products = DocOutProductDto.MapFromDocOutProductList(doc.Products);
 
             if (doc.BaseDocs != null && doc.BaseDocs.Count > 0)
-                dto.BaseDocs = DocOutBaseDocDto.MapFromDocOutBaseDocList(doc.BaseDocs);
+            {
+                dto.BaseDocs = new List<BaseDoc>();
+                foreach (var item in doc.BaseDocs)
+                    dto.BaseDocs.Add(new BaseDoc { Id = item.BaseDocId, Name = item.BaseDoc?.Name });
+            }
 
             return dto;
         }

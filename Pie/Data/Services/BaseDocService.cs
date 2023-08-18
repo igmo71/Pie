@@ -89,18 +89,18 @@ namespace Pie.Data.Services
             }
         }
 
-        internal async Task CreateOrUpdateRangeAsync(List<DocInBaseDocDto> dtoList)
-        {
-            List<BaseDoc> baseDocs = DocInBaseDocDto.MapToBaseDocList(dtoList);
+        //internal async Task CreateOrUpdateRangeAsync(List<DocInBaseDocDto> dtoList)
+        //{
+        //    List<BaseDoc> baseDocs = DocInBaseDocDto.MapToBaseDocList(dtoList);
 
-            await CreateOrUpdateRangeAsync(baseDocs);
-        }
-        internal async Task CreateOrUpdateRangeAsync(List<DocOutBaseDocDto> dtoList)
-        {
-            List<BaseDoc> baseDocs = DocOutBaseDocDto.MapToBaseDocList(dtoList);
+        //    await CreateOrUpdateRangeAsync(baseDocs);
+        //}
+        //internal async Task CreateOrUpdateRangeAsync(List<DocOutBaseDocDto> dtoList)
+        //{
+        //    List<BaseDoc> baseDocs = DocOutBaseDocDto.MapToBaseDocList(dtoList);
 
-            await CreateOrUpdateRangeAsync(baseDocs);
-        }
+        //    await CreateOrUpdateRangeAsync(baseDocs);
+        //}
 
         public async Task DeleteAsync(Guid id)
         {

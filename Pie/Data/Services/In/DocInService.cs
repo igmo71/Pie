@@ -148,6 +148,7 @@ namespace Pie.Data.Services.In
                 await DeleteAsync(doc.Id);
 
             _context.DocsIn.Add(doc);
+
             await _context.SaveChangesAsync();
 
             return doc;

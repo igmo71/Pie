@@ -166,6 +166,7 @@ namespace Pie.Data.Services.Out
             await SetShipDateTime(doc);
 
             _context.DocsOut.Add(doc);
+
             await _context.SaveChangesAsync();
 
             await _eventDispatcher.PublishAsync(new DocOutCreatedEvent { Value = doc });
