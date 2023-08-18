@@ -111,14 +111,12 @@ namespace Pie.Pages.DocsIn
 
         protected override void OnParametersSet()
         {
-            //EventDispatcher.DocInCreated += async (object? sender, Guid args) => await DocCreatedHandle(sender, args);
             DocInService.DocCreated += async (object? sender, Guid args) => await DocCreatedHandle(sender, args);
             SearchParameters.OnChange += StateHasChanged;
         }
 
         public void Dispose()
         {
-            //EventDispatcher.DocInCreated -= async (object? sender, Guid args) => await DocCreatedHandle(sender, args);
             DocInService.DocCreated -= async (object? sender, Guid args) => await DocCreatedHandle(sender, args);
             SearchParameters.OnChange -= StateHasChanged;
         }

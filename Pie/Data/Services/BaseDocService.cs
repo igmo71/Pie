@@ -41,6 +41,11 @@ namespace Pie.Data.Services
         {
             _context.Entry(baseDoc).State = EntityState.Modified;
 
+            //var entity = _context.BaseDocs.FirstOrDefault(bd => bd.Id == baseDoc.Id);
+            //if (entity == null) return;
+            //entity.Name = baseDoc.Name;
+            //_context.BaseDocs.Update(entity);
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -58,11 +63,17 @@ namespace Pie.Data.Services
             }
         }
 
+        public void ExecuteUpdate(BaseDoc baseDoc)
+        {
+            _context.BaseDocs.Where(bd => bd.Id == baseDoc.Id)
+                .ExecuteUpdate(s => s.SetProperty(bd => bd.Name, baseDoc.Name));
+        }
+
         public async Task CreateOrUpdateAsync(BaseDoc baseDoc)
         {
             if (Exists(baseDoc.Id))
             {
-                await UpdateAsync(baseDoc);
+                ExecuteUpdate(baseDoc);
             }
             else
             {

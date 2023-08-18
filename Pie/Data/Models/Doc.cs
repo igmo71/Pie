@@ -20,7 +20,7 @@ namespace Pie.Data.Models
         public Guid? ManagerId { get; set; }
         public Manager? Manager { get; set; }
 
-        public Guid? PartnerId { get; set; }
+        public Guid? PartnerId { get; set; }  // TODO: Получателем (партнером) может быть склад в случае перемещения!
         public Partner? Partner { get; set; }
 
         public Guid? WarehouseId { get; set; }

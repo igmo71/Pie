@@ -53,7 +53,8 @@ namespace Pie
                 .Enrich.WithProperty("Application", "Pie")
                 .Enrich.WithProperty("Tenant", appConfig.Tenant)
                 .WriteTo.Console()
-                .WriteTo.Seq($"http://{appConfig.SeqHost ?? "seq_container"}:5341")
+                //.WriteTo.Seq($"http://{appConfig.SeqHost ?? "seq_container"}:5341")
+                .WriteTo.Seq($"http://{appConfig.SeqHost ?? "log.dobroga.ru"}:5341")
                 .CreateLogger();
 
             builder.Host.UseSerilog(Log.Logger);

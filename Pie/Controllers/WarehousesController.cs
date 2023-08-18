@@ -13,10 +13,12 @@ namespace Pie.Controllers
     public class WarehousesController : ControllerBase
     {
         private readonly WarehouseService _warehouseService;
+        private readonly PartnerService _partnerService;
 
-        public WarehousesController(WarehouseService warehouseService)
+        public WarehousesController(WarehouseService warehouseService, PartnerService partnerService)
         {
             _warehouseService = warehouseService;
+            _partnerService = partnerService;
         }
 
         // GET: api/Warehouses
@@ -46,6 +48,8 @@ namespace Pie.Controllers
         public async Task<ActionResult<Warehouse>> PostWarehouse(Warehouse warehouse)
         {
             await _warehouseService.CreateOrUpdateAsync(warehouse);
+
+            await _partnerService.CreateOrUpdateAsync(new Partner { Id = warehouse.Id, Name = warehouse.Name});
 
             return CreatedAtAction(nameof(GetWarehouse), new { id = warehouse.Id }, warehouse);
         }

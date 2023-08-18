@@ -3,6 +3,7 @@ using Pie.Data.Models;
 using Pie.Data.Models.Identity;
 using Pie.Data.Models.Out;
 using Pie.Data.Services;
+using Pie.Data.Services.EventBus;
 using Pie.Data.Services.Identity;
 using Pie.Data.Services.Out;
 
@@ -119,14 +120,12 @@ namespace Pie.Pages.DocsOut
 
         protected override void OnParametersSet()
         {
-            //EventDispatcher.DocOutCreated += async (object? sender, Guid args) => await DocCreatedHandle(sender, args);
             DocOutService.DocCreated += async (object? sender, Guid args) => await DocCreatedHandle(sender, args);
             SearchParameters.OnChange += StateHasChanged;
         }
 
         public void Dispose()
         {
-            //EventDispatcher.DocOutCreated -= async (object? sender, Guid args) => await DocCreatedHandle(sender, args);
             DocOutService.DocCreated -= async (object? sender, Guid args) => await DocCreatedHandle(sender, args);
             SearchParameters.OnChange -= StateHasChanged;
         }
