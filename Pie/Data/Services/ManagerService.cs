@@ -56,11 +56,17 @@ namespace Pie.Data.Services
             }
         }
 
+        public void ExecuteUpdate(Manager manager)
+        {
+            _context.Managers.Where(m => m.Id == manager.Id)
+                .ExecuteUpdate(s => s.SetProperty(m => m.Name, manager.Name));
+        }
+
         public async Task CreateOrUpdateAsync(Manager manager)
         {
             if (Exists(manager.Id))
             {
-                await UpdateAsync(manager);
+                ExecuteUpdate(manager);
             }
             else
             {

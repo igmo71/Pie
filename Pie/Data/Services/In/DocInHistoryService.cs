@@ -46,7 +46,7 @@ namespace Pie.Data.Services.In
 
             List<DocInHistory> result = await query
                 .OrderBy(d => d.DocName).ThenBy(d => d.DateTime)
-                .Take(50)
+                .TakeLast(AppConfig.TAKE)
                 .ToListAsync();
 
             return result;

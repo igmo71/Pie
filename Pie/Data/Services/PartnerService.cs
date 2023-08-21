@@ -56,11 +56,17 @@ namespace Pie.Data.Services
             }
         }
 
+        public void ExecuteUpdate(Partner partner)
+        {
+            _context.Partners.Where(p => p.Id == partner.Id)
+                .ExecuteUpdate(s => s.SetProperty(p => p.Name, partner.Name));
+        }
+
         public async Task CreateOrUpdateAsync(Partner partner)
         {
             if (Exists(partner.Id))
             {
-                await UpdateAsync(partner);
+                ExecuteUpdate(partner);
             }
             else
             {

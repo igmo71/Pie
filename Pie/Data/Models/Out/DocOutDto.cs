@@ -9,15 +9,15 @@
         public bool Active { get; set; }
         public string? Comment { get; set; }
         public Guid? WarehouseId { get; set; }
-        public Guid? ManagerId { get; set; }
-        public Guid? PartnerId { get; set; }
         public bool IsTransfer { get; set; }
-        public List<DocProduct>? Products { get; set; }
-        public List<BaseDoc>? BaseDocs { get; set; }
         public int? StatusKey { get; set; }
         public int? QueueKey { get; set; }
         public string? QueueNumber { get; set; }
         public DateTime ShipDateTime { get; set; }
+        public Manager? Manager { get; set; }
+        public Partner? Partner { get; set; }
+        public List<DocProduct>? Products { get; set; }
+        public List<BaseDoc>? BaseDocs { get; set; }
 
         //public Guid? DeliveryAreaId { get; set; }
         //public string? DeliveryAddress { get; set; }
@@ -33,13 +33,13 @@
                 Active = dto.Active,
                 Comment = dto.Comment,
                 WarehouseId = dto.WarehouseId,
-                ManagerId = dto.ManagerId,
-                PartnerId = dto.PartnerId,
                 IsTransfer = dto.IsTransfer,
                 StatusKey = dto.StatusKey,
                 QueueKey = dto.QueueKey,
                 QueueNumber = dto.QueueNumber,
-                ShipDateTime = dto.ShipDateTime
+                ShipDateTime = dto.ShipDateTime,
+                PartnerId = dto.Partner?.Id,
+                ManagerId = dto.Manager?.Id
 
                 //DeliveryAreaId = dto.DeliveryAreaId,
                 //DeliveryAddress = dto.DeliveryAddress,
@@ -88,13 +88,13 @@
                 Active = doc.Active,
                 Comment = doc.Comment,
                 WarehouseId = doc.WarehouseId,
-                ManagerId = doc.ManagerId,
-                PartnerId = doc.PartnerId,
                 IsTransfer = doc.IsTransfer,
                 StatusKey = doc.StatusKey,
                 QueueKey = doc.QueueKey,
                 QueueNumber = doc.QueueNumber,
-                ShipDateTime = doc.ShipDateTime
+                ShipDateTime = doc.ShipDateTime,
+                Manager = doc.Manager != null ? new Manager { Id = doc.Manager.Id, Name = doc.Manager.Name } : null,
+                Partner = doc.Partner != null ? new Partner { Id = doc.Partner.Id, Name = doc.Partner.Name } : null
                 //DeliveryAreaId = doc.DeliveryAreaId,
                 //DeliveryAddress = doc.DeliveryAddress
             };

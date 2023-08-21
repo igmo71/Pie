@@ -2,10 +2,9 @@
 using Pie.Data.Models;
 using Pie.Data.Services;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace Pie.Controllers
 {
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = nameof(Service1c))]
     [Route("api/[controller]")]
     [ApiController]
     public class PartnersController : ControllerBase
@@ -16,6 +15,7 @@ namespace Pie.Controllers
         {
             _partnerService = partnerService;
         }
+
         // GET: api/<PartnersController>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Partner>>> GetPartners(int skip = AppConfig.SKIP, int take = AppConfig.TAKE)
@@ -30,6 +30,9 @@ namespace Pie.Controllers
         public async Task<ActionResult<Partner>> GetPartner(Guid id)
         {
             var partner = await _partnerService.GetAsync(id);
+
+            if (partner == null)
+                return NotFound();
 
             return Ok(partner);
         }

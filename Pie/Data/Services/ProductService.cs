@@ -56,11 +56,21 @@ namespace Pie.Data.Services
             }
         }
 
+        public void ExecuteUpdate(Product product)
+        {
+            _context.Products.Where(p => p.Id == product.Id)
+                .ExecuteUpdate(setters => setters
+                    .SetProperty(p => p.Name, product.Name)
+                    .SetProperty(p => p.Code, product.Code)
+                    .SetProperty(p => p.Active, product.Active)
+                );
+        }
+
         public async Task CreateOrUpdateAsync(Product product)
         {
             if (Exists(product.Id))
             {
-                await UpdateAsync(product);
+                ExecuteUpdate(product);
             }
             else
             {
