@@ -12,7 +12,7 @@ namespace Pie.Proxy
         {
             _logger = logger;
 
-            string hubUrl = configuration.GetValue<string>("HubUri") ?? throw new ApplicationException("HubClient - Fail to get configuration");
+            string hubUrl = configuration.GetValue<string>("HubUri") ?? throw new ApplicationException("Pie.Proxy SendOutAsync HubClient - Fail to get configuration");
             _hubConnection = new HubConnectionBuilder()
                 .WithUrl(hubUrl)
                 .WithAutomaticReconnect()
@@ -28,7 +28,7 @@ namespace Pie.Proxy
 
             _hubConnection.On(
                 methodName: "PostDocInDto",
-                parameterTypes: new[] { typeof(string) },
+                parameterTypes: new[] { typeof(string), typeof(string) },
                 handler: async (input) =>
                 {
                     string? result = await OnPostDocInDto(input);
@@ -37,7 +37,7 @@ namespace Pie.Proxy
 
             _hubConnection.On(
                 methodName: "PostDocOutDto",
-                parameterTypes: new[] { typeof(string) },
+                parameterTypes: new[] { typeof(string), typeof(string) },
                 handler: async (input) =>
                 {
                     string? result = await OnPostDocOutDto(input);
@@ -76,18 +76,20 @@ namespace Pie.Proxy
 
         private async Task<string?> OnPostDocInDto(object?[] input)
         {
-            string request = input[0] as string ?? throw new ApplicationException("HubClient OnPostDocInDto - Request is Empty");
+            string client1cConfig = input[0] as string ?? throw new ApplicationException("Pie.Proxy HubClient OnPostDocOutDto - Client1cConfig is Empty");
+            string request = input[1] as string ?? throw new ApplicationException("Pie.Proxy HubClient OnPostDocInDto - Request is Empty");
 
-            string response = await _httpService1c.SendInAsync(request);
+            string response = await _httpService1c.SendInAsync(client1cConfig, request);
 
             return response;
         }
 
         private async Task<string?> OnPostDocOutDto(object?[] input)
         {
-            string request = input[0] as string ?? throw new ApplicationException("HubClient OnPostDocOutDto - Request is Empty");
+            string client1cConfig = input[0] as string ?? throw new ApplicationException("Pie.Proxy HubClient OnPostDocOutDto - Client1cConfig is Empty");
+            string request = input[1] as string ?? throw new ApplicationException("Pie.Proxy HubClient OnPostDocOutDto - Request is Empty");
 
-            string response = await _httpService1c.SendOutAsync(request);
+            string response = await _httpService1c.SendOutAsync(client1cConfig, request);
 
             return response;
         }
