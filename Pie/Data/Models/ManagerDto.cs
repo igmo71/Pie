@@ -2,14 +2,14 @@
 {
     public class ManagerDto
     {
-        public Guid ManagerId { get; set; }
+        public Guid Id { get; set; }
         public string? Name { get; set; }
 
         public static Manager MapToManager(ManagerDto dto)
         {
             Manager manager = new()
             {
-                Id = dto.ManagerId,
+                Id = dto.Id,
                 Name = dto.Name
             };
 
@@ -20,7 +20,7 @@
         {
             ManagerDto dto = new()
             {
-                ManagerId = manager.Id,
+                Id = manager.Id,
                 Name = manager.Name
             };
 

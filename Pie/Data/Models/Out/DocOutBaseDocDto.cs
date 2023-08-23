@@ -2,14 +2,14 @@
 {
     public class DocOutBaseDocDto
     {
-        public Guid BaseDocId { get; set; }
+        public Guid Id { get; set; }
         public string? Name { get; set; }
 
         public static BaseDoc MapToBaseDoc(DocOutBaseDocDto dto)
         {
             BaseDoc baseDoc = new()
             {
-                Id = dto.BaseDocId,
+                Id = dto.Id,
                 Name = dto.Name
             };
 
@@ -32,7 +32,7 @@
             DocOutBaseDoc docOutBaseDoc = new()
             {
                 DocId = docId,
-                BaseDocId = dto.BaseDocId
+                BaseDocId = dto.Id
             };
             return docOutBaseDoc;
         }
@@ -51,7 +51,7 @@
         {
             DocOutBaseDocDto docOutBaseDocDto = new()
             {
-                BaseDocId = item.BaseDocId,
+                Id = item.BaseDocId,
                 Name = item.BaseDoc?.Name
             };
             return docOutBaseDocDto;

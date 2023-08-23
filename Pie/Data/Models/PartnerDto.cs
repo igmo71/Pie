@@ -2,14 +2,14 @@
 {
     public class PartnerDto
     {
-        public Guid PartnerId { get; set; }
+        public Guid Id { get; set; }
         public string? Name { get; set; }
 
         public static Partner MapToPartner(PartnerDto dto)
         {
             Partner partner = new()
             {
-                Id = dto.PartnerId,
+                Id = dto.Id,
                 Name = dto.Name
             };
 
@@ -20,7 +20,7 @@
         {
             PartnerDto dto = new()
             {
-                PartnerId = partner.Id,
+                Id = partner.Id,
                 Name = partner.Name
             };
 

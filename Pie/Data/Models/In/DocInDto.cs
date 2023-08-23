@@ -28,8 +28,8 @@
                 Active = dto.Active,
                 WarehouseId = dto.WarehouseId,
                 Comment = dto.Comment,
-                ManagerId = dto.Manager?.ManagerId,
-                PartnerId = dto.Partner?.PartnerId,
+                ManagerId = dto.Manager?.Id,
+                PartnerId = dto.Partner?.Id,
                 IsTransfer = dto.IsTransfer,
                 StatusKey = dto.StatusKey,
                 QueueKey = dto.QueueKey
