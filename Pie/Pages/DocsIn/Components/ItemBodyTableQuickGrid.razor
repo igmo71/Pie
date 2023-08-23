@@ -17,11 +17,8 @@
             @*<PropertyColumn Property="@(p => p.CountFact)" Title="Кол-во факт" Sortable="true"></PropertyColumn>*@
             <TemplateColumn Title="Кол факт" Class="p-0 m-0">
                 <div class="@(context.CountPlan == context.CountFact ? string.Empty : "bg-warning bg-gradient  bg-opacity-50 text-dark") m-0 p-2">
-                    @{
-                        string? changeReason = ChangeReasons?.FirstOrDefault(c => c.Id == context.ChangeReasonId)?.Name;
-                        changeReason = string.IsNullOrEmpty(changeReason) ? string.Empty : $@" ( {changeReason} ) ";
-                    }
-                    @context.CountFact @changeReason
+                    <span>@context.CountFact</span>
+                    <span>@(context.ChangeReasonId == null ? string.Empty : $"( {ChangeReasons?.FirstOrDefault(c => c.Id == context.ChangeReasonId)?.Name} )")</span>
                 </div>
             </TemplateColumn>
         }
