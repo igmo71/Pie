@@ -154,7 +154,6 @@ namespace Pie.Data.Services.Out
             doc = await CreateAsync(doc);
 
             await _docHistoryService.CreateAsync(doc, barcode);
-            await _docProductHistoryService.CreateAsync(doc, barcode);
 
             OnDocCreated(doc.Id);
 
@@ -227,7 +226,11 @@ namespace Pie.Data.Services.Out
             DocOutDto? responseDoc = await _service1c.SendOutAsync(docDto);
 
             if (responseDoc != null)
+            {
                 _ = await CreateAsync(responseDoc, barcode);
+
+                await _docProductHistoryService.CreateAsync(doc, barcode);
+            }
         }
 
         private async Task SetShipDateTime(DocOut doc)

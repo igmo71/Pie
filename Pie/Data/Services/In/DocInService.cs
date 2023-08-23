@@ -138,7 +138,6 @@ namespace Pie.Data.Services.In
             doc = await CreateAsync(doc);
 
             await _docHistoryService.CreateAsync(doc, barcode);
-            await _docProductHistoryService.CreateAsync(doc, barcode);
 
             OnDocCreated(doc.Id);
 
@@ -204,10 +203,14 @@ namespace Pie.Data.Services.In
         {
             DocInDto docDto = DocInDto.MapFromDocIn(doc);
 
-            DocInDto? result = await _service1c.SendInAsync(docDto);
+            DocInDto? responseDoc = await _service1c.SendInAsync(docDto);
 
-            if (result != null)
-                _ = await CreateAsync(result, barcode);
+            if (responseDoc != null)
+            {
+                _ = await CreateAsync(responseDoc, barcode);
+
+                await _docProductHistoryService.CreateAsync(doc, barcode);
+            }
         }
     }
 }
