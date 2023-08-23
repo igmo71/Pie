@@ -11,9 +11,9 @@
         public static AppConfig Configure(WebApplicationBuilder builder)
         {
             var config = new AppConfig();
-            config.DbHost = builder.Configuration["ENV_DB_HOST"];
-            config.SeqHost = builder.Configuration["ENV_SEQ_HOST"];
-            config.Tenant = builder.Configuration["ENV_TENANT"];
+            config.DbHost = builder.Configuration["DB_HOST"];
+            config.SeqHost = builder.Configuration["SEQ_HOST"];
+            config.Tenant = builder.Configuration["TENANT"];
             
             config.DbConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
                 ?? throw new ApplicationException("ConnectionStrings : DefaultConnection not found");
