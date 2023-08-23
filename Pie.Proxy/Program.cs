@@ -1,7 +1,10 @@
+using System.Runtime.Versioning;
+
 namespace Pie.Proxy
 {
     public class Program
     {
+        [SupportedOSPlatform("windows")]
         public static void Main(string[] args)
         {
             var builder = Host.CreateApplicationBuilder(args);

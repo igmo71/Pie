@@ -22,31 +22,34 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in DocVm.Value.Products)
+            @if (DocVm is not null)
             {
-                <tr class="fs-6">
-                    <td>@item.LineNumber</td>
-                    <td>@item.Product?.Code</td>
-                    <td>@item.Product?.Name</td>
-                    <td>@item.CountPlan</td>
-                    @if (DocVm?.Value?.Status?.CanChange ?? false)
-                    {
-                        <td class="@(item.CountFact == item.CountPlan ? string.Empty : "bg-warning bg-gradient  bg-opacity-50 text-dark")">
-                            <div>
-                                <span>@item.CountFact</span>
-                                <span>@(item.ChangeReasonId == null ? string.Empty : $"( {ChangeReasons?.FirstOrDefault(r => r.Id == item.ChangeReasonId)?.Name} )")</span>
-                            </div>
-                        </td>
-                    }
-                    <td>@item.Unit</td>
-                    <td>@item.Weight</td>
-                    @if (DocVm?.Value?.Status?.CanChange ?? false)
-                    {
-                        <td class="d-print-none text-center">
-                            <button class="btn btn-sm btn-outline-primary" @onclick="@(() => EditDoc(item))"><i class="bi bi-pencil-square"></i></button>
-                        </td>
-                    }
-                </tr>
+                @foreach (var item in DocVm.Value.Products)
+                {
+                    <tr class="fs-6">
+                        <td>@item.LineNumber</td>
+                        <td>@item.Product?.Code</td>
+                        <td>@item.Product?.Name</td>
+                        <td>@item.CountPlan</td>
+                        @if (DocVm?.Value?.Status?.CanChange ?? false)
+                        {
+                            <td class="@(item.CountFact == item.CountPlan ? string.Empty : "bg-warning bg-gradient  bg-opacity-50 text-dark")">
+                                <div>
+                                    <span>@item.CountFact</span>
+                                    <span>@(item.ChangeReasonId == null ? string.Empty : $"( {ChangeReasons?.FirstOrDefault(r => r.Id == item.ChangeReasonId)?.Name} )")</span>
+                                </div>
+                            </td>
+                        }
+                        <td>@item.Unit</td>
+                        <td>@item.Weight</td>
+                        @if (DocVm?.Value?.Status?.CanChange ?? false)
+                        {
+                            <td class="d-print-none text-center">
+                                <button class="btn btn-sm btn-outline-primary" @onclick="@(() => EditDoc(item))"><i class="bi bi-pencil-square"></i></button>
+                            </td>
+                        }
+                    </tr>
+                }
             }
         </tbody>
 
@@ -60,21 +63,21 @@
     [Parameter] public List<ChangeReasonIn>? ChangeReasons { get; set; }
     private EditDialog? EditDialog { get; set; }
 
-    string? nameFilter;
-    IQueryable<DocInProduct>? FilteredProducts
-    {
-        get
-        {
-            var result = DocVm?.Value?.Products?.AsQueryable();
+    // string? nameFilter;
+    // IQueryable<DocInProduct>? FilteredProducts
+    // {
+    //     get
+    //     {
+    //         var result = DocVm?.Value?.Products?.AsQueryable();
 
-            if (!string.IsNullOrEmpty(nameFilter))
-            {
-                result = result?.Where(p =>
-                    p.Product != null && p.Product.Name != null && p.Product.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
-            }
-            return result;
-        }
-    }
+    //         if (!string.IsNullOrEmpty(nameFilter))
+    //         {
+    //             result = result?.Where(p =>
+    //                 p.Product != null && p.Product.Name != null && p.Product.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
+    //         }
+    //         return result;
+    //     }
+    // }
 
     private void EditDoc(DocInProduct product)
     {

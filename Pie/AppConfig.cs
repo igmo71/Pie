@@ -15,7 +15,8 @@
             config.SeqHost = builder.Configuration["ENV_SEQ_HOST"];
             config.Tenant = builder.Configuration["ENV_TENANT"];
             
-            config.DbConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            config.DbConnectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+                ?? throw new ApplicationException("ConnectionStrings : DefaultConnection not found");
 
             if (config.DbHost != null)
                 config.DbConnectionString = config.DbConnectionString.Replace("postgres_container", config.DbHost);

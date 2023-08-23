@@ -51,22 +51,22 @@
 @code {
     private ConfirmDialog? ConfirmDialog { get; set; }
 
-    string? nameFilter;
-    IQueryable<DocInProduct>? FilteredProducts
-    {
-        get
-        {
-            var result = docVm?.Value?.Products?.AsQueryable();
+    // string? nameFilter = default;
+    // IQueryable<DocInProduct>? FilteredProducts
+    // {
+    //     get
+    //     {
+    //         var result = docVm?.Value?.Products?.AsQueryable();
 
-            if (!string.IsNullOrEmpty(nameFilter))
-            {
-                result = result?.Where(p =>
-                    p.Product != null &&
-                    p.Product.Name != null &&
-                    p.Product.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
-            }
+    //         if (!string.IsNullOrEmpty(nameFilter))
+    //         {
+    //             result = result?.Where(p =>
+    //                 p.Product != null &&
+    //                 p.Product.Name != null &&
+    //                 p.Product.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
+    //         }
 
-            return result;
-        }
-    }
+    //         return result;
+    //     }
+    // }
 }
