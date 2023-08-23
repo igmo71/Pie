@@ -63,22 +63,6 @@
     [Parameter] public List<ChangeReasonOut>? ChangeReasons { get; set; }
     private EditDialog? EditDialog { get; set; }
 
-    // string? nameFilter;
-    // IQueryable<DocOutProduct>? FilteredProducts
-    // {
-    //     get
-    //     {
-    //         var result = DocVm?.Value?.Products?.AsQueryable();
-
-    //         if (!string.IsNullOrEmpty(nameFilter))
-    //         {
-    //             result = result?.Where(p =>
-    //                 p.Product != null && p.Product.Name != null && p.Product.Name.Contains(nameFilter, StringComparison.CurrentCultureIgnoreCase));
-    //         }
-    //         return result;
-    //     }
-    // }
-
     private void EditDoc(DocOutProduct product)
     {
         EditDialog?.Open(product);
