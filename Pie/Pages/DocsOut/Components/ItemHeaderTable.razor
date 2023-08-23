@@ -21,22 +21,24 @@
             <th>@DocVm?.Value?.Queue?.Name</th>
         </tr>
         <tr>
-            <td><span class="p-0">Направление</span><span class="p-0 d-print-none"> (адрес):</span></td>
+            <td>
+                @* <span class="p-0">Направление</span><span class="p-0 d-print-none"> (адрес):</span> *@
+            </td>
             <th>
-                <span class="p-0">@DocVm?.Value?.DeliveryArea?.Name</span>
+                @* <span class="p-0">@DocVm?.Value?.DeliveryArea?.Name</span>
                 @if (!string.IsNullOrEmpty(@DocVm?.Value?.DeliveryAddress))
                 {
                     <span class="p-0 d-print-none"> (@DocVm?.Value?.DeliveryAddress)</span>
-                }
+                } *@
             </th>
             <td>Дата отгрузки:</td>
             <th>@DocVm?.Value?.ShipDateTime</th>
         </tr>
         <tr>
-            <td>Вес: </td>
-            <th>@DocVm?.Weight</th>
             <td>Комментарий:</td>
             <th>@DocVm?.Value?.Comment</th>
+            <td>Вес: </td>
+            <th>@DocVm?.Weight</th>
         </tr>
     </table>
 }

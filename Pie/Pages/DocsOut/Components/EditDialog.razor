@@ -82,6 +82,8 @@
 
     public void Close()
     {
+        CheckCountAndReason();
+
         ModalDisplay = "none";
         ModalClass = "";
         ShowBackdrop = false;
@@ -90,6 +92,22 @@
 
     private async Task SaveChanges()
     {
+        CheckCountAndReason();
+
         await OnSaveChanges.InvokeAsync(Product);
+    }
+
+    private void CheckCountAndReason()
+    {
+
+        if (Product.CountFact == Product.CountPlan)
+        {
+            Product.ChangeReasonId = null;
+        }
+
+        if (Product.ChangeReasonId == null)
+        {
+            Product.CountFact = Product.CountPlan;
+        }
     }
 }
