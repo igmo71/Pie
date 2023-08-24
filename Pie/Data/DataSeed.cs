@@ -27,20 +27,32 @@ namespace Pie.Data
                 );
 
             builder.Entity<StatusIn>().HasData(
-                new StatusIn { Id = Guid.Parse("b2cbc819-151b-489d-9b09-649aa16b2a8b"), Key = 0, Active = true, Name = "КПоступлению" },
-                new StatusIn { Id = Guid.Parse("ba575f5d-1c8d-4616-a707-1b4157746aa3"), Key = 1, Active = true, Name = "ВРаботе" },
-                new StatusIn { Id = Guid.Parse("f1cff011-6ecb-49f1-9898-2bf4a69b7b13"), Key = 2, Active = false, Name = "ТребуетсяОбработка" },
-                new StatusIn { Id = Guid.Parse("7f8bf9f1-92e3-4f45-84ea-461b9f82aa20"), Key = 3, Active = false, Name = "Принят" }
+                new StatusIn { Id = Guid.Parse("b2cbc819-151b-489d-9b09-649aa16b2a8b"), Key = 0, Active = true, CanChange = false, Name = "КПоступлению" },
+                new StatusIn { Id = Guid.Parse("ba575f5d-1c8d-4616-a707-1b4157746aa3"), Key = 1, Active = true, CanChange = true, Name = "ВРаботе" },
+                new StatusIn { Id = Guid.Parse("f1cff011-6ecb-49f1-9898-2bf4a69b7b13"), Key = 2, Active = false, CanChange = false, Name = "ТребуетсяОбработка" },
+                new StatusIn { Id = Guid.Parse("7f8bf9f1-92e3-4f45-84ea-461b9f82aa20"), Key = 3, Active = true, CanChange = false, Name = "Принят" }
                 );
 
             builder.Entity<StatusOut>().HasData(
-                new StatusOut { Id = Guid.Parse("C2C5935D-B332-4D84-B1FD-309AD8A65356"), Key = 0, Active = true, Name = "Подготовлено" },
-                new StatusOut { Id = Guid.Parse("E1A4C395-F7A3-40AF-82AB-AD545E51ECA7"), Key = 1, Active = true, Name = "КОтбору" },
-                new StatusOut { Id = Guid.Parse("BD1AE241-D787-4A6D-B920-029BC6577364"), Key = 2, Active = false, Name = "КПроверке" },
-                new StatusOut { Id = Guid.Parse("17CEE206-E06F-47D8-824D-14EECEAF394A"), Key = 3, Active = false, Name = "ВПроцессеПроверки" },
-                new StatusOut { Id = Guid.Parse("E911589B-613C-42AD-AD56-7083C481C4B4"), Key = 4, Active = false, Name = "Проверен" },
-                new StatusOut { Id = Guid.Parse("7C2BD6BE-CF81-4B1A-9ACF-D4EBF416F4D3"), Key = 5, Active = true, Name = "КОтгрузке" },
-                new StatusOut { Id = Guid.Parse("9EBA20CE-9245-4109-92CB-A9875801FBB4"), Key = 6, Active = true, Name = "Отгружен" }
+                new StatusOut { Id = Guid.Parse("C2C5935D-B332-4D84-B1FD-309AD8A65356"), Key = 0, Active = true, CanChange = false, Name = "Подготовлено" },
+                new StatusOut { Id = Guid.Parse("E1A4C395-F7A3-40AF-82AB-AD545E51ECA7"), Key = 1, Active = true, CanChange = true, Name = "КОтбору" },
+                new StatusOut { Id = Guid.Parse("BD1AE241-D787-4A6D-B920-029BC6577364"), Key = 2, Active = false, CanChange = false, Name = "КПроверке" },
+                new StatusOut { Id = Guid.Parse("17CEE206-E06F-47D8-824D-14EECEAF394A"), Key = 3, Active = false, CanChange = false, Name = "ВПроцессеПроверки" },
+                new StatusOut { Id = Guid.Parse("E911589B-613C-42AD-AD56-7083C481C4B4"), Key = 4, Active = false, CanChange = false, Name = "Проверен" },
+                new StatusOut { Id = Guid.Parse("7C2BD6BE-CF81-4B1A-9ACF-D4EBF416F4D3"), Key = 5, Active = true, CanChange = false, Name = "КОтгрузке" },
+                new StatusOut { Id = Guid.Parse("9EBA20CE-9245-4109-92CB-A9875801FBB4"), Key = 6, Active = true, CanChange = false, Name = "Отгружен" }
+                );
+
+            builder.Entity<ChangeReasonIn>().HasData(
+                new ChangeReasonIn { Id = Guid.Parse("93D3D987-8DB9-46B3-805E-CF7DD25CE99E"), Active = true, Name = "Нет в поставке" },
+                new ChangeReasonIn { Id = Guid.Parse("0F955289-6017-48EF-94ED-E1615823A19E"), Active = true, Name = "Пересорт" },
+                new ChangeReasonIn { Id = Guid.Parse("0F44F191-1582-440B-BF4D-C31B9D76CF70"), Active = true, Name = "Ошибка менеджера" }
+                );
+
+            builder.Entity<ChangeReasonOut>().HasData(
+                new ChangeReasonOut { Id = Guid.Parse("657D8D7D-444F-4641-846D-9D079B3B1114"), Active = true, Name = "Нет на складе" },
+                new ChangeReasonOut { Id = Guid.Parse("7117F023-599C-4AE3-879F-8B642D2F3827"), Active = true, Name = "Пересорт" },
+                new ChangeReasonOut { Id = Guid.Parse("DF0DAF28-3A7C-41F4-98D0-21C67F291111"), Active = true, Name = "Ошибка менеджера" }
                 );
 
             builder.Entity<QueueNumber>().HasData(
@@ -129,6 +141,18 @@ namespace Pie.Data
                 new IdentityUserRole<string> { UserId = "de3f6ced-85ca-4feb-8d98-395dc8ee71cb", RoleId = "d6bfb7c2-9a45-45e5-b27a-3b7cba85527f" },
                 new IdentityUserRole<string> { UserId = "de3f6ced-85ca-4feb-8d98-395dc8ee71cb", RoleId = "049c2135-b769-4ea5-986a-a5231330fe46" },
                 new IdentityUserRole<string> { UserId = "d90e31c9-e19f-4ee7-9580-d856daba6d02", RoleId = "049c2135-b769-4ea5-986a-a5231330fe46" }
+                );
+
+            builder.Entity<Client1cConfig>().HasData(
+                new Client1cConfig()
+                {
+                    Id = Guid.Parse("B52738E4-16CE-491E-9FE3-9053CFAC440D"),
+                    BaseAddress = "http://vm-1c-node-buh.dobroga.local:9009/integration_test/",
+                    HttpService = "hs/UniversalIntegrationService",
+                    OData = "odata/standard.odata",
+                    UserName = "Администратор (ОрловАВ)",
+                    Password = ""
+                }
                 );
         }
     }

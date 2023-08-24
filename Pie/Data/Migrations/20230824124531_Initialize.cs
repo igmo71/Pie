@@ -730,6 +730,24 @@ namespace Pie.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "ChangeReasons",
+                columns: new[] { "Id", "Active", "Discriminator", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("0f44f191-1582-440b-bf4d-c31b9d76cf70"), true, "ChangeReasonIn", "Ошибка менеджера" },
+                    { new Guid("0f955289-6017-48ef-94ed-e1615823a19e"), true, "ChangeReasonIn", "Пересорт" },
+                    { new Guid("657d8d7d-444f-4641-846d-9d079b3b1114"), true, "ChangeReasonOut", "Нет на складе" },
+                    { new Guid("7117f023-599c-4ae3-879f-8b642d2f3827"), true, "ChangeReasonOut", "Пересорт" },
+                    { new Guid("93d3d987-8db9-46b3-805e-cf7dd25ce99e"), true, "ChangeReasonIn", "Нет в поставке" },
+                    { new Guid("df0daf28-3a7c-41f4-98d0-21c67f291111"), true, "ChangeReasonOut", "Ошибка менеджера" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Client1CConfig",
+                columns: new[] { "Id", "BaseAddress", "HttpService", "OData", "Password", "UserName" },
+                values: new object[] { new Guid("b52738e4-16ce-491e-9fe3-9053cfac440d"), "http://vm-1c-node-buh.dobroga.local:9009/integration_test/", "hs/UniversalIntegrationService", "odata/standard.odata", "", "Администратор (ОрловАВ)" });
+
+            migrationBuilder.InsertData(
                 table: "QueueNumber",
                 columns: new[] { "Value", "CharValue", "NumValue" },
                 values: new object[] { "A000", 0, 0 });
@@ -761,9 +779,9 @@ namespace Pie.Data.Migrations
                 columns: new[] { "Id", "Active", "CanChange", "Key", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("7f8bf9f1-92e3-4f45-84ea-461b9f82aa20"), false, false, 3, "Принят" },
+                    { new Guid("7f8bf9f1-92e3-4f45-84ea-461b9f82aa20"), true, false, 3, "Принят" },
                     { new Guid("b2cbc819-151b-489d-9b09-649aa16b2a8b"), true, false, 0, "КПоступлению" },
-                    { new Guid("ba575f5d-1c8d-4616-a707-1b4157746aa3"), true, false, 1, "ВРаботе" },
+                    { new Guid("ba575f5d-1c8d-4616-a707-1b4157746aa3"), true, true, 1, "ВРаботе" },
                     { new Guid("f1cff011-6ecb-49f1-9898-2bf4a69b7b13"), false, false, 2, "ТребуетсяОбработка" }
                 });
 
@@ -777,7 +795,7 @@ namespace Pie.Data.Migrations
                     { new Guid("9eba20ce-9245-4109-92cb-a9875801fbb4"), true, false, 6, "Отгружен" },
                     { new Guid("bd1ae241-d787-4a6d-b920-029bc6577364"), false, false, 2, "КПроверке" },
                     { new Guid("c2c5935d-b332-4d84-b1fd-309ad8a65356"), true, false, 0, "Подготовлено" },
-                    { new Guid("e1a4c395-f7a3-40af-82ab-ad545e51eca7"), true, false, 1, "КОтбору" },
+                    { new Guid("e1a4c395-f7a3-40af-82ab-ad545e51eca7"), true, true, 1, "КОтбору" },
                     { new Guid("e911589b-613c-42ad-ad56-7083c481c4b4"), false, false, 4, "Проверен" }
                 });
 

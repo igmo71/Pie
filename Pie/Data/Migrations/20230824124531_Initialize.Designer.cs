@@ -12,7 +12,7 @@ using Pie.Data;
 namespace Pie.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230824114317_Initialize")]
+    [Migration("20230824124531_Initialize")]
     partial class Initialize
     {
         /// <inheritdoc />
@@ -242,6 +242,17 @@ namespace Pie.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Client1CConfig");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("b52738e4-16ce-491e-9fe3-9053cfac440d"),
+                            BaseAddress = "http://vm-1c-node-buh.dobroga.local:9009/integration_test/",
+                            HttpService = "hs/UniversalIntegrationService",
+                            OData = "odata/standard.odata",
+                            Password = "",
+                            UserName = "Администратор (ОрловАВ)"
+                        });
                 });
 
             modelBuilder.Entity("Pie.Data.Models.BaseDoc", b =>
@@ -725,7 +736,7 @@ namespace Pie.Data.Migrations
                         {
                             Id = new Guid("ba575f5d-1c8d-4616-a707-1b4157746aa3"),
                             Active = true,
-                            CanChange = false,
+                            CanChange = true,
                             Key = 1,
                             Name = "ВРаботе"
                         },
@@ -740,7 +751,7 @@ namespace Pie.Data.Migrations
                         new
                         {
                             Id = new Guid("7f8bf9f1-92e3-4f45-84ea-461b9f82aa20"),
-                            Active = false,
+                            Active = true,
                             CanChange = false,
                             Key = 3,
                             Name = "Принят"
@@ -1089,7 +1100,7 @@ namespace Pie.Data.Migrations
                         {
                             Id = new Guid("e1a4c395-f7a3-40af-82ab-ad545e51eca7"),
                             Active = true,
-                            CanChange = false,
+                            CanChange = true,
                             Key = 1,
                             Name = "КОтбору"
                         },
@@ -1222,6 +1233,26 @@ namespace Pie.Data.Migrations
                     b.HasBaseType("Pie.Data.Models.ChangeReason");
 
                     b.HasDiscriminator().HasValue("ChangeReasonIn");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("93d3d987-8db9-46b3-805e-cf7dd25ce99e"),
+                            Active = true,
+                            Name = "Нет в поставке"
+                        },
+                        new
+                        {
+                            Id = new Guid("0f955289-6017-48ef-94ed-e1615823a19e"),
+                            Active = true,
+                            Name = "Пересорт"
+                        },
+                        new
+                        {
+                            Id = new Guid("0f44f191-1582-440b-bf4d-c31b9d76cf70"),
+                            Active = true,
+                            Name = "Ошибка менеджера"
+                        });
                 });
 
             modelBuilder.Entity("Pie.Data.Models.Out.ChangeReasonOut", b =>
@@ -1229,6 +1260,26 @@ namespace Pie.Data.Migrations
                     b.HasBaseType("Pie.Data.Models.ChangeReason");
 
                     b.HasDiscriminator().HasValue("ChangeReasonOut");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("657d8d7d-444f-4641-846d-9d079b3b1114"),
+                            Active = true,
+                            Name = "Нет на складе"
+                        },
+                        new
+                        {
+                            Id = new Guid("7117f023-599c-4ae3-879f-8b642d2f3827"),
+                            Active = true,
+                            Name = "Пересорт"
+                        },
+                        new
+                        {
+                            Id = new Guid("df0daf28-3a7c-41f4-98d0-21c67f291111"),
+                            Active = true,
+                            Name = "Ошибка менеджера"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

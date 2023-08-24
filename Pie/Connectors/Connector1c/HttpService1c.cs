@@ -4,7 +4,7 @@ using Pie.Data.Models.Out;
 using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Text;
-using System.Text.Json;
+//using System.Text.Json;
 
 namespace Pie.Connectors.Connector1c
 {
@@ -18,7 +18,7 @@ namespace Pie.Connectors.Connector1c
         public HttpService1c(
             HttpClient httpClient,
             IOptions<Client1cConfig> client1cOptions,
-            IOptions<JsonSerializerOptions> jsonSerializerOptions,
+            //IOptions<JsonSerializerOptions> jsonSerializerOptions,
             ILogger<HttpService1c> logger)
         {
             //Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -26,14 +26,15 @@ namespace Pie.Connectors.Connector1c
 
             _httpClient1c = httpClient;
             _httpClient1c.BaseAddress = new Uri(_client1cConfig.BaseAddress ?? "Client1c BaseAddress not found");
+            _httpClient1c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                            "Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_client1cConfig.UserName}:{_client1cConfig.Password}")));
             _httpClient1c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
             //_httpClient1c.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Text.Html));
             //_httpClient1c.DefaultRequestHeaders.AcceptCharset.Add(new StringWithQualityHeaderValue("utf-8"));
             //_httpClient1c.DefaultRequestHeaders.AcceptCharset.Add(new StringWithQualityHeaderValue("windows-1251"));
-            _httpClient1c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-                            "Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_client1cConfig.UserName}:{_client1cConfig.Password}")));
 
             //_jsonSerializerOptions = jsonSerializerOptions.Value;
+
             _logger = logger;
         }
 

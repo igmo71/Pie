@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Azure;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Options;
 using Pie.Data;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace Pie.Connectors.Connector1c
@@ -34,20 +36,45 @@ namespace Pie.Connectors.Connector1c
         {
             string client1cConfig = JsonSerializer.Serialize(_client1cConfig);
 
-            string response = await _hubContext.Clients.Client(Hub1c.ConnectionId)
+            CancellationTokenSource cts = new(TimeSpan.FromSeconds(10));
+
+            Task<string> sendingIn = _hubContext.Clients.Client(Hub1c.ConnectionId)
                 .InvokeAsync<string>(method: "PostDocInDto", arg1: client1cConfig, arg2: request, CancellationToken.None);
 
-            return response;
+            try
+            {
+                string response = await sendingIn;
+                return response;
+            }
+            catch (Exception)
+            {
+                if (cts.IsCancellationRequested)
+                    throw new ApplicationException("HubService1c SendInAsync. Request to proxy canceled. The client is lost.");
+                else throw;
+            }
         }
 
         public async Task<string> SendOutAsync(string request)
         {
             string client1cConfig = JsonSerializer.Serialize(_client1cConfig);
 
-            string response = await _hubContext.Clients.Client(Hub1c.ConnectionId)
-                .InvokeAsync<string>(method: "PostDocOutDto", arg1: client1cConfig, arg2: request, CancellationToken.None);
+            CancellationTokenSource cts = new(TimeSpan.FromSeconds(10));
 
-            return response;
+
+            Task<string> sendingOut = _hubContext.Clients.Client(Hub1c.ConnectionId)
+                .InvokeAsync<string>(method: "PostDocOutDto", arg1: client1cConfig, arg2: request, cts.Token);
+
+            try
+            {
+                string response = await sendingOut;
+                return response;
+            }
+            catch (Exception)
+            {
+                if (cts.IsCancellationRequested)
+                    throw new ApplicationException("HubService1c SendOutAsync. Request to proxy canceled. The client is lost.");
+                else throw;
+            }
         }
 
         public void Dispose()
