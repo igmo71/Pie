@@ -53,8 +53,7 @@ namespace Pie
                 .Enrich.WithProperty("Application", "Pie")
                 .Enrich.WithProperty("Tenant", appConfig.Tenant)
                 .WriteTo.Console()
-                //.WriteTo.Seq($"http://{appConfig.SeqHost ?? "seq_container"}:5341")
-                .WriteTo.Seq($"http://{appConfig.SeqHost ?? "192.168.1.137"}:5341")
+                .WriteTo.Seq(appConfig.SeqHost)
                 .CreateLogger();
 
             builder.Host.UseSerilog(Log.Logger);
@@ -76,15 +75,6 @@ namespace Pie
                 options.EnableSensitiveDataLogging();
                 options.LogTo(s => System.Diagnostics.Debug.WriteLine(s));
             });
-
-            //builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            //{
-            //    //options.UseSqlServer(connectionString);
-            //    options.UseNpgsql(connectionString);
-            //    options.EnableDetailedErrors();
-            //    options.EnableSensitiveDataLogging();
-            //    options.LogTo(s => System.Diagnostics.Debug.WriteLine(s));
-            //});
 
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

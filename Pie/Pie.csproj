@@ -50,4 +50,8 @@
     <PackageReference Include="ZXing.Net" Version="0.16.9" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Config\Pages\Client1cConfig\" />
+  </ItemGroup>
+
   </Project>

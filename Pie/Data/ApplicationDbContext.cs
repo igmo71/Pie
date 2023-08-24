@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Pie.Connectors.Connector1c;
 using Pie.Data.Models;
 using Pie.Data.Models.Identity;
 using Pie.Data.Models.In;
@@ -46,6 +47,8 @@ namespace Pie.Data
         public DbSet<QueueOut> QueuesOut => Set<QueueOut>();
         public DbSet<StatusOut> StatusesOut => Set<StatusOut>();
         public DbSet<QueueNumber> QueueNumber => Set<QueueNumber>();
+
+        public DbSet<Client1cConfig> Client1CConfig { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -122,6 +125,8 @@ namespace Pie.Data
             builder.Entity<StatusOut>().HasKey(s => s.Id);
 
             builder.Entity<QueueNumber>().HasKey(e => e.Value);
+
+            builder.Entity<Client1cConfig>().HasKey(c => c.Id);
 
             DataSeed.Initialize(builder);
         }

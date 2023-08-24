@@ -20,10 +20,6 @@ namespace Pie.Connectors.Connector1c
 
             _httpClient1c = httpClient;
             
-            //_httpClient1c.BaseAddress = new Uri("http://1c.dobroga.ru/dobroga/");
-            //_httpClient1c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-            //                "Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes("DobrogaService:140520")));
-
             _httpClient1c.BaseAddress = new Uri(_client1cConfig.BaseAddress ?? "Client1c BaseAddress not found");
             _httpClient1c.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
                             "Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_client1cConfig.UserName}:{_client1cConfig.Password}")));

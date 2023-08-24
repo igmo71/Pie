@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Options;
+using Pie.Data;
 using System.Text.Json;
 
 namespace Pie.Connectors.Connector1c
@@ -12,12 +13,15 @@ namespace Pie.Connectors.Connector1c
 
         public HubService1c(
             IHubContext<Hub1c> hubContext,
-            IOptions<Client1cConfig> client1cOptions,
+            ApplicationDbContext dbContext,
             ILogger<HubService1c> logger)
         {
             _hubContext = hubContext;
-            _client1cConfig = client1cOptions.Value;
+
+            _client1cConfig = dbContext.Client1CConfig.FirstOrDefault() ?? throw new ApplicationException("HubService1c ctor Client1CConfig not found");
+
             _logger = logger;
+
             Hub1c.MessageReceived += MessageReceivedHandle;
         }
 
@@ -32,6 +36,7 @@ namespace Pie.Connectors.Connector1c
 
             string response = await _hubContext.Clients.Client(Hub1c.ConnectionId)
                 .InvokeAsync<string>(method: "PostDocInDto", arg1: client1cConfig, arg2: request, CancellationToken.None);
+
             return response;
         }
 
@@ -41,6 +46,7 @@ namespace Pie.Connectors.Connector1c
 
             string response = await _hubContext.Clients.Client(Hub1c.ConnectionId)
                 .InvokeAsync<string>(method: "PostDocOutDto", arg1: client1cConfig, arg2: request, CancellationToken.None);
+
             return response;
         }
 
