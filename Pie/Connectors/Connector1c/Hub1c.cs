@@ -14,35 +14,41 @@ namespace Pie.Connectors.Connector1c
             _logger = logger;
         }
 
-        public static event EventHandler<string>? MessageReceived;
+        public static event EventHandler<string?>? MessageReceived;
         public static event EventHandler<string?>? Disconnected;
-        public static event EventHandler<string?>? Connected;
+        public static event EventHandler<string?>? Connected;        
 
-        public void GetMessage(string message)
+        public void GetMessage(object message)
         {
+            
             _logger.LogDebug("Hub1c GetMessage {message}", message);
-            OnMessageReceived(message);
+            
+            OnMessageReceived(message.ToString());
         }
 
-        public string GetMessageWithResponse(string message)
+
+        public string GetMessageWithResponse(object message)
         {
             _logger.LogDebug("Hub1c GetMessageWithResponse {message}", message);
-            OnMessageReceived(message);
+
+            OnMessageReceived(message.ToString());
             return $"Hub Received: {message}";
         }
 
-        private void OnMessageReceived(string content)
+        private void OnMessageReceived(string? content)
         {
             _logger.LogDebug("Hub1c OnMessageReceived {content}", content);
+
             MessageReceived?.Invoke(this, content);
         }
 
         public override async Task OnConnectedAsync()
         {
             await base.OnConnectedAsync(); // TODO: ???
+
             connectionId = Context.ConnectionId;
 
-            _logger.LogDebug("Hub1c OnConnectedAsync connectionId: {connectionId}", connectionId);
+            _logger.LogInformation("Hub1c OnConnectedAsync {connectionId}", connectionId);
 
             Connected?.Invoke(this, connectionId);
         }
@@ -51,9 +57,10 @@ namespace Pie.Connectors.Connector1c
         {
             await base.OnDisconnectedAsync(exception); // TODO: ???
 
-            _logger.LogDebug("Hub1c OnDisconnectedAsync connectionId: {connectionId} {exception}", connectionId, exception);
+            _logger.LogWarning("Hub1c OnDisconnectedAsync {connectionId} {exception}", connectionId, exception);
 
-            Disconnected?.Invoke(this, $"connectionId: {connectionId}; exception.Message: {exception?.Message}");
+            Disconnected?.Invoke(this, $"{connectionId} {exception?.Message}");
+
             connectionId = string.Empty;
         }
     }

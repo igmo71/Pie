@@ -1,8 +1,5 @@
-﻿using Azure;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.SignalR;
 using Pie.Data;
-using System.Diagnostics;
 using System.Text.Json;
 
 namespace Pie.Connectors.Connector1c
@@ -31,17 +28,17 @@ namespace Pie.Connectors.Connector1c
 
         private void ConnectedHandle(object? sender, string? message)
         {
-            _logger.LogInformation("HubService1c MessageReceived: {message}", message);
+            _logger.LogDebug("HubService1c ConnectedHandle {message}", message);
         }
 
         private void DisconnectedHandle(object? sender, string? message)
         {
-            _logger.LogError("HubService1c  Disconnected {message}", message);
+            _logger.LogError("HubService1c  DisconnectedHandle {message}", message);
         }
 
-        private void MessageReceivedHandle(object? sender, string message)
+        private void MessageReceivedHandle(object? sender, string? message)
         {
-            _logger.LogInformation("HubService1c MessageReceived: {message}", message);
+            _logger.LogInformation("HubService1c MessageReceivedHandle {message}", message);
         }
 
         public async Task<string> SendInAsync(string request)
@@ -72,6 +69,7 @@ namespace Pie.Connectors.Connector1c
 
             CancellationTokenSource cts = new(TimeSpan.FromSeconds(10));
 
+            // TODO: Переделать на отправку всем (только для всех InvokeAsync не работает)
             Task<string> sendingOut = _hubContext.Clients.Client(Hub1c.ConnectionId)
                 .InvokeAsync<string>(method: "PostDocOutDto", arg1: client1cConfig, arg2: request, cts.Token);
 

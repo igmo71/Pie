@@ -58,7 +58,7 @@ namespace Pie.Proxy
             catch (Exception ex)
             {
                 _logger.LogWarning("HubClient - {Message}", ex.Message);
-                await Task.Delay(5000);
+                await Task.Delay(10000);
                 await StartConnection();
             }
         }
@@ -67,30 +67,34 @@ namespace Pie.Proxy
 
         public async Task SendMessageAsync(string message)
         {
-            _logger.LogInformation("SendMessageAsync Begin {message}", message);
             if (_hubConnection.State == HubConnectionState.Connected)
             {
                 try
                 {
-                    _logger.LogInformation("SendMessageAsync _hubConnection.SendAsync Begin {message}", message);
-                    await _hubConnection.SendAsync("GetMessage", message);
                     //await _hubConnection.InvokeAsync("GetMessage", message);
-                    _logger.LogInformation("SendMessageAsync _hubConnection.SendAsync End {message}", message);
+                    await _hubConnection.SendAsync("GetMessage", new { message });
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError("SendMessageAsync Exception {ex}", ex);
                 }
             }
-            _logger.LogInformation("SendMessageAsync End {message}", message);
         }
 
         public async Task SendMessageWithResponseAsync(string message)
         {
             if (_hubConnection.State == HubConnectionState.Connected)
             {
-                var result = await _hubConnection.InvokeAsync<string>("GetMessageWithResponse", message);
-                _logger.LogInformation("SendMessageWithResponseAsync {result}", result);
+                try
+                {
+                    var result = await _hubConnection.InvokeAsync<string>("GetMessageWithResponse", new { message });
+                    _logger.LogInformation("SendMessageWithResponseAsync {result}", result);
+
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError("SendMessageWithResponseAsync Exception {ex}", ex);
+                }
             }
         }
 

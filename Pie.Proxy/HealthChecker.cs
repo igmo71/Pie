@@ -22,10 +22,8 @@ namespace Pie.Proxy
                     _logger.LogInformation("HealthCheck: {State}", _hubClient.State);
                     
                     await _hubClient.SendMessageAsync($"Pie.Proxy HealthCheck: {_hubClient.State}");
-                    _logger.LogInformation("HealthCheck: Message sended");
                     
                     await Task.Delay(_healthCheck * 1000, stoppingToken);
-                    _logger.LogInformation("HealthCheck: Timeout end");
 
                 }
                 catch (Exception ex)
