@@ -69,8 +69,16 @@ namespace Pie.Proxy
         {
             if (_hubConnection.State == HubConnectionState.Connected)
             {
-                var result = await _hubConnection.InvokeAsync<string>("GetMessage", message);
-                _logger.LogInformation(result);
+                await _hubConnection.InvokeAsync("GetMessage", message);
+            }
+        }
+
+        public async Task SendMessageWithResponseAsync(string message)
+        {
+            if (_hubConnection.State == HubConnectionState.Connected)
+            {
+                var result = await _hubConnection.InvokeAsync<string>("GetMessageWithResponse", message);
+                _logger.LogInformation("SendMessageWithResponseAsync {result}", result);
             }
         }
 

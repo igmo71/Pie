@@ -17,9 +17,18 @@ namespace Pie.Proxy
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation("HealthCheck: {State}", _hubClient.State);
-                await _hubClient.SendMessageAsync($"Pie.Proxy HealthCheck: {_hubClient.State}");
-                await Task.Delay(_healthCheck * 1000, stoppingToken);
+                try
+                {
+                    _logger.LogInformation("HealthCheck: {State}", _hubClient.State);
+                    await _hubClient.SendMessageAsync($"Pie.Proxy HealthCheck: {_hubClient.State}");
+                    await Task.Delay(_healthCheck * 1000, stoppingToken);
+
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError("HealthCheck: {State} {Message}", _hubClient.State, ex.Message);
+                    //throw;
+                }
             }
         }
     }

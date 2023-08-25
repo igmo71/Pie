@@ -8,8 +8,14 @@ namespace Pie.Connectors.Connector1c
         public static string ConnectionId => connectionId;
 
         public static event EventHandler<string>? MessageReceived;
+        public static event EventHandler<string?>? Disconnected;
 
-        public string GetMessage(string message)
+        public void GetMessage(string message)
+        {
+            OnMessageReceived(message);
+        }
+
+        public string GetMessageWithResponse(string message)
         {
             OnMessageReceived(message);
             return $"Hub Received: {message}";
@@ -30,6 +36,7 @@ namespace Pie.Connectors.Connector1c
         {
             connectionId = string.Empty;
             await base.OnDisconnectedAsync(exception); // TODO: ???
+            Disconnected?.Invoke(this, exception?.Message);
         }
     }
 }

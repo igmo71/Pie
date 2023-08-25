@@ -24,12 +24,18 @@ namespace Pie.Connectors.Connector1c
 
             _logger = logger;
 
+            Hub1c.Disconnected += DisconnectedHandle;
             Hub1c.MessageReceived += MessageReceivedHandle;
+        }
+
+        private void DisconnectedHandle(object? sender, string? message)
+        {
+            _logger.LogError($"HubService1c  Disconnected {message}");
         }
 
         private void MessageReceivedHandle(object? sender, string message)
         {
-            _logger.LogInformation($"HubService1c MessageReceivedHandle: {message}");
+            _logger.LogInformation($"HubService1c MessageReceived: {message}");
         }
 
         public async Task<string> SendInAsync(string request)
@@ -60,7 +66,6 @@ namespace Pie.Connectors.Connector1c
 
             CancellationTokenSource cts = new(TimeSpan.FromSeconds(10));
 
-
             Task<string> sendingOut = _hubContext.Clients.Client(Hub1c.ConnectionId)
                 .InvokeAsync<string>(method: "PostDocOutDto", arg1: client1cConfig, arg2: request, cts.Token);
 
@@ -79,6 +84,7 @@ namespace Pie.Connectors.Connector1c
 
         public void Dispose()
         {
+            Hub1c.Disconnected -= DisconnectedHandle;
             Hub1c.MessageReceived -= MessageReceivedHandle;
         }
     }
