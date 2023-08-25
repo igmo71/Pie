@@ -16,7 +16,7 @@ namespace Pie.Proxy
         public HttpService1c(
             HttpClient httpClient,
             IOptions<Client1cConfig> client1cOptions,
-            IOptions<JsonSerializerOptions> jsonSerializerOptions,
+            //IOptions<JsonSerializerOptions> jsonSerializerOptions,
             ILogger<HttpService1c> logger)
         {
             //Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);

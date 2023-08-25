@@ -58,7 +58,7 @@ namespace Pie.Proxy
             catch (Exception ex)
             {
                 _logger.LogWarning("HubClient - {Message}", ex.Message);
-                await Task.Delay(10000);
+                await Task.Delay(5000);
                 await StartConnection();
             }
         }
@@ -67,10 +67,22 @@ namespace Pie.Proxy
 
         public async Task SendMessageAsync(string message)
         {
+            _logger.LogInformation("SendMessageAsync Begin {message}", message);
             if (_hubConnection.State == HubConnectionState.Connected)
             {
-                await _hubConnection.InvokeAsync("GetMessage", message);
+                try
+                {
+                    _logger.LogInformation("SendMessageAsync _hubConnection.SendAsync Begin {message}", message);
+                    await _hubConnection.SendAsync("GetMessage", message);
+                    //await _hubConnection.InvokeAsync("GetMessage", message);
+                    _logger.LogInformation("SendMessageAsync _hubConnection.SendAsync End {message}", message);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError("SendMessageAsync Exception {ex}", ex);
+                }
             }
+            _logger.LogInformation("SendMessageAsync End {message}", message);
         }
 
         public async Task SendMessageWithResponseAsync(string message)
@@ -94,8 +106,11 @@ namespace Pie.Proxy
 
         private async Task<string?> OnPostDocOutDto(object?[] input)
         {
+            _logger.LogInformation("OnPostDocOutDto {input}", input);
             string client1cConfig = input[0] as string ?? throw new ApplicationException("Pie.Proxy HubClient OnPostDocOutDto - Client1cConfig is Empty");
+            _logger.LogInformation("OnPostDocOutDto {client1cConfig}", client1cConfig);
             string request = input[1] as string ?? throw new ApplicationException("Pie.Proxy HubClient OnPostDocOutDto - Request is Empty");
+            _logger.LogInformation("OnPostDocOutDto {request}", request);
 
             string response = await _httpService1c.SendOutAsync(client1cConfig, request);
 

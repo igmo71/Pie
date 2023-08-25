@@ -7,7 +7,7 @@ namespace Pie.Proxy
         [SupportedOSPlatform("windows")]
         public static void Main(string[] args)
         {
-            string tenant = args[0];
+            //string tenant = args[0];
 
             var builder = Host.CreateApplicationBuilder(args);
 

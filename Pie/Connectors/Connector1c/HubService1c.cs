@@ -24,18 +24,24 @@ namespace Pie.Connectors.Connector1c
 
             _logger = logger;
 
+            Hub1c.Connected += ConnectedHandle;
             Hub1c.Disconnected += DisconnectedHandle;
             Hub1c.MessageReceived += MessageReceivedHandle;
         }
 
+        private void ConnectedHandle(object? sender, string? message)
+        {
+            _logger.LogInformation("HubService1c MessageReceived: {message}", message);
+        }
+
         private void DisconnectedHandle(object? sender, string? message)
         {
-            _logger.LogError($"HubService1c  Disconnected {message}");
+            _logger.LogError("HubService1c  Disconnected {message}", message);
         }
 
         private void MessageReceivedHandle(object? sender, string message)
         {
-            _logger.LogInformation($"HubService1c MessageReceived: {message}");
+            _logger.LogInformation("HubService1c MessageReceived: {message}", message);
         }
 
         public async Task<string> SendInAsync(string request)
@@ -84,6 +90,7 @@ namespace Pie.Connectors.Connector1c
 
         public void Dispose()
         {
+            Hub1c.Connected -= ConnectedHandle;
             Hub1c.Disconnected -= DisconnectedHandle;
             Hub1c.MessageReceived -= MessageReceivedHandle;
         }

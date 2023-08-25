@@ -47,6 +47,7 @@ namespace Pie
             //});
                         
             Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
                 .Enrich.FromLogContext()
                 .Enrich.WithEnvironmentName()
                 .Enrich.WithEnvironmentUserName()
