@@ -9,6 +9,8 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pie.Proxy", "Pie.Proxy\Pie.Proxy.csproj", "{58D30C7C-89DF-43CF-AA85-9D3E7753B0A8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pie.Admin.Api", "Pie.Admin.Api\Pie.Admin.Api.csproj", "{D59BBDC0-B3A2-4CA6-8CD6-257056C65079}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{58D30C7C-89DF-43CF-AA85-9D3E7753B0A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58D30C7C-89DF-43CF-AA85-9D3E7753B0A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58D30C7C-89DF-43CF-AA85-9D3E7753B0A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D59BBDC0-B3A2-4CA6-8CD6-257056C65079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D59BBDC0-B3A2-4CA6-8CD6-257056C65079}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D59BBDC0-B3A2-4CA6-8CD6-257056C65079}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D59BBDC0-B3A2-4CA6-8CD6-257056C65079}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
