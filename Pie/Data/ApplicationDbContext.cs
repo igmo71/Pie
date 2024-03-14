@@ -16,7 +16,7 @@ namespace Pie.Data
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
             //Database.EnsureCreated();
-            Database.Migrate();
+            //Database.Migrate();
         }
 
         public DbSet<BaseDoc> BaseDocs => Set<BaseDoc>();
